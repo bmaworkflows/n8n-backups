@@ -1,0 +1,445 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        []
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        []
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-07-31T23:46:11.116Z",
+  "id": "tRrKdeE382KpuVY7",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[AUTO] [CAROL] Dashboard",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression"
+            }
+          ]
+        }
+      },
+      "id": "29fc183b-6a3e-4bc4-ad70-cc60612af51b",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getAll",
+        "boardId": "5689478999",
+        "groupId": "novo_grupo33814__1",
+        "returnAll": true
+      },
+      "id": "5a6dea66-140e-4336-a9ad-6f0ee3dae727",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        900,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1gFO5wzJHL_Wq_qLICka-mrHMZ-p2mZb5YIIpT2Nit6w/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "[AUTO]",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gFO5wzJHL_Wq_qLICka-mrHMZ-p2mZb5YIIpT2Nit6w/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Data de Criação": "={{ $('Loop Over Items').item.json.created_at.toDateTime().format(\"yyyy-MM-dd\") }} ",
+            "Nome": "={{ $('Loop Over Items').item.json.name }}",
+            "Closer": "={{ $json.closer = \"closerbma.thiago@gmail.com\" ? \"Thiago\" : Thaís }}",
+            "Status": "={{ $json.status }}",
+            "Etapa": "={{ $json.etapa }}",
+            "Comparecimento": "={{ $json.comparecimento }}",
+            "Data da Call": "={{ $json.data_call_agendada }}",
+            "Valor do negócio": "={{ $json.valor_do_negocio }}",
+            "Data da Venda": "={{ $json.data_venda }}",
+            "Produto": "={{ $json.produto }}",
+            "Faturamento": "={{ $json.faturamento }}",
+            "Origem": "={{ $json.origem }}",
+            "Email": "={{ $json.email }}",
+            "ID": "={{ $('Loop Over Items').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Data de Criação",
+              "displayName": "Data de Criação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Closer",
+              "displayName": "Closer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Data da Call",
+              "displayName": "Data da Call",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comparecimento",
+              "displayName": "Comparecimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Valor do negócio",
+              "displayName": "Valor do negócio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Etapa",
+              "displayName": "Etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Faturamento",
+              "displayName": "Faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Produto",
+              "displayName": "Produto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Data da Venda",
+              "displayName": "Data da Venda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Origem",
+              "displayName": "Origem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "b7790120-343f-45bd-bfab-30d8f954e3f1",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1840,
+        400
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "d2b1464f-537f-4fcb-b6d1-a84743833ce9",
+              "leftValue": "={{ $json.created_at }}",
+              "rightValue": "2024-08-01T00:00:00",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5ce40d3b-b61c-4068-ae14-6ee6ae6badc6",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "8d25ac77-5097-4af9-a2d2-2bc7d8c9236c",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7088bbee-6e98-47c0-a4d8-52c55ee34ebe",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1380,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let result = {};\n\nlet el = $input.all()[0].json[\"column_values\"];\n\nel.forEach(item => {\n    if (item.column.title === \"Closer\") {\n        result.closer = item.text;\n    }\n\n    if (item.column.title === \"Whatsapp\") {\n        result.whatsapp = item.text;\n    }\n\n  if (item.column.title === \"Faturamento\") {\n        result.faturamento = item.text;\n    }\n\n  if (item.column.title === \"Origem\") {\n        result.origem = item.text;\n    }\n\n  if (item.column.title === \"Etapa\") {\n        result.etapa = item.text;\n    }\n\n  if (item.column.title === \"Comparecimento\") {\n        result.comparecimento = item.text;\n    }\n\n  if (item.column.title === \"Valor do Negócio\") {\n        result.valor_do_negocio = item.text;\n    }\n\n  if (item.column.title === \"Status\") {\n        result.status = item.text;\n    }\n\n  if (item.column.title === \"Produto\") {\n        result.produto = item.text;\n    }\n\n  if (item.column.title === \"Data Call Agendada\") {\n        result.data_call_agendada = item.text;\n    }\n\n  if (item.column.title === \"Data da Venda\") {\n        result.data_venda = item.text;\n    }\n\n  if (item.column.title === \"Email\") {\n        result.email = item.text\n    }\n\n});\n\nreturn result;\n"
+      },
+      "id": "77cc20c5-772d-4b8a-8996-568f9fed0d34",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1620,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "result",
+        "options": {}
+      },
+      "id": "f903095b-3671-417c-966b-bc6af835401f",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "result[0].Closer"
+            },
+            {
+              "fieldToAggregate": "result[1][\"Data Call Agendada\"]"
+            },
+            {
+              "fieldToAggregate": "result[2].Comparecimento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "686718e7-7845-499b-8998-3333736960b7",
+      "name": "Aggregate1",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        840
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrencyRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-08-13T04:19:17.227Z",
+  "versionId": "db3761a3-0469-4240-96fc-4e9c1a248409"
+}
