@@ -1,0 +1,258 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-03T19:46:23.287Z",
+  "id": "qjcq8KnLVEGBLLh4",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Leads do Formulário AE8",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "4851b490-db35-4326-b1bf-1b29f4f30e36",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1rfvvHFTChWlaz8H2fZN6hqJ3H8PwndJ4ZJkb7Va4Hr0/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rfvvHFTChWlaz8H2fZN6hqJ3H8PwndJ4ZJkb7Va4Hr0/edit#gid=1110820731"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json['No Label email'] }}",
+            "whatsapp": "={{ $json['No Label field_87aa609'] }}",
+            "email": "={{ $json['No Label field_8ddb34b'] }}",
+            "utm_source": "={{ $json.UTMSOURCEAE8 }}",
+            "utm_campaign": "={{ $json.UTMCAMPAIGNAE8 }}",
+            "utm_medium": "={{ $json.UTMMEDIUMAE8 }}",
+            "utm_content": "={{ $json.UTMCONTENTAE8 }}",
+            "utm_term": "={{ $json.UTMTERMAE8 }}",
+            "pagina": "={{ $json.PAGINAAE8 }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ca6c1080-3f6d-4d8a-8431-3438ceae7e79",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1240,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3cb999a4-cf20-4ef1-9d75-b22349e5ee6b",
+        "options": {}
+      },
+      "id": "1dbe63d9-c813-4165-9c88-f9e0dfb93a72",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        820,
+        380
+      ],
+      "webhookId": "3cb999a4-cf20-4ef1-9d75-b22349e5ee6b"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.6.2; https://incorporacaonapratica.com",
+            "content-length": "246",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip, br",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.154.191.251",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "2a2e19c3ba94",
+            "x-real-ip": "177.154.191.251"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "No Label email": "matheus",
+            "No Label field_87aa609": "81993515055",
+            "No Label field_8ddb34b": "bma.matheus2024@gmail.com",
+            "UTMCONTENTAE8": "",
+            "UTMSOURCEAE8": "",
+            "UTMMEDIUMAE8": "",
+            "UTMCAMPAIGNAE8": "",
+            "UTMTERMAE8": "",
+            "PAGINAAE8": "reuniao-outubro-v2",
+            "form_id": "9fb063c",
+            "form_name": "form_ae8_v1"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/3cb999a4-cf20-4ef1-9d75-b22349e5ee6b",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-03T20:09:31.558Z",
+  "versionId": "2582406f-a37d-4b2c-9cc8-266eb2222861"
+}
