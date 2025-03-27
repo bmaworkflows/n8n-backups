@@ -1,0 +1,514 @@
+{
+  "active": true,
+  "connections": {
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-09T02:33:17.776Z",
+  "id": "fZn8F0CKRAckhA9l",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Aplicação - Imersão JP Ingresso Premium - Mentorados",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "6192bbd6-3076-4c86-ba0a-6ba9f5e550dc",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        560,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\n\n\n----------\nEmail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\n\n----------\n@ do instagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n\n----------\nVocê já possui um infoproduto?\n\n{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\n\n----------\nPor que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria PREMIUM é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].text }}\n\n\n----------\nO investimento para adquirir o Ingresso Premium é de até 12x de R$250,08 no cartão de crédito ou R$2.500,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $('Trata Webhook').item.json.form_response.answers[8].choice.label }}"
+      },
+      "id": "5e74b67d-88ad-4361-aec2-83eae9deac5d",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"n_meros\":\"2500\", \"data\":\"{{ new DateTime($node[\"Trata Webhook\"].json[\"form_response\"][\"submitted_at\"]).format(\"yyyy-MM-dd\") }}\", \"texto\":\"wa.me/{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\" }"
+      },
+      "id": "e5750f99-1dd0-4b62-8765-d0fb88adba87",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "topics",
+        "name": "={{ \"[IMERSÃO/PREMIUM][MENTORADO] \" + $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "3a754841-4676-4efe-953b-77b4775f0e64",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        780,
+        360
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e9f932d5-d00e-4cf5-9d48-3542779397cd",
+        "options": {}
+      },
+      "id": "84399279-74d8-4518-a901-33b0a03af2af",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        340,
+        360
+      ],
+      "webhookId": "e9f932d5-d00e-4cf5-9d48-3542779397cd"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "6588",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-9b4bb2cb7671cfd1a03b24e25c89ea2e-8c2e6738521174c7-01",
+            "x-forwarded-for": "18.210.136.162",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "2a2e19c3ba94",
+            "x-real-ip": "18.210.136.162"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01J9QJ1WG24EDTZQJVQQ2GKTT7",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "fK95ctKM",
+              "token": "u06oevj1x7ptsp8mq42u06oev5scn4xz",
+              "landed_at": "2024-10-09T02:34:16Z",
+              "submitted_at": "2024-10-09T02:34:43Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "fK95ctKM",
+                "title": "Imersão Mentoria High Ticket® - Premium [MENTORADOS]",
+                "fields": [
+                  {
+                    "id": "6d5nzSRA6ER9",
+                    "ref": "01HHF4CVE6FDDVP3R88TAER6XD",
+                    "type": "short_text",
+                    "title": "Qual o seu nome completo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "l6FRZYFJoM7q",
+                    "ref": "fb090355-f7ed-4367-9458-2aae21e1cd35",
+                    "type": "phone_number",
+                    "title": "Número do WhatsApp com DDD",
+                    "properties": {}
+                  },
+                  {
+                    "id": "5MEaJjUAkKj4",
+                    "ref": "ecd17768-3d51-47df-a5ed-288db2bf67a6",
+                    "type": "email",
+                    "title": "Seu melhor e-mail",
+                    "properties": {}
+                  },
+                  {
+                    "id": "0rsUpe0RL0ak",
+                    "ref": "2a48cfe1-e247-44d4-a65f-b7129fe09b8f",
+                    "type": "short_text",
+                    "title": "Qual é o seu @ do instagram?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "cx2TAitUp0uR",
+                    "ref": "01HHF4CWNCDPG9GNKY13NQYCJR",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "sblb8C8MW3Wb",
+                        "ref": "01HHF4CWNCM2E8AJ4RQRK5F0B7",
+                        "label": "Mentor, expert ou infoprodutor"
+                      },
+                      {
+                        "id": "CQrWAvKDGsEe",
+                        "ref": "01HHF4CWNC6WJ05N9P5141VVJG",
+                        "label": "Agência digital ou Coprodutor"
+                      },
+                      {
+                        "id": "2wqLCcqoZYQb",
+                        "ref": "a28e1656-652c-4bd0-b0f7-f769a2249187",
+                        "label": "Gestor de tráfego ou outro prestador de serviço no digital"
+                      },
+                      {
+                        "id": "pOVyVKEbBVSS",
+                        "ref": "f1ac31b4-012b-4beb-bdf5-3182e387508b",
+                        "label": "Profissional liberal/Prestador de serviço"
+                      },
+                      {
+                        "id": "LMn3UHtIolBL",
+                        "ref": "157d1f17-3047-40fe-b182-f7cc1d943ddd",
+                        "label": "Afiliados e PLR"
+                      },
+                      {
+                        "id": "2sUxeNwb7qQl",
+                        "ref": "1b19d434-eaf0-47d8-ba39-e059d4633528",
+                        "label": "Nenhuma das opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ojtGwftIxPfN",
+                    "ref": "b38808fb-8bb3-439a-8f7b-27da74a5d76b",
+                    "type": "multiple_choice",
+                    "title": "Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes? ",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "4xNqCHoEX3Oe",
+                        "ref": "f6443bdd-7bb9-4716-8029-d682069ebcba",
+                        "label": "Até R$ 10.000,00"
+                      },
+                      {
+                        "id": "BGqmwGn7tqj7",
+                        "ref": "5c7a47b2-9279-456f-8922-2a4cea8954e6",
+                        "label": "R$ 10.000,00 a R$ 20.000,00"
+                      },
+                      {
+                        "id": "y3Z44pTOVl2m",
+                        "ref": "ec52aa93-40da-42c6-96f8-d470896dfdbe",
+                        "label": "R$ 20.000,00 a R$ 50.000,00"
+                      },
+                      {
+                        "id": "2jmqByElrow0",
+                        "ref": "937c2a7f-1e08-4af6-93fa-817d618758fe",
+                        "label": "R$ 50.000,00 a R$ 100.000,00"
+                      },
+                      {
+                        "id": "PtHa4I2qGWcU",
+                        "ref": "3a8699d9-ac30-4311-bc26-539cd6b2e207",
+                        "label": "R$ 100.000,00 a R$ 250.000,00"
+                      },
+                      {
+                        "id": "TGbVUeMsw3JD",
+                        "ref": "21706c82-4fb3-4eb7-b22d-7b87b337c3ef",
+                        "label": "R$ 250.000,00 a R$ 500.000,00"
+                      },
+                      {
+                        "id": "Q1niXYQB1QJA",
+                        "ref": "e3abefa8-2d0a-4d80-9210-47fa0d4b3a84",
+                        "label": "Acima de R$ 500.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "qagdJxSAJChA",
+                    "ref": "519e01c4-6f86-4989-9f10-9926a01b9b5f",
+                    "type": "multiple_choice",
+                    "title": "Você já possui um infoproduto?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "ZBAQZeRGUWYD",
+                        "ref": "b9a658fe-cfc1-4bcd-82cf-041495e554da",
+                        "label": "Tenho curso e tenho mentoria"
+                      },
+                      {
+                        "id": "QEcUGQNgbYD1",
+                        "ref": "f4552fa4-7f8e-47ac-9e41-8f43340d687a",
+                        "label": "Tenho curso, mas não tenho mentoria"
+                      },
+                      {
+                        "id": "1AVvxKL9Smn8",
+                        "ref": "dd31c377-2ce1-4a86-a590-16202142c97d",
+                        "label": "Tenho mentoria, mas não tenho curso"
+                      },
+                      {
+                        "id": "Hq3Q9WxrG2sI",
+                        "ref": "1db9400e-1d21-4188-a75f-4d8c2291c43b",
+                        "label": "Não tenho curso e mentoria, mas quero desenvolver"
+                      },
+                      {
+                        "id": "LOX8tKswXyO1",
+                        "ref": "b4e50684-151d-41c0-ab77-89c4fa914995",
+                        "label": "Não quero desenvolver curso, nem mentoria"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "X1v4dw53CEGQ",
+                    "ref": "4d0c116c-fddb-4a60-909c-4c9a7c590c08",
+                    "type": "short_text",
+                    "title": "Por que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria PREMIUM é a oportunidade ideal para você e para o crescimento do seu negócio?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "ghGsmo1DlCXx",
+                    "ref": "9cfcf044-8844-4039-8b36-2f035686fa2a",
+                    "type": "multiple_choice",
+                    "title": "O investimento para adquirir o Ingresso Premium é de até 12x de R$250,08  no cartão de crédito ou R$2.500,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "WAjXw5nG78Pf",
+                        "ref": "ecdab545-cf05-4a07-8f3b-b5ed6c6ff8b3",
+                        "label": "Sim, R$2.500,00 à vista."
+                      },
+                      {
+                        "id": "2Yro2RUudNex",
+                        "ref": "703cb4f6-07a9-4236-ae4c-0846ac811a72",
+                        "label": "Sim, parcelado em até 12x no cartão de crédito."
+                      },
+                      {
+                        "id": "uPzgpL5wSoMV",
+                        "ref": "4fa772f8-9093-4220-9d91-0e167233e10e",
+                        "label": "Não tenho condição de fazer o investimento."
+                      }
+                    ]
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "tP3ieCOMyh0T",
+                    "ref": "1994c4f8-3453-46c5-8723-99d2db2bcd20",
+                    "title": "obrigado-imersao",
+                    "type": "url_redirect",
+                    "properties": {
+                      "redirect_url": "https://josepbijari.com/obrigado-imersao/"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "math",
+                  "field": {
+                    "id": "6d5nzSRA6ER9",
+                    "type": "short_text",
+                    "ref": "01HHF4CVE6FDDVP3R88TAER6XD"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "l6FRZYFJoM7q",
+                    "type": "phone_number",
+                    "ref": "fb090355-f7ed-4367-9458-2aae21e1cd35"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheuscristhyan.2@gmail.com",
+                  "field": {
+                    "id": "5MEaJjUAkKj4",
+                    "type": "email",
+                    "ref": "ecd17768-3d51-47df-a5ed-288db2bf67a6"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "@mth",
+                  "field": {
+                    "id": "0rsUpe0RL0ak",
+                    "type": "short_text",
+                    "ref": "2a48cfe1-e247-44d4-a65f-b7129fe09b8f"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "CQrWAvKDGsEe",
+                    "label": "Agência digital ou Coprodutor",
+                    "ref": "01HHF4CWNC6WJ05N9P5141VVJG"
+                  },
+                  "field": {
+                    "id": "cx2TAitUp0uR",
+                    "type": "multiple_choice",
+                    "ref": "01HHF4CWNCDPG9GNKY13NQYCJR"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "PtHa4I2qGWcU",
+                    "label": "R$ 100.000,00 a R$ 250.000,00",
+                    "ref": "3a8699d9-ac30-4311-bc26-539cd6b2e207"
+                  },
+                  "field": {
+                    "id": "ojtGwftIxPfN",
+                    "type": "multiple_choice",
+                    "ref": "b38808fb-8bb3-439a-8f7b-27da74a5d76b"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "1AVvxKL9Smn8",
+                    "label": "Tenho mentoria, mas não tenho curso",
+                    "ref": "dd31c377-2ce1-4a86-a590-16202142c97d"
+                  },
+                  "field": {
+                    "id": "qagdJxSAJChA",
+                    "type": "multiple_choice",
+                    "ref": "519e01c4-6f86-4989-9f10-9926a01b9b5f"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Por que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria PREMIUM é a oportunidade ideal para você e para o crescimento do seu negócio?",
+                  "field": {
+                    "id": "X1v4dw53CEGQ",
+                    "type": "short_text",
+                    "ref": "4d0c116c-fddb-4a60-909c-4c9a7c590c08"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "WAjXw5nG78Pf",
+                    "label": "Sim, R$2.500,00 à vista.",
+                    "ref": "ecdab545-cf05-4a07-8f3b-b5ed6c6ff8b3"
+                  },
+                  "field": {
+                    "id": "ghGsmo1DlCXx",
+                    "type": "multiple_choice",
+                    "ref": "9cfcf044-8844-4039-8b36-2f035686fa2a"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "tP3ieCOMyh0T",
+                "ref": "1994c4f8-3453-46c5-8723-99d2db2bcd20"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/e9f932d5-d00e-4cf5-9d48-3542779397cd",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-09T02:43:23.275Z",
+  "versionId": "17ed4891-c07d-4772-b474-8dad7f2efdbc"
+}
