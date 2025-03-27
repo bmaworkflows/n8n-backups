@@ -1,0 +1,284 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-12-07T05:11:52.779Z",
+  "id": "esplMRwjtOZ5cVIi",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [IP3] Meteórico 05 - Oferta",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "f5935e26-2b5c-4bc8-b392-eb4633842d5e",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        520,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit?gid=380814713#gid=380814713",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 380814713,
+          "mode": "list",
+          "cachedResultName": "oferta",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit#gid=380814713"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.Data_da_conversao.toDateTime().format('dd/MM/yyyy') }}",
+            "nome": "={{ $json.Seu_nome }}",
+            "email": "={{ $json.Seu_melhor_e_mail }}",
+            "telefone": "={{ $json.Telefone_WhatsApp_DDD }}",
+            "ingresso": "={{ $json.ingresso }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "página": "={{ $json.pagina }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ingresso",
+              "displayName": "ingresso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "página",
+              "displayName": "página",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eff87e2b-1a5a-4724-8195-30109470f65d",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        780,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8a9c11ba-984f-47be-b71d-df1ffbd033g9",
+        "options": {}
+      },
+      "id": "06e34b92-aa3c-49dd-ae50-36ef3d721a2e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "8a9c11ba-984f-47be-b71d-df1ffbd033c0"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "content-length": "671",
+            "accept-encoding": "gzip",
+            "cdn-loop": "cloudflare; subreqs=1",
+            "cf-connecting-ip": "2a06:98c0:3600::103",
+            "cf-ray": "8ff569521100e772-DFW",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "greatsoftwares.workers.dev",
+            "content-type": "application/x-www-form-urlencoded",
+            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTczNjQzNjAyN30.J87ub00Fy6GT-TWiTeaK36d7Xej-ahgNYl4H6OSqztA",
+            "great-server": "GreatApps",
+            "great-service": "gpages-r2-pages-integrations",
+            "x-forwarded-for": "172.71.166.45",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "aec8b0c0f148",
+            "x-real-ip": "172.71.166.45"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Seu_nome": "teste",
+            "Seu_melhor_e_mail": "bma.matheus2024@gmail.com",
+            "Telefone_WhatsApp_DDD": "81993515055",
+            "pagina": "oferta-ano-novo",
+            "ingresso": "vip",
+            "utm_source": "fb",
+            "utm_campaign": "campanha",
+            "utm_medium": "publico",
+            "utm_term": "reels",
+            "utm_content": "anuncio",
+            "Referral_Source": "Acesso direto",
+            "Dispositivo": "Desktop",
+            "URL": "https://www.incorporacaonapratica.com/oferta-ano-novo?UTMSOURCEIP3=fb&UTMMEDIUMIP3=publico&UTMCAMPAIGNIP3=campanha&UTMTERMIP3=reels&UTMCONTENTIP3=anuncio",
+            "IP_do_usuario": "190.89.244.58",
+            "Data_da_conversao": "2025-01-09 15:20:23",
+            "Id_do_formulario": "1204540_1_173618835163585126",
+            "Pais_do_usuario": "BR",
+            "Regiao_do_usuario": "Pernambuco",
+            "Cidade_do_usuario": "Caruaru",
+            "Id_da_pagina": "1204540"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/8a9c11ba-984f-47be-b71d-df1ffbd033g9",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-02-02T17:14:45.264Z",
+  "versionId": "1e3831dc-0d51-4401-bc23-9cb392873e08"
+}
