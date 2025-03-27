@@ -1,0 +1,588 @@
+{
+  "active": true,
+  "connections": {
+    "Criar instancia evolution": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar instancia evolution1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verifica se instância existe": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza instancia evolution2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Atualiza instancia evolution2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar instancia evolution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar-instancia-evolution": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-01-07T01:23:02.078Z",
+  "id": "ynNxtV6Hf9IRcrmF",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 7",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evo2.dentistapower.com.br/instance/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "a478a4a6eddf920e91ea12236900c8e7"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "instanceName",
+              "value": "teste"
+            },
+            {
+              "name": "qrcode",
+              "value": true
+            },
+            {
+              "name": "integration",
+              "value": "WHATSAPP-BAILEYS"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        500
+      ],
+      "id": "577cc00e-eb89-4eef-bc68-099c4e31013e",
+      "name": "Criar instancia evolution"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2180,
+        500
+      ],
+      "id": "6a13c7df-36a2-4974-94e5-82f062545b10",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1540,
+        760
+      ],
+      "id": "4160db29-5b63-4e7c-a528-ca321a46876a",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "url": "=https://evo2.dentistapower.com.br/instance/connect/{{ $json.body.instanceName }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "a478a4a6eddf920e91ea12236900c8e7"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        760
+      ],
+      "id": "3b4a94d7-224c-4b4c-a057-3e2591f40ca5",
+      "name": "Criar instancia evolution1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atualizar-qr-code",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        740,
+        760
+      ],
+      "id": "ead2f951-521f-48e2-8312-e3e75f858b7f",
+      "name": "Atualiza qr code",
+      "webhookId": "f3988766-f52b-4be0-b0bd-254e485671a3"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        500
+      ],
+      "id": "b9de5d66-8889-4278-a417-b52e77956216",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7997d699-2380-48aa-8dc3-b1eac974e16e",
+              "name": "base64",
+              "value": "={{ $json.qrcode.base64.split(',').last() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1820,
+        500
+      ],
+      "id": "bc14fb56-bb1e-44e7-90e3-700b4be637c9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        760
+      ],
+      "id": "ef865533-d2c5-447a-a2d0-7b9997db678b",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7997d699-2380-48aa-8dc3-b1eac974e16e",
+              "name": "base64",
+              "value": "={{ $json.base64.split(',').last() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1140,
+        760
+      ],
+      "id": "9fb32b1d-cd49-4a3a-9c20-2b4d2b6c3b3d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "url": "https://evo2.dentistapower.com.br/instance/fetchInstances",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "a478a4a6eddf920e91ea12236900c8e7"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        400
+      ],
+      "id": "4658fd71-d8d0-467f-a094-07edad70839b",
+      "name": "verifica se instância existe"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2180,
+        300
+      ],
+      "id": "f9c5f73a-63df-43ab-886d-aef599d8559e",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        300
+      ],
+      "id": "89f23446-ec43-45dd-ae36-9d00fd5a1c40",
+      "name": "Convert to File2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7997d699-2380-48aa-8dc3-b1eac974e16e",
+              "name": "base64",
+              "value": "={{ $json.base64.split(',').last() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1820,
+        300
+      ],
+      "id": "0c830595-6c80-4997-92ea-4d1114378bcd",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "url": "=https://evo2.dentistapower.com.br/instance/connect/{{ $('criar-instancia-evolution').item.json.body.instanceName }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "a478a4a6eddf920e91ea12236900c8e7"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        300
+      ],
+      "id": "a606212d-ac5f-4954-ad94-8a23cd9a9699",
+      "name": "Atualiza instancia evolution2"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        400
+      ],
+      "id": "0e535dd6-59e9-4a1f-98f9-1c31d9d80a2f",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "bff08a0e-519f-4344-b042-6c07dcaab96c",
+              "leftValue": "={{ $json.concatenated_name }}",
+              "rightValue": "={{ $('criar-instancia-evolution').item.json.body.instanceName }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "00cf15b1-f5b6-4f9e-829d-eb9c0edd6e11",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1380,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "path": "pegar-grupos",
+        "options": {}
+      },
+      "id": "c9e6d433-22b2-4b9c-9850-5915e975a67f",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        740,
+        1100
+      ],
+      "webhookId": "27be0c4e-0302-4baf-b266-692d9d3de0d9"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "criar-instancia-evolution",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        720,
+        400
+      ],
+      "id": "9d3a6027-aea8-46a1-86f7-c14a2eaa6c4e",
+      "name": "criar-instancia-evolution",
+      "webhookId": "f3988766-f52b-4be0-b0bd-254e485671a3"
+    }
+  ],
+  "pinData": {
+    "criar-instancia-evolution": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.autoflows.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+            "content-length": "22",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+            "content-type": "application/json",
+            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX1%2FSpurta2pxs%2FfsMMBHrWcGWmGBRjOmDXM%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX1%2FFUpbAbd4IZKitFs6Af2wh%2BeIkBxmFY%2Bs%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX1%2BwpCdprKZdFInj5bs62n39sx3nBzc5Tie7TvkSr23p1Ij0XLCmaNR0t0eYHIFoTlPsgqyFXV0kSw%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX1%2B%2F%2BCBVk6dTryqeQ4cRlGvSaT1EPsRcKut9xbXP9FxxInWlrQ9rVaGbJpIe%2Fll%2BsSTPY9NGGHHZSIaVejeXRAyZo%2FpdW6ecppnQHF9YxlCZJ%2FEgtU3PJy2bChtSoqrV4T4kO4pLRzFfDmySvtcMEnb1t0znmS7af1M%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX19tBBC2oC2h8IIciJxQOdJIDXkgAGKU4Q8sQRIDBLEowYZSM9gmQI9ITo2XQHAp244heTE4CYdMv0B2Zf%2FJmLvhvDJmMt%2FWqQrVO2frFgOcFZRiIxXiLm2UdN2KF3paMumtq6laFOESNw%3D%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22distinct_id%22%3A%22c97b9fd2b773edb4718871bb1e36191c66a8ca670b904f87ba44e5137c07976f%2390be661f-6a8a-477e-bab4-2ec6f596cdb6%22%2C%22%24sesid%22%3A%5B1734620851817%2C%220193df75-3897-786a-9e44-28ed84970ab3%22%2C1734620821655%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Fn8n.autoflows.com.br%2Fsetup%22%7D%7D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2BlM%2B4pnNf6SzG0ChNCTupB2JkP62vmeDEkqWs4USdhy37%2FrfZC%2FSYenA4ROJaRJ5uOEJwnsos7dlXKGkQCiNWIc%2FWA65Rqn20JGXKS1dDXXQN0D5GbiBcofwYXXYqF%2FCbzbM1bdmEEvw%3D%3D",
+            "origin": "https://webhook.autoflows.com.br",
+            "priority": "u=1, i",
+            "referer": "https://webhook.autoflows.com.br/webhook/instanciaevolution",
+            "sec-ch-ua": "\"Microsoft Edge\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "x-forwarded-for": "190.120.43.100",
+            "x-forwarded-host": "webhook.autoflows.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "d9b0e6308a72",
+            "x-real-ip": "190.120.43.100"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "instanceName": "bdg"
+          },
+          "webhookUrl": "https://webhook.autoflows.com.br/webhook/criar-instancia-evolution",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 3,
+  "updatedAt": "2025-01-07T01:56:30.538Z",
+  "versionId": "7e7d2f62-a1ff-4273-b9b3-337fe99bc747"
+}
