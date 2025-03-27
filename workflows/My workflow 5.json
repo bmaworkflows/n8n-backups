@@ -1,0 +1,723 @@
+{
+  "active": false,
+  "connections": {
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Entrou",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Saiu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata webhook": {
+      "main": [
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrou": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Captação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Saiu": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Captação2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-25T12:37:46.935Z",
+  "id": "wHD0Tg97KL1p6d7r",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $node[\"Trata webhook\"].json[\"notification\"] }}",
+              "operation": "isNotEmpty"
+            }
+          ],
+          "boolean": [
+            {
+              "value1": "={{ $json.Comunidade }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "1b8111c8-648e-4d9f-b2df-b76a1ee6d7a4",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "value": "={{ $node[\"Trata webhook\"].json[\"momment\"]/1000 }}",
+        "custom": true,
+        "toFormat": "DD/MM/Y",
+        "options": {
+          "fromFormat": "x",
+          "toTimezone": "America/Sao_Paulo"
+        }
+      },
+      "id": "9388c50b-9f72-490d-a7ed-a8adf62eeb71",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $node[\"Trata webhook\"].json[\"notification\"] }}",
+              "operation": "notEqual",
+              "value2": "GROUP_PARTICIPANT_LEAVE"
+            }
+          ]
+        }
+      },
+      "id": "6759c6ef-e74e-47d6-96e7-4fa9778f1cdf",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $input.all()[0].json.body == 'string' ? JSON.parse($input.all()[0].json.body) : $input.all()[0].json.body"
+      },
+      "id": "db228d0e-4761-4cb6-9083-4490952008d7",
+      "name": "Trata webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        920,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Data Entrada",
+              "value": "={{ $json[\"data\"] }}"
+            },
+            {
+              "name": "Telefone",
+              "value": "={{ $node[\"Trata webhook\"].json[\"notificationParameters\"][\"0\"] }}"
+            },
+            {
+              "name": "Group_ID",
+              "value": "={{ $node[\"Trata webhook\"].json[\"phone\"] }}"
+            },
+            {
+              "name": "Grupo",
+              "value": "={{ $node[\"Trata webhook\"].json[\"chatName\"] }}"
+            },
+            {
+              "name": "No Grupo?",
+              "value": "Entrou"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ecd977dc-8f7f-48c5-a181-32e882e20c88",
+      "name": "Entrou",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        2100,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Data Saida",
+              "value": "={{ $json[\"data\"] }}"
+            },
+            {
+              "name": "Telefone",
+              "value": "={{ $node[\"Trata webhook\"].json[\"notificationParameters\"][\"0\"] }}"
+            },
+            {
+              "name": "Group_ID",
+              "value": "={{ $node[\"Trata webhook\"].json[\"phone\"] }}"
+            },
+            {
+              "name": "Grupo",
+              "value": "={{ $node[\"Trata webhook\"].json[\"chatName\"] }}"
+            },
+            {
+              "name": "No Grupo?",
+              "value": "Saiu"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d2cf4a39-f5de-493a-bc4f-1b9bcdb46862",
+      "name": "Saiu",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        2100,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let IDs = [\n\"120363326302653129-group\"]\n\n\nlet Comunidade = IDs.includes($node[\"Trata webhook\"].json[\"phone\"])\n\nreturn {Comunidade:Comunidade}"
+      },
+      "id": "7f456fb1-9bed-4f18-b2e5-1dcdb6b87c97",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit?gid=1110820731#gid=1110820731",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit#gid=1110820731"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "whatsapp": "={{ $json.Telefone }}",
+            "grupo": "entrou",
+            "nome_grupo": "={{ $json.Grupo }}"
+          },
+          "matchingColumns": [
+            "whatsapp"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_grupo",
+              "displayName": "nome_grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ed866f48-3da3-4e32-9c14-55cd486c71ea",
+      "name": "Atualiza Captação",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2320,
+        160
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.isGroup }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "560d1ae9-97d8-4a0f-a09f-3091bf3892ab",
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "19d2d820-3aa2-412b-b60c-510792864f26",
+        "options": {}
+      },
+      "id": "7b4d8359-089a-42b4-91a8-e0b663a2d13b",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        700,
+        280
+      ],
+      "webhookId": "19d2d820-3aa2-412b-b60c-510792864f26"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit?gid=1110820731#gid=1110820731",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit#gid=1110820731"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "whatsapp": "={{ $json.Telefone }}",
+            "grupo": "saiu",
+            "nome_grupo": "={{ $json.Grupo }}"
+          },
+          "matchingColumns": [
+            "whatsapp"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_grupo",
+              "displayName": "nome_grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "143d204a-83bd-4903-9950-2243503460a6",
+      "name": "Atualiza Captação2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2320,
+        360
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Mozilla/5.0 (Android 13; Mobile; rv:68.0) Gecko/68.0 Firefox/111.0",
+            "content-length": "573",
+            "content-type": "application/json",
+            "origin": "https://api.z-api.io",
+            "server": "Z-API",
+            "x-forwarded-for": "146.235.58.36",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "163a7c81533d",
+            "x-real-ip": "146.235.58.36",
+            "z-api-token": "DA84CEA8EC9897345A31EA92",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "isGroup": true,
+            "isNewsletter": false,
+            "instanceId": "3CFE88963A26408D365B72B70F2FFCF9",
+            "messageId": "3521464003",
+            "phone": "120363326302653129-group",
+            "connectedPhone": "5511978799891",
+            "fromMe": false,
+            "momment": 1729910410000,
+            "expiresAt": null,
+            "status": "RECEIVED",
+            "chatName": "#1  Reunião Exclusiva - 05/11",
+            "senderPhoto": null,
+            "senderName": "invite",
+            "photo": null,
+            "broadcast": false,
+            "referenceMessageId": null,
+            "externalAdReply": null,
+            "forwarded": false,
+            "type": "ReceivedCallback",
+            "notification": "GROUP_PARTICIPANT_INVITE",
+            "notificationParameters": [
+              "558781347930"
+            ],
+            "callId": null,
+            "code": null
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/19d2d820-3aa2-412b-b60c-510792864f26",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-10-25T12:39:55.874Z",
+      "updatedAt": "2024-10-25T12:39:55.874Z",
+      "id": "Vt6b1zPfuWjC1YiG",
+      "name": "Jess"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-28T23:57:39.119Z",
+  "versionId": "a94b9540-4caa-4bed-8e6e-f861ccaf8324"
+}
