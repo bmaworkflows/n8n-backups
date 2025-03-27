@@ -1,0 +1,599 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-06T12:53:56.599Z",
+  "id": "wxyNfQYqw7ZH614R",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Pesquisa AE8",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "9621051c-c283-496e-9a9c-eb890870d14b",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1rfvvHFTChWlaz8H2fZN6hqJ3H8PwndJ4ZJkb7Va4Hr0/edit?gid=1110820731#gid=1110820731",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pesquisa",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rfvvHFTChWlaz8H2fZN6hqJ3H8PwndJ4ZJkb7Va4Hr0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.form_response.answers[0].text }}",
+            "whatsapp": "={{ $json.form_response.answers[1].phone_number }}",
+            "email": "={{ $json.form_response.answers[2].email }}",
+            "negocio": "={{ $json.form_response.answers[3].choice.label }}",
+            "faturamento": "={{ $json.form_response.answers[4].choice.label }}",
+            "atual no mercado": "={{ $json.form_response.answers[5].choice.label }}",
+            "dificuldade": "={{ $json.form_response.answers[6].text }}",
+            "oportunidade_reuniao_secreta": "={{ $json.form_response.answers[7].text }}",
+            "meta_smart": "={{ $json.form_response.answers[8].text }}",
+            "dificuldades_para_a_meta": "={{ $json.form_response.answers[9].text }}",
+            "não_pode_faltar_na_reuniao": "={{ $json.form_response.answers[10].text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "negocio",
+              "displayName": "negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atual no mercado",
+              "displayName": "atual no mercado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "dificuldade",
+              "displayName": "dificuldade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "oportunidade_reuniao_secreta",
+              "displayName": "oportunidade_reuniao_secreta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "meta_smart",
+              "displayName": "meta_smart",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "dificuldades_para_a_meta",
+              "displayName": "dificuldades_para_a_meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "não_pode_faltar_na_reuniao",
+              "displayName": "não_pode_faltar_na_reuniao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "8ef5bf8f-3500-47ce-90ab-f737c2a876bf",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1240,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "593499a4-d73d-44a3-9fdb-959afa19be03",
+        "options": {}
+      },
+      "id": "42f8f4dd-bfab-4137-a117-b6f397fb0ccb",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        820,
+        380
+      ],
+      "webhookId": "593499a4-d73d-44a3-9fdb-959afa19be03"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "6708",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-fb5766c3f96f590c32c859be811f166f-31983a7baecf66fc-01",
+            "x-forwarded-for": "18.204.78.134",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "18.204.78.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01J73PF54MF7RBBQETCQZ8QM32",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "yOe52Hp3",
+              "token": "bbppw54vnnztqu8vgbbppw56jg8cyeba",
+              "landed_at": "2024-09-06T12:54:58Z",
+              "submitted_at": "2024-09-06T12:55:39Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "yOe52Hp3",
+                "title": "Pesquisa Reunião Exclusiva [SETEMBRO]",
+                "fields": [
+                  {
+                    "id": "eHqCTyrfKxUJ",
+                    "ref": "01HRQ95KNQNPM67ZYH567N42J6",
+                    "type": "short_text",
+                    "title": "Qual o seu nome completo ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "HOji2VxGdwQv",
+                    "ref": "fd0084c9-9d2e-4826-a449-cf11fe90e023",
+                    "type": "phone_number",
+                    "title": "Qual o seu WhatsApp ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "LANavaSOdwyf",
+                    "ref": "7cc004e9-1f51-48fc-8166-4d891e58bcae",
+                    "type": "email",
+                    "title": "Qual o seu melhor email ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "JR9Ci51NPTuW",
+                    "ref": "97c6c27c-fee3-451b-b9fd-1d9d03bd7ecd",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "91oide4nEYDC",
+                        "ref": "fff44465-50cd-4cff-8047-2e4b7f154ae2",
+                        "label": "Corretor (a) de imóveis"
+                      },
+                      {
+                        "id": "aJclhMmbPnQ9",
+                        "ref": "d917eaba-89df-47a0-8ea3-c9ef7fd3b93a",
+                        "label": "Engenheiro (a)"
+                      },
+                      {
+                        "id": "S61M6HxMHXqy",
+                        "ref": "862e6971-45eb-4f94-a763-ea34108ad226",
+                        "label": "Arquiteto (a)"
+                      },
+                      {
+                        "id": "rL6kG0indfLI",
+                        "ref": "3cc5dd63-61fd-4b81-8886-6de5722574eb",
+                        "label": "Empresário (a) ou empreendedor (a) no mercado imobiliário"
+                      },
+                      {
+                        "id": "8PjqxKRgDtUB",
+                        "ref": "f0c2b0ce-7235-4750-a4cc-ca61959cff28",
+                        "label": "Incorporador (a)"
+                      },
+                      {
+                        "id": "T7zvUR4ZGuVK",
+                        "ref": "381c6978-1201-4846-8c01-6bf98aab2d94",
+                        "label": "Construtor"
+                      },
+                      {
+                        "id": "8omcEJqcAKEn",
+                        "ref": "a702e495-8e7d-4e7d-b079-252b4737ec4b",
+                        "label": "Sou de outro mercado, mas quero migrar para o desenvolvimento"
+                      },
+                      {
+                        "id": "3eH5NrcuOZhS",
+                        "ref": "063fc7ac-b6fc-4da2-a93a-35fceace4036",
+                        "label": "Outros"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "if5MdEiJaYF9",
+                    "ref": "3208309d-45fd-457f-ba24-f903547e0508",
+                    "type": "multiple_choice",
+                    "title": "Qual o seu faturamento médio mensal em 2023 ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "4FXcRDwGsVdU",
+                        "ref": "126863d7-026f-4c30-8e57-75612d2895b4",
+                        "label": "Até 10K/mês"
+                      },
+                      {
+                        "id": "2MPsQK37oV5Q",
+                        "ref": "c2c42a6c-db72-44ae-b2a4-b545cbb9f308",
+                        "label": "10K à 20K/mês"
+                      },
+                      {
+                        "id": "JS4RTcjQsJ72",
+                        "ref": "e36b8f4d-d2dd-45c0-8d04-f3d1a91a1ab4",
+                        "label": "20K à 50K/mês"
+                      },
+                      {
+                        "id": "48ZHiU02xVnb",
+                        "ref": "0160bc0b-f9fe-4ec8-bdb8-c72725836ef5",
+                        "label": "50K à 100K/mês"
+                      },
+                      {
+                        "id": "SQhB1dh54MUo",
+                        "ref": "afd3cea7-0079-4117-a635-9d7c4b7c46fb",
+                        "label": "100K à 250K/mês"
+                      },
+                      {
+                        "id": "kRm50Qmlh6GH",
+                        "ref": "9cb420c1-e362-42b2-83d1-716dee2e0f79",
+                        "label": "250K à 500K/mês"
+                      },
+                      {
+                        "id": "dERUEB65LuFJ",
+                        "ref": "f6a04877-c32b-4e4a-a6df-f2b98913aa07",
+                        "label": "Acima de 500K/mês"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "vEkKH0WWM7Ls",
+                    "ref": "76779ebc-45b6-4c76-8ec9-159dad608a5a",
+                    "type": "multiple_choice",
+                    "title": "Você já atua no mercado de desenvolvimento imobiliário ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "wF11ZEbBBEbi",
+                        "ref": "18a1652f-748c-4c2c-8376-7b9c3066acaa",
+                        "label": "Sim"
+                      },
+                      {
+                        "id": "Wzq5RjJGarYt",
+                        "ref": "df8da97c-4aed-4c31-8ddc-3d7f1ac06ac2",
+                        "label": "Sim, porém sou iniciante"
+                      },
+                      {
+                        "id": "0se5SjVkKwWi",
+                        "ref": "be167137-a57b-412b-885b-72938ca21f7d",
+                        "label": "Não, mas desejo atuar"
+                      },
+                      {
+                        "id": "krQ0eLjcMouC",
+                        "ref": "78daa40e-4bb7-4b89-a3f9-8e00bfa3922a",
+                        "label": "Não tenho interesse em atuar no mercado de desenvolvimento imobiliário"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "1t3b8ivn2AXs",
+                    "ref": "c58246d1-6957-4af9-8975-de42be2aa5cf",
+                    "type": "long_text",
+                    "title": "Qual a sua maior dificuldade para produzir um desenvolvimento imobiliário ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "zwgDnRGirUfx",
+                    "ref": "0a9501a0-a15c-44dc-a1e7-59b1b4ca1f10",
+                    "type": "long_text",
+                    "title": "Por que você acredita que a Reunião Exclusiva é a oportunidade ideal para o seu sucesso e do seu negócio ?\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "Og9kS9qi4TPm",
+                    "ref": "c9060962-c51a-4b39-bc40-0ac51c168128",
+                    "type": "long_text",
+                    "title": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "gGaeRzGLgtVE",
+                    "ref": "64718e71-acbd-4ed5-bc10-830a6869af20",
+                    "type": "long_text",
+                    "title": "Quais dificuldades está enfrentando para alcançar esse objetivo ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "RK8OeuRjAp8g",
+                    "ref": "88474f8f-aefb-4a06-8d29-f89aca21d738",
+                    "type": "long_text",
+                    "title": "Na sua opinião, o que não pode faltar na Reunião Exclusiva ?",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "5lhqBnAoTlGH",
+                    "ref": "01HRQ95KNQEN9FN7T5J17MJXPP",
+                    "title": "",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "button_text": "Cria um typeform",
+                      "show_button": true,
+                      "share_icons": true,
+                      "button_mode": "default_redirect"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "MATHEUS",
+                  "field": {
+                    "id": "eHqCTyrfKxUJ",
+                    "type": "short_text",
+                    "ref": "01HRQ95KNQNPM67ZYH567N42J6"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "HOji2VxGdwQv",
+                    "type": "phone_number",
+                    "ref": "fd0084c9-9d2e-4826-a449-cf11fe90e023"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheustesteAE7V2@gmail.com",
+                  "field": {
+                    "id": "LANavaSOdwyf",
+                    "type": "email",
+                    "ref": "7cc004e9-1f51-48fc-8166-4d891e58bcae"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "rL6kG0indfLI",
+                    "label": "Empresário (a) ou empreendedor (a) no mercado imobiliário",
+                    "ref": "3cc5dd63-61fd-4b81-8886-6de5722574eb"
+                  },
+                  "field": {
+                    "id": "JR9Ci51NPTuW",
+                    "type": "multiple_choice",
+                    "ref": "97c6c27c-fee3-451b-b9fd-1d9d03bd7ecd"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "48ZHiU02xVnb",
+                    "label": "50K à 100K/mês",
+                    "ref": "0160bc0b-f9fe-4ec8-bdb8-c72725836ef5"
+                  },
+                  "field": {
+                    "id": "if5MdEiJaYF9",
+                    "type": "multiple_choice",
+                    "ref": "3208309d-45fd-457f-ba24-f903547e0508"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "0se5SjVkKwWi",
+                    "label": "Não, mas desejo atuar",
+                    "ref": "be167137-a57b-412b-885b-72938ca21f7d"
+                  },
+                  "field": {
+                    "id": "vEkKH0WWM7Ls",
+                    "type": "multiple_choice",
+                    "ref": "76779ebc-45b6-4c76-8ec9-159dad608a5a"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Qual a sua maior dificuldade para produzir um desenvolvimento imobiliário ?",
+                  "field": {
+                    "id": "1t3b8ivn2AXs",
+                    "type": "long_text",
+                    "ref": "c58246d1-6957-4af9-8975-de42be2aa5cf"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Por que você acredita que a Reunião Exclusiva é a oportunidade ideal para o seu sucesso e do seu negócio ?",
+                  "field": {
+                    "id": "zwgDnRGirUfx",
+                    "type": "long_text",
+                    "ref": "0a9501a0-a15c-44dc-a1e7-59b1b4ca1f10"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses ?",
+                  "field": {
+                    "id": "Og9kS9qi4TPm",
+                    "type": "long_text",
+                    "ref": "c9060962-c51a-4b39-bc40-0ac51c168128"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Quais dificuldades está enfrentando para alcançar esse objetivo ?",
+                  "field": {
+                    "id": "gGaeRzGLgtVE",
+                    "type": "long_text",
+                    "ref": "64718e71-acbd-4ed5-bc10-830a6869af20"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Na sua opinião, o que não pode faltar na Reunião Exclusiva ?",
+                  "field": {
+                    "id": "RK8OeuRjAp8g",
+                    "type": "long_text",
+                    "ref": "88474f8f-aefb-4a06-8d29-f89aca21d738"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "5lhqBnAoTlGH",
+                "ref": "01HRQ95KNQEN9FN7T5J17MJXPP"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/593499a4-d73d-44a3-9fdb-959afa19be03",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-03T20:10:26.024Z",
+  "versionId": "d710d4b0-a017-4e5b-8589-c73291b4a954"
+}
