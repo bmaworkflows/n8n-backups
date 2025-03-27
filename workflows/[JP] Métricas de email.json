@@ -1,0 +1,457 @@
+{
+  "active": true,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-07-02T13:28:09.290Z",
+  "id": "TZJYfF0jpJSvkluG",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] Métricas de email",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "c6e0a8e4-e26b-4639-b313-8841352bbcac",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bmacoprodutora.api-us1.com/api/3/automations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "Api-Token",
+              "value": "e0a9b6c5351346d645045b39745903b5df7544f33b11cc364e746db34d1e47d881e972a7"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d9710b9d-5550-41ce-a92d-5e8eb51ee51b",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "12ac25b9-dace-4257-8660-ca7efa7f6026",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "[2024][BASE DO FRONT][Nutrição][Oferta CG]",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "08559886-ce11-4cc5-9f9c-23ff2c5a8f11",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "campaigns",
+        "options": {}
+      },
+      "id": "b452460f-dd17-43cc-9f6d-7ef3c05bc530",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bmacoprodutora.api-us1.com/api/3/automations/35/campaigns",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "Api-Token",
+              "value": "e0a9b6c5351346d645045b39745903b5df7544f33b11cc364e746db34d1e47d881e972a7"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8290ff66-a4dc-41eb-911c-64ba935e7cdd",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1q8UWH29xTNFYAUt0EdyZIbrHqkXtD7mrTxr3ylWnKhQ/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Front",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1q8UWH29xTNFYAUt0EdyZIbrHqkXtD7mrTxr3ylWnKhQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Última atualização": "={{new Date().format(\"dd/MM/yyyy\")}}",
+            "Nome": "={{ $json.name }}",
+            "Envios": "={{ $json.send_amt }}",
+            "Aberturas totais": "={{ $json.opens }}",
+            "Aberturas únicas": "={{ $json.uniqueopens }}",
+            "Cliques totais no link": "={{ $json.linkclicks }}",
+            "Cliques únicos no link": "={{ $json.uniquelinkclicks }}",
+            "Descadastrados": "={{ $json.unsubscribes }}",
+            "Link e-mail": "={{ $json.screenshot.replace(/^\\/\\//, '') }}",
+            "Taxa de abertura": "={{ $json.send_amt > 0 ? ($json.uniqueopens / $json.send_amt * 100).toFixed(2) + \"%\" : 0  }}",
+            "Taxa de cliques": "={{ $json.send_amt > 0 ? ($json.uniquelinkclicks / $json.send_amt * 100).toFixed(2) + \"%\" : 0  }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Última atualização",
+              "displayName": "Última atualização",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aberturas totais",
+              "displayName": "Aberturas totais",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aberturas únicas",
+              "displayName": "Aberturas únicas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliques totais no link",
+              "displayName": "Cliques totais no link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliques únicos no link",
+              "displayName": "Cliques únicos no link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Envios",
+              "displayName": "Envios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Taxa de abertura",
+              "displayName": "Taxa de abertura",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Taxa de cliques",
+              "displayName": "Taxa de cliques",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Descadastrados",
+              "displayName": "Descadastrados",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link e-mail",
+              "displayName": "Link e-mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "074e4fd7-df41-4496-adee-4211c9937b43",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1560,
+        340
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1q8UWH29xTNFYAUt0EdyZIbrHqkXtD7mrTxr3ylWnKhQ/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Front",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1q8UWH29xTNFYAUt0EdyZIbrHqkXtD7mrTxr3ylWnKhQ/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "686dba2e-85ef-423a-9868-a7a1bdbd8e56",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        300,
+        340
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1q8UWH29xTNFYAUt0EdyZIbrHqkXtD7mrTxr3ylWnKhQ/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Front",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1q8UWH29xTNFYAUt0EdyZIbrHqkXtD7mrTxr3ylWnKhQ/edit#gid=0"
+        },
+        "numberToDelete": "={{ $json.count_row_number }}"
+      },
+      "id": "e6225ba7-ac71-48e4-a888-e4b311501883",
+      "name": "Google Sheets2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        700,
+        340
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "row_number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5221284b-d7d9-4d3b-b112-bbcb76689982",
+      "name": "Summarize",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        500,
+        340
+      ],
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrencyRules": [],
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-07-22T13:46:56.729Z",
+  "versionId": "46966383-6755-4f15-9f49-2b1d44405a33"
+}
