@@ -1,0 +1,902 @@
+{
+  "active": true,
+  "connections": {
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com2": {
+      "main": [
+        [
+          {
+            "node": "Monday.com4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Date & Time4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Agendada": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Invite": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Agendada1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Call Agendada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com3": {
+      "main": [
+        [
+          {
+            "node": "Monday.com5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com5": {
+      "main": [
+        [
+          {
+            "node": "Monday.com6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Agendada1": {
+      "main": [
+        [
+          {
+            "node": "Date & Time1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time4": {
+      "main": [
+        [
+          {
+            "node": "Busca Invite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-07-16T03:35:28.563Z",
+  "id": "YTYRqBoA8EJn5R8X",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[GLEYBIONY] Formulário curto typeform",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5918884883",
+        "groupId": "topics",
+        "name": "={{ $('Formata Telefone').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "8eec8869-6b06-4f3b-b0a0-b50962b61b0b",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        260
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n--------------------------\n\nWhatsapp: \n\n{{ $('Trata Webhook').item.json.form_response.answers[1].number }}\n\n--------------------------\n\nE-mail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\n--------------------------\n\nQual CENÁRIO mais se adequa ao seu caso?\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}\n\n--------------------------\n\n\nJá fez algum lançamento imobiliário ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n--------------------------\n\n\nQual seu faturamento médio mensal dos últimos 12 meses?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n--------------------------\n"
+      },
+      "id": "82e4e115-57f4-47a3-b049-302cb7ba21f7",
+      "name": "Monday.com2",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        260
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "4dbfbff6-d866-4de6-b10c-5773f291fc11",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        960,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
+      },
+      "id": "414c4b25-2c6f-460e-bf0d-f63a44fb9a18",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd ",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "573a8474-0979-4b2d-96a5-ff601bdc2ba6",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2260,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.resource.start_time }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "outputFieldName": "callAgendada",
+        "options": {
+          "timezone": false
+        }
+      },
+      "id": "a9ba7e39-fa6e-496c-aa64-6ba55c0e2ba0",
+      "name": "Call Agendada",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Busca Closer').item.json.resource.start_time }}",
+        "format": "custom",
+        "customFormat": "dd/MM/yyyy HH:mm",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "5827b4a8-835b-41c1-a7bf-17b48758ca27",
+      "name": "formata data reunião",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        980
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function extrairPrimeiroUUID(url) {\n    // Expressão regular para encontrar UUIDs\n    const regexUUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;\n    \n    // Executa a expressão regular na URL\n    const match = url.match(regexUUID);\n    \n    // Verifica se encontrou um UUID e retorna, senão retorna nulo\n    return match ? match[0] : null;\n}\n\nconst url = $input.all()[0].json[\"form_response\"][\"answers\"][\"7\"][\"url\"];\nconst primeiroUUID = extrairPrimeiroUUID(url);\n\nreturn {primeiroUUID}\n"
+      },
+      "id": "5eed09fc-dd17-45dd-8d4f-0f6b211a18f9",
+      "name": "Extrai UUID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        780
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5918884883",
+        "itemId": "={{ $('Monday.com1').item.json.id }}",
+        "columnValues": "={\"texto__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"telefone_1__1\":\"{{ $('Formata Telefone').item.json.form_response.answers[1].number }}\", \"texto86__1\":\"wa.me/{{ $('Formata Telefone').item.json.form_response.answers[1].number }}\",\"data__1\":\"{{ $('Date & Time').item.json.formattedDate }}\", \"status__1\":\"1\", \"texto8__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"texto89__1\":\"{{ $('Formata Telefone').item.json.form_response.hidden.utm_source }}\", \"pessoas1__1\":\"closerbma.thiago@gmail.com\"}    "
+      },
+      "id": "67728493-c748-4437-9e6e-1c92a024273f",
+      "name": "Monday.com4",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        260
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.calendly.com/invitees/{{ $json.primeiroUUID }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE2OTU1NTE4LCJqdGkiOiIxMWM3NGRmNS03Njg5LTQ1ZDktYjAxOC1mYjIxMmZmMmNlMGMiLCJ1c2VyX3V1aWQiOiI5ODQxODIyNi1mNTNiLTQ2ZGEtYjZkOS03ZDUyYWY5NzZiOTEifQ.4RsKQ2kiPuwQecgnF7CvVRrKPYN46L6aJJTwkflZfxb9zsa_4MmaWmXgtBQLdOM9xTRT1RT4rpRiKperg7Aw-A"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "725c2368-23a5-46f5-b4c9-ec9215477702",
+      "name": "Busca Closer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        800
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "5655e2f9-9058-4530-ad7e-97f3420d5437",
+        "options": {}
+      },
+      "id": "f7a9eac3-a565-4954-9b6b-da187c6950b5",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        700,
+        380
+      ],
+      "webhookId": "5655e2f9-9058-4530-ad7e-97f3420d5437"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.calendly.com/scheduled_events?organization=https://api.calendly.com/organizations/a0a8ed05-c663-4f6c-88e0-48310f73f38f&invitee_email={{ $('Formata Telefone').item.json.form_response.answers[2].email }}&min_start_time={{ $json.currentDate }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE2OTU1NTE4LCJqdGkiOiIxMWM3NGRmNS03Njg5LTQ1ZDktYjAxOC1mYjIxMmZmMmNlMGMiLCJ1c2VyX3V1aWQiOiI5ODQxODIyNi1mNTNiLTQ2ZGEtYjZkOS03ZDUyYWY5NzZiOTEifQ.4RsKQ2kiPuwQecgnF7CvVRrKPYN46L6aJJTwkflZfxb9zsa_4MmaWmXgtBQLdOM9xTRT1RT4rpRiKperg7Aw-A"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "38f1c793-65b6-47d8-9959-ab1cac7e8932",
+      "name": "Busca Invite",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        380
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "15e9ab1e-1bbe-4975-81d2-2a904d4f9535",
+      "name": "Date & Time4",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                    "rightValue": "Thiago Closer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Thiago"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ca44578f-9cbc-4825-985d-084eae373432",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1800,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5918884883",
+        "groupId": "topics",
+        "name": "={{ $('Formata Telefone').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "f5ef1333-1e01-4208-bcef-77cbdb18f81e",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        560
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n--------------------------\n\nWhatsapp: \n\n{{ $('Trata Webhook').item.json.form_response.answers[1].number }}\n\n--------------------------\n\nE-mail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\n--------------------------\n\nQual CENÁRIO mais se adequa ao seu caso?\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}\n\n--------------------------\n\n\nJá fez algum lançamento imobiliário ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n--------------------------\n\n\nQual seu faturamento médio mensal dos últimos 12 meses?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n--------------------------\n"
+      },
+      "id": "705bf3ca-80d8-4834-a800-ad421f351f54",
+      "name": "Monday.com5",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        560
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd ",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "3987d41a-f820-4e30-91cc-2d4b5721d923",
+      "name": "Date & Time1",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2260,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.resource.start_time }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "outputFieldName": "callAgendada",
+        "options": {
+          "timezone": false
+        }
+      },
+      "id": "50ec8196-d5ae-40b8-8eea-47c6f844d21a",
+      "name": "Call Agendada1",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5918884883",
+        "itemId": "={{ $('Monday.com3').item.json.id }}",
+        "columnValues": "={\"texto__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"telefone_1__1\":\"{{ $('Formata Telefone').item.json.form_response.answers[1].number }}\", \"texto86__1\":\"wa.me/{{ $('Formata Telefone').item.json.form_response.answers[1].number }}\",\"data__1\":\"{{ $('Date & Time1').item.json.formattedDate }}\", \"status__1\":\"1\", \"texto8__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"texto89__1\":\"{{ $('Formata Telefone').item.json.form_response.hidden.utm_source }}\", \"pessoas1__1\":\"closerbma.thiago@gmail.com\"}    "
+      },
+      "id": "2a7a2426-83c9-465a-a786-64e341377860",
+      "name": "Monday.com6",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        560
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardColumn",
+        "operation": "getAll",
+        "boardId": "5918884883"
+      },
+      "id": "f761474c-7a45-4000-b8f8-f0ad3190a617",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        620
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "5610",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-53af6520927d6625f9cecda9458384c0-4d9d884ed6cdc48b-01",
+            "x-forwarded-for": "18.210.136.162",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "18.210.136.162"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01J2WT8N0J1Q2JFEJW2CQ8QZMA",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "OaVjTMij",
+              "token": "5i44uym03h964o4t5i44ub1q6dbj8qk9",
+              "landed_at": "2024-07-16T03:43:55Z",
+              "submitted_at": "2024-07-16T03:44:32Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "OaVjTMij",
+                "title": "Consultoria Grátis v2 (copy)",
+                "fields": [
+                  {
+                    "id": "WhzDm6ISBSV2",
+                    "ref": "01HNZHCAZMZ62B88Y5WA4XKTB6",
+                    "type": "short_text",
+                    "title": "Qual seu nome completo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "W66DZR3phZPc",
+                    "ref": "ba53b416-3c0f-4f9f-9fe0-266b9cbb439e",
+                    "type": "number",
+                    "title": "Número do WhatsApp com DDD\n\nMeu time confirmará sua vaga para consultoria por esse número se você for aprovado. Coloque o que você mais usa.\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "lQKabAgPXQQC",
+                    "ref": "595a0f17-1dac-4511-88e9-8c9ff654b99b",
+                    "type": "email",
+                    "title": "Qual seu e-mail principal?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "rzCXVdeXtlKC",
+                    "ref": "ec2f05f2-7d5c-41d1-bcf8-15c609d472c9",
+                    "type": "multiple_choice",
+                    "title": "Qual CENÁRIO mais se adequa ao seu caso?\n",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "6a7EfCepce2Q",
+                        "ref": "736599ee-a8b3-478e-81d6-a3be18ba6201",
+                        "label": "Tenho uma ideia e estou começando a desenvolver"
+                      },
+                      {
+                        "id": "EtRKkE7m0Fcl",
+                        "ref": "f5e50d54-5725-4b83-b369-521ce46a11be",
+                        "label": "Estou na fase de captação de áreas"
+                      },
+                      {
+                        "id": "ZmuM7FFPWxU6",
+                        "ref": "fd53bf34-43e1-45fb-b363-34d795ff4e24",
+                        "label": "Estou aguardando a aprovação de projeto"
+                      },
+                      {
+                        "id": "xowN4awrvRs1",
+                        "ref": "3483bf77-b3a7-4ab3-959a-d9b3b07a024c",
+                        "label": "Meu projeto já está aprovado e estou aguardando o RI"
+                      },
+                      {
+                        "id": "GQ6KQxov32Fn",
+                        "ref": "6534dae2-e729-4a04-bb05-7f1fe59f9f5a",
+                        "label": "Já tenho o RI e preciso fazer o lançamento do empreendimento"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "htpN2vSb9QB7",
+                    "ref": "23b73627-c632-4b17-bc87-cfb1a3aaa017",
+                    "type": "multiple_choice",
+                    "title": "Já fez algum lançamento imobiliário ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "J5iiRhEQ8vUu",
+                        "ref": "73a8e73c-ca46-4001-8925-97ac59e596fb",
+                        "label": "Sim"
+                      },
+                      {
+                        "id": "l0grPV7W4TbY",
+                        "ref": "5910cd41-860a-4457-a3a0-e484728ac6df",
+                        "label": "Estou realizando o meu primeiro lançamento"
+                      },
+                      {
+                        "id": "76CcHdCDCkl7",
+                        "ref": "5b96e388-69b7-4caf-9d7a-03e9774a5e3b",
+                        "label": "Não, mas tenho interesse"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "HpCv4kCaLBrE",
+                    "ref": "a17958f6-4a7a-40cb-a413-b4b59bfcfe20",
+                    "type": "multiple_choice",
+                    "title": "Qual seu faturamento médio mensal dos últimos 12 meses?\n",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "dPXMPeXxR8Z5",
+                        "ref": "a841bd39-8d6d-4155-88a8-5e51b7800bb8",
+                        "label": "Até R$ 10.000,00"
+                      },
+                      {
+                        "id": "94xtEVhnmzje",
+                        "ref": "4a1fb189-3af4-4783-be6d-3b8999645a38",
+                        "label": "R$ 10.000,00 a R$ 20.000,00"
+                      },
+                      {
+                        "id": "qvyuyzTZdArZ",
+                        "ref": "6d5a33ea-329a-47ca-9516-6686c0918431",
+                        "label": "R$ 20.000,00 a R$ 50.000,00"
+                      },
+                      {
+                        "id": "0fhL73l5G1v6",
+                        "ref": "0ef4f5c2-bdd7-4eda-be98-572d7790b88b",
+                        "label": "R$ 50.000,00 a R$ 100.000,00"
+                      },
+                      {
+                        "id": "lWPUBHOZ1S9R",
+                        "ref": "2d22b29c-d4de-4618-a85a-057bce398fb2",
+                        "label": "R$ 100.000,00 a R$ 250.000,00"
+                      },
+                      {
+                        "id": "hJXWiTs1Ltgy",
+                        "ref": "95e53a90-343f-4998-abd2-21cc66f8faf8",
+                        "label": "Acima de R$ 250.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ZLPQGJNcc8T0",
+                    "ref": "d15a3c8f-fd73-4a33-b811-95b1cae20ff4",
+                    "type": "multiple_choice",
+                    "title": "Você foi pré-aprovado para uma das vagas da Consultoria. Caso você não responda a confirmação do nosso time no seu WhatsApp, sua vaga será transferida para outro interessado. Você está ciente?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "qlOcSAKiGMlG",
+                        "ref": "68287260-f04d-41a4-8861-2aec77d5f6e5",
+                        "label": "Claro, quero aproveitar!"
+                      },
+                      {
+                        "id": "qeieaFnDufvx",
+                        "ref": "f487470c-d3b9-4c8e-8816-0522ee3e6c1a",
+                        "label": "Pode passar minha vaga para outra pessoa, não estou comprometido com meu negócio."
+                      }
+                    ]
+                  },
+                  {
+                    "id": "9JOSF48NqUEL",
+                    "ref": "da7d3aac-69aa-4b0a-9aec-398dff40b6d3",
+                    "type": "calendly",
+                    "title": "Agende um dia e horário para a sua consultoria grátis.",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "0kyLgd1Aipbw",
+                    "ref": "773889de-0265-4232-ae29-2e150fb8189b",
+                    "title": "Obrigado CG",
+                    "type": "url_redirect",
+                    "properties": {
+                      "redirect_url": "https://gleybionycamargo.com.br/cg-obrigado/"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "matheus",
+                  "field": {
+                    "id": "WhzDm6ISBSV2",
+                    "type": "short_text",
+                    "ref": "01HNZHCAZMZ62B88Y5WA4XKTB6"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 81993515055,
+                  "field": {
+                    "id": "W66DZR3phZPc",
+                    "type": "number",
+                    "ref": "ba53b416-3c0f-4f9f-9fe0-266b9cbb439e"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "lQKabAgPXQQC",
+                    "type": "email",
+                    "ref": "595a0f17-1dac-4511-88e9-8c9ff654b99b"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "ZmuM7FFPWxU6",
+                    "label": "Estou aguardando a aprovação de projeto",
+                    "ref": "fd53bf34-43e1-45fb-b363-34d795ff4e24"
+                  },
+                  "field": {
+                    "id": "rzCXVdeXtlKC",
+                    "type": "multiple_choice",
+                    "ref": "ec2f05f2-7d5c-41d1-bcf8-15c609d472c9"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "J5iiRhEQ8vUu",
+                    "label": "Sim",
+                    "ref": "73a8e73c-ca46-4001-8925-97ac59e596fb"
+                  },
+                  "field": {
+                    "id": "htpN2vSb9QB7",
+                    "type": "multiple_choice",
+                    "ref": "23b73627-c632-4b17-bc87-cfb1a3aaa017"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "qvyuyzTZdArZ",
+                    "label": "R$ 20.000,00 a R$ 50.000,00",
+                    "ref": "6d5a33ea-329a-47ca-9516-6686c0918431"
+                  },
+                  "field": {
+                    "id": "HpCv4kCaLBrE",
+                    "type": "multiple_choice",
+                    "ref": "a17958f6-4a7a-40cb-a413-b4b59bfcfe20"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "qlOcSAKiGMlG",
+                    "label": "Claro, quero aproveitar!",
+                    "ref": "68287260-f04d-41a4-8861-2aec77d5f6e5"
+                  },
+                  "field": {
+                    "id": "ZLPQGJNcc8T0",
+                    "type": "multiple_choice",
+                    "ref": "d15a3c8f-fd73-4a33-b811-95b1cae20ff4"
+                  }
+                },
+                {
+                  "type": "url",
+                  "url": "https://calendly.com/d/3pf-cvx-2hp/cg-consultoria-gratis-de-1h/invitees/35a2073e-c514-47e0-b479-30e880161969",
+                  "field": {
+                    "id": "9JOSF48NqUEL",
+                    "type": "calendly",
+                    "ref": "da7d3aac-69aa-4b0a-9aec-398dff40b6d3"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "0kyLgd1Aipbw",
+                "ref": "773889de-0265-4232-ae29-2e150fb8189b"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/5655e2f9-9058-4530-ad7e-97f3420d5437",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-29T03:56:02.756Z",
+      "updatedAt": "2024-05-29T03:56:02.756Z",
+      "id": "CJi6Rs9lbMO8s8CS",
+      "name": "gb"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-07-23T15:39:28.091Z",
+  "versionId": "de1946ef-eed2-47bf-a9c6-191b765440ca"
+}
