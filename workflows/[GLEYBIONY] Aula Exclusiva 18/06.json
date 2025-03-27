@@ -1,0 +1,883 @@
+{
+  "active": true,
+  "connections": {
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-06-04T03:24:26.435Z",
+  "id": "NvTXOd0XitxuEjRP",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[GLEYBIONY] Aula Exclusiva 18/06",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "6762799126",
+        "groupId": "topics",
+        "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "1011e5e2-40ca-4389-8707-47ce3f451f94",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "87d1fc8a-7c37-4b29-b7d1-b194ea0f7c46",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=<b>Nome completo:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[0].text }} </span>\n\n\n----------\n<b>Whatsapp:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}</span>\n\n\n----------\n<b>Instagram:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[2].text }}</span>\n\n\n----------\n<b>E-mail:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[3].email }}</span>\n\n\n----------\n<b>Qual das opções abaixo mais condiz com seu negócio hoje?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}</span>\n\n\n----------\n<b>Qual dos cenários mais se adequa ao seu caso?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}</span>\n\n\n----------\n<b>Qual seu faturamento médio mensal dos últimos 12 meses ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}</span>\n\n\n----------\n<b>Já conta com investidor ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}</span>\n\n\n----------\n<b>Qual padrão do seu projeto ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}</span>\n\n\n----------\n<b>Qual VGV planejado do seu projeto ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}</span>\n\n\n----------\n<b>Qual tipo de produto?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"choice\"][\"label\"] }}</span>\n\n\n----------\n<b>Quantas incorporações você já fez? Qual VGV total?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}</span>\n\n\n----------\n<b>O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}</span>\n\n\n----------\n<b>Quais dificuldades está enfrentando para alcançar esse objetivo ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}</span>\n\n\n----------\n<b>Há quanto tempo está enfrentando essas dificuldades ?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}</span>\n\n\n----------\n<b>Você já participou de algum curso ou mentoria?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"text\"] }}</span>\n\n\n----------\n<b>O investimento para a participação no Incorporador estrategista é de R$20.000,00 à vista ou em 12x de R$2.000,00 no cartão de crédito. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}</span>\n\n\n----------\n<b>Caso você seja aceito (a) no ecossistema do Incorporador Estrategista , o que precisa acontecer com você e com o seu negócio ao final dos 12 meses, para você dizer que valeu participar e trabalhar comigo?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"17\"][\"text\"] }}</span>\n\n\n----------\n<b>Você está ciente que ao ser aprovado, entraremos em contato com você em até 24h para confirmar sua entrevista, caso não confirme dentro desse período, você perde direito a reunião.</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"18\"][\"choice\"][\"label\"] }}</span>\n\n\n----------\n<b>O Incorporador Estrategista é um catalisador de crescimento pessoal e profissional. Conte sobre algum momento, no passado, em que você mudou. Por que você está escolhendo mudar e subir de nível nesse momento?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"19\"][\"text\"] }}</span>"
+      },
+      "id": "545f100a-2716-4370-8cb1-93191d0048c5",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "6762799126",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"data\":\"{{ $node[\"Date & Time\"].json[\"formattedDate\"] }}\", \"texto0__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"email\"] }}\", \"telefone__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"phone_number\"] }}\", \"texto__1\":\"wa.me/{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"phone_number\"] }}\", \"texto5__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\" }"
+      },
+      "id": "e0a5ab85-b1a4-47dc-86ad-95eabbd28c30",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.form_response.submitted_at }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "33b572ce-4b3e-498e-a807-361ec2a5c1dc",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1240,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardColumn",
+        "operation": "getAll",
+        "boardId": "6762799126"
+      },
+      "id": "831324d6-f9ea-4cef-8b64-97dcd6eb1f4f",
+      "name": "Monday.com2",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        680
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "739c6b6a-9f79-4f58-89f1-9d6feafacb5d",
+        "options": {}
+      },
+      "id": "1103d74c-23e0-4319-9d99-c6e99674d16c",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        860,
+        380
+      ],
+      "webhookId": "739c6b6a-9f79-4f58-89f1-9d6feafacb5d"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "13200",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-f9874dfb4fc55a0ee82167ace6551938-a412f0e0f543638f-01",
+            "x-forwarded-for": "18.204.78.134",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cb61af859480",
+            "x-real-ip": "18.204.78.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01HZGMMHGWKEXP90JC6X1SNSN7",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "PTwuzTcZ",
+              "token": "wrf1kgsrd1nsg4p1x2lwrf1s46gse8tw",
+              "landed_at": "2024-06-04T03:26:45Z",
+              "submitted_at": "2024-06-04T03:28:12Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "PTwuzTcZ",
+                "title": "Aula Exclusiva (18/06)",
+                "fields": [
+                  {
+                    "id": "98rsmGOgwcIY",
+                    "ref": "c226d1b1-a850-4588-a142-98982e85565e",
+                    "type": "short_text",
+                    "title": "Qual seu nome completo ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "n4CUa2ua9DXA",
+                    "ref": "46bd4df9-ed0c-4242-a2f6-bb6bcab94616",
+                    "type": "phone_number",
+                    "title": "Número do WhatsApp com DDD",
+                    "properties": {}
+                  },
+                  {
+                    "id": "JTCjaC356uMz",
+                    "ref": "5dc572d9-eb2f-414d-aadb-aac7f3c2eccf",
+                    "type": "short_text",
+                    "title": "Seu @ no Instagram",
+                    "properties": {}
+                  },
+                  {
+                    "id": "wbWxFnHehIoB",
+                    "ref": "97c8e5cc-3de9-4b09-a775-5c049d2a1bc8",
+                    "type": "email",
+                    "title": "Qual seu e-mail principal ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "1TzmwskmtV3I",
+                    "ref": "c38c38d0-d65f-483d-98c4-22b69b6e7014",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "pfgk6UklKMVX",
+                        "ref": "61bf9fef-90e6-4d16-bad0-c67335e1e990",
+                        "label": "Empresário"
+                      },
+                      {
+                        "id": "P3K4xwcNLEtF",
+                        "ref": "8f178d8f-74d5-4373-8c7f-e53c4b4b7edd",
+                        "label": "Corretor"
+                      },
+                      {
+                        "id": "c893zTJ89Wm3",
+                        "ref": "6dc1aec2-e094-4d34-9de5-1c900d48dae0",
+                        "label": "Incorporador"
+                      },
+                      {
+                        "id": "NC6Mwsiyqv7z",
+                        "ref": "12325a6b-51f4-4cad-bd92-18cd51ce28a8",
+                        "label": "Arquiteto-incorporador"
+                      },
+                      {
+                        "id": "TWsLiV3jyA8A",
+                        "ref": "0914e30f-10a8-4114-8c80-8fc19865820c",
+                        "label": "Dono de imobiliária"
+                      },
+                      {
+                        "id": "gOAkkKzyWddh",
+                        "ref": "9b801c1c-bf12-4910-9128-e132ce6e8127",
+                        "label": "Dono de construtora"
+                      },
+                      {
+                        "id": "Rsw2sSC0eVaU",
+                        "ref": "941a64e2-a92e-49fe-b7aa-b460e21c2f84",
+                        "label": "Dono de empreiteira"
+                      },
+                      {
+                        "id": "uHNcFPgWvQQK",
+                        "ref": "4097c66d-01cc-402d-ba02-4c3e61bde372",
+                        "label": "Incorporador imobiliário"
+                      },
+                      {
+                        "id": "pbE2OM2C6Cbx",
+                        "ref": "d69322b7-1e61-4112-982a-f0c6a8fbd3f8",
+                        "label": "Investidor imobiliário"
+                      },
+                      {
+                        "id": "ZixMVuye86Um",
+                        "ref": "67cade14-9d28-47f9-b193-10615656db1d",
+                        "label": "Dono de terreno"
+                      },
+                      {
+                        "id": "qDwijKzyWqR9",
+                        "ref": "b249089d-748d-490c-8b03-c44badd08053",
+                        "label": "Outras opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "Unr3DtZPNyrb",
+                    "ref": "af40394c-1330-408a-9598-03ee333fdbc1",
+                    "type": "multiple_choice",
+                    "title": "Qual CENÁRIO mais se adequa ao seu caso ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "rFvOH6siG8uF",
+                        "ref": "24a6b471-598e-404f-a541-c8e31892bf4d",
+                        "label": "Tenho uma ideia e estou começando a desenvolver"
+                      },
+                      {
+                        "id": "r7EHTR9r4QiC",
+                        "ref": "1ab39b03-417f-489a-8c24-18797c49e106",
+                        "label": "Estou na fase de captação de áreas"
+                      },
+                      {
+                        "id": "cdqZulRReUTS",
+                        "ref": "e717852e-4813-4310-aaef-d6677405eada",
+                        "label": "Estou aguardando a aprovação de projeto"
+                      },
+                      {
+                        "id": "WKwYeRM7GmFB",
+                        "ref": "15a625cf-13c2-423a-86d5-4acf42d28947",
+                        "label": "Meu projeto já está aprovado e estou aguardando o RI"
+                      },
+                      {
+                        "id": "48PA7wFHmIGO",
+                        "ref": "270396dc-8955-49d7-bca4-53c1094d143d",
+                        "label": "Já tem uma RI e preciso fazer o lançamento do empreendimento"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ZBmYMb13pEYQ",
+                    "ref": "ada9fb9a-f484-4c1f-b55a-1e6e53ae29db",
+                    "type": "multiple_choice",
+                    "title": "Qual seu faturamento médio mensal dos últimos 12 meses ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "brPqzkX0j9pD",
+                        "ref": "ba516b3c-5857-4098-aa69-f03885f35f5f",
+                        "label": "Até R$ 10.000,00"
+                      },
+                      {
+                        "id": "yQsBpi8zAZw4",
+                        "ref": "336f9c42-b4f7-46cc-9b8f-247d84ad4496",
+                        "label": "R$ 10.000,00 a R$ 20.000,00"
+                      },
+                      {
+                        "id": "AehB7oyhrs9R",
+                        "ref": "98eac7c6-0406-474e-ac10-ac97caa4c0d0",
+                        "label": "R$ 20.000,00 a R$ 50.000,00"
+                      },
+                      {
+                        "id": "7nUP2AWxL47c",
+                        "ref": "9da64346-d899-47ab-a311-27cac9fa51bb",
+                        "label": "R$ 50.000,00 a R$ 100.000,00"
+                      },
+                      {
+                        "id": "DR3fWobhbXYV",
+                        "ref": "b6725794-5459-4ea2-90be-a519ca389d27",
+                        "label": "R$ 100.000,00 a R$ 250.000,00"
+                      },
+                      {
+                        "id": "cEKDay3F1kFe",
+                        "ref": "b0ac3fcd-26ee-4b5b-996f-310815dcdadf",
+                        "label": "Acima de R$ 250.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "mR8GcRIUTKO9",
+                    "ref": "d7888829-0ffc-4284-b1ba-9eaca861adc9",
+                    "type": "multiple_choice",
+                    "title": "Já conta com investidor ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "b3vqjZQ4J1qL",
+                        "ref": "be1abb1c-07a2-4242-a45e-3e2ba1df44a1",
+                        "label": "Não, estou a procura"
+                      },
+                      {
+                        "id": "W4RIxjAQqKdy",
+                        "ref": "1cecef76-1ee8-4227-865d-7211cfbc2614",
+                        "label": "Já tenho investidor"
+                      },
+                      {
+                        "id": "KHSapZkr8hfH",
+                        "ref": "24b0e107-b3c5-42c8-b0b4-15e5906aea3b",
+                        "label": "Faço com capital próprio"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "2aTux6cVm2FV",
+                    "ref": "f22bd8f4-430e-44fc-acca-07739bcbf79f",
+                    "type": "multiple_choice",
+                    "title": "Qual padrão do seu projeto ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "Lxa3jO8eMSXR",
+                        "ref": "16e1c4c2-4360-4fac-a830-8cf7debf108b",
+                        "label": "Popular"
+                      },
+                      {
+                        "id": "Y4uFR8lRtyb9",
+                        "ref": "9df7fb7f-5684-4195-8fba-dcf11741d7b1",
+                        "label": "Médio"
+                      },
+                      {
+                        "id": "ucmAYF8WI3TZ",
+                        "ref": "86bf9126-c432-4a69-90f3-b985fc8ab1b7",
+                        "label": "Alto Padrão"
+                      },
+                      {
+                        "id": "KbIzT32l94sJ",
+                        "ref": "7f72bbd5-2ec0-41bb-88cd-71aa08cdabd3",
+                        "label": "Alto luxo"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "b3D94LHJvmcL",
+                    "ref": "8f0239d7-a97f-4cd5-b83d-b86ddbc60ead",
+                    "type": "multiple_choice",
+                    "title": "Qual VGV planejado do seu projeto ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "KXgI8pyVNh1A",
+                        "ref": "74473056-dc33-415f-9e41-627f68baa189",
+                        "label": "R$ 25MM a R$ 50MM"
+                      },
+                      {
+                        "id": "a50L5Rcyq2fS",
+                        "ref": "a06c1d16-b317-4e3e-b935-a505c64efe7a",
+                        "label": "R$ 50MM a R$ 75MM"
+                      },
+                      {
+                        "id": "iC0XietYy2CZ",
+                        "ref": "f13b8a06-61f0-4fff-a507-a577f526c3f3",
+                        "label": "R$ 75MM a R$ 125MM"
+                      },
+                      {
+                        "id": "h1AYl1oTCdYi",
+                        "ref": "3e085647-0efb-4e8e-89fc-245821e812e5",
+                        "label": "R$ 125MM a R$ 200MM"
+                      },
+                      {
+                        "id": "hW4Qn3pRtt0B",
+                        "ref": "1ed2ec66-8e5e-40f4-994b-a33d74e64057",
+                        "label": "Acima de R$ 200MM"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "YDsibaM8rilD",
+                    "ref": "536254e1-0a5f-4e39-9b2b-d92cbb8e8169",
+                    "type": "multiple_choice",
+                    "title": " Qual tipo de produto?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "DGfmMum2VewE",
+                        "ref": "a5120108-1577-473d-a965-3c8840a70efd",
+                        "label": "Loteamento"
+                      },
+                      {
+                        "id": "4MgXuRDphDHM",
+                        "ref": "093e1687-e336-4031-bf51-0dce15a1c3c9",
+                        "label": "Condomínio fechado"
+                      },
+                      {
+                        "id": "PqqiyvqDh48u",
+                        "ref": "eacbb9e7-fb9e-4f00-bed8-22d89d5aa9cc",
+                        "label": "Vertical"
+                      },
+                      {
+                        "id": "oUnApye4YHow",
+                        "ref": "8d54088f-0e47-413c-833d-536e3f5f1e23",
+                        "label": "Comercial"
+                      },
+                      {
+                        "id": "XFsrK68q9pGR",
+                        "ref": "c7c829c2-51cf-4e3c-ae47-725d28bccfd6",
+                        "label": "Mix used"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "9u4fHLzAgAJO",
+                    "ref": "88171cac-785d-4225-8880-798dfa40eb97",
+                    "type": "long_text",
+                    "title": "Quantas incorporações você já fez? Qual VGV total?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "qW8SruQL1mY3",
+                    "ref": "02d7b1a7-f0ca-4ec4-a461-a8a5f66ec266",
+                    "type": "long_text",
+                    "title": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "EVyo2zLw7o0q",
+                    "ref": "d5ac0d23-51b0-43e7-a2f3-dc709543a088",
+                    "type": "long_text",
+                    "title": "Quais dificuldades está enfrentando para alcançar esse objetivo ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "SV0MCANkc5Z5",
+                    "ref": "dbe95222-3c6e-482b-85fe-44f3b8baad7b",
+                    "type": "long_text",
+                    "title": "Há quanto tempo está enfrentando essas dificuldades ?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "Se1cHtpJKu39",
+                    "ref": "ece7ce04-415a-40bd-81f7-ceaca9ab6f39",
+                    "type": "long_text",
+                    "title": "Você já participou de algum curso ou mentoria? ",
+                    "properties": {}
+                  },
+                  {
+                    "id": "bOxioSpCR0IC",
+                    "ref": "4f73fe86-83c8-4f0a-b7c6-ef13ec8c2f67",
+                    "type": "multiple_choice",
+                    "title": "O investimento para a participação no Incorporador estrategista é de R$20.000,00 à vista ou em 12x de R$2.000,00 no cartão de crédito. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "JupImXMnzEVK",
+                        "ref": "ebb98d08-a9d8-488d-a036-dbde59e4ba40",
+                        "label": "Sim, à vista"
+                      },
+                      {
+                        "id": "UmM1In1K7zrX",
+                        "ref": "2c3385a4-960d-4d85-a41e-8080d5e73d9d",
+                        "label": "Sim, parcelado"
+                      },
+                      {
+                        "id": "LP0zOYlfhcDA",
+                        "ref": "89d353d6-4c4c-4757-b9b0-79652f6643ac",
+                        "label": "Não quero investir no meu negócio. Obrigado"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nQiRJ5yTZxHJ",
+                    "ref": "0a64b9a3-58be-4909-8254-e5e0a3a6c045",
+                    "type": "long_text",
+                    "title": "Caso você seja aceito (a) no ecossistema do Incorporador Estrategista , o que precisa acontecer com você e com o seu negócio ao final dos 12 meses, para você dizer que valeu participar e trabalhar comigo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "qDGZG9VsTHXe",
+                    "ref": "741920ff-d0a0-4a40-9bca-b505830fcc3a",
+                    "type": "multiple_choice",
+                    "title": "Você está ciente que ao ser aprovado, entraremos em contato com você em até 24h para confirmar sua entrevista, caso não confirme dentro desse período, você perde direito a reunião.",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "HxvKETlszikx",
+                        "ref": "6cbe4ea1-ca13-4f18-baf7-d9ebed409331",
+                        "label": "SIM"
+                      },
+                      {
+                        "id": "CNpXkKHVD8yU",
+                        "ref": "7facd30a-c3f7-4e86-a4a3-9e0c0f502596",
+                        "label": "NÃO"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "p4QBEhwowcf5",
+                    "ref": "8b5c9d76-020f-4106-8038-df34e6da2a27",
+                    "type": "long_text",
+                    "title": "O Incorporador Estrategista  é um catalisador de crescimento pessoal e profissional. Conte sobre algum momento, no passado, em que você mudou. Por que você está escolhendo mudar e subir de nível nesse momento?",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "bXfrQg2ZC7an",
+                    "ref": "01HTZ1CDBDMY9GAMFQG4KHB3VR",
+                    "title": "Obrigado pelas respostas.",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "button_text": "again",
+                      "show_button": false,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "Matheus Cristhyan",
+                  "field": {
+                    "id": "98rsmGOgwcIY",
+                    "type": "short_text",
+                    "ref": "c226d1b1-a850-4588-a142-98982e85565e"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "n4CUa2ua9DXA",
+                    "type": "phone_number",
+                    "ref": "46bd4df9-ed0c-4242-a2f6-bb6bcab94616"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "@matheuscristhyan",
+                  "field": {
+                    "id": "JTCjaC356uMz",
+                    "type": "short_text",
+                    "ref": "5dc572d9-eb2f-414d-aadb-aac7f3c2eccf"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheuscristhyan.2@gmail.com",
+                  "field": {
+                    "id": "wbWxFnHehIoB",
+                    "type": "email",
+                    "ref": "97c8e5cc-3de9-4b09-a775-5c049d2a1bc8"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "gOAkkKzyWddh",
+                    "label": "Dono de construtora",
+                    "ref": "9b801c1c-bf12-4910-9128-e132ce6e8127"
+                  },
+                  "field": {
+                    "id": "1TzmwskmtV3I",
+                    "type": "multiple_choice",
+                    "ref": "c38c38d0-d65f-483d-98c4-22b69b6e7014"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "WKwYeRM7GmFB",
+                    "label": "Meu projeto já está aprovado e estou aguardando o RI",
+                    "ref": "15a625cf-13c2-423a-86d5-4acf42d28947"
+                  },
+                  "field": {
+                    "id": "Unr3DtZPNyrb",
+                    "type": "multiple_choice",
+                    "ref": "af40394c-1330-408a-9598-03ee333fdbc1"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "7nUP2AWxL47c",
+                    "label": "R$ 50.000,00 a R$ 100.000,00",
+                    "ref": "9da64346-d899-47ab-a311-27cac9fa51bb"
+                  },
+                  "field": {
+                    "id": "ZBmYMb13pEYQ",
+                    "type": "multiple_choice",
+                    "ref": "ada9fb9a-f484-4c1f-b55a-1e6e53ae29db"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "W4RIxjAQqKdy",
+                    "label": "Já tenho investidor",
+                    "ref": "1cecef76-1ee8-4227-865d-7211cfbc2614"
+                  },
+                  "field": {
+                    "id": "mR8GcRIUTKO9",
+                    "type": "multiple_choice",
+                    "ref": "d7888829-0ffc-4284-b1ba-9eaca861adc9"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "ucmAYF8WI3TZ",
+                    "label": "Alto Padrão",
+                    "ref": "86bf9126-c432-4a69-90f3-b985fc8ab1b7"
+                  },
+                  "field": {
+                    "id": "2aTux6cVm2FV",
+                    "type": "multiple_choice",
+                    "ref": "f22bd8f4-430e-44fc-acca-07739bcbf79f"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "iC0XietYy2CZ",
+                    "label": "R$ 75MM a R$ 125MM",
+                    "ref": "f13b8a06-61f0-4fff-a507-a577f526c3f3"
+                  },
+                  "field": {
+                    "id": "b3D94LHJvmcL",
+                    "type": "multiple_choice",
+                    "ref": "8f0239d7-a97f-4cd5-b83d-b86ddbc60ead"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "PqqiyvqDh48u",
+                    "label": "Vertical",
+                    "ref": "eacbb9e7-fb9e-4f00-bed8-22d89d5aa9cc"
+                  },
+                  "field": {
+                    "id": "YDsibaM8rilD",
+                    "type": "multiple_choice",
+                    "ref": "536254e1-0a5f-4e39-9b2b-d92cbb8e8169"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Quantas incorporações você já fez? Qual VGV total?",
+                  "field": {
+                    "id": "9u4fHLzAgAJO",
+                    "type": "long_text",
+                    "ref": "88171cac-785d-4225-8880-798dfa40eb97"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses ?",
+                  "field": {
+                    "id": "qW8SruQL1mY3",
+                    "type": "long_text",
+                    "ref": "02d7b1a7-f0ca-4ec4-a461-a8a5f66ec266"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Quais dificuldades está enfrentando para alcançar esse objetivo ?",
+                  "field": {
+                    "id": "EVyo2zLw7o0q",
+                    "type": "long_text",
+                    "ref": "d5ac0d23-51b0-43e7-a2f3-dc709543a088"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Há quanto tempo está enfrentando essas dificuldades ?",
+                  "field": {
+                    "id": "SV0MCANkc5Z5",
+                    "type": "long_text",
+                    "ref": "dbe95222-3c6e-482b-85fe-44f3b8baad7b"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Você já participou de algum curso ou mentoria?",
+                  "field": {
+                    "id": "Se1cHtpJKu39",
+                    "type": "long_text",
+                    "ref": "ece7ce04-415a-40bd-81f7-ceaca9ab6f39"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "JupImXMnzEVK",
+                    "label": "Sim, à vista",
+                    "ref": "ebb98d08-a9d8-488d-a036-dbde59e4ba40"
+                  },
+                  "field": {
+                    "id": "bOxioSpCR0IC",
+                    "type": "multiple_choice",
+                    "ref": "4f73fe86-83c8-4f0a-b7c6-ef13ec8c2f67"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Caso você seja aceito (a) no ecossistema do Incorporador Estrategista , o que precisa acontecer com você e com o seu negócio ao final dos 12 meses, para você dizer que valeu participar e trabalhar comigo?",
+                  "field": {
+                    "id": "nQiRJ5yTZxHJ",
+                    "type": "long_text",
+                    "ref": "0a64b9a3-58be-4909-8254-e5e0a3a6c045"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "HxvKETlszikx",
+                    "label": "SIM",
+                    "ref": "6cbe4ea1-ca13-4f18-baf7-d9ebed409331"
+                  },
+                  "field": {
+                    "id": "qDGZG9VsTHXe",
+                    "type": "multiple_choice",
+                    "ref": "741920ff-d0a0-4a40-9bca-b505830fcc3a"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O Incorporador Estrategista é um catalisador de crescimento pessoal e profissional. Conte sobre algum momento, no passado, em que você mudou. Por que você está escolhendo mudar e subir de nível nesse momento?",
+                  "field": {
+                    "id": "p4QBEhwowcf5",
+                    "type": "long_text",
+                    "ref": "8b5c9d76-020f-4106-8038-df34e6da2a27"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "bXfrQg2ZC7an",
+                "ref": "01HTZ1CDBDMY9GAMFQG4KHB3VR"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/739c6b6a-9f79-4f58-89f1-9d6feafacb5d",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-29T03:56:02.756Z",
+      "updatedAt": "2024-05-29T03:56:02.756Z",
+      "id": "CJi6Rs9lbMO8s8CS",
+      "name": "gb"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-06-04T03:55:59.058Z",
+  "versionId": "60c948e7-826e-4081-bda9-a4d52348e9d3"
+}
