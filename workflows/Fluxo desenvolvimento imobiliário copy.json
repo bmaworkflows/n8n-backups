@@ -1,0 +1,215 @@
+{
+  "active": false,
+  "connections": {
+    "Monday.com10": {
+      "main": [
+        [
+          {
+            "node": "Monday.com12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com11": {
+      "main": [
+        [
+          {
+            "node": "Monday.com10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Monday.com11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2024-09-17T03:45:04.341Z",
+  "id": "kJoXaIAcXI85n0lC",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Fluxo desenvolvimento imobiliário copy",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Google Sheets').item.json['Qual o seu nome?'] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $('Google Sheets').item.json['Qual o seu número do WhatsApp com DDD?'] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $('Google Sheets').item.json['Qual o seu email principal?'] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $('Google Sheets').item.json['Qual das opções abaixo mais condiz com seu negócio hoje ?'] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2024?\n\n{{ $('Google Sheets').item.json['Qual é o seu faturamento MENSAL médio em 2024?'] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $('Google Sheets').item.json['O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:'] }}"
+      },
+      "id": "2327b051-c62b-4fba-b26c-6142cf96b4e3",
+      "name": "Monday.com10",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        360
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5689478999",
+        "groupId": "novo_grupo82923",
+        "name": "={{ $json['Qual o seu nome?'] }}",
+        "additionalFields": {}
+      },
+      "id": "9402a360-2991-415d-94f2-00167c75f8cc",
+      "name": "Monday.com11",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        980,
+        360
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5689478999",
+        "itemId": "={{ $('Monday.com11').item.json.id }}",
+        "columnValues": "={\"texto3__1\":\"wa.me/{{ $('Google Sheets').item.json['Qual o seu número do WhatsApp com DDD?'].replace(\"+\",\"\") }}\", \"texto71__1\": \"{{ $('Google Sheets').item.json.utm_source }}\", \"texto4__1\": \"{{ $('Google Sheets').item.json['Qual é o seu faturamento MENSAL médio em 2024?'] }}\", \"texto34__1\":\"Isca/Fluxo\", \"texto2__1\":\"{{ $('Google Sheets').item.json.utm_term }}\", \"texto32__1\":\"{{ $('Google Sheets').item.json.utm_content }}\", \"texto1__1\":\"{{ $('Google Sheets').item.json.utm_medium }}\" , \"n_meros\": \"{{ $('Google Sheets').item.json['Qual o seu número do WhatsApp com DDD?'].replace(\"+\",\"\") }}\", \"data\": \"{{ $('Google Sheets').item.json['Submit Date (UTC)'] }}\"}"
+      },
+      "id": "64f4f9eb-774f-44b6-b199-7c746ae50122",
+      "name": "Monday.com12",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        360
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1tHR2cRMNz3M1z1LM-bWVx3xuUQFw0EWz5fRSOybX-1c/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tHR2cRMNz3M1z1LM-bWVx3xuUQFw0EWz5fRSOybX-1c/edit#gid=0"
+        },
+        "options": {
+          "returnFirstMatch": false
+        }
+      },
+      "id": "cccc75b4-da6e-42f3-bde3-996a3e7c5d23",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        780,
+        360
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "66f744fd-cde1-4b2a-9986-05bd7265da53",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "b1147d8a-8748-4b00-ada0-217ab5ac61d4",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a61c284a-ae2a-451f-adac-e65252480ade",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        740
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-09-17T03:55:37.794Z",
+  "versionId": "ecc7036a-05eb-4291-94be-063e052cdb81"
+}
