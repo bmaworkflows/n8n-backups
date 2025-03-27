@@ -1,0 +1,432 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com10": {
+      "main": [
+        [
+          {
+            "node": "Monday.com12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com11": {
+      "main": [
+        [
+          {
+            "node": "Monday.com10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Monday.com11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-17T03:33:55.601Z",
+  "id": "AwYrcrLSZkmrlFlg",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Fluxo desenvolvimento imobiliário",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "c27a0831-698f-4c04-9c7e-a9ffee7eed39",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
+      },
+      "id": "df5e0c3a-538d-468e-ba90-9acb9239026f",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        840,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f2c69875-c47c-4ec7-a71e-3faecf7317fb",
+        "options": {}
+      },
+      "id": "3f12d053-9630-4f11-a35a-20649b178a5f",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        800,
+        380
+      ],
+      "webhookId": "f2c69875-c47c-4ec7-a71e-3faecf7317fb"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"phone_number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"email\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2024?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].text }}"
+      },
+      "id": "b458855c-aa51-4a20-a67f-d6aa412ee101",
+      "name": "Monday.com10",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5689478999",
+        "groupId": "novo_grupo82923",
+        "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "a90ca977-68d5-4ce3-bd12-449fe9946aad",
+      "name": "Monday.com11",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5689478999",
+        "itemId": "={{ $('Monday.com11').item.json.id }}",
+        "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\", \"texto34__1\":\"Isca/Fluxo\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\"}"
+      },
+      "id": "94640a28-21de-4a10-abad-c64e56dff7e1",
+      "name": "Monday.com12",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "4866",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-2c7ee0d0c4d276e37d84d2769c12a4f5-f6fd2d65f8ff3169-01",
+            "x-forwarded-for": "18.204.78.134",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "18.204.78.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01J7Z0RHJNRMENWXFEYSMDP5AJ",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "A0pL0kZq",
+              "token": "csj0qwtoi3erkcsj0tz686x4580n5jht",
+              "landed_at": "2024-09-17T03:34:42Z",
+              "submitted_at": "2024-09-17T03:35:02Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "A0pL0kZq",
+                "title": "Aplicação Fluxo do Desenvolvimento Imobiliário",
+                "fields": [
+                  {
+                    "id": "P9SliWwQ5534",
+                    "ref": "5b9ca55e-3535-43e0-ba24-ca569813d62c",
+                    "type": "short_text",
+                    "title": "Qual o seu nome?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "p6g00mXOp5IC",
+                    "ref": "1154ef9b-a5cc-4557-84a0-aface8331844",
+                    "type": "email",
+                    "title": "Qual o seu email principal?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "hEuSh5k10Wj0",
+                    "ref": "e0dc4341-a1b1-4d8c-999b-b28427a40278",
+                    "type": "phone_number",
+                    "title": "Qual o seu número do WhatsApp com DDD?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "VlPrYBzKxQZt",
+                    "ref": "51c993a7-3041-4790-9446-8afd0b0e23ca",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "9QpYTSIFMZfM",
+                        "ref": "5573e4a5-eacb-44b4-923c-424afd3402df",
+                        "label": "Corretor (a) de imóveis"
+                      },
+                      {
+                        "id": "u3z3zhk0xrnJ",
+                        "ref": "33ffab49-2313-48a3-8eba-9f0c95c5f30c",
+                        "label": "Engenheiro (a)"
+                      },
+                      {
+                        "id": "cQWm5PBFu1UQ",
+                        "ref": "adc5be86-5464-4020-a832-eed7b019920a",
+                        "label": "Arquiteto (a)"
+                      },
+                      {
+                        "id": "i4yPwNrKvUxV",
+                        "ref": "be7efdcb-495d-4341-9c70-7ae75ec587f3",
+                        "label": "Empresário (a) ou empreendedor (a) no mercado imobiliário"
+                      },
+                      {
+                        "id": "1zoNAjqduOJh",
+                        "ref": "de702347-1fef-44f2-9865-3dfcf5a0598f",
+                        "label": "Incorporador"
+                      },
+                      {
+                        "id": "d5HpIxnGBpNe",
+                        "ref": "a9b7f036-0fe5-4e6f-ae7a-8b75b6c788e6",
+                        "label": "Construtor"
+                      },
+                      {
+                        "id": "QR3foV8CzDXB",
+                        "ref": "bb29155e-9dd6-44ae-8ece-d13d0180431b",
+                        "label": "Sou de outras áreas e quero migrar"
+                      },
+                      {
+                        "id": "KndwU9aSnqp9",
+                        "ref": "6c385bcf-efd6-430c-84e1-8b90d7e7dd32",
+                        "label": "Nenhuma das opções"
+                      },
+                      {
+                        "id": "FwgDZofNgCzx",
+                        "ref": "799d747c-8163-428f-a345-f7d0327bc741",
+                        "label": "Outro"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "yRijeD7KuT7n",
+                    "ref": "1e961886-ee13-4c32-a152-19505afa713d",
+                    "type": "multiple_choice",
+                    "title": "- Qual é o seu faturamento MENSAL médio em 2024?\n",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "Rz3b61gXlC9q",
+                        "ref": "7bb09ddc-fdf4-404c-8662-246dcb41bae4",
+                        "label": "Até R$ 10.000,00"
+                      },
+                      {
+                        "id": "CEs00xCJIkNM",
+                        "ref": "994b2feb-7b2a-4b7d-ad44-b82c5137c35d",
+                        "label": "R$ 10.000,00 a R$ 20.000,00"
+                      },
+                      {
+                        "id": "Km9zVZVTEXOi",
+                        "ref": "160ee599-a907-4064-9c0c-e51e9fd0996b",
+                        "label": "R$ 20.000,00 a R$ 50.000,00"
+                      },
+                      {
+                        "id": "lzhSBdM6aOwM",
+                        "ref": "ddf65f32-2f47-460f-bff5-86a0c86ba7fa",
+                        "label": "R$ 50.000,00 a R$ 100.000,00"
+                      },
+                      {
+                        "id": "EODKx2XI6k07",
+                        "ref": "20d48faf-6912-4e2d-b2c8-cad2b3d979f0",
+                        "label": "R$ 100.000,00 a R$ 250.000,00"
+                      },
+                      {
+                        "id": "tzfUFjw0X17s",
+                        "ref": "95495c22-6efd-48ee-aa4d-4581afa6944c",
+                        "label": "R$ 250.000,00 à R$ 500.000,00"
+                      },
+                      {
+                        "id": "ddtAfzaEtl0f",
+                        "ref": "ec8dc165-e563-4170-8b49-3e0b9fdf4d62",
+                        "label": "Acima de R$ 500.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "KyfOZR5LNeNQ",
+                    "ref": "020cccda-f413-46b9-ac25-7a684e80869f",
+                    "type": "long_text",
+                    "title": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "NaNEXRpR6IGQ",
+                    "ref": "01HTNBHAESPFR23JEP30JSNWKP",
+                    "title": "Aplicação concluída com sucesso! Aqui está seu acesso ao Fluxo do Desenvolvimento Imobiliário: >> [CLIQUE AQUI PARA TER ACESSO ](https://incorporacaonapratica.com/wp-content/uploads/2024/08/Fluxo-do-Desennvolvimento-Imobiliario.pdf)<<",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "button_text": "again",
+                      "show_button": false,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "matheus",
+                  "field": {
+                    "id": "P9SliWwQ5534",
+                    "type": "short_text",
+                    "ref": "5b9ca55e-3535-43e0-ba24-ca569813d62c"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "p6g00mXOp5IC",
+                    "type": "email",
+                    "ref": "1154ef9b-a5cc-4557-84a0-aface8331844"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "hEuSh5k10Wj0",
+                    "type": "phone_number",
+                    "ref": "e0dc4341-a1b1-4d8c-999b-b28427a40278"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "i4yPwNrKvUxV",
+                    "label": "Empresário (a) ou empreendedor (a) no mercado imobiliário",
+                    "ref": "be7efdcb-495d-4341-9c70-7ae75ec587f3"
+                  },
+                  "field": {
+                    "id": "VlPrYBzKxQZt",
+                    "type": "multiple_choice",
+                    "ref": "51c993a7-3041-4790-9446-8afd0b0e23ca"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "Km9zVZVTEXOi",
+                    "label": "R$ 20.000,00 a R$ 50.000,00",
+                    "ref": "160ee599-a907-4064-9c0c-e51e9fd0996b"
+                  },
+                  "field": {
+                    "id": "yRijeD7KuT7n",
+                    "type": "multiple_choice",
+                    "ref": "1e961886-ee13-4c32-a152-19505afa713d"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:This question is required.*",
+                  "field": {
+                    "id": "KyfOZR5LNeNQ",
+                    "type": "long_text",
+                    "ref": "020cccda-f413-46b9-ac25-7a684e80869f"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "NaNEXRpR6IGQ",
+                "ref": "01HTNBHAESPFR23JEP30JSNWKP"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/f2c69875-c47c-4ec7-a71e-3faecf7317fb",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-09-17T03:43:46.889Z",
+  "versionId": "73c815fe-d28a-4850-9680-1ef7d687f746"
+}
