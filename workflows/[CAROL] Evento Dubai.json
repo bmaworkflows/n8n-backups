@@ -1,0 +1,871 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Deborah2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Deborah",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-05T03:44:01.199Z",
+  "id": "sTWbmBRfkqDnkxCd",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Evento Dubai",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "c99ab2de-df12-4290-91a7-e2770f101fdc",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363365606703751-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead no funil do Evento Dubai:*\n\nNome: {{ $json.nome }}\nEmail: {{ $json.email }}\nTelefone: {{ $json.telefone }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b59d13d1-7f39-489c-bc09-3efb54212439",
+      "name": "Notifica grupo | Deborah2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evento-dubai",
+        "options": {}
+      },
+      "id": "6d5f0979-bfad-4a73-9ed8-96cfe6ff3f3d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        400
+      ],
+      "webhookId": "7866d3b0-7e8d-4c13-b91c-ed89d57585a4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=975625893#gid=975625893",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 119872740,
+          "mode": "list",
+          "cachedResultName": "evento dubai",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=119872740"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.form_response.answers[0].text }}",
+            "telefone": "={{ $json.form_response.answers[1].number }}",
+            "email": "={{ $json.form_response.answers[2].email }}",
+            "nicho": "={{ $json.form_response.answers[3].choice.label }}",
+            "faturamento": "={{ $json.form_response.answers[4].choice.label }}",
+            "porque quer participar": "={{ $json.form_response.answers[5].text }}",
+            "porque tem que ser aceito": "={{ $json.form_response.answers[6].text }}",
+            "pagamento": "={{ $json.form_response.answers[7].choice.label }}",
+            "utm_campaign": "={{ $json.form_response.hidden.utm_campaign }}",
+            "utm_source": "={{ $json.form_response.hidden.utm_source }}",
+            "utm_medium": "={{ $json.form_response.hidden.utm_medium }}",
+            "utm_content": "={{ $json.form_response.hidden.utm_content }}",
+            "utm_term": "={{ $json.form_response.hidden.utm_term }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nicho",
+              "displayName": "nicho",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "porque quer participar",
+              "displayName": "porque quer participar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "porque tem que ser aceito",
+              "displayName": "porque tem que ser aceito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagamento",
+              "displayName": "pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ip_usuário",
+              "displayName": "ip_usuário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3461b7c3-15ef-4d3f-9710-41de1dc64c7b",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5562992271506"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead no funil do Evento Dubai:*\n\nNome: {{ $json.nome }}\nEmail: {{ $json.email }}\nTelefone: {{ $json.telefone }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e9d9eca3-e13b-44c7-8733-7d8888f91d66",
+      "name": "Notifica grupo | Deborah",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1-H4BnGo0rmmSGMCnXsFcQ4_5UUrtPxraiBVD3bZ6Mts/edit?gid=119872740#gid=119872740",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 119872740,
+          "mode": "list",
+          "cachedResultName": "evento dubai",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-H4BnGo0rmmSGMCnXsFcQ4_5UUrtPxraiBVD3bZ6Mts/edit#gid=119872740"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.form_response.answers[0].text }}",
+            "telefone": "={{ $json.form_response.answers[1].number }}",
+            "email": "={{ $json.form_response.answers[2].email }}",
+            "nicho": "={{ $json.form_response.answers[3].choice.label }}",
+            "faturamento": "={{ $json.form_response.answers[4].choice.label }}",
+            "porque quer participar": "={{ $json.form_response.answers[5].text }}",
+            "porque tem que ser aceito": "={{ $json.form_response.answers[6].text }}",
+            "pagamento": "={{ $json.form_response.answers[7].choice.label }}",
+            "utm_campaign": "={{ $json.form_response.hidden.utm_campaign }}",
+            "utm_content": "={{ $json.form_response.hidden.utm_content }}",
+            "utm_medium": "={{ $json.form_response.hidden.utm_medium }}",
+            "utm_source": "={{ $json.form_response.hidden.utm_source }}",
+            "utm_term": "={{ $json.form_response.hidden.utm_term }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nicho",
+              "displayName": "nicho",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "porque quer participar",
+              "displayName": "porque quer participar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "porque tem que ser aceito",
+              "displayName": "porque tem que ser aceito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagamento",
+              "displayName": "pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ip_usuário",
+              "displayName": "ip_usuário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b560a845-5658-4726-bb71-29bcfba603e4",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        480
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "5871",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-13881538d8935f6e46811a6a0c8b9021-4742f1a9dfd5dd57-01",
+            "x-forwarded-for": "34.230.177.131",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3bcccbbbe293",
+            "x-real-ip": "34.230.177.131"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01JNJ6K4PZS4QHV8MJV7265N0K",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "ZPrbBsdE",
+              "token": "9hwt29zzds1r9hlylyg2mywnh5earywv",
+              "landed_at": "2025-03-05T03:46:04Z",
+              "submitted_at": "2025-03-05T03:46:35Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "ZPrbBsdE",
+                "title": "Evento Dubai",
+                "fields": [
+                  {
+                    "id": "cGVoSh2pemJ4",
+                    "ref": "01GRS02X9XK9P4SPQ5BEFQJ0ZG",
+                    "type": "long_text",
+                    "title": "Qual o seu nome completo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "1ralbTFFOT8c",
+                    "ref": "01GRS02XAVCVRXG45HGTV62EST",
+                    "type": "number",
+                    "title": "Número de WhatsApp com DDD",
+                    "properties": {}
+                  },
+                  {
+                    "id": "JSJcmCBGYJTY",
+                    "ref": "398e2253-1361-47fa-8d25-c29388c17493",
+                    "type": "email",
+                    "title": "Seu melhor e-mail",
+                    "properties": {}
+                  },
+                  {
+                    "id": "HtcFQJpFfHXf",
+                    "ref": "9cdf796b-be5f-4f01-8130-92c48de282fb",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "FEnaYkN1O7qk",
+                        "ref": "242cfed3-8810-4079-b45f-c0823a957a9d",
+                        "label": "Empresário"
+                      },
+                      {
+                        "id": "U88KGi7mFN96",
+                        "ref": "12fd6e4a-605a-44d8-81ad-320935d520e1",
+                        "label": "Corretor"
+                      },
+                      {
+                        "id": "81jymsmvr5LO",
+                        "ref": "c97e39b0-d9fd-4f00-b2b2-c875cd0341a7",
+                        "label": "Incorporador"
+                      },
+                      {
+                        "id": "rbxqvnX6EEIv",
+                        "ref": "89fb52cc-8b98-4e6b-ac8a-b47e83a1c0d4",
+                        "label": "Arquiteto-Incorporador"
+                      },
+                      {
+                        "id": "SFUqQ5MjQGIb",
+                        "ref": "7a30d20d-60df-4b9b-96ad-11c7b9944c8f",
+                        "label": "Dono de imobiliária"
+                      },
+                      {
+                        "id": "cdZmHVCy0uG2",
+                        "ref": "ec479d97-8c4a-4fd0-8ebc-149f8020f425",
+                        "label": "Dono de construtora"
+                      },
+                      {
+                        "id": "SfHVuytEK69F",
+                        "ref": "44d8bcd0-0873-404c-986d-3ea369e752bc",
+                        "label": "Dono de empreiteira"
+                      },
+                      {
+                        "id": "xa5XlwblJAjt",
+                        "ref": "494f5351-36fa-4581-80ad-cc3937470835",
+                        "label": "Dono de terreno"
+                      },
+                      {
+                        "id": "SVJpZ9vd0vTy",
+                        "ref": "c599e3a5-1262-4a10-8294-802e6bda8b1f",
+                        "label": "Outras opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "DcS3sLm8mggr",
+                    "ref": "ffc8465b-16a2-47ce-ae31-7ee9325c3465",
+                    "type": "multiple_choice",
+                    "title": "Qual seu faturamento médio mensal dos últimos 12 meses?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "tVpxMl6ezsTt",
+                        "ref": "535bb8f0-ce4d-4041-9219-3ceecedb480d",
+                        "label": "Até R$10.000,00"
+                      },
+                      {
+                        "id": "OybZ6W24t6B5",
+                        "ref": "fc0882aa-d36a-4574-83c0-ae2af424d759",
+                        "label": "R$10.000,00 à R$20.000,00"
+                      },
+                      {
+                        "id": "df9S1fT7wnlJ",
+                        "ref": "b2aacc5e-5704-45f5-a3da-23bcac737b66",
+                        "label": "R$20.000,00 à R$50.000,00"
+                      },
+                      {
+                        "id": "Qq39BZe4JgZk",
+                        "ref": "d73e5bf5-0cc6-4767-920c-2829a95cfe59",
+                        "label": "R$50.000,00 à R$100.000,00"
+                      },
+                      {
+                        "id": "JlKq43kbbwSt",
+                        "ref": "c5971b08-c6e5-4950-85b5-771f56dad3b8",
+                        "label": "R$100.000,00 à R$250.000,00"
+                      },
+                      {
+                        "id": "5sZ1M3hSzESW",
+                        "ref": "00954068-3b70-4c33-8460-932f92cc7fbe",
+                        "label": "Acima de R$ 250.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "OAlrQNTf5Ml7",
+                    "ref": "92175807-9a54-47b1-8db5-b9bcccb25898",
+                    "type": "long_text",
+                    "title": "Por que você acredita que participar do Evento Dubai é a oportunidade ideal para você e para o crescimento do seu negócio?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "ZpFGNyFsGF32",
+                    "ref": "d4c660cf-a96e-4994-bd78-acdb91263205",
+                    "type": "long_text",
+                    "title": "Essa é uma experiência única para poucos empresários, por isso, o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "v05ib2mkpP7J",
+                    "ref": "1f500ef2-dfe4-4814-844a-931d76fedae3",
+                    "type": "multiple_choice",
+                    "title": "O investimento para adquirir o seu lugar no Evento Dubai é de até 12x de R$3.549,00  no cartão de crédito ou R$35.490,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "s6HCNJoP8cc4",
+                        "ref": "b007ccf3-2246-472f-b092-1161be71e2e2",
+                        "label": "Sim, R$35.490,00 à vista."
+                      },
+                      {
+                        "id": "1SWU1bXD4ZpP",
+                        "ref": "362f182b-b1e7-4858-a132-10469a490d18",
+                        "label": "Sim, parcelado em até 12x no cartão de crédito."
+                      },
+                      {
+                        "id": "pexlULu2SI6W",
+                        "ref": "ad5a290b-1d6e-4f24-8144-5960b2596675",
+                        "label": "Não tenho condição de fazer o investimento."
+                      }
+                    ]
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "XWfzaDazuZ2P",
+                    "ref": "db81b50c-ee8d-4bee-a269-c8694fe161ef",
+                    "title": "*Parabéns pela sua decisão!*\n\nSua aplicação foi enviada com sucesso. Fique atento ao seu WhatsApp nas próximas horas.",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "show_button": false,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "Matheus",
+                  "field": {
+                    "id": "cGVoSh2pemJ4",
+                    "type": "long_text",
+                    "ref": "01GRS02X9XK9P4SPQ5BEFQJ0ZG"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 81993515055,
+                  "field": {
+                    "id": "1ralbTFFOT8c",
+                    "type": "number",
+                    "ref": "01GRS02XAVCVRXG45HGTV62EST"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "JSJcmCBGYJTY",
+                    "type": "email",
+                    "ref": "398e2253-1361-47fa-8d25-c29388c17493"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "81jymsmvr5LO",
+                    "label": "Incorporador",
+                    "ref": "c97e39b0-d9fd-4f00-b2b2-c875cd0341a7"
+                  },
+                  "field": {
+                    "id": "HtcFQJpFfHXf",
+                    "type": "multiple_choice",
+                    "ref": "9cdf796b-be5f-4f01-8130-92c48de282fb"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "df9S1fT7wnlJ",
+                    "label": "R$20.000,00 à R$50.000,00",
+                    "ref": "b2aacc5e-5704-45f5-a3da-23bcac737b66"
+                  },
+                  "field": {
+                    "id": "DcS3sLm8mggr",
+                    "type": "multiple_choice",
+                    "ref": "ffc8465b-16a2-47ce-ae31-7ee9325c3465"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Por que você acredita que participar do Evento Dubai é a oportunidade ideal para você e para o crescimento do seu negócio?",
+                  "field": {
+                    "id": "OAlrQNTf5Ml7",
+                    "type": "long_text",
+                    "ref": "92175807-9a54-47b1-8db5-b9bcccb25898"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Essa é uma experiência única para poucos empresários, por isso, o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
+                  "field": {
+                    "id": "ZpFGNyFsGF32",
+                    "type": "long_text",
+                    "ref": "d4c660cf-a96e-4994-bd78-acdb91263205"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "s6HCNJoP8cc4",
+                    "label": "Sim, R$35.490,00 à vista.",
+                    "ref": "b007ccf3-2246-472f-b092-1161be71e2e2"
+                  },
+                  "field": {
+                    "id": "v05ib2mkpP7J",
+                    "type": "multiple_choice",
+                    "ref": "1f500ef2-dfe4-4814-844a-931d76fedae3"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "XWfzaDazuZ2P",
+                "ref": "db81b50c-ee8d-4bee-a269-c8694fe161ef"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/evento-dubai",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-06T13:55:15.853Z",
+  "versionId": "a2a5a41a-f197-434d-85e9-d02479faa593"
+}
