@@ -1,0 +1,983 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com3": {
+      "main": [
+        [
+          {
+            "node": "Monday.com2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com5": {
+      "main": [
+        [
+          {
+            "node": "Monday.com4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com7": {
+      "main": [
+        [
+          {
+            "node": "Monday.com6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Data": {
+      "main": [
+        [
+          {
+            "node": "Formata Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Data": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com4": {
+      "main": [
+        [
+          {
+            "node": "Monday.com9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com6": {
+      "main": [
+        [
+          {
+            "node": "Monday.com10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com2": {
+      "main": [
+        [
+          {
+            "node": "Monday.com11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com9": {
+      "main": [
+        [
+          {
+            "node": "Notifica Renan | V19",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com10": {
+      "main": [
+        [
+          {
+            "node": "Notifica Renan | V18",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com11": {
+      "main": [
+        [
+          {
+            "node": "Notifica Renan | V20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com12": {
+      "main": [
+        [
+          {
+            "node": "Notifica Renan | V21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Monday.com7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monday.com5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign1": {
+      "main": [
+        [
+          {
+            "node": "Pega Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-06-10T18:28:34.977Z",
+  "id": "A4mhsytD9Il6FIam",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [V18] MONDAY",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "676d5dae-4568-4d22-96ca-9ba558916c7a",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"contact[phone]\"] = formataTelefone($input.all()[0].json[\"contact[phone]\"] )\n\nreturn $input.all();"
+      },
+      "id": "88f521f8-4715-4192-8234-eb22d26968ed",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n----------\n\n\nE-mail:\n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n----------\n\n\nWhatsapp:\n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n----------\n\n\nInstagram:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n----------\n\n\nTipo de Negócio:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n----------\n\n\nFaturamento:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }}   "
+      },
+      "id": "0c99f6b9-6263-4f8f-a622-d10ba888bd1b",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        500
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "novo_grupo27874__1",
+        "name": "={{\"[v21] \" +  $('Formata Telefone').item.json[\"contact[first_name]\"] }}",
+        "additionalFields": {}
+      },
+      "id": "5a2e33f3-1109-4546-9b82-110eb8cdb5f8",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        500
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n----------\n\n\nE-mail:\n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n----------\n\n\nWhatsapp:\n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n----------\n\n\nInstagram:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n----------\n\n\nTipo de Negócio:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n----------\n\n\nFaturamento:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }}   "
+      },
+      "id": "31c7a87e-4e69-4cf5-b339-a23ea0584c71",
+      "name": "Monday.com2",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        280
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "novo_grupo27874__1",
+        "name": "={{\"[v20] \" +  $('Formata Telefone').item.json[\"contact[first_name]\"] }}",
+        "additionalFields": {}
+      },
+      "id": "7952dfae-6373-492a-b0c5-de07a900cc09",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        280
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n----------\n\n\nE-mail:\n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n----------\n\n\nWhatsapp:\n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n----------\n\n\nInstagram:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n----------\n\n\nTipo de Negócio:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n----------\n\n\nFaturamento:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }}   "
+      },
+      "id": "203ae835-e852-4c09-a314-64e4b692fb48",
+      "name": "Monday.com4",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        80
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "novo_grupo27874__1",
+        "name": "={{\"[v19] \" +  $('Formata Telefone').item.json[\"contact[first_name]\"] }}",
+        "additionalFields": {}
+      },
+      "id": "77121935-7af9-45c3-9bfa-d6e53d54c448",
+      "name": "Monday.com5",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        80
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n----------\n\n\nE-mail:\n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n----------\n\n\nWhatsapp:\n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n----------\n\n\nInstagram:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n----------\n\n\nTipo de Negócio:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n----------\n\n\nFaturamento:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }}   "
+      },
+      "id": "f475e6bc-43de-429a-ba36-82b74dcfa26f",
+      "name": "Monday.com6",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        -120
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "novo_grupo27874__1",
+        "name": "={{\"[v18] \" +  $('Formata Telefone').item.json[\"contact[first_name]\"] }}",
+        "additionalFields": {}
+      },
+      "id": "2d242435-d714-4f92-ae25-c6840f043126",
+      "name": "Monday.com7",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        -120
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "timezone": "America/Sao_Paulo"
+        }
+      },
+      "id": "aa0afada-f8ba-4834-b329-3e27b444f4f6",
+      "name": "Pega Data",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        560,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.currentDate }}",
+        "format": "yyyy-MM-dd",
+        "outputFieldName": "data_aplicacao",
+        "options": {}
+      },
+      "id": "d8c8d8e0-699b-45af-99d2-28d651bd8034",
+      "name": "Formata Data",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        780,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com5').item.json.id }}",
+        "columnValues": "={\"texto3\":\"{{ $('Formata Telefone').item.json['contact[fields][5passosfaturamento]'] }} \", \"data\":\"{{ $('Formata Data').item.json.data_aplicacao }}\"} "
+      },
+      "id": "4004d732-432d-4a2d-ad16-91a76d2d6108",
+      "name": "Monday.com9",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        80
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com7').item.json.id }}",
+        "columnValues": "={\"texto3\":\"{{ $('Formata Telefone').item.json['contact[fields][5passosfaturamento]'] }} \", \"data\":\"{{ $('Formata Data').item.json.data_aplicacao }}\"} "
+      },
+      "id": "2a9252a5-479e-4259-98d8-da9d21c7b5ee",
+      "name": "Monday.com10",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        -120
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com3').item.json.id }}",
+        "columnValues": "={\"texto3\":\"{{ $('Formata Telefone').item.json['contact[fields][5passosfaturamento]'] }} \", \"data\":\"{{ $('Formata Data').item.json.data_aplicacao }}\"} "
+      },
+      "id": "9cd76bd9-7e8f-4410-b072-54b762768060",
+      "name": "Monday.com11",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        280
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"texto3\":\"{{ $('Formata Telefone').item.json['contact[fields][5passosfaturamento]'] }} \", \"data\":\"{{ $('Formata Data').item.json.data_aplicacao }}\"} "
+      },
+      "id": "73dedcbd-91ed-4d40-a9bf-2784bf932c1a",
+      "name": "Monday.com12",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        500
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5511993152305"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead da página v19*\n\n*Nome do lead*: \n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n------------------\n*E-mail*: \n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n\n------------------\n*Whatsapp*: \n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n\n------------------\n*Instagram*:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n\n------------------\n*Modelo de Negócio*: \n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n\n------------------\n*Faturamento:*\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }} \n------------------\n*Informações completas no Monday*: \n\nhttps://bma47373.monday.com/boards/5671139092/views/{{ $node[\"Monday.com5\"].json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0832933b-d558-4621-8488-d5602a34115a",
+      "name": "Notifica Renan | V19",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5511993152305"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead da página v18*\n\n*Nome do lead*: \n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n------------------\n*E-mail*: \n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n\n------------------\n*Whatsapp*: \n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n\n------------------\n*Instagram*:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n\n------------------\n*Modelo de Negócio*: \n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n\n------------------\n*Faturamento:*\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }} \n------------------\n*Informações completas no Monday*: \n\nhttps://bma47373.monday.com/boards/5671139092/views/{{ $node[\"Monday.com7\"].json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "286da649-7f3b-4753-b8f9-6dac7139836d",
+      "name": "Notifica Renan | V18",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5511993152305"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead da página v20*\n\n*Nome do lead*: \n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n------------------\n*E-mail*: \n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n\n------------------\n*Whatsapp*: \n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n\n------------------\n*Instagram*:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n\n------------------\n*Modelo de Negócio*: \n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n\n------------------\n*Faturamento:*\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }} \n------------------\n*Informações completas no Monday*: \n\nhttps://bma47373.monday.com/boards/5671139092/views/{{ $node[\"Monday.com3\"].json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b4b7e089-1c0c-41fc-88f8-e8b3cbd68705",
+      "name": "Notifica Renan | V20",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5511993152305"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead da página v21*\n\n*Nome do lead*: \n\n{{ $('Formata Telefone').item.json[\"contact[first_name]\"] }}\n\n------------------\n*E-mail*: \n\n{{ $('Formata Telefone').item.json[\"contact[email]\"] }}\n\n------------------\n*Whatsapp*: \n\n{{ $('Formata Telefone').item.json[\"contact[phone]\"] }}\n\n------------------\n*Instagram*:\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosinstagram]\"] }}\n\n------------------\n*Modelo de Negócio*: \n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosnicho]\"] }}\n\n------------------\n*Faturamento:*\n\n{{ $('Formata Telefone').item.json[\"contact[fields][5passosfaturamento]\"] }} \n------------------\n*Informações completas no Monday*: \n\nhttps://bma47373.monday.com/boards/5671139092/views/{{ $node[\"Monday.com\"].json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ecde84f6-9c90-445c-a6fc-5ec165c369fa",
+      "name": "Notifica Renan | V21",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardColumn",
+        "operation": "getAll",
+        "boardId": "5671139092"
+      },
+      "id": "4cdbbe98-4849-4764-a371-21de1b876714",
+      "name": "Monday.com8",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        340,
+        720
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "e311199f-abdc-47a6-aa49-8fd205a9a4cb",
+                    "leftValue": "={{ $('Formata Telefone').item.json['contact[fields][iscafunnelkey]'] }}",
+                    "rightValue": "v18",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "v18"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Formata Telefone').item.json['contact[fields][iscafunnelkey]'] }}",
+                    "rightValue": "v19",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "v19"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "a051b784-6324-4ee0-b7c3-b0623728fd0b",
+                    "leftValue": "={{ $('Formata Telefone').item.json['contact[fields][iscafunnelkey]'] }}",
+                    "rightValue": "v20",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "v20"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "2c72e2b6-13d7-4259-9d78-2a7b6afd6b8c",
+                    "leftValue": "={{ $('Formata Telefone').item.json['contact[fields][iscafunnelkey]'] }}",
+                    "rightValue": "v21",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "v21"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cfaf099e-79eb-4541-8a48-88f88fce6b45",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "email": "={{ $json['contact[email]'] }}",
+        "updateIfExists": true,
+        "additionalFields": {}
+      },
+      "id": "ac7b40db-3cb8-4357-b643-1134445206d0",
+      "name": "ActiveCampaign",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        200,
+        200
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "UB9gpytDjdRyLmed",
+          "name": "Active JP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contactTag",
+        "tagId": "33",
+        "contactId": "={{ $json.id }}"
+      },
+      "id": "51f94d06-5105-49a2-ad38-7be44a6ceebc",
+      "name": "ActiveCampaign1",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        380,
+        200
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "UB9gpytDjdRyLmed",
+          "name": "Active JP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3550d585-4c16-4769-a89b-d8788b3cbda9",
+        "options": {}
+      },
+      "id": "6b37a946-9bf3-4f9d-b804-db9282724005",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        200
+      ],
+      "webhookId": "3550d585-4c16-4769-a89b-d8788b3cbda9"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/6.5.5 curl/8.3.0 PHP/8.1.29",
+            "content-length": "823",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "18.213.77.190",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "18.213.77.190",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "contact[id]": "7785",
+            "contact[email]": "bma.matheus2024testev21222@gmail.com",
+            "contact[first_name]": "Matheus",
+            "contact[last_name]": "",
+            "contact[phone]": "81993515055",
+            "contact[orgname]": "",
+            "contact[customer_acct_name]": "",
+            "contact[tags]": "CGESCALA-NATIVO01, CGN8N-CONTROL, [LEAD][FORMS-NATIVO]",
+            "contact[ip4]": "186.235.185.56",
+            "contact[fields][5passosfaturamento]": "100K a 250K/mês",
+            "contact[fields][5passosinstagram]": "@matheuscristhyan",
+            "contact[fields][5passosnicho]": "Mentor, expert ou infoprodutor",
+            "contact[fields][5passossource]": "site",
+            "contact[fields][5passosmedium]": "direto",
+            "contact[fields][5passoscampaign]": "organico",
+            "contact[fields][5passosterm]": "direto",
+            "contact[fields][5passoscontent]": "direto",
+            "contact[fields][iscafunnelkey]": "v21",
+            "seriesid": "46"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/3550d585-4c16-4769-a89b-d8788b3cbda9",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-11-18T18:23:47.613Z",
+  "versionId": "61abc201-8603-4c84-b5f0-3df313c39db8"
+}
