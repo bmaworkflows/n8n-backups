@@ -1,0 +1,928 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "GreatPages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adiciona na Lista": {
+      "main": [
+        [
+          {
+            "node": "Mapeamento de Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ID Usuário": {
+      "main": [
+        [
+          {
+            "node": "Adiciona Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adiciona Tag": {
+      "main": [
+        [
+          {
+            "node": "Adiciona na Lista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GreatPages": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos": {
+      "main": [
+        [
+          {
+            "node": "Respondeu Pesquisa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respondeu Pesquisa": {
+      "main": [
+        [
+          {
+            "node": "Não Respondeu",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respondeu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respondeu": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Meteórico 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Não Respondeu": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Meteórico ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-22T16:59:47.545Z",
+  "id": "iIyzSlPaxoxsar30",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [IP3 meteorico 5] [FEVEREIRO] Formulário de Pesquisa",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "7c3f6f33-613d-40fc-901c-cc92b4442264",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1cad61e4-9a1a-4934-adc4-c7578f4baffa",
+              "name": "Data_da_conversao",
+              "value": "={{ $('GreatPages').item.json.Data_da_conversao.toDateTime().format('dd/MM/yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "521979f7-1046-4208-ae94-32c2973fc06b",
+              "name": "ip_usuário",
+              "value": "={{ $('Trata Webhook').item.json.IP_do_usuario }}",
+              "type": "string"
+            },
+            {
+              "id": "e9beece7-1efa-49b6-b2bb-e9c7491d7b55",
+              "name": "tipo_negocio",
+              "value": "={{ $json.Qual_das_opcoes_abaixo_mais_condiz_com_seu_negocio_hoje }}",
+              "type": "string"
+            },
+            {
+              "id": "38122e5e-049a-431a-b64f-4cd3d84e8606",
+              "name": "faturamento",
+              "value": "={{ $json.Qual_o_seu_faturamento_medio_mensal_em_2024 }}",
+              "type": "string"
+            },
+            {
+              "id": "60f8affb-26d5-4148-8091-d9ce9492ef8e",
+              "name": "atuacao",
+              "value": "={{ $json.Voce_ja_atua_no_mercado_de_desenvolvimento_imobiliario }}",
+              "type": "string"
+            },
+            {
+              "id": "36baebd9-5a2c-459a-8ddd-27ab8877558e",
+              "name": "dificuldade",
+              "value": "={{ $json.Qual_a_sua_maior_dificuldade_para_produzir_um_desenvolvimento_imobiliario }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "aaeefeb2-6c79-4d7d-b660-708b2b1579c0",
+      "name": "Campos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        260
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "8a327f80-7c12-484d-83af-bd1d9f174f26",
+      "name": "GreatPages",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        80,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "email": "={{ $json.email }}",
+        "updateIfExists": true,
+        "additionalFields": {
+          "firstName": "={{ $json.nome }}"
+        }
+      },
+      "id": "82024890-771d-449b-a209-7e46a257ec0f",
+      "name": "ID Usuário",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        260
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "contactList",
+        "listId": 219,
+        "contactId": "={{ $('ID Usuário').item.json.id }}"
+      },
+      "id": "409fed54-d140-4219-95b3-00d292b7b3b9",
+      "name": "Adiciona na Lista",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        260
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "contactId": "={{ $('ID Usuário').item.json.id }}",
+        "updateFields": {
+          "fieldValues": {
+            "property": [
+              {
+                "field": "={{ 128 }}",
+                "value": "={{ $('Campos').item.json.utm_content }}"
+              },
+              {
+                "field": "={{ 129 }}",
+                "value": "={{ $('Campos').item.json.utm_source }}"
+              },
+              {
+                "field": "={{ 130 }}",
+                "value": "={{ $('Campos').item.json.utm_medium }}"
+              },
+              {
+                "field": "={{ 131 }}",
+                "value": "={{ $('Campos').item.json.utm_campaign }}"
+              },
+              {
+                "field": "={{ 132 }}",
+                "value": "={{ $('Campos').item.json.utm_term }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "d4fe012b-394c-4bc8-bf72-80067013d8aa",
+      "name": "Mapeamento de Campos",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        260
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "contactTag",
+        "tagId": "=1496",
+        "contactId": "={{ $json.id }}"
+      },
+      "id": "3e716c07-3c6a-48c9-91d6-9df20aa0f960",
+      "name": "Adiciona Tag",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        260
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "formulário",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ip_usuário": "={{ $json['ip_usuário'] }}",
+            "tipo de negócio": "={{ $json.Qual_das_opcoes_abaixo_mais_condiz_com_seu_negocio_hoje }}",
+            "faturamento": "={{ $json.Qual_o_seu_faturamento_medio_mensal_em_2024 }}",
+            "já atua?": "={{ $json.Voce_ja_atua_no_mercado_de_desenvolvimento_imobiliario }}",
+            "maior dificuldade": "={{ $json.Qual_a_sua_maior_dificuldade_para_produzir_um_desenvolvimento_imobiliario }}",
+            "respondeu pesquisa": "sim"
+          },
+          "matchingColumns": [
+            "ip_usuário"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "página",
+              "displayName": "página",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ip_usuário",
+              "displayName": "ip_usuário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo de negócio",
+              "displayName": "tipo de negócio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "já atua?",
+              "displayName": "já atua?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "maior dificuldade",
+              "displayName": "maior dificuldade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "respondeu pesquisa",
+              "displayName": "respondeu pesquisa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "208c3cb1-1e93-4dce-895f-14e0d133dd43",
+      "name": "Dados Planilha |Meteórico 5",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1060,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pesquisa-meteorico5",
+        "options": {}
+      },
+      "id": "dc999f0e-9b3d-4379-85ab-d51189f78386",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        260
+      ],
+      "webhookId": "2f4f2119-6065-4108-a09b-9e351eb030e7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c429d071-16f2-4f1e-8f4f-e85e0007e76b",
+              "leftValue": "={{ $json.Qual_das_opcoes_abaixo_mais_condiz_com_seu_negocio_hoje }}",
+              "rightValue": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "acfd51b6-3b2a-4998-a0d7-ed21c91daba1",
+              "leftValue": "={{ $json.Qual_o_seu_faturamento_medio_mensal_em_2024 }}",
+              "rightValue": "Qual o seu faturamento médio mensal em 2024?",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "44115b3b-4e49-42f7-ad75-e2cf260a814c",
+              "leftValue": "={{ $json.Voce_ja_atua_no_mercado_de_desenvolvimento_imobiliario }}",
+              "rightValue": "Você já atua no mercado de desenvolvimento imobiliário?",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "5f28b8b5-4e81-4571-a243-612227988e1c",
+              "leftValue": "={{ $json.Qual_a_sua_maior_dificuldade_para_produzir_um_desenvolvimento_imobiliario }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c1004a48-f347-4666-8d96-50e03cc9232a",
+      "name": "Respondeu Pesquisa",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        500,
+        260
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ebb03c72-4d84-46fa-8fd9-b5d42588456b",
+      "name": "Não Respondeu",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        780,
+        120
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "6c5d2011-fb79-4505-9392-56308575c9d2",
+      "name": "Respondeu",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        780,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "formulário",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ip_usuário": "={{ $json['ip_usuário'] }}",
+            "respondeu pesquisa": "não"
+          },
+          "matchingColumns": [
+            "ip_usuário"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "página",
+              "displayName": "página",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ip_usuário",
+              "displayName": "ip_usuário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo de negócio",
+              "displayName": "tipo de negócio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "já atua?",
+              "displayName": "já atua?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "maior dificuldade",
+              "displayName": "maior dificuldade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "respondeu pesquisa",
+              "displayName": "respondeu pesquisa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "deb68c6b-2294-408e-bca7-3b74627d2717",
+      "name": "Dados Planilha |Meteórico ",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1060,
+        120
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "content-length": "1654",
+            "accept-encoding": "gzip",
+            "cdn-loop": "cloudflare; subreqs=1",
+            "cf-connecting-ip": "2a06:98c0:3600::103",
+            "cf-ray": "908540dc06bfe7fb-DFW",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "greatsoftwares.workers.dev",
+            "content-type": "application/x-www-form-urlencoded",
+            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTczNzk0NDMxOX0.r6CAua0ukjjYJz2xPVFd2gJgMwHXJF3UdwAhKWLYsTE",
+            "great-server": "GreatApps",
+            "great-service": "gpages-r2-pages-integrations",
+            "x-forwarded-for": "172.71.167.77",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "6137efd7fb61",
+            "x-real-ip": "172.71.167.77"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Qual_das_opcoes_abaixo_mais_condiz_com_seu_negocio_hoje": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+            "Qual_o_seu_faturamento_medio_mensal_em_2024": "Qual o seu faturamento médio mensal em 2024?",
+            "Voce_ja_atua_no_mercado_de_desenvolvimento_imobiliario": "Você já atua no mercado de desenvolvimento imobiliário?",
+            "Qual_a_sua_maior_dificuldade_para_produzir_um_desenvolvimento_imobiliario": "",
+            "Referral_Source": "https://www.incorporacaonapratica.com/ip-2025-v2?UTMSOURCEIP3=metaads&UTMMEDIUMIP3=00-SEMELHANTE&UTMCAMPAIGNIP3=CADASTRO_LEADS_IPE-02-02_FRIO_AUTO-NARRATIVA&UTMCONTENTIP3=AD07-CORTES&UTMTERMIP3=Facebook_Mobile_Reels&fbclid=IwZXh0bgNhZW0BMABhZGlkAasWq0MDyEEBHWp86ObiqeEEOaHVahe-iSpejSKHK-FzP0_PfoHfoT9pxZcJDGHl23eAFA_aem_X28rOM28vXYURFJ-XmdMwg&utm_medium=paid&utm_source=fb&utm_id=120214713091610145&utm_content=120214738357520145&utm_term=120214713091590145&utm_campaign=120214713091610145",
+            "Dispositivo": "Mobile",
+            "URL": "https://www.incorporacaonapratica.com/obrigado-pesquisa?utm_source=metaads&utm_medium=00-SEMELHANTE&utm_campaign=CADASTRO_LEADS_IPE-02-02_FRIO_AUTO-NARRATIVA&utm_term=Facebook_Mobile_Reels&utm_content=AD07-CORTES&Seu_nome=Heliton+Leal&DDD_WhatsApp=44999609770&Seu_e_mail=heliton_leal%40hotmail.com",
+            "IP_do_usuario": "2804:f50:817f:800:d84d:31c2:d240:eb95",
+            "Data_da_conversao": "2025-01-27 02:18:29",
+            "Id_do_formulario": "1257840_1_173747259972987374",
+            "Pais_do_usuario": "BR",
+            "Regiao_do_usuario": "Paraná",
+            "Cidade_do_usuario": "Marialva",
+            "Id_da_pagina": "1257840"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/pesquisa-meteorico5",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-27T02:45:09.185Z",
+  "versionId": "9c68b547-1861-41d5-b777-ebfb5ce3dcab"
+}
