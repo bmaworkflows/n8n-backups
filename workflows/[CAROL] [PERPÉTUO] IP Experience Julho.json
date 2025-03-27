@@ -1,0 +1,638 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Planilha IP",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Planilha Central de Funis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planilha IP": {
+      "main": [
+        [
+          {
+            "node": "Notifica Grupo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notifica Gabi",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Criar Oportunidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-19T13:11:34.091Z",
+  "id": "TMh37nbNQ9RAiUAI",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [PERPÉTUO] IP Experience Julho",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "dac64c21-7b8c-43e8-9675-cb0dc7d165de",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        820,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ip-experience-perpetuo-julho",
+        "options": {}
+      },
+      "id": "8d0e689e-5256-4796-b1b1-8f39a061cc6e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        260
+      ],
+      "webhookId": "41b22a21-99b4-4c6e-8e0e-744268fed002"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"NomeLead\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"DocumentoLead\": \"64332848000109\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "dc96eddd-88ca-46fc-b0fa-09e280d8f525",
+      "name": "Criar Oportunidade",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
+            },
+            {
+              "name": "phone",
+              "value": "120363401409129567-group"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "838a2421-0628-4414-ba31-32f2d48928a6",
+      "name": "Notifica Grupo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
+            },
+            {
+              "name": "phone",
+              "value": "‪5561981669359‬"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a255a61f-ad97-4411-91da-114063d5b4d9",
+      "name": "Notifica Gabi",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/15IfvVXkcn-8kk2vEzQEtuW56ekQfUsbBnPQY-LCTMYI/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "perpétuo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15IfvVXkcn-8kk2vEzQEtuW56ekQfUsbBnPQY-LCTMYI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.Data_da_conversao.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.Seu_nome }}",
+            "email": "={{ $json.Seu_melhor_e_mail }}",
+            "telefone": "={{ $json.Telefone_WhatsApp_DDD }}",
+            "pagina": "={{ $json.pagina }}",
+            "ingresso": "={{ $json.ingresso }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "fbclid": "={{ $json.fbclid }}",
+            "gclid": "={{ $json.gclid }}",
+            "ip": "={{ $json.IP_do_usuario }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ingresso",
+              "displayName": "ingresso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fbclid",
+              "displayName": "fbclid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gclid",
+              "displayName": "gclid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ip",
+              "displayName": "ip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "da75ca2d-838f-4a89-ac5b-1e7175c36446",
+      "name": "Planilha IP",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1020,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=1498517251#gid=1498517251",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1498517251,
+          "mode": "list",
+          "cachedResultName": "perpetuo ip",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1498517251"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.Data_da_conversao.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.Seu_nome }}",
+            "email": "={{ $json.Seu_melhor_e_mail }}",
+            "telefone": "={{ $json.Telefone_WhatsApp_DDD }}",
+            "pagina": "={{ $json.pagina }}",
+            "ingresso": "={{ $json.ingresso }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "fbclid": "={{ $json.fbclid }}",
+            "gclid": "={{ $json.gclid }}",
+            "ip": "={{ $json.IP_do_usuario }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ingresso",
+              "displayName": "ingresso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fbclid",
+              "displayName": "fbclid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gclid",
+              "displayName": "gclid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ip",
+              "displayName": "ip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "comprou?",
+              "displayName": "comprou?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "45991810-c303-4d50-88f0-a879e2c397c4",
+      "name": "Planilha Central de Funis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1020,
+        40
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "content-length": "728",
+            "accept-encoding": "gzip",
+            "cdn-loop": "cloudflare; subreqs=1",
+            "cf-connecting-ip": "2a06:98c0:3600::103",
+            "cf-ray": "922d44e1d0801449-DFW",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "greatsoftwares.workers.dev",
+            "content-type": "application/x-www-form-urlencoded",
+            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTc0MjM5MDQ0Nn0.uvGNZVeDTvMWNR7dShNvTuBU1HwgHJZz3lI64_ikAJM",
+            "great-server": "GreatApps",
+            "great-service": "gpages-r2-pages-integrations",
+            "x-forwarded-for": "172.71.170.120",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "172.71.170.120"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Seu_nome": "matheus",
+            "Seu_melhor_e_mail": "maatheus@gmail.com",
+            "Telefone_WhatsApp_DDD": "81993515055",
+            "pagina": "imersao-2025",
+            "ingresso": "executivo",
+            "utm_source": "WhatsApp",
+            "utm_campaign": "organico",
+            "utm_medium": "WhatsApp",
+            "utm_term": "GruposAntigos",
+            "utm_content": "WhatsApp",
+            "fbclid": "",
+            "gclid": "",
+            "Referral_Source": "Acesso direto",
+            "Dispositivo": "Desktop",
+            "URL": "https://www.incorporacaonapratica.com/imersao-2025?UTMSOURCEIP4=WhatsApp&UTMCAMPAIGNIP4=organico&UTMMEDIUMIP4=WhatsApp&UTMTERMIP4=GruposAntigos&UTMCONTENTIP4=WhatsApp",
+            "IP_do_usuario": "190.120.43.100",
+            "Data_da_conversao": "2025-03-19 13:20:37",
+            "Id_do_formulario": "1823499_1_174230723967d97fa958d2e675461700",
+            "Pais_do_usuario": "BR",
+            "Regiao_do_usuario": "Pernambuco",
+            "Cidade_do_usuario": "Caruaru",
+            "Id_da_pagina": "1823499"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/ip-experience-perpetuo-julho",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-27T03:54:22.313Z",
+  "versionId": "3e5d3c1b-d9fe-4222-bf20-fd4a4e60a300"
+}
