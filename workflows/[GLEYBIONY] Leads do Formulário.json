@@ -1,0 +1,292 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-08-27T14:58:35.604Z",
+  "id": "cm4eD4VUxiHAFgy3",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[GLEYBIONY] Leads do Formulário",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "e0be7257-0087-4e9e-ba97-67fd37d97db1",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TxFMrKrYnzT0RYAQqu5CXMB_cKbwqhVSa_5F-HlUu4A/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "[FORMULÁRIO] Página",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TxFMrKrYnzT0RYAQqu5CXMB_cKbwqhVSa_5F-HlUu4A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json['Sem rótulo name'] }}",
+            "email": "={{ $json['Sem rótulo email'] }}",
+            "telefone": "={{ $json['Sem rótulo field_520baac'] }}",
+            "ingresso": "={{ $json.INGRESSOAE4 }}",
+            "pagina": "={{ $json.PAGINAAE4 }}",
+            "utm_source": "={{ $json.UTMSOURCEAE4 }}",
+            "utm_campaign": "={{ $json.UTMCAMPAIGNAE4 }}",
+            "utm_medium": "={{ $json.UTMMEDIUMAE4 }}",
+            "utm_term": "={{ $json.UTMTERMAE4 }}",
+            "utm_content": "={{ $json.UTMCONTENTAE4 }}",
+            "comprou_ingresso?": "==IFERROR(IF(VLOOKUP(C16,'[LEAD] Comprou Ingresso'!C:E,3,0)<>\"\",\"Sim\",\"Não\"),\"Não\")"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ingresso",
+              "displayName": "ingresso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "comprou_ingresso?",
+              "displayName": "comprou_ingresso?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "0f3b3f8d-647e-4cf4-9c1a-3448c73b95df",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1240,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7f286efd-eb3c-4035-b5ab-0095134d179f",
+        "options": {}
+      },
+      "id": "88f78035-eb79-4e4b-bb77-d89c1ff96087",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        800,
+        380
+      ],
+      "webhookId": "7f286efd-eb3c-4035-b5ab-0095134d179f"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.6.1; https://gleybionycamargo.com.br",
+            "content-length": "747",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip, br, zstd",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "148.251.176.222",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "148.251.176.222"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Sem rótulo name": "Matheus",
+            "Sem rótulo email": "testeingresso@gmail.com",
+            "Sem rótulo field_520baac": "81993515055",
+            "UTMCONTENTAE4": "ad_01",
+            "UTMSOURCEAE4": "adsfb",
+            "UTMMEDIUMAE4": "base",
+            "UTMCAMPAIGNAE4": "ae",
+            "UTMTERMAE4": "reels",
+            "PAGINAAE4": "/workshop",
+            "INGRESSOAE4": "executivo",
+            "Data": "agosto 27, 2024",
+            "Horário": "3:02 pm",
+            "URL da página": "https://gleybionycamargo.com.br/workshop/?UTMSOURCEAE4=adsfb&UTMMEDIUMAE4=base&UTMCAMPAIGNAE4=ae&UTMTERMAE4=reels&UTMCONTENTAE4=ad_01",
+            "Agente de usuário": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0",
+            "IP remoto": "186.235.185.56",
+            "Desenvolvido por": "Elementor",
+            "form_id": "9cfa233",
+            "form_name": "precheck_ae4"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/7f286efd-eb3c-4035-b5ab-0095134d179f",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-08-29T13:00:53.804Z",
+  "versionId": "e0fe6af6-774e-4dd5-905c-eef71c01884c"
+}
