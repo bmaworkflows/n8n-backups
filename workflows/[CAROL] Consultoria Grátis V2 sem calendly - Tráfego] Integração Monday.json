@@ -1,0 +1,250 @@
+{
+  "active": true,
+  "connections": {
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Date & Time4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time3": {
+      "main": [
+        [
+          {
+            "node": "Monday.com13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com13": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time4": {
+      "main": [
+        [
+          {
+            "node": "Date & Time3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-10T19:41:49.699Z",
+  "id": "dcGBu8bzqbUFLwMS",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Consultoria Grátis V2 sem calendly - Tráfego] Integração Monday",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "5ba1c6c8-650b-40ab-84c5-5a8d5b38e192",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
+      },
+      "id": "377a2d19-b0fc-4e1c-86da-07f32af5339e",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd ",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "d398728f-8ffb-4ebe-af8b-8fec6c25f4d6",
+      "name": "Date & Time3",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        380,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5689478999",
+        "groupId": "novo_grupo82923",
+        "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "18860279-a753-41c3-b42a-4e128b6fd747",
+      "name": "Monday.com13",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        560,
+        320
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5689478999",
+        "itemId": "={{ $('Monday.com13').item.json.id }}",
+        "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \" {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto34__1\":\"Formação\"}    "
+      },
+      "id": "7ae7942e-78d0-47e2-98bf-8c21a7b6d1a4",
+      "name": "Monday.com14",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        920,
+        320
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2023?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n"
+      },
+      "id": "347b2f43-5aaa-4c97-97fb-16b1b3ac60e2",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        740,
+        320
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7f0a3383-5353-46fd-bc5f-35660e6e564d",
+      "name": "Date & Time4",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        180,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "14d72abb-8b73-4350-9143-67e464366dde",
+        "options": {}
+      },
+      "id": "029f9744-d655-49a2-9614-7819ed37e867",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        320
+      ],
+      "webhookId": "14d72abb-8b73-4350-9143-67e464366dde"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-11T12:24:08.832Z",
+  "versionId": "7bd3013c-1cce-4665-aa41-10eb271fafac"
+}
