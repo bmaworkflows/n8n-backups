@@ -1,0 +1,738 @@
+{
+  "active": false,
+  "connections": {
+    "Postgres1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega colunas": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Pega colunas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-02T01:36:38.096Z",
+  "id": "2P09VD9oh1VHm14d",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a3c12d17-8bee-40b9-af13-d27cdaee4f52",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let result = {};\n\nlet el = $input.all()[0].json[\"column_values\"];\n\nel.forEach(item => {\n    if (item.column.title === \"Closer\") {\n        result.closer = item.text;\n    }\n\n    if (item.column.title === \"Whatsapp\") {\n        result.whatsapp = item.text;\n    }\n\n  if (item.column.title === \"Faturamento\") {\n        result.faturamento = item.text;\n    }\n\n  if (item.column.title === \"Origem\") {\n        result.origem = item.text;\n    }\n\n  if (item.column.title === \"Etapa\") {\n        result.etapa = item.text;\n    }\n\n  if (item.column.title === \"Comparecimento\") {\n        result.comparecimento = item.text;\n    }\n\n  if (item.column.title === \"Valor do Negócio\") {\n        result.valor_do_negocio = item.text;\n    }\n\n  if (item.column.title === \"Status\") {\n        result.status = item.text;\n    }\n\n  if (item.column.title === \"Produto\") {\n        result.produto = item.text;\n    }\n\n  if (item.column.title === \"Data Call Agendada\") {\n        result.data_call_agendada = item.text;\n    }\n\n  if (item.column.title === \"Data da Venda\") {\n        result.data_venda = item.text;\n    }\n\n  if (item.column.title === \"Email\") {\n        result.email = item.text\n    }\n\n  if (item.column.title === \"Funil\") {\n        result.funil = item.text\n    }\n\n  if (item.column.title === \"Público\") {\n        result.publico = item.text\n    }\n\n  if (item.column.title === \"Anúncio\") {\n        result.anúncio = item.text\n    }\n\n   if (item.column.title === \"Posicionamento\") {\n        result.posicionamento = item.text\n    }\n\n    result.id_monday = $input.all()[0].json[\"id\"]\n\n    result.nome = $input.all()[0].json[\"name\"]\n\n    result.created_at = $input.all()[0].json[\"created_at\"]\n\n    result.quadro = \"Caba Lead\"\n    \n\n\n});\n\nreturn result;\n"
+      },
+      "id": "7c72bacd-60b5-4f66-8deb-e7f423c3947c",
+      "name": "Pega colunas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "crmcc_updates",
+          "mode": "list",
+          "cachedResultName": "crmcc_updates"
+        },
+        "table": {
+          "__rl": true,
+          "value": "vendas",
+          "mode": "list",
+          "cachedResultName": "vendas"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "id_monday",
+              "value": "={{ $json.id_monday }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "003e4e7b-17d0-42d4-a1e4-54fbf9afabe7",
+      "name": "Postgres1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        900,
+        240
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "9sRgYGpemvHKejz2",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "821fe6a9-b9ac-4a78-875f-6b06130b1680",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a6141e44-3ab7-46f3-ba33-96be035b0c7b",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "crmcc_updates",
+          "mode": "list",
+          "cachedResultName": "crmcc_updates"
+        },
+        "table": {
+          "__rl": true,
+          "value": "vendas",
+          "mode": "list",
+          "cachedResultName": "vendas"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_monday": "={{ $('Pega colunas').item.json.id_monday }}",
+            "data_criacao": "={{ $('Pega colunas').item.json.created_at == \"\" ? null : $('Pega colunas').item.json.created_at }}",
+            "valor_negocio": "={{ $('Pega colunas').item.json.valor_do_negocio == \"\" ? null : $('Pega colunas').item.json.valor_do_negocio }}",
+            "nome": "={{ $('Pega colunas').item.json.nome == \"\" ? null : $('Pega colunas').item.json.nome }}",
+            "email": "={{ $('Pega colunas').item.json.email == \"\" ? null : $('Pega colunas').item.json.email }}",
+            "closer": "={{ $('Pega colunas').item.json.closer == \"\" ? null : $('Pega colunas').item.json.closer }}",
+            "data_call": "={{ $('Pega colunas').item.json.data_call_agendada == \"\" ? null : $('Pega colunas').item.json.data_call_agendada }}",
+            "comparecimento": "={{ $('Pega colunas').item.json.comparecimento == \"\" ? null : $('Pega colunas').item.json.comparecimento }}",
+            "etapa": "={{ $('Pega colunas').item.json.etapa == \"\" ? null : $('Pega colunas').item.json.etapa}}",
+            "status": "={{ $('Pega colunas').item.json.status == \"\" ? null : $('Pega colunas').item.json.status }}",
+            "faturamento": "={{ $('Pega colunas').item.json.faturamento == \"\" ? null : $('Pega colunas').item.json.faturamento }}",
+            "produto": "={{ $('Pega colunas').item.json.produto == \"\" ? null : $('Pega colunas').item.json.produto  }}",
+            "data_venda": "={{ $('Pega colunas').item.json.data_venda == \"\" ? null : $('Pega colunas').item.json.data_venda }}",
+            "origem": "={{ $('Pega colunas').item.json.origem == \"\" ? null : $('Pega colunas').item.json.origem }}",
+            "publico": "={{ $('Pega colunas').item.json.publico == \"\" ? null : $('Pega colunas').item.json.publico}}",
+            "anuncio": "={{ $('Pega colunas').item.json[\"anúncio\"] == \"\" ? null : $('Pega colunas').item.json[\"anúncio\"] }}",
+            "posicionamento": "={{ $('Pega colunas').item.json.posicionamento == \"\" ? null : $('Pega colunas').item.json.posicionamento }}",
+            "funil": "={{ $('Pega colunas').item.json.funil == \"\" ? null : $('Pega colunas').item.json.funil }}",
+            "quadro_atual": "={{ $('Pega colunas').item.json.quadro  == \"\" ? null : $('Pega colunas').item.json.quadro }}"
+          },
+          "matchingColumns": [
+            "id_monday"
+          ],
+          "schema": [
+            {
+              "id": "id_monday",
+              "displayName": "id_monday",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_criacao",
+              "displayName": "data_criacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "closer",
+              "displayName": "closer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_call",
+              "displayName": "data_call",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "comparecimento",
+              "displayName": "comparecimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor_negocio",
+              "displayName": "valor_negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "produto",
+              "displayName": "produto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_venda",
+              "displayName": "data_venda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "origem",
+              "displayName": "origem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "publico",
+              "displayName": "publico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "anuncio",
+              "displayName": "anuncio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "posicionamento",
+              "displayName": "posicionamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "funil",
+              "displayName": "funil",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quadro_atual",
+              "displayName": "quadro_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c1af81b0-d50f-4d7d-a4ca-d1c58dc68024",
+      "name": "Postgres3",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1360,
+        380
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "9sRgYGpemvHKejz2",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "crmcc_updates",
+          "mode": "list",
+          "cachedResultName": "crmcc_updates"
+        },
+        "table": {
+          "__rl": true,
+          "value": "vendas",
+          "mode": "list",
+          "cachedResultName": "vendas"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_monday": "={{ $('Pega colunas').item.json.id_monday }}",
+            "valor_negocio": "={{ $('Pega colunas').item.json.valor_do_negocio  == \"\" ? null : $('Pega colunas').item.json.valor_do_negocio }}",
+            "data_criacao": "={{ $('Pega colunas').item.json.created_at == \"\" ? null : $('Pega colunas').item.json.created_at }}",
+            "email": "={{ $('Pega colunas').item.json.email == \"\" ? null : $('Pega colunas').item.json.email }}",
+            "closer": "={{ $('Pega colunas').item.json.closer  == \"\" ? null : $('Pega colunas').item.json.closer }}",
+            "data_call": "={{ $('Pega colunas').item.json.data_call_agendada  == \"\" ? null : $('Pega colunas').item.json.data_call_agendada }}",
+            "comparecimento": "={{ $('Pega colunas').item.json.comparecimento  == \"\" ? null : $('Pega colunas').item.json.comparecimento }}",
+            "etapa": "={{ $('Pega colunas').item.json.etapa  == \"\" ? null : $('Pega colunas').item.json.etapa}}",
+            "status": "={{ $('Pega colunas').item.json.status == \"\" ? null : $('Pega colunas').item.json.status }}",
+            "faturamento": "={{ $('Pega colunas').item.json.faturamento == \"\" ? null : $('Pega colunas').item.json.faturamento}}",
+            "produto": "={{ $('Pega colunas').item.json.produto == \"\" ? null : $('Pega colunas').item.json.produto }}",
+            "data_venda": "={{ $('Pega colunas').item.json.data_venda == \"\" ? null : $('Pega colunas').item.json.data_venda }}",
+            "origem": "={{ $('Pega colunas').item.json.origem == \"\" ? null : $('Pega colunas').item.json.origem}}",
+            "funil": "={{ $('Pega colunas').item.json.funil == \"\" ? null : $('Pega colunas').item.json.funil }}",
+            "posicionamento": "={{ $('Pega colunas').item.json.posicionamento == \"\" ? null : $('Pega colunas').item.json.posicionamento }}",
+            "anuncio": "={{ $('Pega colunas').item.json[\"anúncio\"] == \"\" ? null : $('Pega colunas').item.json[\"anúncio\"] }}",
+            "publico": "={{ $('Pega colunas').item.json.publico == \"\" ? null : $('Pega colunas').item.json.publico}}",
+            "nome": "={{ $('Pega colunas').item.json.nome == \"\" ? null : $('Pega colunas').item.json.nome }}",
+            "quadro_atual": "={{ $('Pega colunas').item.json.quadro  == \"\" ? null : $('Pega colunas').item.json.quadro }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_monday",
+              "displayName": "id_monday",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_criacao",
+              "displayName": "data_criacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "closer",
+              "displayName": "closer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_call",
+              "displayName": "data_call",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "comparecimento",
+              "displayName": "comparecimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor_negocio",
+              "displayName": "valor_negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "produto",
+              "displayName": "produto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_venda",
+              "displayName": "data_venda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "origem",
+              "displayName": "origem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "publico",
+              "displayName": "publico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "anuncio",
+              "displayName": "anuncio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "posicionamento",
+              "displayName": "posicionamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "funil",
+              "displayName": "funil",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quadro_atual",
+              "displayName": "quadro_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "61b49153-38a6-4e4c-af23-ef021b42d5b8",
+      "name": "Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1360,
+        40
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "9sRgYGpemvHKejz2",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getAll",
+        "boardId": "5689478999",
+        "groupId": "novo_grupo35544__1",
+        "returnAll": true
+      },
+      "id": "1f27536b-050b-40bb-8b0f-5d17ba5e3aac",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        20,
+        220
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardGroup",
+        "operation": "getAll",
+        "boardId": "5689478999"
+      },
+      "id": "5f228747-fca2-41ed-b0e3-cb29f4205c8c",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        740
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e17982dd-01f0-4dbf-9747-e3f1782885af",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        240,
+        220
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-10-02T01:53:33.970Z",
+  "versionId": "5e8078f7-e196-41ea-a9fd-deb04fbff511"
+}
