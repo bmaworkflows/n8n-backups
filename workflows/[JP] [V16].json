@@ -1,0 +1,248 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Notifica Closer | Rafaela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-05-27T19:02:28.092Z",
+  "id": "bSKUMxXF5y0qjBP9",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [V16]",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "5f1bc507-40c0-44ca-9a5f-fa0b10ce9982",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        820,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"No Label whatsapp\"] = formataTelefone($input.all()[0].json[\"No Label whatsapp\"])\n\nreturn $input.all();"
+      },
+      "id": "5d3b82c9-0107-416f-bd68-ebf14cbea000",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $node[\"Formata Telefone\"].json[\"No Label name\"] }}\n----------\n\n\nE-mail:\n\n{{ $node[\"Formata Telefone\"].json[\"No Label email\"] }}\n----------\n\n\nWhatsapp:\n\n{{ $node[\"Formata Telefone\"].json[\"No Label whatsapp\"] }}\n----------\n\n\nInstagram:\n\n{{ $node[\"Formata Telefone\"].json[\"No Label field_56b9407\"] }}\n----------\n\n\nTipo de Negócio:\n\n{{ $node[\"Formata Telefone\"].json[\"Qual das opções abaixo mais condiz com seu negócio hoje?\"] }}\n----------\n\n\nFaturamento:\n\n{{ $node[\"Formata Telefone\"].json[\"Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?\"] }} "
+      },
+      "id": "b67f645a-d205-41f6-a82e-da6ecb6140e4",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        200
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "novo_grupo27874__1",
+        "name": "={{ $json[\"No Label name\"] }}",
+        "additionalFields": {}
+      },
+      "id": "f0dccafe-ceb4-4d60-ac46-17fd83ced956",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        200
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f005dc63-cba1-4e57-9ed6-c54065d6f768",
+        "options": {}
+      },
+      "id": "8fd5010e-10c1-46ec-830d-dbb76de2231d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        620,
+        200
+      ],
+      "webhookId": "f005dc63-cba1-4e57-9ed6-c54065d6f768"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=553199847512"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead da página v16*\n\n*Nome do lead*: \n\n{{ $node[\"Trata Webhook\"].json[\"No Label name\"] }}\n\n------------------\n*E-mail*: \n\n{{ $node[\"Trata Webhook\"].json[\"No Label email\"] }}\n\n------------------\n*Whatsapp*: \n\n{{ $node[\"Trata Webhook\"].json[\"No Label whatsapp\"] }}\n\n------------------\n*Instagram*:\n\n{{ $node[\"Trata Webhook\"].json[\"No Label field_56b9407\"] }}\n\n------------------\n*Modelo de Negócio*: \n\n{{ $node[\"Trata Webhook\"].json[\"Qual das opções abaixo mais condiz com seu negócio hoje?\"] }}\n\n------------------\n*Faturamento:*\n\n{{ $node[\"Trata Webhook\"].json[\"Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?\"] }}\n\n------------------\n*Informações completas no Monday*: \n\nhttps://bma47373.monday.com/boards/5671139092/views/{{ $node[\"Monday.com\"].json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67bb1f8b-625d-4e32-84eb-0b728daf4ced",
+      "name": "Notifica Closer | Rafaela",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        200
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.5.3; https://josepbijari.com",
+            "content-length": "518",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.93.107.23",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cb61af859480",
+            "x-real-ip": "177.93.107.23"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "No Label name": "Matheus",
+            "No Label email": "matheus@gmail.com",
+            "No Label whatsapp": "81993515055",
+            "No Label field_56b9407": "@matheuscristhyan",
+            "Qual das opções abaixo mais condiz com seu negócio hoje?": "Profissional liberal/Prestador de serviço",
+            "Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?": "5K a 10K/mês",
+            "UTMCONTENTAE1": "",
+            "UTMSOURCEAE1": "",
+            "UTMTERMAE1": "",
+            "UTMMEDIUMAE1": "",
+            "UTMCAMPAIGNAE1": "",
+            "form_id": "8b6e815",
+            "form_name": "New Form"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/f005dc63-cba1-4e57-9ed6-c54065d6f768",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-06-04T19:02:02.279Z",
+  "versionId": "9719ed01-cb84-4e60-b580-8660e0ca9564"
+}
