@@ -1,0 +1,284 @@
+{
+  "active": false,
+  "connections": {
+    "pega dados de sdrs": {
+      "main": [
+        [
+          {
+            "node": "Rodízio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rodízio": {
+      "main": [
+        [
+          {
+            "node": "atualiza vez",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza vez": {
+      "main": [
+        [
+          {
+            "node": "sdr da vez",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sdr da vez": {
+      "main": [
+        [
+          {
+            "node": "email sdr",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "pega dados de sdrs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-13T04:05:30.942Z",
+  "id": "uGdmG7D5KUjXN2OK",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Rodízio de SDR's",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// O N8N envia os dados em `items`. Precisamos extrair o campo apropriado.\nconst items = $input.all(); // Obter todos os itens de entrada\n\n// Transformar os dados recebidos em um array de objetos (pessoas)\nlet pessoas = items.map(item => item.json); // Extrair o campo `json` de cada item\n\n// Ordenar por 'vez'\npessoas.sort((a, b) => a.vez - b.vez);\n\n// Encontrar a pessoa com vez 1 e reorganizar a ordem\nconst pessoaAtual = pessoas.shift(); // Remove o primeiro elemento (vez 1)\n\n// Atualizar as posições\npessoas.forEach(pessoa => pessoa.vez--); // Reduz a vez de todos em 1\npessoaAtual.vez = pessoas.length + 1;   // Coloca a pessoa atual no final\npessoas.push(pessoaAtual);              // Adiciona de volta à lista\n\n// Retornar os dados atualizados para o N8N (preservando row_number)\nreturn pessoas.map(pessoa => ({ json: pessoa }));\n"
+      },
+      "id": "bb1844eb-5fee-4052-b3f1-32f356bfe62e",
+      "name": "Rodízio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "5b977114-6102-498a-9e85-ebc9007d139d",
+      "name": "pega dados de sdrs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "vez": "={{ $json.vez }}",
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "vez",
+              "displayName": "vez",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d66cece-d58a-4d2c-bedd-361cc73a23de",
+      "name": "atualiza vez",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1420,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "15853b62-59c1-4313-9b88-7cc0e1542acb",
+              "leftValue": "={{ $json.vez }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d12703eb-64f5-4efe-bf66-3e728d09d909",
+      "name": "sdr da vez",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1640,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "408278de-3191-445c-b663-17ea3129a7d1",
+              "name": "nome_sdr",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "d07d8349-e690-4113-93b2-3bd158150740",
+              "name": "email_sdr",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fa32bcad-14d1-46a8-a9f6-d48295e239bb",
+      "name": "email sdr",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1860,
+        360
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "391ccc48-0e81-43b7-b1af-1da763698d74",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        860,
+        380
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-01-13T04:25:43.350Z",
+  "versionId": "281480d0-d873-4c79-a2f0-9bdc00dccfc8"
+}
