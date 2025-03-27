@@ -1,0 +1,1032 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com2": {
+      "main": [
+        [
+          {
+            "node": "Monday.com4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-05-30T20:40:36.500Z",
+  "id": "FksDipzTIP7ygl9X",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[GLEYBIONY] Consultoria Grátis V2 [Calendly Página]",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "87fa73c7-cbcb-4e99-9713-8a4e6e84983c",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        320,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
+      },
+      "id": "fc805b39-e0cf-4e6a-a92c-009e5095d9ec",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        520,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1anTOE9g81xW4CPy1AuBhsHp7b5ARerqWU1dQ8lC6yRM/edit#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "respostas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1anTOE9g81xW4CPy1AuBhsHp7b5ARerqWU1dQ8lC6yRM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {}
+      },
+      "id": "187fb501-3d9b-477e-b55d-78173099f8e3",
+      "name": "Adiciona Aplicação",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        340,
+        620
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getByColumnValue",
+        "boardId": "5918884883",
+        "columnId": "texto__1",
+        "columnValue": "matheus@gmail.com"
+      },
+      "id": "d1859617-3ec9-4b5c-816c-93a35fc6d83f",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        120,
+        560
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5918884883",
+        "groupId": "novo_grupo62557__1",
+        "name": "={{ $json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "8acb68a5-3f56-4a64-9497-c7b0016941a9",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        700,
+        240
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n--------------------------\n\nWhatsapp: \n\n{{ $('Trata Webhook').item.json.form_response.answers[1].number }}\n\n\n--------------------------\n\nInstagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].text }}\n\n--------------------------\n\nE-mail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].email }}\n\n--------------------------\n\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n--------------------------\n\nQual CENÁRIO mais se adequa ao seu caso?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n--------------------------\n\n\nJá fez algum lançamento imobiliário ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\n--------------------------\n\n\nQual seu faturamento médio mensal dos últimos 12 meses?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}\n\n--------------------------\n\n\nJá conta com investidor?\n\n{{ $('Trata Webhook').item.json.form_response.answers[8].choice.label }}\n\n--------------------------\n\n\nQual padrão do seu projeto?\n\n{{ $('Trata Webhook').item.json.form_response.answers[9].choice.label }}\n\n--------------------------\n\n\nQual VGV planejado do seu projeto?\n\n{{ $('Trata Webhook').item.json.form_response.answers[10].choice.label }}\n\n--------------------------\n\n\nQual tipo de produto?\n\n{{ $('Trata Webhook').item.json.form_response.answers[11].choice.label }}\n\n--------------------------\n\n\nQuantas incorporações você já fez? Qual VGV total?\n\n{{ $('Trata Webhook').item.json.form_response.answers[12].text }}\n\n--------------------------\n\n\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $('Trata Webhook').item.json.form_response.answers[13].text }}\n\n--------------------------\n\n\nCaso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que eu deveria aceitar sua aplicação dentre os demais interessados?\n\n{{ $('Trata Webhook').item.json.form_response.answers[14].text }}\n\n--------------------------\n\n\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $('Trata Webhook').item.json.form_response.answers[15].text }}\n\n--------------------------\n\n\nQuais dificuldades está enfrentando para alcançar esse objetivo? \n\n{{ $('Trata Webhook').item.json.form_response.answers[16].text }}\n\n--------------------------\n\n\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $('Trata Webhook').item.json.form_response.answers[17].text }}\n\n--------------------------\n\n\nVocê já participou de algum curso ou mentoria? Se sim, cite qual (is):\n\n{{ $('Trata Webhook').item.json.form_response.answers[18].text }}\n\n--------------------------\n\n\nVocê conhece ou já ouviu falar do meu programa de acompanhamento e Mentoria em grupo?\n\n{{ $('Trata Webhook').item.json.form_response.answers[19].choice.label }}\n\n--------------------------\n\n\nVocê foi pré-aprovado para uma das vagas da Consultoria. Caso você não responda a confirmação do nosso time no seu WhatsApp, sua vaga será transferida para outro interessado. Você está ciente?\n\n{{ $('Trata Webhook').item.json.form_response.answers[20].choice.label }}\n\n--------------------------\n\n\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $('Trata Webhook').item.json.form_response.answers[21].choice.label }}\n\n--------------------------\n\n\nVocê está ciente que não existe reagendamento, certo?\nA seguir, você será redirecionado para a página de agendamento, marque em uma data que você tenha certeza absoluta que poderá comparecer.\n\n{{ $('Trata Webhook').item.json.form_response.answers[22].choice.label }}"
+      },
+      "id": "59254719-4e1b-4d00-8885-d05f0455416a",
+      "name": "Monday.com2",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        900,
+        240
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "192c972a-a6cb-440d-a457-e815eaf3e309",
+        "options": {}
+      },
+      "id": "fe33309a-de68-4944-adec-e6adb0dd277d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        240
+      ],
+      "webhookId": "192c972a-a6cb-440d-a457-e815eaf3e309"
+    },
+    {
+      "parameters": {
+        "resource": "boardColumn",
+        "operation": "getAll",
+        "boardId": "5918884883"
+      },
+      "id": "f4681a17-1294-4af2-8b28-c06536dcf458",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        640,
+        540
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5918884883",
+        "itemId": "={{ $('Monday.com1').item.json.id }}",
+        "columnValues": "={\"texto__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[3].email }}\", \"n_meros__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"status__1\": \"3\"}  "
+      },
+      "id": "44a392c7-6906-48de-baf7-4572136f2503",
+      "name": "Monday.com4",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        240
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "15375",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-d8e6f742794c580772e0f588436a9e62-2701b5b4ad109509-01",
+            "x-forwarded-for": "34.230.177.131",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cb61af859480",
+            "x-real-ip": "34.230.177.131"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01HZ5NZXYRJTX3F5EVT5R94BXW",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "C6aVk7MM",
+              "token": "afbu3p58hu5fn5aicafbuhxoeszcmrng",
+              "landed_at": "2024-05-30T21:18:54Z",
+              "submitted_at": "2024-05-30T21:20:15Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "C6aVk7MM",
+                "title": "Consultoria Grátis v2 [Calendly na página]",
+                "fields": [
+                  {
+                    "id": "VskgHUrD0kM2",
+                    "ref": "01HNZHCAZMZ62B88Y5WA4XKTB6",
+                    "type": "short_text",
+                    "title": "Qual seu nome completo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "aawJjL4X7Uyh",
+                    "ref": "ba53b416-3c0f-4f9f-9fe0-266b9cbb439e",
+                    "type": "number",
+                    "title": "Número do WhatsApp com DDD\n\nMeu time confirmará sua vaga para consultoria por esse número se você for aprovado. Coloque o que você mais usa.\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "pgIYTld1oFPY",
+                    "ref": "c6fdf659-943e-4a77-ae80-060aa32a06c3",
+                    "type": "short_text",
+                    "title": "Seu @ no Instagram",
+                    "properties": {}
+                  },
+                  {
+                    "id": "iOpWv1uZ2S9D",
+                    "ref": "595a0f17-1dac-4511-88e9-8c9ff654b99b",
+                    "type": "email",
+                    "title": "Qual seu e-mail principal?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "cCwV4s7KjptG",
+                    "ref": "f47d6d5f-eff2-402e-9f59-b075f5b3abdb",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "RicGRbqEgdSe",
+                        "ref": "821ddfba-1afb-48d8-a8c2-4b011812e327",
+                        "label": "Empresário"
+                      },
+                      {
+                        "id": "OSDrS8JWYjC2",
+                        "ref": "ae7786f4-aea9-41d0-b199-727ac7e578f9",
+                        "label": "Corretor"
+                      },
+                      {
+                        "id": "vGnrhboPeLMm",
+                        "ref": "82d3855d-2699-4b8e-8187-9334ee80eda6",
+                        "label": "Incorporador"
+                      },
+                      {
+                        "id": "rCvvi0Eek080",
+                        "ref": "eac13274-51c8-408f-8ec4-3379532cbdd5",
+                        "label": "Arquiteto-incorporador"
+                      },
+                      {
+                        "id": "J9srvqy3umwW",
+                        "ref": "de1ac5ee-bb22-4b35-9c7c-b28c5c793bf1",
+                        "label": "Dono de imobiliária"
+                      },
+                      {
+                        "id": "evxWBUIF6hUs",
+                        "ref": "1bd70f79-5425-4874-b945-f59b0ddd75a4",
+                        "label": "Dono de construtora"
+                      },
+                      {
+                        "id": "1M2QRMbpuqQ5",
+                        "ref": "ceacfa32-1ed6-474c-8c92-e7334ad7a820",
+                        "label": "Dono de empreiteira"
+                      },
+                      {
+                        "id": "kcNbi09rWVcg",
+                        "ref": "bf0851e1-0945-4aaa-a08a-fd721f18d233",
+                        "label": "Incorporador imobiliário"
+                      },
+                      {
+                        "id": "hMW2ya2hnvfV",
+                        "ref": "f715c9a8-bf99-400a-9eaa-11cef18922a0",
+                        "label": "Investidor imobiliário"
+                      },
+                      {
+                        "id": "qJsKk0ncGlZz",
+                        "ref": "6952d361-3983-47b5-9895-6ff7d3692f9f",
+                        "label": "Dono de terreno"
+                      },
+                      {
+                        "id": "PaViudrqbSiz",
+                        "ref": "fceb55f0-2ccb-432e-8de6-f0e9f0318816",
+                        "label": "Outras opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "LR4toESRiMpI",
+                    "ref": "ec2f05f2-7d5c-41d1-bcf8-15c609d472c9",
+                    "type": "multiple_choice",
+                    "title": "Qual CENÁRIO mais se adequa ao seu caso?\n",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "TGUvm104l3lk",
+                        "ref": "736599ee-a8b3-478e-81d6-a3be18ba6201",
+                        "label": "Tenho uma ideia e estou começando a desenvolver"
+                      },
+                      {
+                        "id": "uNO0EUfIYy0s",
+                        "ref": "f5e50d54-5725-4b83-b369-521ce46a11be",
+                        "label": "Estou na fase de captação de áreas"
+                      },
+                      {
+                        "id": "vaw4vMPOk2DE",
+                        "ref": "fd53bf34-43e1-45fb-b363-34d795ff4e24",
+                        "label": "Estou aguardando a aprovação de projeto"
+                      },
+                      {
+                        "id": "8fbZCXKhbPyg",
+                        "ref": "3483bf77-b3a7-4ab3-959a-d9b3b07a024c",
+                        "label": "Meu projeto já está aprovado e estou aguardando o RI"
+                      },
+                      {
+                        "id": "yYWHRS4BXKhR",
+                        "ref": "6534dae2-e729-4a04-bb05-7f1fe59f9f5a",
+                        "label": "Já tenho o RI e preciso fazer o lançamento do empreendimento"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "UGH2wW1omZyc",
+                    "ref": "23b73627-c632-4b17-bc87-cfb1a3aaa017",
+                    "type": "multiple_choice",
+                    "title": "Já fez algum lançamento imobiliário ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "doZHXFCvAFDn",
+                        "ref": "73a8e73c-ca46-4001-8925-97ac59e596fb",
+                        "label": "Sim"
+                      },
+                      {
+                        "id": "l0wyDfypLxVD",
+                        "ref": "5910cd41-860a-4457-a3a0-e484728ac6df",
+                        "label": "Estou realizando o meu primeiro lançamento"
+                      },
+                      {
+                        "id": "28wylq8VPeqL",
+                        "ref": "5b96e388-69b7-4caf-9d7a-03e9774a5e3b",
+                        "label": "Não, mas tenho interesse"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "y3TqBsXWhCEO",
+                    "ref": "a17958f6-4a7a-40cb-a413-b4b59bfcfe20",
+                    "type": "multiple_choice",
+                    "title": "Qual seu faturamento médio mensal dos últimos 12 meses?\n",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "p9BcrWBz6pGm",
+                        "ref": "a841bd39-8d6d-4155-88a8-5e51b7800bb8",
+                        "label": "Até R$ 10.000,00"
+                      },
+                      {
+                        "id": "r4Uo0rPAnTTX",
+                        "ref": "4a1fb189-3af4-4783-be6d-3b8999645a38",
+                        "label": "R$ 10.000,00 a R$ 20.000,00"
+                      },
+                      {
+                        "id": "cY1qMCW3FEHQ",
+                        "ref": "6d5a33ea-329a-47ca-9516-6686c0918431",
+                        "label": "R$ 20.000,00 a R$ 50.000,00"
+                      },
+                      {
+                        "id": "A2RfAIeOtzmR",
+                        "ref": "0ef4f5c2-bdd7-4eda-be98-572d7790b88b",
+                        "label": "R$ 50.000,00 a R$ 100.000,00"
+                      },
+                      {
+                        "id": "WuUoYHKnq7uL",
+                        "ref": "2d22b29c-d4de-4618-a85a-057bce398fb2",
+                        "label": "R$ 100.000,00 a R$ 250.000,00"
+                      },
+                      {
+                        "id": "TBjxBYSLBuQQ",
+                        "ref": "95e53a90-343f-4998-abd2-21cc66f8faf8",
+                        "label": "Acima de R$ 250.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "CYcdkvz6ySNX",
+                    "ref": "66b9acce-cbd8-4112-8eb0-b2de65108653",
+                    "type": "multiple_choice",
+                    "title": "Já conta com investidor?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "JaZmNJTd6NDT",
+                        "ref": "85ea242b-2092-411d-9c5d-a28e26b99b44",
+                        "label": "Não, estou a procura"
+                      },
+                      {
+                        "id": "TZwJyykEI3nV",
+                        "ref": "9b37db7e-a62a-4937-ab9d-026328bae064",
+                        "label": "Já tenho investidor"
+                      },
+                      {
+                        "id": "ueRBigGefKaN",
+                        "ref": "6205c3d3-e6e7-49f8-aa97-75ab276af2ae",
+                        "label": "Faço com capital próprio"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "Ve9UCDDjxlYa",
+                    "ref": "e586be1d-1126-4814-b03d-3b21c14733f4",
+                    "type": "multiple_choice",
+                    "title": "Qual padrão do seu projeto?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "JUMKTWnEgkP0",
+                        "ref": "723a94f6-39e9-426c-9fce-01d7ab265ad7",
+                        "label": "Popular"
+                      },
+                      {
+                        "id": "xJUGOHk6fCW5",
+                        "ref": "a5a166e4-9708-4a5e-9dc7-772bf9b66a09",
+                        "label": "Médio"
+                      },
+                      {
+                        "id": "zSZJOo7MgVSp",
+                        "ref": "ae352738-070c-41fb-b9e7-8816c528810f",
+                        "label": "Alto Padrão"
+                      },
+                      {
+                        "id": "XPBDTFuAGn7u",
+                        "ref": "6920527d-a0e3-4356-94df-5bc0c13596eb",
+                        "label": "Alto luxo"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "HY0FkZkqVHST",
+                    "ref": "7cc07943-2be1-449a-aacd-ddd89465aa36",
+                    "type": "multiple_choice",
+                    "title": "Qual VGV planejado do seu projeto?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "5ZI1GqKeKMAk",
+                        "ref": "5674323c-1860-46a4-8354-f012d6edfc76",
+                        "label": "R$ 25MM a R$ 50MM"
+                      },
+                      {
+                        "id": "334DqcDizDRM",
+                        "ref": "793ade3c-64ed-4b75-a36a-409d982dff2f",
+                        "label": "R$ 50MM a R$ 75MM"
+                      },
+                      {
+                        "id": "O7aGDX641U5D",
+                        "ref": "5b876060-5d58-45d7-80e4-9e77a2bead9a",
+                        "label": "R$ 75MM a R$ 125MM"
+                      },
+                      {
+                        "id": "s6eURkCQSZjI",
+                        "ref": "f22e71ff-c11f-4eff-88d1-ad5c9f7280fc",
+                        "label": "R$ 125MM a R$ 200MM"
+                      },
+                      {
+                        "id": "BsjmvS4c2GEP",
+                        "ref": "7afa151f-5663-481f-a7f6-3df45e3586ca",
+                        "label": "Acima de R$ 200MM"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "DgKPWSb0Xdtw",
+                    "ref": "ffadfbe1-feec-41df-be5c-aecd3ed036ce",
+                    "type": "multiple_choice",
+                    "title": "Qual tipo de produto?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "pva6pysIGOXJ",
+                        "ref": "8ec0bd52-64cd-4f14-9c32-a27a69fd6d9a",
+                        "label": "Loteamento"
+                      },
+                      {
+                        "id": "TL9ygdp49dAU",
+                        "ref": "4f4354ac-a5c0-4644-9401-5d4bd9e4c085",
+                        "label": "Condomínio fechado"
+                      },
+                      {
+                        "id": "tOrlkM26AuVq",
+                        "ref": "e66df682-d5b6-486b-b12d-cb78d272744c",
+                        "label": "Vertical"
+                      },
+                      {
+                        "id": "5VwBoqAtsBh9",
+                        "ref": "6cf59545-c30b-4877-b59f-4e9a23e5b5aa",
+                        "label": "Comercial"
+                      },
+                      {
+                        "id": "z2dBhYCTeI4K",
+                        "ref": "a095c23a-6cd0-42e0-b35b-fe7277b10be2",
+                        "label": "Mix used"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bveU0K0wAf4p",
+                    "ref": "7e43ca26-fb0f-454f-8de6-327566b27669",
+                    "type": "short_text",
+                    "title": "Quantas incorporações você já fez? Qual VGV total?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "1ETXVl0BbvOA",
+                    "ref": "712a5baa-f8f7-494a-9425-fdf0a25d17e8",
+                    "type": "long_text",
+                    "title": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "fjBua53erMjw",
+                    "ref": "935afde5-8343-45b6-8dec-4a972ddeec93",
+                    "type": "long_text",
+                    "title": "Caso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "wkzcrlidHSql",
+                    "ref": "7fe2c5b9-9cd3-4422-8988-37e90bdd380d",
+                    "type": "long_text",
+                    "title": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                    "properties": {}
+                  },
+                  {
+                    "id": "B4Loff41DBJo",
+                    "ref": "e2b3213e-f57a-4334-ae26-9ef55f637b22",
+                    "type": "long_text",
+                    "title": " Quais dificuldades está enfrentando para alcançar esse objetivo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "0pw4Xta5Afdm",
+                    "ref": "3f3b6d53-e21e-45e9-bb97-aed2c4ce6aef",
+                    "type": "long_text",
+                    "title": "Há quanto tempo está enfrentando essas dificuldades?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "hJC04Ai5kEMe",
+                    "ref": "595e0f24-7f95-4e56-978a-94da24ef479c",
+                    "type": "long_text",
+                    "title": "Você já participou de algum curso ou mentoria? Se sim, cite qual (is):\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "xTwqzUq3wXGs",
+                    "ref": "587a31d4-30d2-4a95-84a1-062017812a6e",
+                    "type": "multiple_choice",
+                    "title": "Você conhece ou já ouviu falar do meu programa de acompanhamento e Mentoria em grupo?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "yoLExo7rRNi1",
+                        "ref": "fe45b430-440c-459c-9744-9b41e21c1cff",
+                        "label": "Sim"
+                      },
+                      {
+                        "id": "mgaOhUSpB8e9",
+                        "ref": "03415b00-f17d-42d7-b696-9d6b57cd2e90",
+                        "label": "Não"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "QZfhj4YaFjtx",
+                    "ref": "d15a3c8f-fd73-4a33-b811-95b1cae20ff4",
+                    "type": "multiple_choice",
+                    "title": "Você foi pré-aprovado para uma das vagas da Consultoria. Caso você não responda a confirmação do nosso time no seu WhatsApp, sua vaga será transferida para outro interessado. Você está ciente?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "PjQxTrIn6JQQ",
+                        "ref": "68287260-f04d-41a4-8861-2aec77d5f6e5",
+                        "label": "Claro, quero aproveitar!"
+                      },
+                      {
+                        "id": "bCEbL9RgabTn",
+                        "ref": "f487470c-d3b9-4c8e-8816-0522ee3e6c1a",
+                        "label": "Pode passar minha vaga para outra pessoa, não estou comprometido com meu negócio."
+                      }
+                    ]
+                  },
+                  {
+                    "id": "5GgW2r6MfsHu",
+                    "ref": "5d836790-d3e1-4366-8dd5-ca460f163e4f",
+                    "type": "multiple_choice",
+                    "title": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "PxMu3aFBUlAf",
+                        "ref": "9c7ab9fc-50fe-4922-b8cf-a45800914e6d",
+                        "label": "Tenho sim, um sócio."
+                      },
+                      {
+                        "id": "Y9s5ybrD66nY",
+                        "ref": "6c180f76-b9bc-4ecf-a909-1450915a8577",
+                        "label": "Tenho sim, um colaborador importante."
+                      },
+                      {
+                        "id": "f45THNF63kcw",
+                        "ref": "2e8c7295-d0af-4888-8b1d-18267bf24e33",
+                        "label": "Tenho sim, meu/minha cônjuge."
+                      },
+                      {
+                        "id": "jDHdf2XPAOwJ",
+                        "ref": "683fbacf-43f6-4e56-9098-4abac0e57e5d",
+                        "label": "Não tenho, vou sozinho mesmo!"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "FxAVbL2cHnaM",
+                    "ref": "4e7ba66b-1108-492e-931e-1dbe87636c13",
+                    "type": "multiple_choice",
+                    "title": "Você está ciente que não existe reagendamento, certo?\nA seguir, você será redirecionado para a página de agendamento, marque em uma data que você tenha certeza absoluta que poderá comparecer.",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "0vklhT1I47bx",
+                        "ref": "8f20b880-bd1e-4ef5-b887-e2a4f7e3df04",
+                        "label": "Estou ciente."
+                      },
+                      {
+                        "id": "ljWxTEt7hnaV",
+                        "ref": "932d1160-8cb7-4448-8c96-fa8b5906167e",
+                        "label": "Combinado!"
+                      }
+                    ]
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "xb1tpd0Ylpso",
+                    "ref": "beeffa73-3261-4d08-a53b-9f063d65d4d7",
+                    "title": "Página de agendamento",
+                    "type": "url_redirect",
+                    "properties": {
+                      "redirect_url": "https://gleybionycamargo.com.br/agendar?firstName={{field:01HNZHCAZMZ62B88Y5WA4XKTB6}}&email={{field:595a0f17-1dac-4511-88e9-8c9ff654b99b}}"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "matheus cristhyan",
+                  "field": {
+                    "id": "VskgHUrD0kM2",
+                    "type": "short_text",
+                    "ref": "01HNZHCAZMZ62B88Y5WA4XKTB6"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 81993515055,
+                  "field": {
+                    "id": "aawJjL4X7Uyh",
+                    "type": "number",
+                    "ref": "ba53b416-3c0f-4f9f-9fe0-266b9cbb439e"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "@matheus",
+                  "field": {
+                    "id": "pgIYTld1oFPY",
+                    "type": "short_text",
+                    "ref": "c6fdf659-943e-4a77-ae80-060aa32a06c3"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "iOpWv1uZ2S9D",
+                    "type": "email",
+                    "ref": "595a0f17-1dac-4511-88e9-8c9ff654b99b"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "evxWBUIF6hUs",
+                    "label": "Dono de construtora",
+                    "ref": "1bd70f79-5425-4874-b945-f59b0ddd75a4"
+                  },
+                  "field": {
+                    "id": "cCwV4s7KjptG",
+                    "type": "multiple_choice",
+                    "ref": "f47d6d5f-eff2-402e-9f59-b075f5b3abdb"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "TGUvm104l3lk",
+                    "label": "Tenho uma ideia e estou começando a desenvolver",
+                    "ref": "736599ee-a8b3-478e-81d6-a3be18ba6201"
+                  },
+                  "field": {
+                    "id": "LR4toESRiMpI",
+                    "type": "multiple_choice",
+                    "ref": "ec2f05f2-7d5c-41d1-bcf8-15c609d472c9"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "doZHXFCvAFDn",
+                    "label": "Sim",
+                    "ref": "73a8e73c-ca46-4001-8925-97ac59e596fb"
+                  },
+                  "field": {
+                    "id": "UGH2wW1omZyc",
+                    "type": "multiple_choice",
+                    "ref": "23b73627-c632-4b17-bc87-cfb1a3aaa017"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "A2RfAIeOtzmR",
+                    "label": "R$ 50.000,00 a R$ 100.000,00",
+                    "ref": "0ef4f5c2-bdd7-4eda-be98-572d7790b88b"
+                  },
+                  "field": {
+                    "id": "y3TqBsXWhCEO",
+                    "type": "multiple_choice",
+                    "ref": "a17958f6-4a7a-40cb-a413-b4b59bfcfe20"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "TZwJyykEI3nV",
+                    "label": "Já tenho investidor",
+                    "ref": "9b37db7e-a62a-4937-ab9d-026328bae064"
+                  },
+                  "field": {
+                    "id": "CYcdkvz6ySNX",
+                    "type": "multiple_choice",
+                    "ref": "66b9acce-cbd8-4112-8eb0-b2de65108653"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "zSZJOo7MgVSp",
+                    "label": "Alto Padrão",
+                    "ref": "ae352738-070c-41fb-b9e7-8816c528810f"
+                  },
+                  "field": {
+                    "id": "Ve9UCDDjxlYa",
+                    "type": "multiple_choice",
+                    "ref": "e586be1d-1126-4814-b03d-3b21c14733f4"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "s6eURkCQSZjI",
+                    "label": "R$ 125MM a R$ 200MM",
+                    "ref": "f22e71ff-c11f-4eff-88d1-ad5c9f7280fc"
+                  },
+                  "field": {
+                    "id": "HY0FkZkqVHST",
+                    "type": "multiple_choice",
+                    "ref": "7cc07943-2be1-449a-aacd-ddd89465aa36"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "5VwBoqAtsBh9",
+                    "label": "Comercial",
+                    "ref": "6cf59545-c30b-4877-b59f-4e9a23e5b5aa"
+                  },
+                  "field": {
+                    "id": "DgKPWSb0Xdtw",
+                    "type": "multiple_choice",
+                    "ref": "ffadfbe1-feec-41df-be5c-aecd3ed036ce"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Quantas incorporações você já fez? Qual VGV total?",
+                  "field": {
+                    "id": "bveU0K0wAf4p",
+                    "type": "short_text",
+                    "ref": "7e43ca26-fb0f-454f-8de6-327566b27669"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                  "field": {
+                    "id": "1ETXVl0BbvOA",
+                    "type": "long_text",
+                    "ref": "712a5baa-f8f7-494a-9425-fdf0a25d17e8"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Caso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                  "field": {
+                    "id": "fjBua53erMjw",
+                    "type": "long_text",
+                    "ref": "935afde5-8343-45b6-8dec-4a972ddeec93"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                  "field": {
+                    "id": "wkzcrlidHSql",
+                    "type": "long_text",
+                    "ref": "7fe2c5b9-9cd3-4422-8988-37e90bdd380d"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Quais dificuldades está enfrentando para alcançar esse objetivo?",
+                  "field": {
+                    "id": "B4Loff41DBJo",
+                    "type": "long_text",
+                    "ref": "e2b3213e-f57a-4334-ae26-9ef55f637b22"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Há quanto tempo está enfrentando essas dificuldades?",
+                  "field": {
+                    "id": "0pw4Xta5Afdm",
+                    "type": "long_text",
+                    "ref": "3f3b6d53-e21e-45e9-bb97-aed2c4ce6aef"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Você já participou de algum curso ou mentoria? Se sim, cite qual (is):",
+                  "field": {
+                    "id": "hJC04Ai5kEMe",
+                    "type": "long_text",
+                    "ref": "595e0f24-7f95-4e56-978a-94da24ef479c"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "yoLExo7rRNi1",
+                    "label": "Sim",
+                    "ref": "fe45b430-440c-459c-9744-9b41e21c1cff"
+                  },
+                  "field": {
+                    "id": "xTwqzUq3wXGs",
+                    "type": "multiple_choice",
+                    "ref": "587a31d4-30d2-4a95-84a1-062017812a6e"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "PjQxTrIn6JQQ",
+                    "label": "Claro, quero aproveitar!",
+                    "ref": "68287260-f04d-41a4-8861-2aec77d5f6e5"
+                  },
+                  "field": {
+                    "id": "QZfhj4YaFjtx",
+                    "type": "multiple_choice",
+                    "ref": "d15a3c8f-fd73-4a33-b811-95b1cae20ff4"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "Y9s5ybrD66nY",
+                    "label": "Tenho sim, um colaborador importante.",
+                    "ref": "6c180f76-b9bc-4ecf-a909-1450915a8577"
+                  },
+                  "field": {
+                    "id": "5GgW2r6MfsHu",
+                    "type": "multiple_choice",
+                    "ref": "5d836790-d3e1-4366-8dd5-ca460f163e4f"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "0vklhT1I47bx",
+                    "label": "Estou ciente.",
+                    "ref": "8f20b880-bd1e-4ef5-b887-e2a4f7e3df04"
+                  },
+                  "field": {
+                    "id": "FxAVbL2cHnaM",
+                    "type": "multiple_choice",
+                    "ref": "4e7ba66b-1108-492e-931e-1dbe87636c13"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "xb1tpd0Ylpso",
+                "ref": "beeffa73-3261-4d08-a53b-9f063d65d4d7"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/192c972a-a6cb-440d-a457-e815eaf3e309",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-05-30T23:34:21.989Z",
+  "versionId": "fb410557-af29-4c92-81e7-6468f0c419c3"
+}
