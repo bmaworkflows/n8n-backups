@@ -1,0 +1,789 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Dados planilha",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Dados planilha1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-09T17:43:29.797Z",
+  "id": "G8mK4SvsvnsTJs65",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [IMERSÃO PRESENCIAL] Vendas Guru",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "eb5a575e-6036-44c6-8bde-5f4b130b6936",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        820,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1JbA5sRocyQqiZwXZNMZinewpOOiN5QB8g4c5ETElhM8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 315736848,
+          "mode": "list",
+          "cachedResultName": "vendas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V9wxKT_fRDOXKv12DnuTNLVobETwy571jcodv1kYtbw/edit#gid=315736848"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.payload.contact.name }}",
+            "email": "={{ $json.payload.contact.email }}",
+            "telefone": "={{ $json.payload.contact.phone_number }}",
+            "data": "={{ $json.payload.dates.created_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "oferta": "={{ $json.payload.items[0].offer.name }}",
+            "preço": "={{ $json.payload.items[0].total_value }}",
+            "utm_source": "={{ $json.payload.source.utm_source }}",
+            "utm_campaign": "={{ $json.payload.source.utm_campaign }}",
+            "utm_medium": "={{ $json.payload.source.utm_medium }}",
+            "utm_content": "={{ $json.payload.source.utm_content }}",
+            "utm_term": "={{ $json.payload.source.utm_term }}",
+            "documento": "={{ $json.payload.contact.doc }}",
+            "cidade": "={{ $json.payload.infrastructure.city }}",
+            "estado": "={{ $json.payload.infrastructure.region }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "checklist",
+              "displayName": "checklist",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "documento",
+              "displayName": "documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "oferta",
+              "displayName": "oferta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "preço",
+              "displayName": "preço",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "deca2c7c-26fb-48e9-aad0-fa9c441d3c83",
+      "name": "Dados planilha",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1580,
+        240
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "9b432ce1-343a-491f-95f9-7551ac7eb698",
+              "leftValue": "={{ $json.dates.confirmed_at }}",
+              "rightValue": "={{null}}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1adaabca-1ae5-4b20-9d74-42aa6cff01e4",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        960,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7b3089d5-0668-4d1d-bad1-b0d440e8f073",
+        "options": {}
+      },
+      "id": "1eea3fa0-f6dd-489d-9e6d-c43aa186294d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        260
+      ],
+      "webhookId": "7b3089d5-0668-4d1d-bad1-b0d440e8f073"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "324533b7-38ca-4dfc-8e0b-69539232ae18",
+              "leftValue": "={{ $json.payload.dates.confirmed_at }}",
+              "rightValue": "={{null}}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3d621076-5f6b-4cbf-bbf8-151cf3892e03",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1080,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "324533b7-38ca-4dfc-8e0b-69539232ae18",
+              "leftValue": "={{ $json.dates.confirmed_at }}",
+              "rightValue": "={{null}}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c8b330f8-a50c-41d9-8cda-4f6c08d4255f",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1JbA5sRocyQqiZwXZNMZinewpOOiN5QB8g4c5ETElhM8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 315736848,
+          "mode": "list",
+          "cachedResultName": "vendas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V9wxKT_fRDOXKv12DnuTNLVobETwy571jcodv1kYtbw/edit#gid=315736848"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.contact.name }}",
+            "email": "={{ $json.contact.email }}",
+            "telefone": "={{ $json.contact.phone_number }}",
+            "data": "={{ $json.dates.created_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "oferta": "={{ $json.items[0].offer.name }}",
+            "preço": "={{ $json.items[0].total_value }}",
+            "utm_source": "={{ $json.source.utm_source }}",
+            "utm_campaign": "={{ $json.source.utm_campaign }}",
+            "utm_medium": "={{ $json.source.utm_medium }}",
+            "utm_content": "={{ $json.source.utm_content }}",
+            "utm_term": "={{ $json.source.utm_term }}",
+            "documento": "={{ $json.contact.doc }}",
+            "cidade": "={{ $json.infrastructure.city }}",
+            "estado": "={{ $json.infrastructure.region }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "checklist",
+              "displayName": "checklist",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "documento",
+              "displayName": "documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "oferta",
+              "displayName": "oferta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "preço",
+              "displayName": "preço",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "41b1e448-607b-4f3b-b9c6-396d1098471b",
+      "name": "Dados planilha1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1580,
+        440
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "digitalmanager.guru (dev@digitalmanager.guru)",
+            "content-length": "3793",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.138.65.2",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "096a4782b8aa",
+            "x-real-ip": "34.138.65.2",
+            "x-request-id": "9d76b8c3-f306-4f93-b0fc-636a932aef37",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "affiliations": [],
+            "api_token": "elV17SnFHgg8AvhS9D8FZsQtSjryfMCINO9edRcu",
+            "checkout_url": "https://clkdmg.site/pay/9d6060d6-fce8-432f-96a7-4ddf2dae1262",
+            "contact": {
+              "id": "9d76b836-a25e-4fa6-be5d-ce7b78c0c873",
+              "name": "Marília Mota",
+              "company_name": "",
+              "email": "mariliamartinsmota@gmail.com",
+              "doc": "64927903320",
+              "phone_number": "21968573634",
+              "phone_local_code": "55",
+              "address": "",
+              "address_number": "",
+              "address_comp": "",
+              "address_district": "",
+              "address_city": "",
+              "address_state": "",
+              "address_state_full_name": "",
+              "address_country": "BR",
+              "address_zip_code": "",
+              "lead": []
+            },
+            "contracts": [],
+            "dates": {
+              "canceled_at": null,
+              "confirmed_at": "2024-11-11T13:38:03Z",
+              "created_at": "2024-11-11T13:37:02Z",
+              "expires_at": null,
+              "ordered_at": "2024-11-11T13:36:35Z",
+              "unavailable_until": "2024-12-11T13:38:03Z",
+              "updated_at": "2024-11-11T13:38:35Z",
+              "warranty_until": "2024-12-11T13:38:03Z"
+            },
+            "ecommerces": [],
+            "id": "9d76b80c-7ea5-4ac8-a876-fffd3f80950b",
+            "infrastructure": {
+              "ip": "2804:389:7111:bec3:6d57:28d8:b126:65e7",
+              "city": "fortaleza",
+              "host": "clkdmg.site",
+              "region": "ce",
+              "country": "BR",
+              "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/15E148 Safari/604.1",
+              "city_lat_long": "-3.732718,-38.526995"
+            },
+            "invoice": [],
+            "items": [
+              {
+                "id": "1725300217",
+                "image_url": "https://storage.googleapis.com/disk.clkdmg.site/clients/9a2c16f5-d380-456f-8e7c-a7b361c1a4b9/images/products/9d3448f9-8e6b-44a3-9e29-314f40cdd4c5.png",
+                "internal_id": "9cea46a9-dda5-4f53-ad63-745beb76ce6d",
+                "marketplace_id": "1725300217",
+                "marketplace_name": "pagarme",
+                "name": "Imersão Presencial - Mentoria High Ticket®",
+                "offer": {
+                  "id": "9d6060d6-fce8-432f-96a7-4ddf2dae1262",
+                  "name": "INGRESSO PREMIUM: Imersão presencial - Mentoria High Ticket®  (Cópia)"
+                },
+                "producer": {
+                  "contact_email": null,
+                  "marketplace_id": "1695141544",
+                  "name": "Bijari Solucoes Em Marketing Digital Ltda"
+                },
+                "qty": 1,
+                "total_value": 1500,
+                "type": "product",
+                "unit_value": 1500
+              }
+            ],
+            "last_transaction": [],
+            "payment": {
+              "affiliate_value": 0,
+              "acquirer": {
+                "code": "0000",
+                "message": "Transação aprovada com sucesso",
+                "name": "pagarme",
+                "nsu": "",
+                "tid": 3516802895
+              },
+              "can_try_again": 1,
+              "coupon": null,
+              "currency": "BRL",
+              "discount_value": 0,
+              "gross": 1500,
+              "installments": {
+                "value": 1500,
+                "qty": 1,
+                "interest": 0
+              },
+              "marketplace_id": "3516802895",
+              "marketplace_name": "pagarme",
+              "marketplace_value": 57.95,
+              "method": "credit_card",
+              "net": 1442.05,
+              "processing_times": {
+                "started_at": "2024-11-11T13:38:01.121Z",
+                "finished_at": "2024-11-11T13:38:03.283Z",
+                "delay_in_seconds": 2
+              },
+              "refund_reason": "",
+              "refuse_reason": "",
+              "tax": {
+                "value": 0,
+                "rate": 0
+              },
+              "total": 1500,
+              "credit_card": {
+                "brand": "visa",
+                "expiration_month": "07",
+                "expiration_year": "2026",
+                "first_digits": "499818",
+                "id": "card_cm3d2je7oedh10l9tkuw9v1by",
+                "last_digits": "9318"
+              }
+            },
+            "product": {
+              "id": "1725300217",
+              "image_url": "https://storage.googleapis.com/disk.clkdmg.site/clients/9a2c16f5-d380-456f-8e7c-a7b361c1a4b9/images/products/9d3448f9-8e6b-44a3-9e29-314f40cdd4c5.png",
+              "internal_id": "9cea46a9-dda5-4f53-ad63-745beb76ce6d",
+              "marketplace_id": "1725300217",
+              "marketplace_name": "pagarme",
+              "name": "Imersão Presencial - Mentoria High Ticket®",
+              "offer": {
+                "id": "9d6060d6-fce8-432f-96a7-4ddf2dae1262",
+                "name": "INGRESSO PREMIUM: Imersão presencial - Mentoria High Ticket®  (Cópia)"
+              },
+              "producer": {
+                "marketplace_id": "1695141544",
+                "name": "Bijari Solucoes Em Marketing Digital Ltda",
+                "contact_email": ""
+              },
+              "qty": 1,
+              "total_value": 1500,
+              "type": "product",
+              "unit_value": 1500
+            },
+            "shipment": {
+              "carrier": "",
+              "service": "",
+              "tracking": "",
+              "value": 0,
+              "status": "",
+              "delivery_time": ""
+            },
+            "shipping": {
+              "name": "Standard",
+              "value": 0
+            },
+            "source": {
+              "source": null,
+              "checkout_source": null,
+              "utm_source": null,
+              "utm_campaign": null,
+              "utm_medium": null,
+              "utm_content": null,
+              "utm_term": null,
+              "pptc": []
+            },
+            "status": "approved",
+            "subscription": [],
+            "type": "producer"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/7b3089d5-0668-4d1d-bad1-b0d440e8f073",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-11-11T14:51:13.582Z",
+  "versionId": "b8669244-3cd8-4532-a6c6-4d8ec3b7fc9f"
+}
