@@ -1,0 +1,513 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-30T04:21:59.803Z",
+  "id": "IMMzLIyoi6nt13SW",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Acelera Participantes IP",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "93f2a0d1-d1fb-48a1-9453-4b03b4a0ee01",
+        "options": {}
+      },
+      "id": "f08b1205-d02d-4000-8a6e-9bc01470cf4e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        540,
+        380
+      ],
+      "webhookId": "93f2a0d1-d1fb-48a1-9453-4b03b4a0ee01"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "b74f96f1-8764-412e-9066-5b256685df88",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        780,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\n\n\n\n----------\n@ do instagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].text }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}\n\n\n----------\nQual seu faturamento médio mensal dos últimos 12 meses ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nPor que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].text }}\n\n\n----------\nEsse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Trata Webhook').item.json.form_response.answers[6].text }}\n\n\n----------\nO investimento para a participação no Acelera é de até 12x de R$ 7.202,40 no cartão de crédito ou R$ 72.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}\n"
+      },
+      "id": "835d1415-f46c-4e50-8a1e-231ff40be995",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "6713820059",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"origem__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"produto__1\":\"0\", \"valor_do_neg_cio__1\":\"72000\", \"faturamento__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\", \"whatsapp__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"whatsapp_link__1\":\"{{ \"wa.me/\"+$('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"data_de_aplica__o__1\":\"{{ $node[\"Date & Time\"].json[\"appDate\"] }}\", \"data_1__1\":\"2024-10-01\"  }"
+      },
+      "id": "f352c71d-113f-4239-a291-6706c7d5c5ed",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "6713820059",
+        "groupId": "novo_grupo92527__1",
+        "name": "={{ \"[IP2025] \" + $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "6ac05455-13de-4abb-a448-379d937515f5",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        380
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.form_response.submitted_at }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "outputFieldName": "appDate",
+        "options": {}
+      },
+      "id": "866dbbba-ce30-497b-b6b8-fdb8f819eb6e",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        380
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "6240",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-b13f920c9c78fefe0600479c3660134d-264a00e5b148417d-01",
+            "x-forwarded-for": "18.204.78.134",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "18.204.78.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01J90JNZFVAJESRYYNXZJKNRRG",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "YEaULZWz",
+              "token": "kt1sbhqwiiqcg7pd2xkt1sbrbrg0vvvi",
+              "landed_at": "2024-09-30T04:22:39Z",
+              "submitted_at": "2024-09-30T04:23:09Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "YEaULZWz",
+                "title": "A.D Acelera - IP Experience Fevereiro 2025",
+                "fields": [
+                  {
+                    "id": "yH9gLBa6NJfw",
+                    "ref": "5b9ca55e-3535-43e0-ba24-ca569813d62c",
+                    "type": "short_text",
+                    "title": "Qual seu nome completo?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "EjvnqtR8B6AI",
+                    "ref": "e0dc4341-a1b1-4d8c-999b-b28427a40278",
+                    "type": "phone_number",
+                    "title": "Número de WhatsApp com DDD",
+                    "properties": {}
+                  },
+                  {
+                    "id": "VEeoeemDvW2T",
+                    "ref": "1154ef9b-a5cc-4557-84a0-aface8331844",
+                    "type": "short_text",
+                    "title": "Seu @ no Instagram",
+                    "properties": {}
+                  },
+                  {
+                    "id": "V4Fr6TW6bngB",
+                    "ref": "51c993a7-3041-4790-9446-8afd0b0e23ca",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "3MxLzwXiwoxw",
+                        "ref": "5573e4a5-eacb-44b4-923c-424afd3402df",
+                        "label": "Empresário"
+                      },
+                      {
+                        "id": "KzPOpMZPxlUz",
+                        "ref": "adc5be86-5464-4020-a832-eed7b019920a",
+                        "label": "Corretor"
+                      },
+                      {
+                        "id": "2Tmp7ol0H5hh",
+                        "ref": "de702347-1fef-44f2-9865-3dfcf5a0598f",
+                        "label": "Incorporador"
+                      },
+                      {
+                        "id": "x4tGDSOeavQF",
+                        "ref": "bbb5d953-a8e7-4364-9fee-b09c30dba33a",
+                        "label": "Arquiteto-incorporador"
+                      },
+                      {
+                        "id": "zsBQEyDoOfNZ",
+                        "ref": "c8f61737-f566-487e-8900-85c9178f9a47",
+                        "label": "Dono de imobiliária"
+                      },
+                      {
+                        "id": "sJNoBwOXeQx5",
+                        "ref": "59d72fcb-c802-4572-b6f9-6115407022f7",
+                        "label": "Dono de construtora"
+                      },
+                      {
+                        "id": "P8Y8YA1kcm32",
+                        "ref": "6feefb91-832c-49c6-b0e1-1deacd409d6c",
+                        "label": "Dono de empreiteira"
+                      },
+                      {
+                        "id": "8tQqnsleW8u7",
+                        "ref": "799d747c-8163-428f-a345-f7d0327bc741",
+                        "label": "Incorporador imobiliário"
+                      },
+                      {
+                        "id": "dNdXkp65jqUS",
+                        "ref": "cca48c6a-eaea-47d8-8137-2f6a3fb07d2f",
+                        "label": "Investidor imobiliário"
+                      },
+                      {
+                        "id": "tm6tWA3D7GXM",
+                        "ref": "22c01947-f419-42ba-9483-54424720c00d",
+                        "label": "Dono de terreno"
+                      },
+                      {
+                        "id": "DuoFUHUnOt2O",
+                        "ref": "ec95d286-3c3c-45a5-9f6f-aafd3254b0a4",
+                        "label": "Outras opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "aTOHPFhjZo64",
+                    "ref": "1e961886-ee13-4c32-a152-19505afa713d",
+                    "type": "multiple_choice",
+                    "title": "Qual seu faturamento médio mensal dos últimos 12 meses ?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "Wd56Nhhgismu",
+                        "ref": "7bb09ddc-fdf4-404c-8662-246dcb41bae4",
+                        "label": "Até R$ 10.000,00"
+                      },
+                      {
+                        "id": "To7XBeJJH1I9",
+                        "ref": "994b2feb-7b2a-4b7d-ad44-b82c5137c35d",
+                        "label": "R$ 10.000,00 a R$ 20.000,00"
+                      },
+                      {
+                        "id": "xmqBY4xm0ZUH",
+                        "ref": "160ee599-a907-4064-9c0c-e51e9fd0996b",
+                        "label": "R$ 20.000,00 a R$ 50.000,00"
+                      },
+                      {
+                        "id": "MicZDoDcHKea",
+                        "ref": "ddf65f32-2f47-460f-bff5-86a0c86ba7fa",
+                        "label": "R$ 50.000,00 a R$ 100.000,00"
+                      },
+                      {
+                        "id": "WWBKNcfREis3",
+                        "ref": "20d48faf-6912-4e2d-b2c8-cad2b3d979f0",
+                        "label": "R$ 100.000,00 a R$ 250.000,00"
+                      },
+                      {
+                        "id": "ktY4ahODOs3N",
+                        "ref": "ec8dc165-e563-4170-8b49-3e0b9fdf4d62",
+                        "label": "Acima de R$ 250.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "EUQq16BIGZGh",
+                    "ref": "020cccda-f413-46b9-ac25-7a684e80869f",
+                    "type": "long_text",
+                    "title": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "KOOAMTBkb0Kd",
+                    "ref": "26639147-7e32-4084-8429-5a2add03ec56",
+                    "type": "long_text",
+                    "title": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "Uv6EB4OpwZO9",
+                    "ref": "c5c51377-6b27-416d-b6c8-0b71ccee1453",
+                    "type": "multiple_choice",
+                    "title": "O investimento para a participação no Acelera é de até 12x de R$ 7.202,40 no cartão de crédito ou R$ 72.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento ?.",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "SAVk236cWX7d",
+                        "ref": "69664539-d35d-4cef-bfbf-fd243a3da6f1",
+                        "label": "Sim, R$ 72.000,00 à vista."
+                      },
+                      {
+                        "id": "63X1muTEnkyo",
+                        "ref": "23926e3e-83f3-4fbb-9936-c14470db4134",
+                        "label": "Sim, parcelado em até 12x."
+                      },
+                      {
+                        "id": "HpCWjgQ8UBwG",
+                        "ref": "a380a1ed-5524-4ae0-921b-98656fc052e6",
+                        "label": "Não tenho condição de fazer o investimento."
+                      }
+                    ]
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "0jJ9eeqOqxWb",
+                    "ref": "01HTNBHAESPFR23JEP30JSNWKP",
+                    "title": "*Sua aplicação foi enviada com sucesso! *",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "description": "Fique atento ao seu WhatsApp nas próximas horas. Caso não responda nosso time, você perderá o direito à entrevista para possível aprovação.",
+                      "button_text": "again",
+                      "show_button": false,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "Matheus",
+                  "field": {
+                    "id": "yH9gLBa6NJfw",
+                    "type": "short_text",
+                    "ref": "5b9ca55e-3535-43e0-ba24-ca569813d62c"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "EjvnqtR8B6AI",
+                    "type": "phone_number",
+                    "ref": "e0dc4341-a1b1-4d8c-999b-b28427a40278"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "matheuscristhyan",
+                  "field": {
+                    "id": "VEeoeemDvW2T",
+                    "type": "short_text",
+                    "ref": "1154ef9b-a5cc-4557-84a0-aface8331844"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "sJNoBwOXeQx5",
+                    "label": "Dono de construtora",
+                    "ref": "59d72fcb-c802-4572-b6f9-6115407022f7"
+                  },
+                  "field": {
+                    "id": "V4Fr6TW6bngB",
+                    "type": "multiple_choice",
+                    "ref": "51c993a7-3041-4790-9446-8afd0b0e23ca"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "MicZDoDcHKea",
+                    "label": "R$ 50.000,00 a R$ 100.000,00",
+                    "ref": "ddf65f32-2f47-460f-bff5-86a0c86ba7fa"
+                  },
+                  "field": {
+                    "id": "aTOHPFhjZo64",
+                    "type": "multiple_choice",
+                    "ref": "1e961886-ee13-4c32-a152-19505afa713d"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?",
+                  "field": {
+                    "id": "EUQq16BIGZGh",
+                    "type": "long_text",
+                    "ref": "020cccda-f413-46b9-ac25-7a684e80869f"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
+                  "field": {
+                    "id": "KOOAMTBkb0Kd",
+                    "type": "long_text",
+                    "ref": "26639147-7e32-4084-8429-5a2add03ec56"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "SAVk236cWX7d",
+                    "label": "Sim, R$ 72.000,00 à vista.",
+                    "ref": "69664539-d35d-4cef-bfbf-fd243a3da6f1"
+                  },
+                  "field": {
+                    "id": "Uv6EB4OpwZO9",
+                    "type": "multiple_choice",
+                    "ref": "c5c51377-6b27-416d-b6c8-0b71ccee1453"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "0jJ9eeqOqxWb",
+                "ref": "01HTNBHAESPFR23JEP30JSNWKP"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/93f2a0d1-d1fb-48a1-9453-4b03b4a0ee01",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-09-30T04:44:20.224Z",
+  "versionId": "2b3bb541-7ce6-4943-8302-a6dc0cf7b0b0"
+}
