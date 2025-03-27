@@ -1,0 +1,166 @@
+{
+  "active": false,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "RabbitMQ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-05-24T19:27:37.502Z",
+  "id": "RFQbxpP61XGar7uf",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Atualizações CRM [ADD QUEUE RABBIT MQ]",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "a5c9c3af-65d9-4666-b7ae-e941674d6a5d",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        640,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "46b37607-3e23-44cc-bd11-2f4aeaa401f9",
+        "options": {}
+      },
+      "id": "8a027472-ff4e-4dd9-a7bd-b1fe681f0059",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        440,
+        380
+      ],
+      "webhookId": "46b37607-3e23-44cc-bd11-2f4aeaa401f9"
+    },
+    {
+      "parameters": {
+        "queue": "crmUpdates",
+        "options": {
+          "arguments": {
+            "argument": [
+              {
+                "key": "x-queue-type",
+                "value": "quorum"
+              }
+            ]
+          },
+          "durable": true
+        }
+      },
+      "id": "eb911d00-4c34-4d26-adae-144d878180a8",
+      "name": "RabbitMQ",
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        840,
+        380
+      ],
+      "credentials": {
+        "rabbitmq": {
+          "id": "vfQ7ZGmSOeJzEEr0",
+          "name": "RabbitMQ account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+            "content-length": "545",
+            "accept": "*/*",
+            "accept-encoding": "gzip,deflate",
+            "content-type": "application/json",
+            "traceparent": "00-03d4ddfea02cc9d36ba97b37486a7f07-c85b0cfa47fad776-01",
+            "x-forwarded-for": "185.237.4.6",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "185.237.4.6"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": {
+              "app": "monday",
+              "type": "update_column_value",
+              "triggerTime": "2024-09-08T21:51:55.298Z",
+              "subscriptionId": 366379462,
+              "userId": 53230204,
+              "originalTriggerUuid": null,
+              "boardId": 5689478999,
+              "groupId": "topics",
+              "pulseId": 7377731427,
+              "pulseName": "teste",
+              "columnId": "pessoas__1",
+              "columnType": "multiple-person",
+              "columnTitle": "Closer",
+              "value": {},
+              "previousValue": {
+                "changed_at": "2024-09-08T21:49:02.308Z",
+                "personsAndTeams": [
+                  {
+                    "id": 56825115,
+                    "kind": "person"
+                  }
+                ]
+              },
+              "changedAt": 1725832314.925791,
+              "isTopGroup": true,
+              "triggerUuid": "3fd52018364edcc5e39a0da282472101"
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/46b37607-3e23-44cc-bd11-2f4aeaa401f9",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-29T16:29:35.808Z",
+  "versionId": "43a8374c-4c01-4d04-929a-6ca24c457418"
+}
