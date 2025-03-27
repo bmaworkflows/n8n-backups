@@ -1,0 +1,410 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign2": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign1": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha | Pós presencial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-11-10T05:14:26.320Z",
+  "id": "r1m9qTr1atfnglIJ",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [IP3 meteorico 2] [FEVEREIRO] Formulário",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "0ab43ae0-78d3-4a1b-af56-c9e8b4269e8d",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        800,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['No Label telefone'] = formataTelefone($node['Trata Webhook'].json['No Label telefone'])\n\nreturn $input.all();"
+      },
+      "id": "0df956b1-d3c7-4a6e-aea1-d664cabcade0",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1PnuhPf1YWNW7xr22vFIynP4bAdZ48w4oKJ00z3x1l-g/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "formulário",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PnuhPf1YWNW7xr22vFIynP4bAdZ48w4oKJ00z3x1l-g/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "formulário": "={{ $('Formata Telefone').item.json.form_name }}",
+            "email": "={{ $('Formata Telefone').item.json[\"No Label email\"] }}",
+            "nome": "={{ $('Formata Telefone').item.json[\"No Label email\"] }}",
+            "telefone": "={{ $('Formata Telefone').item.json[\"No Label telefone\"] }}",
+            "utm_content": "={{ $('Formata Telefone').item.json.UTMCONTENTIP3 }}",
+            "utm_campaign": "={{ $('Formata Telefone').item.json.UTMCAMPAIGNIP3 }}",
+            "utm_term": "={{ $('Formata Telefone').item.json.UTMTERMIP3 }}",
+            "utm_medium": "={{ $('Formata Telefone').item.json.UTMMEDIUMIP3 }}",
+            "utm_source": "={{ $('Formata Telefone').item.json.UTMSOURCEIP3 }}",
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "formulário",
+              "displayName": "formulário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "af1aea05-1275-419f-9716-230d800f95d7",
+      "name": "Dados Planilha | Pós presencial",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1920,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "email": "={{ $json[\"No Label email\"] }}",
+        "updateIfExists": true,
+        "additionalFields": {
+          "firstName": "={{ $json['No Label email'] }}"
+        }
+      },
+      "id": "983ddbfa-7c4f-4bf5-9a96-b38100c8711a",
+      "name": "ActiveCampaign",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        260
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contactList",
+        "listId": 215,
+        "contactId": "={{ $json.id }}"
+      },
+      "id": "a6e3e43a-517d-41a1-b92a-9dee0273b4c1",
+      "name": "ActiveCampaign2",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        260
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "contactId": "={{ $('ActiveCampaign').item.json.id }}",
+        "updateFields": {
+          "fieldValues": {
+            "property": [
+              {
+                "field": "={{ 128 }}",
+                "value": "={{ $('Formata Telefone').item.json.UTMCONTENTIP3 }}"
+              },
+              {
+                "field": "={{ 129 }}",
+                "value": "={{ $('Formata Telefone').item.json.UTMSOURCEIP3 }}"
+              },
+              {
+                "field": "={{ 130 }}",
+                "value": "={{ $('Formata Telefone').item.json.UTMMEDIUMIP3 }}"
+              },
+              {
+                "field": "={{ 131 }}",
+                "value": "={{ $('Formata Telefone').item.json.UTMCAMPAIGNIP3 }}"
+              },
+              {
+                "field": "={{ 132 }}",
+                "value": "={{ $('Formata Telefone').item.json.UTMTERMIP3 }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "d58e1b75-3804-4810-bfd3-19b43b9cacda",
+      "name": "ActiveCampaign1",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        260
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "6e9bb288-6550-4b3e-bb1a-1fb444a19b90",
+        "options": {}
+      },
+      "id": "7edca13e-591a-4e86-9ab2-b0214202caf0",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        620,
+        260
+      ],
+      "webhookId": "6e9bb288-6550-4b3e-bb1a-1fb444a19b90"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.6.2; https://incorporacaonapratica.com",
+            "content-length": "670",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip, br",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.154.191.251",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "096a4782b8aa",
+            "x-real-ip": "177.154.191.251"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "No Label name": "matheus",
+            "No Label telefone": "81993515055",
+            "No Label email": "meteorico2ip3testev1@gmail.com",
+            "UTMSOURCEIP3": "organico",
+            "UTMCAMPAIGNIP3": "bootcamp",
+            "UTMMEDIUMIP3": "bio",
+            "UTMCONTENTIP3": "organico",
+            "UTMTERMIP3": "bio",
+            "Date": "11/11/2024",
+            "Time": "15:55",
+            "Page URL": "https://incorporacaonapratica.com/ip-black-november/?UTMSOURCEIP3=organico&UTMMEDIUMIP3=bio&UTMCAMPAIGNIP3=bootcamp&UTMTERMIP3=bio&UTMCONTENTIP3=organico",
+            "User Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0",
+            "Remote IP": "190.89.244.229",
+            "Powered by": "Elementor",
+            "form_id": "cf85ded",
+            "form_name": "blackip3v1"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/6e9bb288-6550-4b3e-bb1a-1fb444a19b90",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-11-18T21:24:34.163Z",
+  "versionId": "b911f6f7-f365-4e68-b25d-23111d16f416"
+}
