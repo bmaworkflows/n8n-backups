@@ -1,0 +1,182 @@
+{
+  "active": false,
+  "connections": {
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-18T17:09:06.059Z",
+  "id": "MJ5FRm2syijV7LE4",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[RETROATIVOS] Aplicação - Imersão JP Ingresso Premium",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Google Sheets').item.json['Qual o seu nome completo?'] }}\n\n\n----------\nWhatsapp:\n\n{{ $('Google Sheets').item.json['Número do WhatsApp com DDD'] }}\n\n\n----------\nEmail:\n\n{{ $('Google Sheets').item.json['Seu melhor e-mail'] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Google Sheets').item.json['Qual das opções abaixo mais condiz com seu negócio hoje?'] }}\n\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?\n\n{{ $('Google Sheets').item.json['Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes? '] }}\n\n\n----------\nVocê já possui um infoproduto?\n\n{{ $('Google Sheets').item.json['Você já possui um infoproduto?'] }}\n\n\n----------\nPor que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria PREMIUM é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $('Google Sheets').item.json['Por que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria PREMIUM é a oportunidade ideal para você e para o crescimento do seu negócio?'] }}\n\n\n\n----------\nEssa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Google Sheets').item.json['Essa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?'] }}\n\n\n----------\nO investimento para adquirir o Ingresso Premium é de até 12x de R$800,27 no cartão de crédito ou R$8.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $('Google Sheets').item.json['O investimento para adquirir o Ingresso Premium é de até 12x de R$800,27  no cartão de crédito ou R$8.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?'] }}"
+      },
+      "id": "61695217-74f2-45e6-8ac1-c8c1bec2ad57",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"n_meros\":\"8000\", \"data\":\"17/09/2024\", \"texto\":\"{{ $('Google Sheets').item.json['Número do WhatsApp com DDD'] }}\", \"texto3\":\"{{ $('Google Sheets').item.json['Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes? '] }}\", \"texto7\":\"{{ $('Google Sheets').item.json.utm_source }}\" }"
+      },
+      "id": "be25a564-2df8-4f3b-b398-2fa518d93a50",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "topics",
+        "name": "={{ \"[IMERSÃO/PREMIUM] \" + $json['Qual o seu nome completo?']}}",
+        "additionalFields": {}
+      },
+      "id": "e8dad9e8-f85e-4649-a499-aceec7c5a64f",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        800,
+        360
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "152414e5-e415-4213-8129-f1987d4bc7ab",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        320,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/14xqUnG97p-UPJz85c0QsUmMkCtFKg0DvRpAkxnqW2q0/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14xqUnG97p-UPJz85c0QsUmMkCtFKg0DvRpAkxnqW2q0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "db02992b-9255-4ced-8de4-a2aa985289e7",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        560,
+        360
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-09-18T19:02:31.895Z",
+  "versionId": "760ef5cc-c423-4e00-bb2e-69e757645376"
+}
