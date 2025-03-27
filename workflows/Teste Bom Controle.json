@@ -1,0 +1,851 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Obtém campos personalizados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Criar Oportunidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-14T04:22:01.909Z",
+  "id": "vndRGlrpW2qXsIfw",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Teste Bom Controle",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "fbd8f315-79f1-4886-b30b-7cf515b984f2",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb_c1ue8G22RvxGrrHdN27eSGSFNvo92QSVGQ8DaArH6hXBW20mFsbH1ynsbTrCaUm0xvQNMv0vQjCgr8-ic3sEr_Chqg7Xq5iao_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{$json['Name']}}\",\n  \"ValorOportunidade\": {{$json['Valor do Negócio']}},\n  \"NomeLead\": \"{{$json['Name']}}\",\n\"DocumentoLead\":\"64332848000109\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{$json['Data Call Agendada']}}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{$json['Faturamento']}}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{$json['Data de Aplicação']}}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "830e68c6-cf52-4fac-b739-3785c20fd577",
+      "name": "Criar Oportunidade",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/ObterCamposPersonalizados",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb9ssrUE6fctGQQZwa9ahCEsVYVmxOyQgrWUDCYKTMAHSnT_ed7UpIqgynsbTrCaUm3V2DRBbl7vslOLpfudN3sbqNXCubHZ_2So_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "572d271a-5eaf-44f0-913f-cf6b8a4ecde3",
+      "name": "Obtém campos personalizados",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1NULoGc5j-uKZXC5bFBWcsEq7NRzo_-_9MF6f0hcOls0/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1082854631,
+          "mode": "list",
+          "cachedResultName": "funil cg - jpb",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NULoGc5j-uKZXC5bFBWcsEq7NRzo_-_9MF6f0hcOls0/edit#gid=1082854631"
+        },
+        "options": {}
+      },
+      "id": "198c4737-d7cb-4b62-b7c6-427c1f23efef",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        500,
+        360
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "aaddcdd2-b7ab-4b2e-af99-74b7d88662b6",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        880,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "0a97778e-a7ae-4bd2-bff9-11818e0d13d6",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": 9,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "58d8edf3-b042-468d-8323-e24bc3b55aba",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.1,
+      "position": [
+        700,
+        360
+      ]
+    }
+  ],
+  "pinData": {
+    "Google Sheets": [
+      {
+        "json": {
+          "row_number": 2,
+          "Name": "Maurino",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-01-25 10:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Rafaela Luiza",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5541988833018",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-01-23 23:37",
+          "Status": "",
+          "Faturamento": "50k a 100k/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 3,
+          "Name": "Nobre",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-01-30 13:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Renan da Silva Santos",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "",
+          "Status": "",
+          "Faturamento": "de 100k a 250k",
+          "Data Segunda Call": "",
+          "Status Pré Call": "",
+          "Data Negócio Realizado": "",
+          "Produto": "",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "Name": "Wesley",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-01-31 10:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Renan da Silva Santos",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5545998008871",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2024-03-06 07:54",
+          "Status": "",
+          "Faturamento": "15K a 20K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "Name": "Blenda Durval",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-01-31 15:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Rafaela Luiza",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5516981378854",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-01-29 07:53",
+          "Status": "",
+          "Faturamento": "100K a 250K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "ig",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "Name": "Bruno Henrique Almeida da Cunha",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-01-31 13:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Renan da Silva Santos",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5585998405311",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-01-31 08:40",
+          "Status": "",
+          "Faturamento": "50k a 100k/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "ig",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "Name": "Aureliano Diniz",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-03 19:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5537988373500",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-01-29 15:58",
+          "Status": "",
+          "Faturamento": "10K a 15K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 8,
+          "Name": "Caroline Urias Gomes Almeida Nascimento",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-05 09:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Rafaela Luiza",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5511935058384",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-01-07 15:46",
+          "Status": "",
+          "Faturamento": "20K a 50K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 9,
+          "Name": "Charles Becker",
+          "Subelementos": "",
+          "Data Call Agendada": "",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "",
+          "Status": "",
+          "Faturamento": "",
+          "Data Segunda Call": "",
+          "Status Pré Call": "",
+          "Data Negócio Realizado": "",
+          "Produto": "",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 10,
+          "Name": "Ernani Alcantara",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-10 19:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5571988560078",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2024-01-10 04:50",
+          "Status": "",
+          "Faturamento": "15K a 20K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 11,
+          "Name": "Joaquim Queiroz Jr",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-10 13:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5565996501119",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-07 16:56",
+          "Status": "",
+          "Faturamento": "20K a 50K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 12,
+          "Name": "Thalita Fernandes",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-11 19:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5515998381808",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-08 05:38",
+          "Status": "",
+          "Faturamento": "15K a 20K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 13,
+          "Name": "Bianca Juca gagliano Caputo",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-11 13:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5521994598559",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-10 16:45",
+          "Status": "",
+          "Faturamento": "15K a 20K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 14,
+          "Name": "Augusto Tomazini de Araujo",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-12 15:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5565999960453",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-11 16:36",
+          "Status": "",
+          "Faturamento": "20K a 50K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "ig",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 15,
+          "Name": "Flávio dos Santos de Sousa",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-13 15:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5581999656294",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-01-29 11:20",
+          "Status": "",
+          "Faturamento": "10 a 15 k / mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 16,
+          "Name": "Fernanda",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-14 17:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5513997611125",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2024-10-15 20:21",
+          "Status": "",
+          "Faturamento": "50k a 100k/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 17,
+          "Name": "Syberia Dal Col",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-15 10:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5527996517406",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-14 05:10",
+          "Status": "",
+          "Faturamento": "50k a 100k/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 18,
+          "Name": "Luana Isse De Freitas Maes",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-17 13:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5547992730303",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-10 15:26",
+          "Status": "",
+          "Faturamento": "10K a 15K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 19,
+          "Name": "Rogério Teixeira",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-17 19:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5521980911540",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-14 19:10",
+          "Status": "",
+          "Faturamento": "15K a 20K/mês",
+          "Data Segunda Call": "2025-03-10 14:30",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 20,
+          "Name": "Thays Baniski Teixeira",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-24 15:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5567991430405",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-11 12:22",
+          "Status": "",
+          "Faturamento": "10 a 15 k / mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 21,
+          "Name": "Juliana Ribeiro",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-19 15:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5554999435272",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-11 10:19",
+          "Status": "",
+          "Faturamento": "10K a 15K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "ig",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 22,
+          "Name": "Marcos Welby",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-27 10:00",
+          "Closer": "Guilherme Bijari",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5512974110137",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-02-17 03:33",
+          "Status": "",
+          "Faturamento": "10K a 15K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "MetaAds",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 23,
+          "Name": "Lucas Brito",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-02-28 16:15",
+          "Closer": "Guilherme Bijari",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "",
+          "Valor do Negócio": "",
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "",
+          "Status": "",
+          "Faturamento": "15K a 20K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "",
+          "Data Negócio Realizado": "",
+          "Produto": "",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 24,
+          "Name": "Francisco Charles Raulino",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-03-15 17:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5584981138937",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-03-14 15:55",
+          "Status": "",
+          "Faturamento": "100K a 250K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 25,
+          "Name": "Leonardo castelo",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-03-12 13:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "https://wa.me/5511937742300",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "2025-03-11 15:47",
+          "Status": "",
+          "Faturamento": "Acima de 500K/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "Mentoria Grupo Anual",
+          "Origem": "metaads",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 26,
+          "Name": "Itamar Freitas (partial)",
+          "Subelementos": "",
+          "Data Call Agendada": "2025-03-10 17:00",
+          "Closer": "tiagogregorio@mentoriahighticket.com.br",
+          "SDR": "Gislene Alexandre",
+          "Comparecimento": "Compareceu",
+          "Whatsapp": "",
+          "Valor do Negócio": 45000,
+          "Etapa": "Follow UP",
+          "Data de Aplicação": "",
+          "Status": "",
+          "Faturamento": "50k a 100k/mês",
+          "Data Segunda Call": "",
+          "Status Pré Call": "Lead Validado",
+          "Data Negócio Realizado": "",
+          "Produto": "",
+          "Origem": "",
+          "Comparecimento Segunda Call": "",
+          "Excluído": "",
+          "Página": ""
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-22T04:14:51.153Z",
+  "versionId": "4940002b-fcf6-44e3-b909-6e655e0ba361"
+}
