@@ -1,0 +1,617 @@
+{
+  "active": true,
+  "connections": {
+    "Get Sites": {
+      "main": [
+        [
+          {
+            "node": "For Each Site...",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "For Each Site...": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Perform Site Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Uptime Event": {
+      "main": [
+        [
+          {
+            "node": "Update Site Status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Sites",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perform Site Test": {
+      "main": [
+        [
+          {
+            "node": "get status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get status": {
+      "main": [
+        [
+          {
+            "node": "Status Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status Router": {
+      "main": [
+        [
+          {
+            "node": "Log Uptime Event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Uptime Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Site Status1": {
+      "main": [
+        [
+          {
+            "node": "For Each Site...",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-13T15:30:52.859Z",
+  "id": "dO9nBPpDCxP3SNeO",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Monitoramento de Páginas",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "157a3c91-6cf1-426a-9a66-dd97c5fcb9ba",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -340,
+        622.79831370854
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b0cbcff5-bfcf-46a5-a386-65c4dd56c42f",
+              "name": "date",
+              "type": "string",
+              "value": "={{ $json.headers.date }}"
+            },
+            {
+              "id": "8c4155e4-bcc6-41dd-9582-346a57a7b997",
+              "name": "Property",
+              "type": "string",
+              "value": "={{ $('For Each Site...').item.json.Property }}"
+            },
+            {
+              "id": "f0320678-d352-486f-a633-9980c4fc73b2",
+              "name": "UP_FROM_UP",
+              "type": "boolean",
+              "value": "={{ $json.statusCode < 400 && $('For Each Site...').item.json.Status === 'UP' }}"
+            },
+            {
+              "id": "61783eb6-a683-44c9-aa0c-5fc5247da9fa",
+              "name": "DOWN_FROM_DOWN",
+              "type": "boolean",
+              "value": "={{ $json.statusCode >= 400 && $('For Each Site...').item.json.Status === 'DOWN' }}"
+            },
+            {
+              "id": "1052a69e-4456-445d-bdd9-2765b334cf64",
+              "name": "UP_FROM_DOWN",
+              "type": "boolean",
+              "value": "={{ $json.statusCode < 400 && $('For Each Site...').item.json.Status === 'DOWN' }}"
+            },
+            {
+              "id": "9af72278-5b29-406a-b4c5-f47f3d805063",
+              "name": "DOWN_FROM_UP",
+              "type": "boolean",
+              "value": "={{ $json.statusCode >= 400 && $('For Each Site...').item.json.Status === 'UP' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "567e51c2-7f40-46c1-9880-5c76d00ac7e0",
+      "name": "Calculate Status",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        640,
+        1080
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1AuX1Roj47LOunKgs4ZopNfi49Xp3CADlV9E-guBGjwA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "paginas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AuX1Roj47LOunKgs4ZopNfi49Xp3CADlV9E-guBGjwA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "b4495523-d102-42d8-b65c-e492e42e21d2",
+      "name": "Get Sites",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        -80,
+        620
+      ],
+      "typeVersion": 4.3,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1AuX1Roj47LOunKgs4ZopNfi49Xp3CADlV9E-guBGjwA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1595166476,
+          "mode": "list",
+          "cachedResultName": "status",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AuX1Roj47LOunKgs4ZopNfi49Xp3CADlV9E-guBGjwA/edit#gid=1595166476"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "date": "={{ $json.date }}",
+            "period": "={{ new Date($json.date).format(\"yyyy-MM\") }}",
+            "nome": "={{ $json.site }}",
+            "status": "={{ $json.statusCode }}",
+            "mensagem": "={{ $json.statusMessage }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "period",
+              "displayName": "period",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3fb6a12a-5757-4c2e-b6bb-847f8b46921c",
+      "name": "Log Uptime Event",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        1160,
+        720
+      ],
+      "typeVersion": 4.3,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.nome }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "b4088e0b-52bf-4404-b927-01bff150b12c",
+      "name": "Perform Site Test",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        460,
+        680
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0b577cda-a199-4360-9350-7d6d42447b33",
+      "name": "For Each Site...",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        240,
+        660
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "content": "## 1. Setting a Schedule\n[Read more about Scheduling Workflows](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger/)\n\nSince we expect downtime to be a rare occurance, our monitor should only check infrequently during the day. We'll use a schedule trigger for this purpose.\n\nOnce the schdule activates, we'll pull a list of sites to check from our google sheet.",
+        "height": 451.46281790887826,
+        "width": 533.3167991131336,
+        "color": 7
+      },
+      "id": "6c7bfae3-2806-4087-92f9-f8010ef87715",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -404.66342668482457,
+        362.79831370854004
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2. Perform Site Checks\n[Read more about using HTTP requests](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/)\n\nn8n makes it easy to communicate with external websites by offering a powerful HTTP request node which can handle GET and POST requests as well as pagination.\n\nHere, we're only interested in the status code of our requests.",
+        "height": 464.2968162619932,
+        "width": 596.6620781418152,
+        "color": 7
+      },
+      "id": "d133109c-ebd3-4bcf-ab51-7e37bc059085",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        450.6341257519686
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3. Sending Alerts and Logging Results\n[Read more about using Switch for powerful control flow](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.switch)\n\nThe switch node is powerful control flow tool that makes your workflows smart. Here, we're able to use Switch to trigger alert notifications whenever we have DOWN status or whenever we get a status change.\n\nWe store the event in our Sites Google Sheet and update the site's status which will be used to calculate our state on the next scheduled run.",
+        "height": 600.2604061412927,
+        "width": 720.3351531809235,
+        "color": 7
+      },
+      "id": "14dd219f-dd4c-4b15-8ebc-2a179b7d66e0",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Try It Out!\n### Thie workflow showcases how you can build a simple website monitoring service using Scheduled Triggers and the HTTP Requests node. \n\n### Need Help?\nJoin the [Discord](https://discord.com/invite/XPKeKXeB7d) or ask in the [Forum](https://community.n8n.io/)!\n\nHappy Hacking!",
+        "height": 299.942498076894,
+        "width": 276.590892958905
+      },
+      "id": "bb735984-4341-4fc1-a8c0-4853bb86c37c",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -716.92609021317,
+        362.79831370854004
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n### 🚨Google Sheet Required!\nYou'll need the following columns:\n* **Property** - the website address to monitor\n* **Status** - either one of \"UP\" or \"DOWN\"",
+        "height": 379.4991553144906,
+        "width": 262.6069985025353
+      },
+      "id": "08787289-ed8c-4fe0-b204-7a2ead2430a9",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        582.79831370854
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1AuX1Roj47LOunKgs4ZopNfi49Xp3CADlV9E-guBGjwA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "paginas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AuX1Roj47LOunKgs4ZopNfi49Xp3CADlV9E-guBGjwA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $('For Each Site...').item.json.nome }}",
+            "status": "={{ $('Status Router').item.json.statusCode }}",
+            "mensagem": "={{ $('Status Router').item.json.statusMessage }}"
+          },
+          "matchingColumns": [
+            "nome"
+          ],
+          "schema": [
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bb1440bd-d4fc-4279-86d6-de895ca72327",
+      "name": "Update Site Status1",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        1340,
+        720
+      ],
+      "typeVersion": 4.3,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8483c203-6b7d-40b2-93e2-f9d9b3e6352f",
+              "name": "statusCode",
+              "value": "={{ $json.statusCode }}",
+              "type": "number"
+            },
+            {
+              "id": "60739252-388c-488a-8117-4119e4409bde",
+              "name": "statusMessage",
+              "value": "={{ $json.statusMessage }}",
+              "type": "string"
+            },
+            {
+              "id": "99eb61d8-940e-4495-94d9-9309e7a1016a",
+              "name": "date",
+              "value": "={{ $json.headers.date }}",
+              "type": "string"
+            },
+            {
+              "id": "4d9aa3f6-2298-4f31-a79e-caf01a52347d",
+              "name": "site",
+              "value": "={{ $('For Each Site...').item.json.nome }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "73ea9701-319d-420b-b89c-19c6c390bc55",
+      "name": "get status",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        620,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.statusCode }}",
+                    "rightValue": 200
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "UP"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "30217190-f3c5-4497-a808-a699c5cc9870",
+                    "leftValue": "={{ $json.statusCode }}",
+                    "rightValue": 400,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DOWN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7c695a02-b0d9-4542-98fa-d38df7f73213",
+      "name": "Status Router",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        860,
+        720
+      ],
+      "typeVersion": 3
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        0
+      ]
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-14T12:41:08.022Z",
+  "versionId": "2319766a-b750-4f4f-951d-80550384adb5"
+}
