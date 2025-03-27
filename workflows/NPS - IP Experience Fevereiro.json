@@ -1,0 +1,723 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos": {
+      "main": [
+        [
+          {
+            "node": "Adiciona na Planilha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-02-25T20:14:32.312Z",
+  "id": "YvEyqfNzvwQFOF32",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "NPS - IP Experience Fevereiro",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "d4930471-98cb-4090-b836-5236d8f0facd",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4a7b7fbe-6a6f-42a2-b73f-8c86a1259ba9",
+        "options": {}
+      },
+      "id": "f6854149-150f-4294-bc36-29bcb140db71",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        820,
+        380
+      ],
+      "webhookId": "4a7b7fbe-6a6f-42a2-b73f-8c86a1259ba9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "175fe66f-f800-43c6-9a55-166bea8902ad",
+              "name": "nome",
+              "value": "={{ $json.form_response.answers[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "4dd0ec54-1092-4fc6-956b-bb64a6545538",
+              "name": "sobrenome",
+              "value": "={{ $json.form_response.answers[1].text }}",
+              "type": "string"
+            },
+            {
+              "id": "8d59bbef-bc5e-443d-a195-36a214c6025d",
+              "name": "whatsapp",
+              "value": "={{ $json.form_response.answers[2].phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "8ee722b9-8e81-49b9-a51e-ed3a6a7e2470",
+              "name": "email",
+              "value": "={{ $json.form_response.answers[3].email }}",
+              "type": "string"
+            },
+            {
+              "id": "61fa68d9-d15e-48f5-9e3c-917e7568fce3",
+              "name": "experiencia no evento",
+              "value": "={{ $json.form_response.answers[4].number }}",
+              "type": "number"
+            },
+            {
+              "id": "376d2ae0-3e2b-4eb2-adfc-a35e4dd6c675",
+              "name": "o que mais gostou no evento",
+              "value": "={{ $json.form_response.answers[5].choices.labels.length === 1 ? $json.form_response.answers[5].choices.labels : $json.form_response.answers[5].choices.labels.join(\", \")}}",
+              "type": "string"
+            },
+            {
+              "id": "a9211876-46f3-49a0-aea7-2c3539c687b6",
+              "name": "motivos de escolher o que mais gostou",
+              "value": "={{ $json.form_response.answers[6].text }}",
+              "type": "string"
+            },
+            {
+              "id": "4cb864c9-2219-4f44-8ea4-5846f68bcb6d",
+              "name": "o que menos  gostou no evento",
+              "value": "={{ $json.form_response.answers[7].choices.labels.length === 1 ? $json.form_response.answers[7].choices.labels : $json.form_response.answers[7].choices.labels.join(\", \")  }}",
+              "type": "string"
+            },
+            {
+              "id": "4c2322a3-05b7-4c3e-8f5d-430bc0bdad50",
+              "name": "motivos de escolher o que menos gostou",
+              "value": "={{ $json.form_response.answers[8].text }}",
+              "type": "string"
+            },
+            {
+              "id": "18b25c0e-dcf2-4a1f-8488-cda153467048",
+              "name": "o que poderia melhorar no evento",
+              "value": "={{ $json.form_response.answers[9].text }}",
+              "type": "string"
+            },
+            {
+              "id": "e15b8aec-216b-4c0d-940f-dc25b4fe3ec8",
+              "name": "probabilidade de você recomendar o IP Experience a um amigo/parente?",
+              "value": "={{ $json.form_response.answers[10].number }}",
+              "type": "number"
+            },
+            {
+              "id": "281e4b07-ad08-4a22-9a35-cf83ef4d180e",
+              "name": "animação para a próxima Edição do IP Experience?",
+              "value": "={{ $json.form_response.answers[11].number }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "21f394fd-5e47-409d-86cc-c351e2dfdbd9",
+      "name": "campos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1240,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1QxWgsh7NxzEyx7FZxUhqLOS94g5T4mSCPD2GLR4Bnxc/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "respostas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QxWgsh7NxzEyx7FZxUhqLOS94g5T4mSCPD2GLR4Bnxc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data da resposta": "={{ $('Trata Webhook').item.json.form_response.submitted_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.nome }}",
+            "sobrenome": "={{ $json.sobrenome }}",
+            "email": "={{ $json.email }}",
+            "telefone": "={{ $json.whatsapp }}",
+            "experiencia no evento": "={{ $json['experiencia no evento'] }}",
+            "o que mais gostou no evento": "={{ $json['o que mais gostou no evento'] }}",
+            "motivos de escolher o que mais gostou": "={{ $json['motivos de escolher o que mais gostou'] }}",
+            "o que menos gostou no evento": "={{ $json['o que menos  gostou no evento'] }}",
+            "motivos de escolher o que menos gostou": "={{ $json['motivos de escolher o que menos gostou'] }}",
+            "o que poderia melhorar no evento": "={{ $json['o que poderia melhorar no evento'] }}",
+            "probabilidade de você recomendar o IP Experience a um amigo/parente?": "={{ $json['probabilidade de você recomendar o IP Experience a um amigo/parente?'] }}",
+            "animação para a próxima Edição do IP Experience?": "={{ $json['animação para a próxima Edição do IP Experience?'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data da resposta",
+              "displayName": "data da resposta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sobrenome",
+              "displayName": "sobrenome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "experiencia no evento",
+              "displayName": "experiencia no evento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "o que mais gostou no evento",
+              "displayName": "o que mais gostou no evento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "motivos de escolher o que mais gostou",
+              "displayName": "motivos de escolher o que mais gostou",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "o que menos gostou no evento",
+              "displayName": "o que menos gostou no evento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "motivos de escolher o que menos gostou",
+              "displayName": "motivos de escolher o que menos gostou",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "o que poderia melhorar no evento",
+              "displayName": "o que poderia melhorar no evento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "probabilidade de você recomendar o IP Experience a um amigo/parente?",
+              "displayName": "probabilidade de você recomendar o IP Experience a um amigo/parente?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "animação para a próxima Edição do IP Experience?",
+              "displayName": "animação para a próxima Edição do IP Experience?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9027d189-c00d-41d7-a73a-77b807a6fd79",
+      "name": "Adiciona na Planilha",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1460,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "6505",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-c08ffc374861401938b8460eb80a12d4-be8ddc616af70859-01",
+            "x-forwarded-for": "34.230.177.131",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3bcccbbbe293",
+            "x-real-ip": "34.230.177.131"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01JMZC8YX68GTRN68K7WJCVMQN",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "aw7CipAS",
+              "token": "1ak582wn3kfrqafxs4pxta1ak5816qz6",
+              "landed_at": "2025-02-25T20:18:15Z",
+              "submitted_at": "2025-02-25T20:20:18Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "aw7CipAS",
+                "title": "NPS - IP Experience - Fev/2025",
+                "fields": [
+                  {
+                    "id": "nd395mQ4KOl0",
+                    "ref": "19775a9a-0966-4ed6-98af-52702b9eb4e0",
+                    "type": "short_text",
+                    "title": "First name",
+                    "properties": {}
+                  },
+                  {
+                    "id": "FH66BUeb8Km6",
+                    "ref": "517358a3-30f5-451c-8520-6b56ad535e6c",
+                    "type": "short_text",
+                    "title": "Last name",
+                    "properties": {}
+                  },
+                  {
+                    "id": "XNURNqiv2gtC",
+                    "ref": "144b6a2b-a67b-4bd3-bb29-c9a00025683b",
+                    "type": "phone_number",
+                    "title": "Phone number",
+                    "properties": {}
+                  },
+                  {
+                    "id": "2AWn1RsunHRV",
+                    "ref": "e191ba60-0592-4e60-af1d-c980f4c9882c",
+                    "type": "email",
+                    "title": "Email",
+                    "properties": {}
+                  },
+                  {
+                    "id": "Hc0qLK34pTXl",
+                    "ref": "0f9feba4-39bb-400d-b62b-b56d2827ae09",
+                    "type": "rating",
+                    "title": "*Como você avalia a sua experiência geral no evento?*",
+                    "properties": {}
+                  },
+                  {
+                    "id": "dzVPly8RLoZY",
+                    "ref": "253b35ed-6b75-4039-9aab-3e8eae100e9a",
+                    "type": "multiple_choice",
+                    "title": "*O que você mais gostou no evento?*",
+                    "properties": {},
+                    "allow_multiple_selections": true,
+                    "choices": [
+                      {
+                        "id": "wyS6j2ngZeJX",
+                        "ref": "81ca4ee0-43c7-4f57-b9a5-f87e41b7f822",
+                        "label": "Local e Infra do evento"
+                      },
+                      {
+                        "id": "RuzXb35J2vS4",
+                        "ref": "99d8eb06-7600-43e4-9f7d-5f467f7ec449",
+                        "label": "Conteúdo relevante"
+                      },
+                      {
+                        "id": "BQMncn6tl8GF",
+                        "ref": "c7788c01-7b5f-49da-947a-314022adc9d1",
+                        "label": "Sessão de Perguntas & Respostas"
+                      },
+                      {
+                        "id": "n27HEFpLEkTp",
+                        "ref": "c8b51233-5e81-4d40-a4d5-fd5f92bea987",
+                        "label": "Networking"
+                      },
+                      {
+                        "id": "ZuhLWBR3OdIb",
+                        "ref": "5d52ab87-c7ee-4e1f-92ab-8f9c1e0ea49f",
+                        "label": "Coffee Break"
+                      },
+                      {
+                        "id": "wrQYbAiYNPav",
+                        "ref": "2fa7996f-2831-4734-8f02-470d7cf6533b",
+                        "label": "Almoço de encerramento"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "eTWHh6892OGI",
+                    "ref": "176d29f4-582a-4745-98e7-1f2467932cfb",
+                    "type": "long_text",
+                    "title": "O que fez você escolher isso como o que* mais gostou no evento? ☺️*",
+                    "properties": {}
+                  },
+                  {
+                    "id": "aclRGwjUIooi",
+                    "ref": "0078cd1c-9dac-4fad-b2b2-964cf36f31e8",
+                    "type": "multiple_choice",
+                    "title": "*O que você menos gostou no evento?*",
+                    "properties": {},
+                    "allow_multiple_selections": true,
+                    "choices": [
+                      {
+                        "id": "DyEduepTrpLH",
+                        "ref": "a8d2438f-9f6b-4c42-8a26-19a046e1aae4",
+                        "label": "Credencimento"
+                      },
+                      {
+                        "id": "ESTqWZfdYvWZ",
+                        "ref": "c098a27d-04cb-41b0-82a5-601542f8f1b5",
+                        "label": "Local e Infra do evento"
+                      },
+                      {
+                        "id": "SV3I9uLD0Vwu",
+                        "ref": "d3c351aa-29b8-4e90-a641-8dff50947404",
+                        "label": "Duração das agendas"
+                      },
+                      {
+                        "id": "HvbcJ56ylICN",
+                        "ref": "51a5ffc4-42eb-408b-8353-2363acd45e6e",
+                        "label": "Falta de informações no grupo oficial do evento"
+                      },
+                      {
+                        "id": "bYNG1MxDNsZy",
+                        "ref": "098f9b33-edb9-4021-9e71-71948cba3381",
+                        "label": "Logística difícil e sem restaurantes próximos"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "QG5NV07IAaSh",
+                    "ref": "236a4208-fff2-46e7-9693-de770e255d19",
+                    "type": "long_text",
+                    "title": "O que fez você escolher isso como o que* menos gostou no evento? 😟*",
+                    "properties": {}
+                  },
+                  {
+                    "id": "m9huxXOgx6Pd",
+                    "ref": "8d76ea25-fd0d-472a-b6aa-a4feafa35572",
+                    "type": "long_text",
+                    "title": "*Na sua opinião, o que poderíamos melhorar para o próximo evento?*",
+                    "properties": {}
+                  },
+                  {
+                    "id": "xizFGDD0aprg",
+                    "ref": "55b4845c-451c-40e9-ab3c-f12f84a76f08",
+                    "type": "nps",
+                    "title": "De 0 a 10, qual a probabilidade de você recomendar o *IP Experience* a um amigo/parente?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "7t3jiAzgHMLs",
+                    "ref": "6b325f41-b316-4d20-9236-0e6360dc8b07",
+                    "type": "rating",
+                    "title": "O quanto você está animado para a próxima Edição do IP Experience?",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "IM3RG8ceKVzP",
+                    "ref": "thankyou-screen",
+                    "title": "Agradecemos sua resposta!\n\nVamos juntos evoluindo e crescendo no mercado imobiliário!\n\nTe vejo no próximo *IP Experience*!",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "button_text": "again",
+                      "show_button": false,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    },
+                    "attachment": {
+                      "type": "image",
+                      "href": "https://images.typeform.com/images/D9KdxNRFTFgV",
+                      "properties": {
+                        "description": "mosaico"
+                      }
+                    },
+                    "layout": {
+                      "type": "stack",
+                      "attachment": {
+                        "type": "image",
+                        "href": "https://images.typeform.com/images/D9KdxNRFTFgV",
+                        "properties": {
+                          "brightness": 0.85,
+                          "focal_point": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "description": "mosaico"
+                        }
+                      },
+                      "viewport_overrides": {
+                        "small": {
+                          "type": "wallpaper"
+                        },
+                        "large": {
+                          "type": "wallpaper"
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "Matheus ",
+                  "field": {
+                    "id": "nd395mQ4KOl0",
+                    "type": "short_text",
+                    "ref": "19775a9a-0966-4ed6-98af-52702b9eb4e0"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Cristhyan",
+                  "field": {
+                    "id": "FH66BUeb8Km6",
+                    "type": "short_text",
+                    "ref": "517358a3-30f5-451c-8520-6b56ad535e6c"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "XNURNqiv2gtC",
+                    "type": "phone_number",
+                    "ref": "144b6a2b-a67b-4bd3-bb29-c9a00025683b"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "2AWn1RsunHRV",
+                    "type": "email",
+                    "ref": "e191ba60-0592-4e60-af1d-c980f4c9882c"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 5,
+                  "field": {
+                    "id": "Hc0qLK34pTXl",
+                    "type": "rating",
+                    "ref": "0f9feba4-39bb-400d-b62b-b56d2827ae09"
+                  }
+                },
+                {
+                  "type": "choices",
+                  "choices": {
+                    "ids": [
+                      "wyS6j2ngZeJX",
+                      "RuzXb35J2vS4",
+                      "n27HEFpLEkTp"
+                    ],
+                    "labels": [
+                      "Local e Infra do evento",
+                      "Conteúdo relevante",
+                      "Networking"
+                    ],
+                    "refs": [
+                      "81ca4ee0-43c7-4f57-b9a5-f87e41b7f822",
+                      "99d8eb06-7600-43e4-9f7d-5f467f7ec449",
+                      "c8b51233-5e81-4d40-a4d5-fd5f92bea987"
+                    ]
+                  },
+                  "field": {
+                    "id": "dzVPly8RLoZY",
+                    "type": "multiple_choice",
+                    "ref": "253b35ed-6b75-4039-9aab-3e8eae100e9a"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que fez você escolher isso como o que mais gostou no evento? ☺️",
+                  "field": {
+                    "id": "eTWHh6892OGI",
+                    "type": "long_text",
+                    "ref": "176d29f4-582a-4745-98e7-1f2467932cfb"
+                  }
+                },
+                {
+                  "type": "choices",
+                  "choices": {
+                    "ids": [
+                      "DyEduepTrpLH",
+                      "ESTqWZfdYvWZ"
+                    ],
+                    "labels": [
+                      "Credencimento",
+                      "Local e Infra do evento"
+                    ],
+                    "refs": [
+                      "a8d2438f-9f6b-4c42-8a26-19a046e1aae4",
+                      "c098a27d-04cb-41b0-82a5-601542f8f1b5"
+                    ]
+                  },
+                  "field": {
+                    "id": "aclRGwjUIooi",
+                    "type": "multiple_choice",
+                    "ref": "0078cd1c-9dac-4fad-b2b2-964cf36f31e8"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que fez você escolher isso como o que menos gostou no evento? 😟",
+                  "field": {
+                    "id": "QG5NV07IAaSh",
+                    "type": "long_text",
+                    "ref": "236a4208-fff2-46e7-9693-de770e255d19"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Na sua opinião, o que poderíamos melhorar para o próximo evento?",
+                  "field": {
+                    "id": "m9huxXOgx6Pd",
+                    "type": "long_text",
+                    "ref": "8d76ea25-fd0d-472a-b6aa-a4feafa35572"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 8,
+                  "field": {
+                    "id": "xizFGDD0aprg",
+                    "type": "nps",
+                    "ref": "55b4845c-451c-40e9-ab3c-f12f84a76f08"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 5,
+                  "field": {
+                    "id": "7t3jiAzgHMLs",
+                    "type": "rating",
+                    "ref": "6b325f41-b316-4d20-9236-0e6360dc8b07"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "IM3RG8ceKVzP",
+                "ref": "thankyou-screen"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/4a7b7fbe-6a6f-42a2-b73f-8c86a1259ba9",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-02-25T21:21:32.109Z",
+  "versionId": "5435a8b0-3f73-4f77-b48b-dc77329f18e7"
+}
