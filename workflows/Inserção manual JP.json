@@ -1,0 +1,698 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com13": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Monday.com13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-02-06T20:08:48.779Z",
+  "id": "gDXLsw6ojifNFgdj",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Inserção manual JP",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "11d8808a-7115-4ec7-8c12-87ba4cd1c142",
+        "options": {}
+      },
+      "id": "76dca5e3-d9d9-48a8-87e1-bad22469e540",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        380,
+        280
+      ],
+      "webhookId": "11d8808a-7115-4ec7-8c12-87ba4cd1c142"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "99d52145-0c70-4e81-8a17-261019b2930f",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        600,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "topics",
+        "name": "={{ $('Trata Webhook').item.json.form_response.answers[1].text }}",
+        "additionalFields": {}
+      },
+      "id": "ee4376f6-7ceb-4a0a-8058-f9d5f6ad8fc5",
+      "name": "Monday.com13",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        780,
+        280
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"phone_number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"email\"] }}\n\n\n----------\n@ do Instagram:\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nPara qual Closer ele deve ser redirecionado?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][5][\"choice\"][\"label\"] }}\n\n\n----------\nQual o seu faturamento MENSAL médio em 2025:\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][6][\"choice\"][\"label\"] }}\n\n\n----------\nQual a Origem do Lead\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][7][\"choice\"][\"label\"] }}\n\n\n----------\nAlguma observação sobre este lead?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"text\"] }}\n\n----------\nQual o seu nome? Sim, você que está preenchendo =)\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}"
+      },
+      "id": "dbafb898-b6e8-4373-8d0f-adf8d40c988c",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        960,
+        280
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "8570",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-9d8a5f4d2602c995888d4dc051730a86-232279f71659fb87-01",
+            "x-forwarded-for": "18.210.136.162",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4eede572f2c7",
+            "x-real-ip": "18.210.136.162"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01JKEE52EXB23HB0XW17D49TTY",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "A8Oo6cy0",
+              "token": "9bu5bwhswqfljajqalvt9c9bu5ble65w",
+              "landed_at": "2025-02-06T20:09:38Z",
+              "submitted_at": "2025-02-06T20:10:21Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "variables": [
+                {
+                  "key": "enrich_age",
+                  "type": "number",
+                  "number": 0
+                },
+                {
+                  "key": "enrich_age_range",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_avatar",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_bio",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_city",
+                  "type": "text",
+                  "text": "Eugene"
+                },
+                {
+                  "key": "enrich_company_continent",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_country",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_description_list",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_employee_count",
+                  "type": "number",
+                  "number": 0
+                },
+                {
+                  "key": "enrich_company_employee_range",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_naics_codes",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_name",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_phone",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_primary_industry",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_ranking",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_revenue",
+                  "type": "text",
+                  "text": "$0"
+                },
+                {
+                  "key": "enrich_company_revenue_numeric",
+                  "type": "number",
+                  "number": 0
+                },
+                {
+                  "key": "enrich_company_revenue_range",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_sic_codes",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_type",
+                  "type": "text",
+                  "text": "PRIVATE"
+                },
+                {
+                  "key": "enrich_country",
+                  "type": "text",
+                  "text": "United States"
+                },
+                {
+                  "key": "enrich_dwelling_type",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_education_degree",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_first_name",
+                  "type": "text",
+                  "text": "John"
+                },
+                {
+                  "key": "enrich_gender",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_household_income_estimate",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_job_function",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_job_title",
+                  "type": "text",
+                  "text": "Administrativo"
+                },
+                {
+                  "key": "enrich_language",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_last_name",
+                  "type": "text",
+                  "text": "Matheus"
+                },
+                {
+                  "key": "enrich_linkedin_url",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_marital_status",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_net_worth_range",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_number_of_children",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_owner_or_renter",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_phone",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_photo_url",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_presence_of_children",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_region_code",
+                  "type": "text",
+                  "text": "OR"
+                },
+                {
+                  "key": "enrich_twitter_url",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_website",
+                  "type": "text",
+                  "text": ""
+                }
+              ],
+              "definition": {
+                "id": "A8Oo6cy0",
+                "title": "Inserção Manual - BMA",
+                "fields": [
+                  {
+                    "id": "eWOVUrbHl0La",
+                    "ref": "ecd17768-3d51-47df-a5ed-288db2bf67a6",
+                    "type": "email",
+                    "title": "Qual o e-mail principal do lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "jfEzmf4Er7sI",
+                    "ref": "01HHF4CVE6FDDVP3R88TAER6XD",
+                    "type": "short_text",
+                    "title": "Qual o nome completo do lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "pC08KYZJB2dc",
+                    "ref": "fb090355-f7ed-4367-9458-2aae21e1cd35",
+                    "type": "phone_number",
+                    "title": "Número do WhatsApp com DDD",
+                    "properties": {}
+                  },
+                  {
+                    "id": "pgaByHeRS34y",
+                    "ref": "c252e9d4-65a7-4ae2-9d41-fe393086a491",
+                    "type": "short_text",
+                    "title": "Qual o @ do Instagram do lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "RtTVZBc6FeH0",
+                    "ref": "1c5026b7-6991-4cc9-b8f6-d3ac7af5d70d",
+                    "type": "multiple_choice",
+                    "title": "Para qual Closer ele deve ser redirecionado?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "68BrP4DiSV6l",
+                        "ref": "d2158277-d699-4997-955f-c6f235500300",
+                        "label": "Jose Pedro"
+                      },
+                      {
+                        "id": "IiZ5r6XXhlyZ",
+                        "ref": "5f8b4a69-22e6-44a0-bae3-4f2a4ba14750",
+                        "label": "Guilherme Luiz"
+                      },
+                      {
+                        "id": "jnwl518B1Q0j",
+                        "ref": "fd249fa4-33c4-430e-a99e-1180eb978650",
+                        "label": "Tiago Gregório"
+                      },
+                      {
+                        "id": "sDE2WZUsOmgP",
+                        "ref": "3fb07b89-adbc-4c82-9909-b3dfd26234cc",
+                        "label": "Ezequiel"
+                      },
+                      {
+                        "id": "7XKSlSzAeRgQ",
+                        "ref": "87bd2d3b-7d65-490b-be9b-4c1827849fcd",
+                        "label": "Hadassa"
+                      },
+                      {
+                        "id": "PIDTnT9zLdVU",
+                        "ref": "1913e80c-eb7a-458b-934f-7a4aa21059eb",
+                        "label": "Carolina"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "6Yf8Wbg4RNwP",
+                    "ref": "2021687e-808a-49db-91d4-8ca313324cb6",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "329kyebyXctx",
+                        "ref": "ac3b278a-8547-4b6a-9b81-0837b407e9e9",
+                        "label": "Mentor, expert ou infoprodutor"
+                      },
+                      {
+                        "id": "DtDfy8tCT9i2",
+                        "ref": "5ef3696e-417c-4e08-833e-0052d999ce8c",
+                        "label": "Agência digital ou Coprodutor"
+                      },
+                      {
+                        "id": "kuKX8R59gRku",
+                        "ref": "9c81ef6e-4b02-4490-b12f-c37137d9f63e",
+                        "label": "Gestor de tráfego ou outro prestador de serviço no digital"
+                      },
+                      {
+                        "id": "qO8aqdzEkwyu",
+                        "ref": "723d2fda-9624-478a-933a-1a5bb513d092",
+                        "label": "Profissional liberal/Prestador de serviço"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "A0NZSvwB4eic",
+                    "ref": "b38808fb-8bb3-439a-8f7b-27da74a5d76b",
+                    "type": "multiple_choice",
+                    "title": "Qual o seu faturamento MENSAL médio em 2025:",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "QVgYzEbZMeqb",
+                        "ref": "f6443bdd-7bb9-4716-8029-d682069ebcba",
+                        "label": "Até 5K/mês"
+                      },
+                      {
+                        "id": "0cZGSArg2Ml3",
+                        "ref": "5c7a47b2-9279-456f-8922-2a4cea8954e6",
+                        "label": "5K a 10K/mês"
+                      },
+                      {
+                        "id": "xaLPmI6NBNiw",
+                        "ref": "ec52aa93-40da-42c6-96f8-d470896dfdbe",
+                        "label": "10K a 20K/mês"
+                      },
+                      {
+                        "id": "KzAEOnCFhyek",
+                        "ref": "937c2a7f-1e08-4af6-93fa-817d618758fe",
+                        "label": "20K a 50K/mês"
+                      },
+                      {
+                        "id": "iM3uHMhya3ny",
+                        "ref": "3a8699d9-ac30-4311-bc26-539cd6b2e207",
+                        "label": "50K a 100K/mês"
+                      },
+                      {
+                        "id": "S0Vb9DhHwEFd",
+                        "ref": "21706c82-4fb3-4eb7-b22d-7b87b337c3ef",
+                        "label": "100K a 250K/mês"
+                      },
+                      {
+                        "id": "GBvzeM8bQJzo",
+                        "ref": "e3abefa8-2d0a-4d80-9210-47fa0d4b3a84",
+                        "label": "250K a 500K/mês"
+                      },
+                      {
+                        "id": "mmI9enKNqW9o",
+                        "ref": "05922e98-2a13-40b9-bb74-6d80bdcfb700",
+                        "label": "Acima de 500K/mês"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "K2TRAfcbpPq0",
+                    "ref": "f7cf68eb-23c1-4151-aaf1-ff9ee7ff45ae",
+                    "type": "multiple_choice",
+                    "title": "Qual a Origem do Lead",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "tlPjJrMTDvop",
+                        "ref": "9d205b8f-3608-4615-95ad-f7636b697344",
+                        "label": "Evento Presencial"
+                      },
+                      {
+                        "id": "PowrkP4BrPMx",
+                        "ref": "5f3c0df3-67d4-4fc6-8fd2-7f2a1a3813df",
+                        "label": "Rede Social"
+                      },
+                      {
+                        "id": "jBbZNax5cjWp",
+                        "ref": "ee354b45-1f34-4e9b-b2de-2cb33ee0ccb3",
+                        "label": "Indicação"
+                      },
+                      {
+                        "id": "0zLLf14TxqGq",
+                        "ref": "cde89ef1-1dfd-4425-846e-b48ed2b375d2",
+                        "label": "Outros"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "4BX4U8QOk1X2",
+                    "ref": "f47044e3-1c94-4bde-b018-932c8cedda8a",
+                    "type": "short_text",
+                    "title": "Alguma observação sobre este lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "kUqBx8RQaRdE",
+                    "ref": "f318960e-23eb-4dcd-a00d-7bbfd4cc5fba",
+                    "type": "short_text",
+                    "title": "Qual o seu nome? Sim, você que está preenchendo =)",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "QmTU7tig0mAV",
+                    "ref": "27b0a471-d105-4da3-a2ef-ced322ee9af2",
+                    "title": "Agradecemos suas respostas! \nMinha equipe irá analisar sua a aplicação e entrará em contato em breve.",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "button_text": "again",
+                      "show_button": false,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "eWOVUrbHl0La",
+                    "type": "email",
+                    "ref": "ecd17768-3d51-47df-a5ed-288db2bf67a6"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Matheus",
+                  "field": {
+                    "id": "jfEzmf4Er7sI",
+                    "type": "short_text",
+                    "ref": "01HHF4CVE6FDDVP3R88TAER6XD"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "pC08KYZJB2dc",
+                    "type": "phone_number",
+                    "ref": "fb090355-f7ed-4367-9458-2aae21e1cd35"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "@teste",
+                  "field": {
+                    "id": "pgaByHeRS34y",
+                    "type": "short_text",
+                    "ref": "c252e9d4-65a7-4ae2-9d41-fe393086a491"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "jnwl518B1Q0j",
+                    "label": "Tiago Gregório",
+                    "ref": "fd249fa4-33c4-430e-a99e-1180eb978650"
+                  },
+                  "field": {
+                    "id": "RtTVZBc6FeH0",
+                    "type": "multiple_choice",
+                    "ref": "1c5026b7-6991-4cc9-b8f6-d3ac7af5d70d"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "kuKX8R59gRku",
+                    "label": "Gestor de tráfego ou outro prestador de serviço no digital",
+                    "ref": "9c81ef6e-4b02-4490-b12f-c37137d9f63e"
+                  },
+                  "field": {
+                    "id": "6Yf8Wbg4RNwP",
+                    "type": "multiple_choice",
+                    "ref": "2021687e-808a-49db-91d4-8ca313324cb6"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "iM3uHMhya3ny",
+                    "label": "50K a 100K/mês",
+                    "ref": "3a8699d9-ac30-4311-bc26-539cd6b2e207"
+                  },
+                  "field": {
+                    "id": "A0NZSvwB4eic",
+                    "type": "multiple_choice",
+                    "ref": "b38808fb-8bb3-439a-8f7b-27da74a5d76b"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "tlPjJrMTDvop",
+                    "label": "Evento Presencial",
+                    "ref": "9d205b8f-3608-4615-95ad-f7636b697344"
+                  },
+                  "field": {
+                    "id": "K2TRAfcbpPq0",
+                    "type": "multiple_choice",
+                    "ref": "f7cf68eb-23c1-4151-aaf1-ff9ee7ff45ae"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "teste",
+                  "field": {
+                    "id": "4BX4U8QOk1X2",
+                    "type": "short_text",
+                    "ref": "f47044e3-1c94-4bde-b018-932c8cedda8a"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "math",
+                  "field": {
+                    "id": "kUqBx8RQaRdE",
+                    "type": "short_text",
+                    "ref": "f318960e-23eb-4dcd-a00d-7bbfd4cc5fba"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "QmTU7tig0mAV",
+                "ref": "27b0a471-d105-4da3-a2ef-ced322ee9af2"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/11d8808a-7115-4ec7-8c12-87ba4cd1c142",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-02-06T20:48:00.298Z",
+  "versionId": "7d7b2b93-192b-4df6-b14b-730d995897dc"
+}
