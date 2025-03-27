@@ -1,0 +1,930 @@
+{
+  "active": true,
+  "connections": {
+    "Data Inicio": {
+      "main": [
+        [
+          {
+            "node": "Hora Inicio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hora Inicio": {
+      "main": [
+        [
+          {
+            "node": "Lembrete 12h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem CG10 | Q&A": {
+      "main": [
+        [
+          {
+            "node": "Data Inicio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lembrete 12h": {
+      "main": [
+        [
+          {
+            "node": "Lembrete 24hr",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lembrete 24hr": {
+      "main": [
+        [
+          {
+            "node": "Lembrete 36h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lembrete 36h": {
+      "main": [
+        [
+          {
+            "node": "Lembrete 2h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lembrete 2h": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign6": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Mensagem CG10 | Q&A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "ActiveCampaign6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com3": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-05-29T04:02:33.490Z",
+  "id": "hdGxE3HODNOkOjkb",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[GLEYBIONY] Agendamento Calendly",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "127d1ecf-478c-411d-8f8e-0b1bd8791c16",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        580,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "4b4359e0-d29f-4e27-9485-80524e4359bd",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "invitee.created",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a350269e-4bb4-4b87-a417-83fc9ca9d3cf",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        360,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://webhook.pluglead.com/webhook/b66cdce20f5b2a0a17e64befa48c59c8",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.payload.name }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $json.payload.questions_and_answers[1].answer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "40d10966-d712-4759-934b-22f65181217b",
+      "name": "Mensagem CG10 | Q&A",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        280
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.payload.scheduled_event.start_time }}",
+        "format": "custom",
+        "customFormat": "dd/MM/yyyy",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "8c6ac85a-7809-4679-97a2-f8ec0ba88c91",
+      "name": "Data Inicio",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        980,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.payload.scheduled_event.start_time }}",
+        "format": "custom",
+        "customFormat": "HH:mm",
+        "outputFieldName": "formattedHour",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "5b292309-fdb7-4bd4-b5b9-f054393c0617",
+      "name": "Hora Inicio",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Trata Webhook').item.json.created_at }}",
+        "timeUnit": "hours",
+        "duration": 12,
+        "outputFieldName": "12depois",
+        "options": {}
+      },
+      "id": "5685b632-8dd9-4f02-9dc4-0f284cf7b9b0",
+      "name": "Lembrete 12h",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Trata Webhook').item.json.created_at }}",
+        "timeUnit": "hours",
+        "duration": 24,
+        "outputFieldName": "24depois",
+        "options": {}
+      },
+      "id": "bebd92d5-a465-4179-97fb-448fb9308179",
+      "name": "Lembrete 24hr",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1580,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Trata Webhook').item.json.created_at }}",
+        "timeUnit": "hours",
+        "duration": 36,
+        "outputFieldName": "36depois",
+        "options": {}
+      },
+      "id": "6a2f9167-f97b-4c5a-931b-daee64e8cd91",
+      "name": "Lembrete 36h",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "subtractFromDate",
+        "magnitude": "={{ $('Trata Webhook').item.json.payload.scheduled_event.start_time }}",
+        "timeUnit": "hours",
+        "duration": 2,
+        "outputFieldName": "2antes",
+        "options": {}
+      },
+      "id": "e4ce7572-9641-4e98-bbd1-97c16ed88d78",
+      "name": "Lembrete 2h",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "email": "={{ $('Trata Webhook').item.json.payload.email }}",
+        "updateIfExists": true,
+        "additionalFields": {
+          "firstName": "={{ $json.Nome }}"
+        }
+      },
+      "id": "e5d6ea12-e6dd-4d24-8c08-fd1b0b579957",
+      "name": "ActiveCampaign6",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2700,
+        260
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "TZOfSlBPPVEup0J4",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contactTag",
+        "tagId": "12",
+        "contactId": "={{ $json.id }}"
+      },
+      "id": "8c786112-0459-4586-88d6-c736c9be0f74",
+      "name": "ActiveCampaign7",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2900,
+        260
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "TZOfSlBPPVEup0J4",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['whatsapp'] = formataTelefone($node[\"Trata Webhook\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"])\n\nreturn $input.all();"
+      },
+      "id": "8cbb6a6b-b5fa-4fec-b477-5638ab20c5fb",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        280
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['whatsapp'] = formataTelefone($node[\"Trata Webhook\"].json[\"payload\"][\"questions_and_answers\"][\"0\"][\"answer\"])\n\nreturn $input.all();"
+      },
+      "id": "b2a9c678-67f8-4b94-bbd1-414c1fc3d6f7",
+      "name": "Formata Telefone1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        2300,
+        520
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/18kikAnJseNFP3_9m7LPgcpsJzDHMgJoKFK5mmB4vVRI/edit#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "eventos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18kikAnJseNFP3_9m7LPgcpsJzDHMgJoKFK5mmB4vVRI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Data": "={{ $('Data Inicio').item.json.formattedDate }}",
+            "Hora inicio": "={{ $('Hora Inicio').item.json.formattedHour }}",
+            "Nome": "={{ $('Trata Webhook').item.json.payload.name }}",
+            "Email": "={{ $('Trata Webhook').item.json.payload.email }}",
+            "Whatsapp": "={{ $json.whatsapp }}",
+            "Link": "={{ $('Trata Webhook').item.json.payload.scheduled_event.uri }}",
+            "Criado em": "={{ $('Trata Webhook').item.json.payload.created_at }}",
+            "Lembrete 12h": "={{ $('Lembrete 12h').item.json['12depois'] }}",
+            "Lembrete 24h": "={{ $('Lembrete 24hr').item.json['24depois'] }}",
+            "Lembrete 36h": "={{ $('Lembrete 36h').item.json['36depois'] }}",
+            "Lembrete 2h": "={{ $('Lembrete 2h').item.json['2antes'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hora inicio",
+              "displayName": "Hora inicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Whatsapp",
+              "displayName": "Whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Criado em",
+              "displayName": "Criado em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lembrete 12h",
+              "displayName": "Lembrete 12h",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Check 12hr",
+              "displayName": "Check 12hr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lembrete 24h",
+              "displayName": "Lembrete 24h",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Check 24hr",
+              "displayName": "Check 24hr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lembrete 36h",
+              "displayName": "Lembrete 36h",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Check 36hr",
+              "displayName": "Check 36hr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lembrete 2h",
+              "displayName": "Lembrete 2h",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Check 2hr",
+              "displayName": "Check 2hr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e34a5aaa-07c9-4599-8029-3571536affb0",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        2480,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getByColumnValue",
+        "boardId": "5918884883",
+        "columnId": "texto__1",
+        "columnValue": "={{ $json.body.payload.email }}",
+        "returnAll": true
+      },
+      "id": "e24b9e47-bfb3-4265-a717-bd4985b807e8",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        580,
+        -60
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2d12e312-7a21-4a35-a9ef-61e37982619f",
+        "options": {}
+      },
+      "id": "a58a83d8-2383-4324-8fc0-12b0df019367",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        300
+      ],
+      "webhookId": "2d12e312-7a21-4a35-a9ef-61e37982619f"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "move",
+        "boardId": "5918884883",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "groupId": "topics"
+      },
+      "id": "964fea91-9cfd-4c12-833e-2766eb80b982",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        -80
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "value": "=Calendly:\n\n{{ $('If').item.json.body.payload.uri.replace(\"api.\", \"\") }}"
+      },
+      "id": "c2001589-88e0-42f2-8299-3a3a94c09aa9",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        -80
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "uIk338LdhIT8YNJM",
+          "name": "Gleybiony"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1cd0267f-1e77-441e-9e0f-9d5d9f82d587",
+              "leftValue": "={{ $json.column_values.id }}",
+              "rightValue": "status__1",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "a3c154ef-c361-4b49-b17e-e6d241915983",
+              "leftValue": "={{ $json.column_values.value }}",
+              "rightValue": "Não Agendado",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b02ad228-9622-4e5e-9863-420055f69af7",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        980,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "column_values",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "id": "79f0cb4e-cdd0-4c64-9a20-4f6dd551b09f",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -60
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Calendly",
+            "content-length": "2003",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip, br",
+            "content-type": "application/json",
+            "x-datadog-parent-id": "855247374761529618",
+            "x-datadog-sampling-priority": "-1",
+            "x-datadog-trace-id": "97205777141232758",
+            "x-forwarded-for": "34.85.150.17",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "cb61af859480",
+            "x-real-ip": "34.85.150.17"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "created_at": "2024-05-29T12:17:37.000000Z",
+            "created_by": "https://api.calendly.com/users/348a3737-23ae-499a-aa5b-77714e2a1a0f",
+            "event": "invitee.created",
+            "payload": {
+              "cancel_url": "https://calendly.com/cancellations/764f8ad6-f181-4264-9b87-e13d53e7cb82",
+              "created_at": "2024-05-29T12:17:36.439408Z",
+              "email": "matheus@gmail.com",
+              "event": "https://api.calendly.com/scheduled_events/7a81a06a-85f4-4f49-ba98-54cb98e077e0",
+              "first_name": null,
+              "invitee_scheduled_by": null,
+              "last_name": null,
+              "name": "Camila Ramos",
+              "new_invitee": null,
+              "no_show": null,
+              "old_invitee": null,
+              "payment": null,
+              "questions_and_answers": [
+                {
+                  "answer": "+55 51 98682-9000",
+                  "position": 1,
+                  "question": "Número de Whatsapp"
+                }
+              ],
+              "reconfirmation": null,
+              "reschedule_url": "https://calendly.com/reschedulings/764f8ad6-f181-4264-9b87-e13d53e7cb82",
+              "rescheduled": false,
+              "routing_form_submission": null,
+              "scheduled_event": {
+                "created_at": "2024-05-29T12:17:36.423635Z",
+                "end_time": "2024-06-01T13:15:00.000000Z",
+                "event_guests": [],
+                "event_memberships": [
+                  {
+                    "user": "https://api.calendly.com/users/b0e01457-fb71-43e2-9fb4-d0548823b581",
+                    "user_email": "closerbma.ademirbonfa@gmail.com",
+                    "user_name": "Ademir Bonfá"
+                  }
+                ],
+                "event_type": "https://api.calendly.com/event_types/928fbfd0-9d18-4523-b41f-a5fe8365c34f",
+                "invitees_counter": {
+                  "total": 1,
+                  "active": 1,
+                  "limit": 1
+                },
+                "location": {
+                  "location": null,
+                  "type": "custom"
+                },
+                "meeting_notes_html": null,
+                "meeting_notes_plain": null,
+                "name": "CG | Carol Caribé",
+                "start_time": "2024-06-01T12:15:00.000000Z",
+                "status": "active",
+                "updated_at": "2024-05-29T12:17:36.423635Z",
+                "uri": "https://api.calendly.com/scheduled_events/7a81a06a-85f4-4f49-ba98-54cb98e077e0"
+              },
+              "scheduling_method": null,
+              "status": "active",
+              "text_reminder_number": null,
+              "timezone": "America/Sao_Paulo",
+              "tracking": {
+                "utm_campaign": null,
+                "utm_source": null,
+                "utm_medium": null,
+                "utm_content": null,
+                "utm_term": null,
+                "salesforce_uuid": null
+              },
+              "updated_at": "2024-05-29T12:17:36.439408Z",
+              "uri": "https://api.calendly.com/scheduled_events/7a81a06a-85f4-4f49-ba98-54cb98e077e0/invitees/764f8ad6-f181-4264-9b87-e13d53e7cb82"
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/746def9e-1313-4c80-9268-b2c859901ef2",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": {
+    "node:Calendly Trigger": {}
+  },
+  "tags": [
+    {
+      "createdAt": "2024-05-29T03:56:02.756Z",
+      "updatedAt": "2024-05-29T03:56:02.756Z",
+      "id": "CJi6Rs9lbMO8s8CS",
+      "name": "gb"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-06-12T19:14:41.853Z",
+  "versionId": "daa17d9b-9718-49d9-8003-18d61e5de337"
+}
