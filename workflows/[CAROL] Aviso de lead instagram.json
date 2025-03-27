@@ -1,0 +1,399 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Tiago Gregório | Wpp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fábio | Wpp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Samuel | Wpp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-27T13:39:04.375Z",
+  "id": "ZO4D2VQY4olUoEbV",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Aviso de lead instagram",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "numero tiago gregório:\n553484133437",
+        "height": 80
+      },
+      "id": "5bd22543-a582-4628-939b-69e75979a6df",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        680,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "numero tiago fábio:\n553194440151",
+        "height": 80
+      },
+      "id": "f39dd78a-6176-41a3-9356-686d2ea03311",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "numero tiago samuel:\n5561996907386",
+        "height": 80
+      },
+      "id": "0a3d5557-adb1-4e9f-90ed-d7df8cf0e5fc",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "285108db-9cab-4027-af17-149620b00d4c",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        880,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['whatsapp'] = formataTelefone($node['Trata Webhook'].json['whatsapp'])\n\nreturn $input.all();"
+      },
+      "id": "e290ceb6-f7d7-474c-bf15-76d5cb843e9a",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c42371cf-6fc9-4916-9f02-0eec178d0a73",
+        "options": {}
+      },
+      "id": "be9ca7bb-d8ed-41ef-b5d8-bbf339a4cf66",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        660,
+        380
+      ],
+      "webhookId": "c42371cf-6fc9-4916-9f02-0eec178d0a73"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.resp }}",
+                    "rightValue": "Tiago Gregório",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tiago Gregório"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "c6a42616-5a40-4aca-9426-064cd551deb0",
+                    "leftValue": "={{ $json.resp }}",
+                    "rightValue": "Fábio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Fábio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "a97c05d6-29b2-40b6-9b2b-8be397d08b8c",
+                    "leftValue": "={{ $json.resp }}",
+                    "rightValue": "Samuel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Samuel"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67e098e0-21d3-4c2d-b6fa-dc820c9bad8a",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [
+        1360,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=553484133437"
+            },
+            {
+              "name": "message",
+              "value": "=Há um novo lead vindo do perfil de Instagram da Carolina Caribé que deseja conversar com alguém do time sobre o IP EXPERIENCE.\n\nNúmero para contato: {{ \"wa.me/\"+$json.whatsapp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f4854d9d-6305-4247-91ca-baa105712425",
+      "name": "Tiago Gregório | Wpp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        180
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5531994440151"
+            },
+            {
+              "name": "message",
+              "value": "=Há um novo lead vindo do perfil de Instagram da Carolina Caribé que deseja conversar com alguém do time sobre Mentorias.\n\nNúmero para contato: {{ \"wa.me/\"+$json.whatsapp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bb94c486-3a19-4e1e-89e4-70d5dab8c964",
+      "name": "Fábio | Wpp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=5561996907386"
+            },
+            {
+              "name": "message",
+              "value": "=Há um novo lead vindo do perfil de Instagram da Carolina Caribé que deseja conversar com alguém do time sobre Cursos.\n\nNúmero para contato: {{ \"wa.me/\"+$json.whatsapp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dc7f8bd5-5653-45de-85f3-b55a3ff4c366",
+      "name": "Samuel | Wpp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        600
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "ManyChat",
+            "content-length": "56",
+            "content-type": "application/json; charset=utf-8",
+            "x-forwarded-for": "54.93.95.69",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "54.93.95.69",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "resp": "Tiago Gregório",
+            "whatsapp": "81993515055"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/c42371cf-6fc9-4916-9f02-0eec178d0a73",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-02T19:30:11.216Z",
+  "versionId": "3483d3b8-836f-4171-8b34-5d2f896580df"
+}
