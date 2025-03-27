@@ -1,0 +1,88 @@
+{
+  "active": true,
+  "connections": {
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-06T17:40:52.727Z",
+  "id": "wf09mv3QClDgTmXr",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Saas Interface de grupos",
+  "nodes": [
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>WhatsApp Group Manager</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n</head>\n<body class=\"bg-gray-100\">\n    <div class=\"container mx-auto p-4\">\n        <h1 class=\"text-2xl font-bold mb-4\">WhatsApp Group Manager</h1>\n        \n        <div class=\"mb-4\">\n            <button id=\"connectTab\" class=\"px-4 py-2 bg-blue-500 text-white rounded\">Connect</button>\n            <button id=\"messageTab\" class=\"px-4 py-2 bg-gray-300 text-gray-700 rounded\">Messages</button>\n        </div>\n        \n        <div id=\"connectSection\" class=\"bg-white p-4 rounded shadow\">\n            <h2 class=\"text-xl font-semibold mb-2\">Connect WhatsApp</h2>\n            <button id=\"generateQR\" class=\"px-4 py-2 bg-green-500 text-white rounded\">Generate QR Code</button>\n            <div id=\"qrCode\" class=\"mt-4\"></div>\n        </div>\n        \n        <div id=\"messageSection\" class=\"bg-white p-4 rounded shadow hidden\">\n            <h2 class=\"text-xl font-semibold mb-2\">Schedule Messages</h2>\n            <form id=\"messageForm\">\n                <div class=\"mb-4\">\n                    <label class=\"block mb-2\">Message Type:</label>\n                    <select id=\"messageType\" class=\"w-full p-2 border rounded\">\n                        <option value=\"text\">Text</option>\n                        <option value=\"image\">Image</option>\n                        <option value=\"video\">Video</option>\n                    </select>\n                </div>\n                <div class=\"mb-4\">\n                    <label class=\"block mb-2\">Message:</label>\n                    <textarea id=\"messageContent\" class=\"w-full p-2 border rounded\" rows=\"4\"></textarea>\n                </div>\n                <div class=\"mb-4\">\n                    <label class=\"block mb-2\">Groups:</label>\n                    <select id=\"groupSelect\" class=\"w-full p-2 border rounded\" multiple></select>\n                </div>\n                <div class=\"mb-4\">\n                    <label class=\"block mb-2\">Schedule Date:</label>\n                    <input type=\"datetime-local\" id=\"scheduleDate\" class=\"w-full p-2 border rounded\">\n                </div>\n                <button type=\"submit\" class=\"px-4 py-2 bg-blue-500 text-white rounded\">Schedule Message</button>\n            </form>\n        </div>\n    </div>\n\n    <script>\n        const webhook = \"https://webhook.josepbijari.com/webhook/65b0bdb0-e92d-42a2-a059-d4538898659a\";\n\n        document.getElementById('connectTab').addEventListener('click', () => {\n            document.getElementById('connectSection').classList.remove('hidden');\n            document.getElementById('messageSection').classList.add('hidden');\n        });\n\n        document.getElementById('messageTab').addEventListener('click', () => {\n            document.getElementById('connectSection').classList.add('hidden');\n            document.getElementById('messageSection').classList.remove('hidden');\n            loadGroups();\n        });\n\n        document.getElementById('generateQR').addEventListener('click', async () => {\n            try {\n                const response = await fetch(`${webhook}?acao=criar_instancia`, {\n                    method: 'POST'\n                });\n                const data = await response.json();\n                if (data.qrcode) {\n                    document.getElementById('qrCode').innerHTML = `<img src=\"${data.qrcode}\" alt=\"QR Code\">`;\n                } else {\n                    alert('Failed to generate QR code');\n                }\n            } catch (error) {\n                console.error('Error:', error);\n                alert('Failed to generate QR code');\n            }\n        });\n\n        async function loadGroups() {\n            try {\n                const response = await fetch(`${webhook}?acao=listar_grupos`, {\n                    method: 'GET'\n                });\n                const data = await response.json();\n                // Parse the JSON string that contains the groups array\n                const groupsData = JSON.parse(data.groups);\n        \n                if (Array.isArray(groupsData)) {\n                    const groupSelect = document.getElementById('groupSelect');\n                    groupSelect.innerHTML = '';\n                    groupsData.forEach(group => {\n                        const option = document.createElement('option');\n                        option.value = group.id;\n                        option.textContent = group.subject; // Using 'subject' instead of 'name'\n                        groupSelect.appendChild(option);\n                    });\n                } else {\n                    console.error('Unexpected response format:', data);\n                    alert('Failed to load groups: Unexpected response format');\n                }\n            } catch (error) {\n                console.error('Error:', error);\n                alert('Failed to load groups');\n            }\n        }\n\n        document.getElementById('messageForm').addEventListener('submit', async (e) => {\n            e.preventDefault();\n            const messageType = document.getElementById('messageType').value;\n            const messageContent = document.getElementById('messageContent').value;\n            const selectedGroups = Array.from(document.getElementById('groupSelect').selectedOptions).map(option => option.value);\n            const scheduleDate = document.getElementById('scheduleDate').value;\n\n            // Here you would typically send this data to your backend to schedule the message\n            console.log('Scheduling message:', { messageType, messageContent, selectedGroups, scheduleDate });\n            alert('Message scheduled (not actually implemented in this demo)');\n        });\n    </script>\n</body>\n</html>\n\n"
+      },
+      "id": "c211bf4d-c689-4c8c-aee1-98943fbfe791",
+      "name": "HTML",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "bec7c523-8ae8-461b-99d9-668346a94fe4",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1060,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "path": "4585d16d-9ebb-49a4-8c66-634f2f2dcd1c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "dbcf5839-6036-48b6-967e-814254db8deb",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        620,
+        260
+      ],
+      "webhookId": "4585d16d-9ebb-49a4-8c66-634f2f2dcd1c"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-07T00:18:15.626Z",
+  "versionId": "ac4f352c-d557-43bb-8de5-7935f443c67d"
+}
