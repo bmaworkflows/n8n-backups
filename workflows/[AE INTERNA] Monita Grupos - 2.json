@@ -1,0 +1,1303 @@
+{
+  "active": false,
+  "connections": {
+    "Trata Número": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca contato por telefone": {
+      "main": [
+        [
+          {
+            "node": "Achou contato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "adiciona saída1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Trata Número",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Busca contato por telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Achou contato?": {
+      "main": [
+        [
+          {
+            "node": "não encontrou",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "não encontrou": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "adiciona saída1": {
+      "main": [
+        [
+          {
+            "node": "Add tag de aquecimento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add tag de aquecimento": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-19T19:51:14.038Z",
+  "id": "0Fq6SuiBq8p5P0I5",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[AE INTERNA] Monita Grupos - 2",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://incorporacaonapratica69503.api-us1.com/api/3/contacts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "activeCampaignApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $json.whatsapp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "92719456-f0d5-4a10-86e4-06945a449403",
+      "name": "Busca contato por telefone",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        340
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Função para extrair apenas o número do formato fornecido\nfunction extrairNumero(formato) {\n    // Verificar se o formato é uma string, caso contrário, converter para string\n    if (typeof formato !== \"string\") {\n        formato = String(formato);\n    }\n    // Substituir \"@s.whatsapp.net\" por uma string vazia\n    var numero = formato.replace(/@s\\.whatsapp\\.net/g, '');\n    // Remover o prefixo \"55\" do início do número, se existir\n    numero = numero.replace(/^55/, '');\n    return numero;\n}\n\n// Chamada da função\n$input.item.json['whatsapp'] = extrairNumero($input.item.json['whatsapp']);\n\nreturn $input.item;"
+      },
+      "id": "09cb3d18-91b7-46b7-84b3-9aa794cf6c74",
+      "name": "Trata Número",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        340,
+        320
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "4f9f6517-59e7-4f04-bc19-8813e2d60fd9",
+      "name": "Limit",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        360
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "41734036-8ff9-444c-b3b0-e28b13f6d292",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit?gid=1110820731#gid=1110820731",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit#gid=1110820731"
+        },
+        "options": {}
+      },
+      "id": "ca62b9a0-d782-43db-92fd-1a3769cdd518",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        120,
+        320
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "478f094f-2549-4412-8c37-424a3f9e7795",
+      "name": "não encontrou",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "contactTag",
+        "tagId": "=1500",
+        "contactId": "={{ $('Limit').item.json.contacts[0].id }}"
+      },
+      "id": "66efdd83-c4c5-4739-b15b-4f1007fcb5bb",
+      "name": "Add tag de aquecimento",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2280,
+        360
+      ],
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a20c9131-41a6-4d9d-8a9b-d68ad8a0b747",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        740,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.contacts }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Não encontrado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "e2e9ac4f-c122-412d-9dbb-5efd23ebb57f",
+                    "leftValue": "={{ $json.contacts }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Encontrado"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5739ddf2-fde2-4fbc-921f-7435c76c9472",
+      "name": "Achou contato?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [
+        1280,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit?gid=1110820731#gid=1110820731",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit#gid=1110820731"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $node[\"Loop Over Items\"].json[\"row_number\"] }}",
+            "email": "={{ $node[\"Busca contato por telefone\"].json[\"contacts\"][\"0\"][\"email\"] }}",
+            "encontrado": "sim",
+            "nome": "={{ $node[\"Busca contato por telefone\"].json[\"contacts\"][\"0\"][\"firstName\"] }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "encontrado",
+              "displayName": "encontrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c684001-94d3-4e46-8383-4bbc606a87d7",
+      "name": "adiciona saída1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1940,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Google Sheets": [
+      {
+        "json": {
+          "row_number": 2,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 554599203611,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 3,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 553484133437,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511983265066,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5519997710038,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5521964135400,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 553598118765,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 8,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 554398087591,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 9,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 553288121825,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 10,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5521971005055,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 11,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511971618000,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 12,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5519981037866,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 13,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511992969292,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 14,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511998509202,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 15,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511994010199,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 16,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 556181596119,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 17,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511991947128,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 18,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 553171986374,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 19,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 559892367576,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 20,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5528998817588,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 21,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 554191874301,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 22,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511957320081,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 23,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 554195482705,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 24,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 554498560007,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 25,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511947569713,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 26,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 555399723357,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 27,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511910663944,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 28,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 554791830741,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 29,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 555181503369,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 30,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 557591300767,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 31,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5511993643367,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 32,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": 5514996341426,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 33,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 5527992583204,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 34,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 556199334674,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 35,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 555182119852,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 36,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 554599714384,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 37,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 558588250830,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 38,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 559181956821,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 39,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": 557591922534,
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      }
+    ],
+    "Trata Número": [
+      {
+        "json": {
+          "row_number": 2,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "4599203611",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 3,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "3484133437",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11983265066",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "19997710038",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "21964135400",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "3598118765",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 8,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "4398087591",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 9,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "3288121825",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 10,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "21971005055",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 11,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11971618000",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 12,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "19981037866",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 13,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11992969292",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 14,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11998509202",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 15,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11994010199",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 16,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "6181596119",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 17,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11991947128",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 18,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "3171986374",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 19,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "9892367576",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 20,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "28998817588",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 21,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "4191874301",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 22,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11957320081",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 23,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "4195482705",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 24,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "4498560007",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 25,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11947569713",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 26,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "5399723357",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 27,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11910663944",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 28,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "4791830741",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 29,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "5181503369",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 30,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "7591300767",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 31,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "11993643367",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 32,
+          "data": "18/01/2025",
+          "nome": "",
+          "whatsapp": "14996341426",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 33,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "27992583204",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 34,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "6199334674",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 35,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "5182119852",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 36,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "4599714384",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 37,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "8588250830",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 38,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "9181956821",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      },
+      {
+        "json": {
+          "row_number": 39,
+          "data": "19/01/2025",
+          "nome": "",
+          "whatsapp": "7591922534",
+          "email": "",
+          "encontrado": "não",
+          "grupo": ""
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-19T20:02:27.900Z",
+  "versionId": "e9b8ea04-bac0-4a72-aab9-ae49fd53281e"
+}
