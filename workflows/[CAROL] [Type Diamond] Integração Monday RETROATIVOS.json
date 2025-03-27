@@ -1,0 +1,380 @@
+{
+  "active": false,
+  "connections": {
+    "Date & Time3": {
+      "main": [
+        [
+          {
+            "node": "Monday.com13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com13": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Date & Time3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com14": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-02T20:21:14.385Z",
+  "id": "wu2YnP60WDxVlZuN",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [Type Diamond] Integração Monday RETROATIVOS",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"Número de WhatsApp com DDD:\"] = formataTelefone($input.all()[0].json[\"Número de WhatsApp com DDD:\"]) \n\nreturn $input.all(); {{ $ }}"
+      },
+      "id": "9bcc04a4-463f-437f-9896-90db9bedcf93",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Loop Over Items').item.json[\"Submit Date (UTC)\"] }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd ",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "051c4980-ff91-4e93-82fe-7a235db80323",
+      "name": "Date & Time3",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        180,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5689478999",
+        "groupId": "topics",
+        "name": "={{ $('Edit Fields').item.json.nome }}",
+        "additionalFields": {}
+      },
+      "id": "89518419-fcd7-4657-ac15-80bfa45032fb",
+      "name": "Monday.com13",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        360,
+        320
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5689478999",
+        "itemId": "={{ $('Monday.com13').item.json.id }}",
+        "columnValues": "={\"texto3__1\":\"{{ \"wa.me/\" + $node[\"Edit Fields\"].json[\"whatsapp\"] }}\", \"texto71__1\": \"{{ $node[\"Loop Over Items\"].json[\"utm_source\"] }}\", \"texto4__1\": \"{{ $node[\"Edit Fields\"].json[\"faturamento\"] }}\", \"n_meros\": \"{{ $node[\"Edit Fields\"].json[\"whatsapp\"] }}\", \"texto9__1\": \"{{ $node[\"Edit Fields\"].json[\"email\"] }}\", \"texto2__1\":\"{{ $node[\"Loop Over Items\"].json[\"utm_term\"] }}\", \"texto32__1\":\"{{ $node[\"Loop Over Items\"].json[\"utm_content\"] }}\", \"texto1__1\":\"{{ $node[\"Loop Over Items\"].json[\"utm_medium\"] }}\", \"status_1__1\": \"4\", \"texto34__1\":\"Ingresso/IP\", \"data\":\"{{ $node[\"Date & Time3\"].json[\"formattedDate\"] }}\" }    "
+      },
+      "id": "9277f73f-7500-4ca7-b1d7-8008c72a97d2",
+      "name": "Monday.com14",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        740,
+        320
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $node[\"Edit Fields\"].json[\"nome\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Edit Fields\"].json[\"whatsapp\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Edit Fields\"].json[\"email\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Edit Fields\"].json[\"negocio\"] }}\n\n\n----------\nQual seu faturamento médio mensal dos últimos 12 meses?:\n\n{{ $node[\"Edit Fields\"].json[\"faturamento\"] }}\n\n\n----------\nPor que você acredita que participar do IP Experience na categoria Diamond é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $node[\"Edit Fields\"].json[\"oportunidade\"] }}\n\n\n----------\nEssa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $node[\"Edit Fields\"].json[\"aceitar_aplicacao\"] }}\n\n\n----------\nO investimento para adquirir o Ingresso Diamond é de até 12x de R$969,32 no cartão de crédito ou R$9.690,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $node[\"Edit Fields\"].json[\"pagamento\"] }}\n"
+      },
+      "id": "d5817bcc-c57d-4152-aec3-ec81dc8bcb8a",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        540,
+        320
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db85c75e-f224-413c-926c-82b9f619f99c",
+              "name": "nome",
+              "value": "={{ $json[\"Qual o seu nome completo?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "9575814d-9088-4183-8e9e-bf235e515a3e",
+              "name": "email",
+              "value": "={{ $json[\"Seu melhor e-mail\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "20359791-9f55-4d02-a3ea-7111bb86c9c1",
+              "name": "negocio",
+              "value": "={{ $json[\"Qual das opções abaixo mais condiz com seu negócio hoje?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "26df2578-c3b2-4483-b9fe-5e9aa0cb5912",
+              "name": "faturamento",
+              "value": "={{ $json[\"Qual seu faturamento médio mensal dos últimos 12 meses?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "4297bf9d-8ceb-4717-8a5d-cc61d0bb8b65",
+              "name": "oportunidade",
+              "value": "={{ $json[\"Por que você acredita que participar do IP Experience na categoria Diamond é a oportunidade ideal para você e para o crescimento do seu negócio?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "3b3469ad-04f7-4c5d-acb2-7a71be5d829e",
+              "name": "aceitar_aplicacao",
+              "value": "={{ $json[\"Essa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "fa549b22-040e-4bc5-b9e1-dd1a679aa5cb",
+              "name": "pagamento",
+              "value": "={{ $json[\"O investimento para adquirir o Ingresso Diamond é de até 12x de R$969,32  no cartão de crédito ou R$9.690,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "2d1681d2-8ba2-40f0-8e4a-bdee4f0e1d53",
+              "name": "whatsapp",
+              "value": "={{ $json[\"Número de WhatsApp com DDD:\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a965a38-9ea0-4aec-8527-adb6abf7f485",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -20,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardColumn",
+        "operation": "getAll",
+        "boardId": "5689478999"
+      },
+      "id": "3873213e-4813-4a36-8b80-337117842d42",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        620
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression"
+            }
+          ]
+        }
+      },
+      "id": "a2a1958e-2a0e-4b44-a8f5-3215c8947140",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1120,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1fVXMpN853vIlw3xnPzkxt1sNK8tQj-ej4M6VrT0GkYE/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fVXMpN853vIlw3xnPzkxt1sNK8tQj-ej4M6VrT0GkYE/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "d820962c-884c-4504-a805-dd88c5ace213",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        -900,
+        320
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a863ceba-e541-4a07-9dbd-686917eb59ef",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -660,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-09-02T20:37:41.776Z",
+  "versionId": "94ae1ada-402d-4598-a0c9-555122e41671"
+}
