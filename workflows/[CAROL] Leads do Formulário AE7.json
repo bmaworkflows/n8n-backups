@@ -1,0 +1,270 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-09-06T12:46:32.227Z",
+  "id": "ENs5ZwDjakow4MPL",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Leads do Formulário AE7",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "5dc7e925-954e-4c70-968a-c5d4b37c0562",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1epQTW_NrvUBHVfRoZaMJla0lerC76aoNQ0OxJNq3WiE/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1epQTW_NrvUBHVfRoZaMJla0lerC76aoNQ0OxJNq3WiE/edit#gid=1110820731"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json['No Label email'] }}",
+            "email": "={{ $json[\"No Label field_8ddb34b\"] }}",
+            "pagina": "={{ $json.PAGINAAE7 }}",
+            "utm_source": "={{ $json.UTMSOURCEAE7 }}",
+            "utm_campaign": "={{ $json.UTMCAMPAIGNAE7 }}",
+            "utm_medium": "={{ $json.UTMMEDIUMAE7 }}",
+            "utm_term": "={{ $json.UTMTERMAE7 }}",
+            "utm_content": "={{ $json.UTMCONTENTAE7 }}",
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "whatsapp": "={{ $json['No Label field_87aa609'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "e6acdaba-df02-410c-88fc-c37851331dbb",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1240,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cf3c5f2f-942e-4d97-b89a-1ae772669640",
+        "options": {}
+      },
+      "id": "75301fef-146f-4114-9bfa-346c11b3dc58",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        800,
+        380
+      ],
+      "webhookId": "cf3c5f2f-942e-4d97-b89a-1ae772669640"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.5.5; https://incorporacaonapratica.com",
+            "content-length": "290",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.154.191.251",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "177.154.191.251"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "No Label email": "matheus",
+            "No Label field_87aa609": "81993515055",
+            "No Label field_8ddb34b": "matheuscristhyan.2@gmail.com",
+            "UTMCONTENTAE7": "organico",
+            "UTMSOURCEAE7": "organico",
+            "UTMMEDIUMAE7": "bio",
+            "UTMCAMPAIGNAE7": "bootcamp",
+            "UTMTERMAE7": "bio",
+            "PAGINAAE7": "reuniao-exclusiva-setembro/",
+            "form_id": "9e1d58a",
+            "form_name": "form_ae7_v1"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/cf3c5f2f-942e-4d97-b89a-1ae772669640",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-03T19:46:14.388Z",
+  "versionId": "de62cf84-75cf-431b-9bf0-162b85fbf7ba"
+}
