@@ -1,0 +1,303 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-11-18T03:35:00.400Z",
+  "id": "Jshad12BZEB4pqv2",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Leads do Formulário AE10",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "88b1d1eb-2a7e-4845-93c2-de2e6c6184b0",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1CQ6nWYMBGexLvVSrl4KkLi95TNEF8gEo1bDzdOUVoJk/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110820731,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CQ6nWYMBGexLvVSrl4KkLi95TNEF8gEo1bDzdOUVoJk/edit#gid=1110820731"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json['No Label email'] }}",
+            "whatsapp": "={{ $json['No Label field_87aa609'] }}",
+            "email": "={{ $json['No Label field_8ddb34b'] }}",
+            "utm_source": "={{ $json.UTMSOURCEAE10 }}",
+            "utm_campaign": "={{ $json.UTMCAMPAIGNAE10 }}",
+            "utm_medium": "={{ $json.UTMMEDIUMAE10 }}",
+            "utm_content": "={{ $json.UTMCONTENTAE10 }}",
+            "utm_term": "={{ $json.UTMTERMAE10 }}",
+            "pagina": "={{ $json.PAGINAAE10 }}",
+            "grupo": "não"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome_grupo",
+              "displayName": "nome_grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4dae745d-882a-43b5-972b-75eeabd6f291",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1440,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"No Label field_87aa609\"] = formataTelefone($node['Trata Webhook'].json[\"No Label field_87aa609\"])\n\nreturn $input.all();"
+      },
+      "id": "38476a41-241a-44e4-8903-3f485912f1eb",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c62a698d-974b-48c4-ae57-d0dccd13122f",
+        "options": {}
+      },
+      "id": "cb6ba344-fa35-484d-ab75-57298a3c429a",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        820,
+        380
+      ],
+      "webhookId": "c62a698d-974b-48c4-ae57-d0dccd13122f"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.6.2; https://incorporacaonapratica.com",
+            "content-length": "284",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip, br",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.154.191.251",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "163a7c81533d",
+            "x-real-ip": "177.154.191.251"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "No Label email": "matheus",
+            "No Label field_87aa609": "81993515055",
+            "No Label field_8ddb34b": "bma.matheus2024@gmail.com",
+            "UTMCONTENTAE9": "ig_incorporacaonapratica",
+            "UTMSOURCEAE9": "ig",
+            "UTMMEDIUMAE9": "organico",
+            "UTMCAMPAIGNAE9": "ae8",
+            "UTMTERMAE9": "bio",
+            "PAGINAAE9": "reuniao-novembro",
+            "form_id": "3e6f13b",
+            "form_name": "form_ae9_v1"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/e992ef13-c5e1-480f-95d3-c1dd52ec315e",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-11-25T03:01:44.561Z",
+  "versionId": "e41a92ee-b7fe-4052-957f-09959f4e85f9"
+}
