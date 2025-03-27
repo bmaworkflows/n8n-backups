@@ -1,0 +1,236 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Etapas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Etapas": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Central funis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-26T20:21:35.445Z",
+  "id": "Biypj1W1XVciMbN4",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] IP EXPRESS - Formulário de Pesquisa",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "3c954217-82a5-450d-bd2e-e766eb66ef90",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        800,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=1055383475#gid=1055383475",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 602061972,
+          "mode": "list",
+          "cachedResultName": "pesquisa-ip-express",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=602061972"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $json.whatsapp }}",
+            "chave": "={{ $json.whatsapp.slice(-7) }}",
+            "cenário": "={{ $json.cenario }}",
+            "faturamento": "={{ $json.faturamento }}",
+            "já desenvolveu produto?": "={{ $json.desenvolve }}",
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cenário",
+              "displayName": "cenário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "já desenvolveu produto?",
+              "displayName": "já desenvolveu produto?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "97cc38fb-880c-4509-a3ba-6c0e56e227ac",
+      "name": "Dados Planilha |Central funis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1220,
+        320
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const entrada = [\n  {\n    \"cenario\": 2,\n    \"faturamento\": 3,\n    \"desenvolve\": 1,\n    \"whatsapp\": \"5575999928292\"\n  }\n];\n\nconst cenarios = {\n  \"1\": \"Corretor (a) de imóveis\",\n  \"2\": \"Engenheiro (a)\",\n  \"3\": \"Arquiteto (a)\",\n  \"4\": \"Empresário (a) ou empreendedor (a)\",\n  \"5\": \"no mercado imobiliário\",\n  \"6\": \"Incorporador (a)\",\n  \"7\": \"Construtor\",\n  \"8\": \"Sou de outro mercado, mas quero\",\n  \"9\": \"migrar para o desenvolvimento\",\n  \"10\": \"Outros\"\n};\n\nconst faturamentos = {\n  \"1\": \"Até R$ 10.000,00\",\n  \"2\": \"R$ 10.000,00 a R$ 20.000,00\",\n  \"3\": \"R$ 20.000,00 a R$ 50.000,00\",\n  \"4\": \"R$ 50.000,00 a R$ 100.000,00\",\n  \"5\": \"R$ 100.000,00 a R$ 250.000,00\",\n  \"6\": \"R$ 250.000,00 a R$ 500.000,00\",\n  \"7\": \"Acima de R$ 500.000,00\"\n};\n\nconst desenvolvimentos = {\n  \"1\": \"Estou construindo/incorporando no momento\",\n  \"2\": \"Já construí/incorporei, mas não estou construindo/incorporando no momento\",\n  \"3\": \"Nunca construí/incorporei, nem estou construindo/incorporando\"\n};\n\nconst processarLead = (lead) => {\n  return {\n    whatsapp: lead.whatsapp,\n    cenario: cenarios[String(lead.cenario)] || \"lead respondeu fora do padrão\",\n    faturamento: faturamentos[String(lead.faturamento)] || \"lead respondeu fora do padrão\",\n    desenvolve: desenvolvimentos[String(lead.desenvolve)] || \"lead respondeu fora do padrão\"\n  };\n};\n\n// Se estiver usando em um nó Function do n8n com múltiplos itens:\nreturn items.map(item => {\n  return {\n    json: processarLead(item.json)\n  };\n});\n"
+      },
+      "id": "3f82a5b6-4fff-45a6-84f1-b17b109eb4fe",
+      "name": "Trata Etapas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c345506a-a884-4098-b61b-926991ff7ec8",
+        "options": {}
+      },
+      "id": "5bde5341-ef4a-4774-ae77-a0ecba285e8f",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        320
+      ],
+      "webhookId": "c345506a-a884-4098-b61b-926991ff7ec8"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "ManyChat",
+            "content-length": "128",
+            "content-type": "application/json; charset=utf-8",
+            "x-forwarded-for": "3.73.55.17",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "3.73.55.17",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "cenario": "2",
+            "faturamento": "3",
+            "desenvolve": "1",
+            "whatsapp": "5575999928292"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/c345506a-a884-4098-b61b-926991ff7ec8",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-26T20:52:38.728Z",
+  "versionId": "2be3bf2a-bde3-422c-b98a-9b1d90603b5d"
+}
