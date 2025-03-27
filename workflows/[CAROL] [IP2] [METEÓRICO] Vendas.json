@@ -1,0 +1,469 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Dados planilha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-08-03T00:48:14.918Z",
+  "id": "WTKwteQ6gKAOuvKA",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [IP2] [METEÓRICO] Vendas",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "93008cec-681e-4a93-bdd2-8ec79358b601",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        820,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1V9wxKT_fRDOXKv12DnuTNLVobETwy571jcodv1kYtbw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 315736848,
+          "mode": "list",
+          "cachedResultName": "vendas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V9wxKT_fRDOXKv12DnuTNLVobETwy571jcodv1kYtbw/edit#gid=315736848"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.contact.name }}",
+            "email": "={{ $json.contact.email }}",
+            "telefone": "={{ $json.contact.phone_number }}",
+            "data": "={{ $json.dates.created_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "oferta": "={{ $json.items[0].offer.name }}",
+            "preço": "={{ $json.items[0].total_value }}",
+            "utm_source": "={{ $json.source.utm_source }}",
+            "utm_campaign": "={{ $json.source.utm_campaign }}",
+            "utm_medium": "={{ $json.source.utm_medium }}",
+            "utm_content": "={{ $json.source.utm_content }}",
+            "utm_term": "={{ $json.source.utm_term }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "oferta",
+              "displayName": "oferta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "preço",
+              "displayName": "preço",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "89f033f8-03a4-45a4-abae-3198c88caafd",
+      "name": "Dados planilha",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1260,
+        260
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "9b432ce1-343a-491f-95f9-7551ac7eb698",
+              "leftValue": "={{ $json.affiliations }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1f3d77bf-4c72-4be8-a24b-e2fb10cd1d17",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d0a04b05-2a44-4913-b9af-6b6069787fc0",
+        "options": {}
+      },
+      "id": "d0df9fde-28c6-4b06-9fe4-63065218ca9c",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        260
+      ],
+      "webhookId": "d0a04b05-2a44-4913-b9af-6b6069787fc0"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "digitalmanager.guru (dev@digitalmanager.guru)",
+            "content-length": "3857",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.74.118.102",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "34.74.118.102",
+            "x-request-id": "9cdbc875-a003-4093-bce5-eaf85ead187d",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "affiliations": [
+              {
+                "affiliates_group_name": "",
+                "contact_email": "jp.bijari@gmail.com",
+                "currency": "BRL",
+                "fee": 14.74,
+                "id": "9b6fa2d8-3014-4454-9244-a40cb0c19c4e",
+                "marketplace_id": "OIOPHDSB",
+                "name": "José Pedro Da Silva Bijari",
+                "net_value": 782.26,
+                "value": 797
+              }
+            ],
+            "api_token": "4MOQW1GNtH0Ok8F0XNVXJnRXiFt33bbFq4l3MLri",
+            "checkout_url": "https://clkdmg.site/pay/perpetuo-executivo",
+            "contact": {
+              "id": "9cdbc7a8-366a-4c12-8403-ec021c42dbef",
+              "name": "Jacqueline Padovani De Freitas Moda",
+              "company_name": "",
+              "email": "jacqueline@invistta.com.br",
+              "doc": "24834731804",
+              "phone_number": "19999752207",
+              "phone_local_code": "55",
+              "address": "Rua Altemar Dutra",
+              "address_number": "39",
+              "address_comp": "K3",
+              "address_district": "Parque Brasil 500",
+              "address_city": "Paulínia",
+              "address_state": "SP",
+              "address_state_full_name": "SP",
+              "address_country": "BR",
+              "address_zip_code": "13141082",
+              "lead": []
+            },
+            "contracts": [],
+            "dates": {
+              "canceled_at": null,
+              "confirmed_at": null,
+              "created_at": "2024-08-26T13:06:54Z",
+              "expires_at": null,
+              "ordered_at": "2024-08-26T13:02:40Z",
+              "unavailable_until": null,
+              "updated_at": "2024-08-26T13:09:08Z",
+              "warranty_until": null
+            },
+            "ecommerces": [],
+            "id": "9cdbc624-2e2b-494a-8e8b-0c9d9482bc21",
+            "infrastructure": {
+              "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21F90 Instagram 324.0.4.26.52 (iPhone15,3; iOS 17_5_1; pt_BR; pt; scale=3.00; 1290x2796; 580117525)",
+              "ip": "2804:7f0:32:108:2df0:5da9:483:ab08",
+              "country": "BR",
+              "region": "sp",
+              "city": "paulinia",
+              "city_lat_long": "-22.741053,-47.174301",
+              "host": "clkdmg.site"
+            },
+            "invoice": [],
+            "items": [
+              {
+                "id": "1703274431",
+                "image_url": "https://storage.googleapis.com/disk.clkdmg.site/clients/9ae96ffc-5ae6-4368-ad95-2a28f5b8a4e1/images/products/9ae97759-1006-4eb5-9a20-81f7a1e10960.png",
+                "internal_id": "9ae972ee-8a5b-4e0e-b6ac-bde105d183fb",
+                "marketplace_id": "1703274431",
+                "marketplace_name": "pagarme",
+                "name": "IP Experience",
+                "offer": {
+                  "id": "9b9a5771-e571-4e3b-ae24-72e81c81a488",
+                  "name": "[perpetuo] executivo"
+                },
+                "producer": {
+                  "contact_email": null,
+                  "marketplace_id": "1703273968",
+                  "name": "Incorporacao Na Pratica"
+                },
+                "qty": 1,
+                "total_value": 1594,
+                "type": "product",
+                "unit_value": 1594
+              }
+            ],
+            "last_transaction": [],
+            "payment": {
+              "affiliate_value": 0,
+              "acquirer": {
+                "code": "0000",
+                "message": "Transação aprovada com sucesso",
+                "name": "pagarme",
+                "nsu": "",
+                "tid": 3164479964
+              },
+              "can_try_again": 1,
+              "coupon": null,
+              "currency": "BRL",
+              "discount_value": 0,
+              "gross": 1594,
+              "installments": {
+                "value": 1594,
+                "qty": 1,
+                "interest": 0
+              },
+              "marketplace_id": "3164479964",
+              "marketplace_name": "pagarme",
+              "marketplace_value": 0,
+              "method": "credit_card",
+              "net": 1594,
+              "processing_times": {
+                "started_at": "2024-08-26T13:09:03.878Z",
+                "finished_at": "2024-08-26T13:09:05.272Z",
+                "delay_in_seconds": 1
+              },
+              "refund_reason": "",
+              "refuse_reason": "",
+              "tax": {
+                "value": 0,
+                "rate": 0
+              },
+              "total": 1594,
+              "credit_card": {
+                "brand": "mastercard",
+                "expiration_month": "01",
+                "expiration_year": "2031",
+                "first_digits": "548083",
+                "id": "card_cm0b0lkav7nd60l9t28v33k9t",
+                "last_digits": "6159"
+              }
+            },
+            "product": {
+              "id": "1703274431",
+              "image_url": "https://storage.googleapis.com/disk.clkdmg.site/clients/9ae96ffc-5ae6-4368-ad95-2a28f5b8a4e1/images/products/9ae97759-1006-4eb5-9a20-81f7a1e10960.png",
+              "internal_id": "9ae972ee-8a5b-4e0e-b6ac-bde105d183fb",
+              "marketplace_id": "1703274431",
+              "marketplace_name": "pagarme",
+              "name": "IP Experience",
+              "offer": {
+                "id": "9b9a5771-e571-4e3b-ae24-72e81c81a488",
+                "name": "[perpetuo] executivo"
+              },
+              "producer": {
+                "marketplace_id": "1703273968",
+                "name": "Incorporacao Na Pratica",
+                "contact_email": ""
+              },
+              "qty": 1,
+              "total_value": 1594,
+              "type": "product",
+              "unit_value": 1594
+            },
+            "shipment": {
+              "carrier": "",
+              "service": "",
+              "tracking": "",
+              "value": 0,
+              "status": "",
+              "delivery_time": ""
+            },
+            "shipping": {
+              "name": "Standard",
+              "value": 0
+            },
+            "source": {
+              "source": null,
+              "checkout_source": null,
+              "utm_source": null,
+              "utm_campaign": null,
+              "utm_medium": null,
+              "utm_content": null,
+              "utm_term": null,
+              "pptc": []
+            },
+            "status": "approved",
+            "subscription": [],
+            "type": "producer"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/d0a04b05-2a44-4913-b9af-6b6069787fc0",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-08-26T13:54:56.422Z",
+  "versionId": "3fa22d4e-3ccf-41b1-8e8c-6a1d03d34bf4"
+}
