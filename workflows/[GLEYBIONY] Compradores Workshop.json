@@ -1,0 +1,308 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-08-29T12:46:11.977Z",
+  "id": "DMovYRSUttGQj17x",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[GLEYBIONY] Compradores Workshop",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "76601a35-8473-4049-adee-d46652d6688a",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['contact[phone]'] = formataTelefone($node['Trata Webhook'].json['contact[phone]'])\n\nreturn $input.all();"
+      },
+      "id": "768c8a79-1970-434e-ba7d-e79356c051cf",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "589cf327-608f-4a53-b712-196662cd12e4",
+        "options": {}
+      },
+      "id": "d998a146-415c-4bb8-ae76-c4c7b6d03e42",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        800,
+        380
+      ],
+      "webhookId": "589cf327-608f-4a53-b712-196662cd12e4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TxFMrKrYnzT0RYAQqu5CXMB_cKbwqhVSa_5F-HlUu4A/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 823149187,
+          "mode": "list",
+          "cachedResultName": "[LEAD] Comprou Ingresso",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TxFMrKrYnzT0RYAQqu5CXMB_cKbwqhVSa_5F-HlUu4A/edit#gid=823149187"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json['contact[first_name]'] + \" \" + $json['contact[last_name]']}} ",
+            "email": "={{ $json['contact[email]'] }}",
+            "telefone": "={{ $json['contact[phone]'] }}",
+            "ingresso": "={{ $json['contact[fields][ingressoae4]'] }}",
+            "pagina": "={{ $json['contact[fields][paginaae4]'] }}",
+            "utm_source": "={{ $json['contact[fields][utmsourceae4]'] }}",
+            "utm_campaign": "={{ $json['contact[fields][utmcampaignae4]'] }}",
+            "utm_medium": "={{ $json['contact[fields][utmmediumae4]'] }}",
+            "utm_term": "={{ $json['contact[fields][utmtermae4]'] }}",
+            "utm_content": "={{ $json['contact[fields][utmcontentae4]'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ingresso",
+              "displayName": "ingresso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "1226b968-b516-443e-b9bd-813006bad9e4",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1440,
+        380
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/6.5.5 curl/8.3.0 PHP/8.1.29",
+            "content-length": "964",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "18.213.77.190",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "4a344ebab927",
+            "x-real-ip": "18.213.77.190",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "contact[id]": "1583",
+            "contact[email]": "alefirurbanismo@gmail.com",
+            "contact[first_name]": "Alessandro",
+            "contact[last_name]": "Firmino",
+            "contact[phone]": "+5518981126139",
+            "contact[orgname]": "",
+            "contact[customer_acct_name]": "",
+            "contact[tags]": "[AE2][LEAD][2024], [AE4][LEAD][2024], [AE4][FORMULARIO][2024]",
+            "contact[ip4]": "177.162.40.230",
+            "contact[fields][utmcontentae2]": "storie",
+            "contact[fields][utmsourceae2]": "instagram",
+            "contact[fields][utmtermae2]": "storie",
+            "contact[fields][utmmediumae2]": "instagram",
+            "contact[fields][utmcampaignae2]": "organico",
+            "contact[fields][ingressoae4]": "executivo_premium",
+            "contact[fields][paginaae4]": "/workshop",
+            "contact[fields][utmcampaignae4]": "Active",
+            "contact[fields][utmmediumae4]": "Email",
+            "contact[fields][utmtermae4]": "email01",
+            "contact[fields][utmsourceae4]": "Organico",
+            "contact[fields][utmcontentae4]": "BaseOutrasReunioes",
+            "seriesid": "26"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/589cf327-608f-4a53-b712-196662cd12e4",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2024-08-29T13:00:32.580Z",
+  "versionId": "98ee0533-63b4-4535-92c1-80a659b938ef"
+}
