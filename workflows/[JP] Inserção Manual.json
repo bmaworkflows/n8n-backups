@@ -1,0 +1,750 @@
+{
+  "active": true,
+  "connections": {
+    "Cria lead v21": {
+      "main": [
+        [
+          {
+            "node": "atualiza informações v21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza informações v21": {
+      "main": [
+        []
+      ]
+    },
+    "define campos personalizados v21": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Cria lead v21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-09T13:08:46.920Z",
+  "id": "ugPUw0ZzL2o5P9mM",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] Inserção Manual",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "285c5dbe-6e19-49c5-b7ea-079db4c138bf",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        820,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5689478999",
+        "groupId": "topics",
+        "name": "={{ $json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "443bd9fd-55ba-472e-8a2b-0d6b9c94a453",
+      "name": "Cria lead v21",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        400
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome: {{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\nEmail: {{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\nTelefone: {{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\n\nInstagram: {{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\nCloser responsável: {{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\nTipo de negócio: {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\nFaturamento: {{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\nOrigem: {{ $('Trata Webhook').item.json.form_response.answers[7].text }}\n\nObservação: {{ $('Trata Webhook').item.json.form_response.answers[8].text }}\n\nNome do quem preencheu a inserção:  {{ $('Trata Webhook').item.json.form_response.answers[9].text }}"
+      },
+      "id": "df831190-4c2a-48be-a5fa-2662c4ae604a",
+      "name": "atualiza informações v21",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        400
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Cria lead v21').item.json.id }}",
+        "columnValues": "={\n\"texto__1\": \"{{ $('formulário pro whatsapp da vendedora').item.json.pagina }}\"\n}"
+      },
+      "id": "7ae1c775-4a5f-40f5-b55e-7e62819aad48",
+      "name": "define campos personalizados v21",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        660
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "97b60433-db7a-4ac4-b75b-3a3ba230356f",
+        "options": {}
+      },
+      "id": "559e52a1-dede-4051-9b37-2988e7d16442",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        580,
+        400
+      ],
+      "webhookId": "97b60433-db7a-4ac4-b75b-3a3ba230364a"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "8895",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-72097bf6d2ddf839072363983ff3b106-ea09d1a32c46474c-01",
+            "x-forwarded-for": "34.230.177.131",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "aec8b0c0f148",
+            "x-real-ip": "34.230.177.131"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01JH80EK2MZTVADVZX5HYKP5NV",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "Bzf6ro1d",
+              "token": "tguabxm8f3y8taz3adtguabplsisx8ca",
+              "landed_at": "2025-01-10T11:43:31Z",
+              "submitted_at": "2025-01-10T11:44:03Z",
+              "hidden": {
+                "pagina": "xxxxx",
+                "utm_campaign": "xxxxx",
+                "utm_campaign_ads": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_content_ads": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_medium_ads": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_source_ads": "xxxxx",
+                "utm_term": "xxxxx",
+                "utm_term_ads": "xxxxx"
+              },
+              "variables": [
+                {
+                  "key": "enrich_age",
+                  "type": "number",
+                  "number": 0
+                },
+                {
+                  "key": "enrich_age_range",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_avatar",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_bio",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_city",
+                  "type": "text",
+                  "text": "Eugene"
+                },
+                {
+                  "key": "enrich_company_continent",
+                  "type": "text",
+                  "text": "South America"
+                },
+                {
+                  "key": "enrich_company_country",
+                  "type": "text",
+                  "text": "Brazil"
+                },
+                {
+                  "key": "enrich_company_description_list",
+                  "type": "text",
+                  "text": "Nova Casa Distribuidora is a company that operates in the Construction industry. It employs 500to999 people and has 1Mto5M of revenue. The company is headquartered in Brasilia, Federal District, Brazil."
+                },
+                {
+                  "key": "enrich_company_employee_count",
+                  "type": "number",
+                  "number": 763
+                },
+                {
+                  "key": "enrich_company_employee_range",
+                  "type": "text",
+                  "text": "500 - 1,000"
+                },
+                {
+                  "key": "enrich_company_naics_codes",
+                  "type": "text",
+                  "text": "72 | 722 | 7225 | 72251 | 722513"
+                },
+                {
+                  "key": "enrich_company_name",
+                  "type": "text",
+                  "text": "Nova Casa Distribuidora"
+                },
+                {
+                  "key": "enrich_company_phone",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_primary_industry",
+                  "type": "text",
+                  "text": "Construction"
+                },
+                {
+                  "key": "enrich_company_ranking",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_company_revenue",
+                  "type": "text",
+                  "text": "$1.7 Million"
+                },
+                {
+                  "key": "enrich_company_revenue_numeric",
+                  "type": "number",
+                  "number": 1684000
+                },
+                {
+                  "key": "enrich_company_revenue_range",
+                  "type": "text",
+                  "text": "$1 mil. - $5 mil."
+                },
+                {
+                  "key": "enrich_company_sic_codes",
+                  "type": "text",
+                  "text": "58 | 581 | 5812"
+                },
+                {
+                  "key": "enrich_company_type",
+                  "type": "text",
+                  "text": "PRIVATE"
+                },
+                {
+                  "key": "enrich_country",
+                  "type": "text",
+                  "text": "United States"
+                },
+                {
+                  "key": "enrich_dwelling_type",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_education_degree",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_first_name",
+                  "type": "text",
+                  "text": "John"
+                },
+                {
+                  "key": "enrich_gender",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_household_income_estimate",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_job_function",
+                  "type": "text",
+                  "text": "Sales"
+                },
+                {
+                  "key": "enrich_job_title",
+                  "type": "text",
+                  "text": "Representante Comercial"
+                },
+                {
+                  "key": "enrich_language",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_last_name",
+                  "type": "text",
+                  "text": "Matheus"
+                },
+                {
+                  "key": "enrich_linkedin_url",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_marital_status",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_net_worth_range",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_number_of_children",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_owner_or_renter",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_phone",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_photo_url",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_presence_of_children",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_region_code",
+                  "type": "text",
+                  "text": "OR"
+                },
+                {
+                  "key": "enrich_twitter_url",
+                  "type": "text",
+                  "text": ""
+                },
+                {
+                  "key": "enrich_website",
+                  "type": "text",
+                  "text": ""
+                }
+              ],
+              "definition": {
+                "id": "Bzf6ro1d",
+                "title": "Mentoria High Ticket® - Inserção Manual",
+                "fields": [
+                  {
+                    "id": "mb6wFndBfJ5a",
+                    "ref": "01HHF4CVE6FDDVP3R88TAER6XD",
+                    "type": "short_text",
+                    "title": "Qual o nome do lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "8JlC6MhweNsT",
+                    "ref": "fb090355-f7ed-4367-9458-2aae21e1cd35",
+                    "type": "phone_number",
+                    "title": "Número do WhatsApp com DDD",
+                    "properties": {}
+                  },
+                  {
+                    "id": "q2zmxUUnKhvw",
+                    "ref": "ecd17768-3d51-47df-a5ed-288db2bf67a6",
+                    "type": "email",
+                    "title": "Qual o e-mail principal do lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "yf2zhlGQSKkR",
+                    "ref": "d3e38c45-a1f4-42ae-9eed-31e32b5bc029",
+                    "type": "short_text",
+                    "title": "Qual o @ do Instagram do lead?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "g9RTlAIwG00p",
+                    "ref": "519e01c4-6f86-4989-9f10-9926a01b9b5f",
+                    "type": "multiple_choice",
+                    "title": "Para qual Closer ele deve ser redirecionado?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "V15jx0X99sVh",
+                        "ref": "b9a658fe-cfc1-4bcd-82cf-041495e554da",
+                        "label": "Tiago Gregório"
+                      },
+                      {
+                        "id": "CJFWVcKvZQ7W",
+                        "ref": "f4552fa4-7f8e-47ac-9e41-8f43340d687a",
+                        "label": "Hadassa"
+                      },
+                      {
+                        "id": "PccW09hK4xfa",
+                        "ref": "dd31c377-2ce1-4a86-a590-16202142c97d",
+                        "label": "Débora"
+                      },
+                      {
+                        "id": "jbdZc6N2iNSL",
+                        "ref": "1db9400e-1d21-4188-a75f-4d8c2291c43b",
+                        "label": "José"
+                      },
+                      {
+                        "id": "dsfk3bOrEMOn",
+                        "ref": "b4e50684-151d-41c0-ab77-89c4fa914995",
+                        "label": "Thaís"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "6ZNWnSYy90QL",
+                    "ref": "01HHF4CWNCDPG9GNKY13NQYCJR",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com o negócio do lead hoje?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "E09Tp0aSeNqc",
+                        "ref": "01HHF4CWNCM2E8AJ4RQRK5F0B7",
+                        "label": "Mentor, expert ou infoprodutor"
+                      },
+                      {
+                        "id": "YCCoGMOEZhbG",
+                        "ref": "01HHF4CWNC6WJ05N9P5141VVJG",
+                        "label": "Agência digital ou Coprodutor"
+                      },
+                      {
+                        "id": "amJiah6OahTN",
+                        "ref": "a28e1656-652c-4bd0-b0f7-f769a2249187",
+                        "label": "Gestor de tráfego ou outro prestador de serviço no digital"
+                      },
+                      {
+                        "id": "Tenwa7WN21vT",
+                        "ref": "f1ac31b4-012b-4beb-bdf5-3182e387508b",
+                        "label": "Profissional liberal/Prestador de serviço"
+                      },
+                      {
+                        "id": "QcZ7BLraKZUV",
+                        "ref": "157d1f17-3047-40fe-b182-f7cc1d943ddd",
+                        "label": "Afiliados e PLR"
+                      },
+                      {
+                        "id": "njmJqd870aMH",
+                        "ref": "1b19d434-eaf0-47d8-ba39-e059d4633528",
+                        "label": "Nenhuma das opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "eb816VXWp0BL",
+                    "ref": "b38808fb-8bb3-439a-8f7b-27da74a5d76b",
+                    "type": "multiple_choice",
+                    "title": "Qual o faturamento mensal médio do lead? ",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "Jht7mnAQKXXL",
+                        "ref": "f6443bdd-7bb9-4716-8029-d682069ebcba",
+                        "label": "Até 5K/mês"
+                      },
+                      {
+                        "id": "KvcL2nrLKiuu",
+                        "ref": "5c7a47b2-9279-456f-8922-2a4cea8954e6",
+                        "label": "5K a 10K/mês"
+                      },
+                      {
+                        "id": "bw6vKshSsYiX",
+                        "ref": "ec52aa93-40da-42c6-96f8-d470896dfdbe",
+                        "label": "10K a 15K/mês"
+                      },
+                      {
+                        "id": "fiAj43urz8bN",
+                        "ref": "6326119f-1752-4cfa-8a7d-8f994484b0bb",
+                        "label": "15K a 20K/mês"
+                      },
+                      {
+                        "id": "QDmDpdfO66jc",
+                        "ref": "937c2a7f-1e08-4af6-93fa-817d618758fe",
+                        "label": "20K a 50K/mês"
+                      },
+                      {
+                        "id": "xTf59yREQg2b",
+                        "ref": "3a8699d9-ac30-4311-bc26-539cd6b2e207",
+                        "label": "50k a 100k/mês"
+                      },
+                      {
+                        "id": "s31QdTpZfuU2",
+                        "ref": "21706c82-4fb3-4eb7-b22d-7b87b337c3ef",
+                        "label": "100K a 250K/mês"
+                      },
+                      {
+                        "id": "jIMyx6bFlq22",
+                        "ref": "e3abefa8-2d0a-4d80-9210-47fa0d4b3a84",
+                        "label": "250K a 500K/mês"
+                      },
+                      {
+                        "id": "1ytWhJehoSsQ",
+                        "ref": "05922e98-2a13-40b9-bb74-6d80bdcfb700",
+                        "label": "Acima de 500K/mês"
+                      },
+                      {
+                        "id": "2q44rAeLn8wb",
+                        "ref": "6c017928-b582-4907-8b1c-6ae3da4f1cde",
+                        "label": "10K a 15K/mês"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bD0nAwklzkPp",
+                    "ref": "4384bc6a-9dca-40ee-9429-9974cf10ee45",
+                    "type": "short_text",
+                    "title": "Qual a Origem do Lead",
+                    "properties": {}
+                  },
+                  {
+                    "id": "0Yvu4AnTkMQc",
+                    "ref": "fb2a9558-9bbd-4975-b42c-47f1f7dc48d4",
+                    "type": "short_text",
+                    "title": "Alguma observação sobre este lead?\n",
+                    "properties": {}
+                  },
+                  {
+                    "id": "1cmoLkv6BhBF",
+                    "ref": "c6eef670-791e-4f9c-89b6-4d7076485483",
+                    "type": "short_text",
+                    "title": "Qual o seu nome? Sim, você que está preenchendo =)",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "DefaultTyScreen",
+                    "ref": "default_tys",
+                    "title": "Thanks for completing this typeform\nNow *create your own* — it's free, easy, & beautiful",
+                    "type": "thankyou_screen",
+                    "properties": {
+                      "button_text": "Create a *typeform*",
+                      "show_button": true,
+                      "share_icons": false,
+                      "button_mode": "default_redirect"
+                    },
+                    "attachment": {
+                      "type": "image",
+                      "href": "https://images.typeform.com/images/2dpnUBBkz2VN"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "mathes",
+                  "field": {
+                    "id": "mb6wFndBfJ5a",
+                    "type": "short_text",
+                    "ref": "01HHF4CVE6FDDVP3R88TAER6XD"
+                  }
+                },
+                {
+                  "type": "phone_number",
+                  "phone_number": "+5581993515055",
+                  "field": {
+                    "id": "8JlC6MhweNsT",
+                    "type": "phone_number",
+                    "ref": "fb090355-f7ed-4367-9458-2aae21e1cd35"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matheus@gmail.com",
+                  "field": {
+                    "id": "q2zmxUUnKhvw",
+                    "type": "email",
+                    "ref": "ecd17768-3d51-47df-a5ed-288db2bf67a6"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "matheus inst",
+                  "field": {
+                    "id": "yf2zhlGQSKkR",
+                    "type": "short_text",
+                    "ref": "d3e38c45-a1f4-42ae-9eed-31e32b5bc029"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "PccW09hK4xfa",
+                    "label": "Débora",
+                    "ref": "dd31c377-2ce1-4a86-a590-16202142c97d"
+                  },
+                  "field": {
+                    "id": "g9RTlAIwG00p",
+                    "type": "multiple_choice",
+                    "ref": "519e01c4-6f86-4989-9f10-9926a01b9b5f"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "amJiah6OahTN",
+                    "label": "Gestor de tráfego ou outro prestador de serviço no digital",
+                    "ref": "a28e1656-652c-4bd0-b0f7-f769a2249187"
+                  },
+                  "field": {
+                    "id": "6ZNWnSYy90QL",
+                    "type": "multiple_choice",
+                    "ref": "01HHF4CWNCDPG9GNKY13NQYCJR"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "QDmDpdfO66jc",
+                    "label": "20K a 50K/mês",
+                    "ref": "937c2a7f-1e08-4af6-93fa-817d618758fe"
+                  },
+                  "field": {
+                    "id": "eb816VXWp0BL",
+                    "type": "multiple_choice",
+                    "ref": "b38808fb-8bb3-439a-8f7b-27da74a5d76b"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "origme",
+                  "field": {
+                    "id": "bD0nAwklzkPp",
+                    "type": "short_text",
+                    "ref": "4384bc6a-9dca-40ee-9429-9974cf10ee45"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "obs",
+                  "field": {
+                    "id": "0Yvu4AnTkMQc",
+                    "type": "short_text",
+                    "ref": "fb2a9558-9bbd-4975-b42c-47f1f7dc48d4"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "matheus",
+                  "field": {
+                    "id": "1cmoLkv6BhBF",
+                    "type": "short_text",
+                    "ref": "c6eef670-791e-4f9c-89b6-4d7076485483"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "DefaultTyScreen",
+                "ref": "default_tys"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/97b60433-db7a-4ac4-b75b-3a3ba230356f",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Cria lead v21": [
+      {
+        "json": {
+          "id": "8209940413"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-10T17:59:00.830Z",
+  "versionId": "bd1ea9c8-55f0-4e22-97a7-c853e9da72ad"
+}
