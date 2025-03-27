@@ -1,0 +1,685 @@
+{
+  "active": true,
+  "connections": {
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com3": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Grupo Formação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-10-22T00:47:51.870Z",
+  "id": "dZCnrZXOgCwBAVD1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] CG Formação",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5689478999",
+        "groupId": "novo_grupo82923",
+        "name": "={{ \"[FORMAÇÃO]\" + \" \" + $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "17176774-c6b2-4ac5-a545-b34764abb32d",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "30689048-b5d8-4b80-82e8-dcaa7dc0c501",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        680,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n\n----------\nEmail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].email }}\n\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].number }}\n\n\n----------\n@ do Instagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje? ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nAtua ou tem interesse de atuar no mercado de desenvolvimento imobiliário (incorporação, loteamento, condomínios...) \n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n\n----------\nCaso já atue no desenvolvimento imobiliário, qual tipo de produto você já desenvolveu?\n\n{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2024?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}\n\n\n----------\nQual seu principal objetivo nos próximos 12 meses dentro mercado imobiliário?\n\n{{ $('Trata Webhook').item.json.form_response.answers[8].text }}\n\n\n----------\nO que atualmente te impede de alcançar seu objetivo no mercado imobiliário?\n\n{{ $('Trata Webhook').item.json.form_response.answers[9].text }}"
+      },
+      "id": "6e4d9b5b-968e-4407-83f6-6cd2056a0391",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5689478999",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"n_meros\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].number }}\", \"texto3__1\": \"wa.me/{{ $('Trata Webhook').item.json.form_response.answers[2].number }}\", \"data\":\"{{ $node[\"Date & Time\"].json[\"formattedDate\"] }}\", \"texto71__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"hidden\"][\"utm_source\"] }}\", \"texto34__1\":\"Formação\", \"texto4__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}\", \"texto32__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"hidden\"][\"utm_content\"] }}\", \"texto2__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"hidden\"][\"utm_medium\"] }}\", \"texto1__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"hidden\"][\"utm_term\"] }}\", \"texto9__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[1].email }}\"}"
+      },
+      "id": "45698a80-7a5e-4173-8dd9-92ee70494fe1",
+      "name": "Monday.com3",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.form_response.submitted_at }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "e69ffcbe-8ccc-472b-b71a-57bc34c2874c",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        920,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardColumn",
+        "operation": "getAll",
+        "boardId": "5689478999"
+      },
+      "id": "9430e7f9-558a-4a53-936c-0889bc43063d",
+      "name": "Monday.com2",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        700
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "ZHdCRr90m7Qp2m7i",
+          "name": "Carol Caribé"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "a8380383-25bb-40b9-8208-09f389a455a3",
+              "leftValue": "={{ $json.title }}",
+              "rightValue": "Valor",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "37dc1ddb-6a9e-4372-a00f-7081f1757c37",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c54c8055-4690-4994-aff3-0245e240d580",
+        "options": {}
+      },
+      "id": "35aec23c-57bc-45a0-ba56-8eda4e77f6cb",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        480,
+        380
+      ],
+      "webhookId": "c54c8055-4690-4994-aff3-0245e240d580"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead para o Formação*\n\nNome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n----------\nEmail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].email }}\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].number }}\n\n----------\n@ do Instagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\n----------\nModelo de negócio:\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n----------\nFaturamento:\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}\n\n----------\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "93963042-fd29-423e-b8af-c1a9e310a79c",
+      "name": "Notifica grupo | Grupo Formação",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        380
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Typeform Webhooks",
+            "content-length": "6892",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-49717d7548ec07b662668cff07e1f6af-7d793c8b5ee61d57-01",
+            "x-forwarded-for": "18.204.78.134",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "163a7c81533d",
+            "x-real-ip": "18.204.78.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_id": "01JARVRCRE1Q3XYRNQ0MPH32ST",
+            "event_type": "form_response",
+            "form_response": {
+              "form_id": "ayG130mY",
+              "token": "efshwobb33eztpvawpcefshw0sm2a572",
+              "landed_at": "2024-10-22T00:58:44Z",
+              "submitted_at": "2024-10-22T00:59:13Z",
+              "hidden": {
+                "utm_campaign": "xxxxx",
+                "utm_content": "xxxxx",
+                "utm_medium": "xxxxx",
+                "utm_source": "xxxxx",
+                "utm_term": "xxxxx"
+              },
+              "definition": {
+                "id": "ayG130mY",
+                "title": "Consultoria Grátis - CG Formação A",
+                "fields": [
+                  {
+                    "id": "ZkQeHBQjOoSU",
+                    "ref": "01GRS02X9XK9P4SPQ5BEFQJ0ZG",
+                    "type": "long_text",
+                    "title": "Nome completo:",
+                    "properties": {}
+                  },
+                  {
+                    "id": "mtmO19WXclBo",
+                    "ref": "398e2253-1361-47fa-8d25-c29388c17493",
+                    "type": "email",
+                    "title": "Seu e-mail principal",
+                    "properties": {}
+                  },
+                  {
+                    "id": "b76UpZVTS768",
+                    "ref": "01GRS02XAVCVRXG45HGTV62EST",
+                    "type": "number",
+                    "title": "Número de WhatsApp com DDD:",
+                    "properties": {}
+                  },
+                  {
+                    "id": "82bY6BsUhpn3",
+                    "ref": "9790c345-d511-44ab-a35f-23dc349f1597",
+                    "type": "short_text",
+                    "title": "Seu @ do Instagram:",
+                    "properties": {}
+                  },
+                  {
+                    "id": "o44IyK3itqfw",
+                    "ref": "9cdf796b-be5f-4f01-8130-92c48de282fb",
+                    "type": "multiple_choice",
+                    "title": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "5P1ogESdipIB",
+                        "ref": "242cfed3-8810-4079-b45f-c0823a957a9d",
+                        "label": "Corretor (a) de imóveis"
+                      },
+                      {
+                        "id": "OfMUYIomoxoz",
+                        "ref": "12fd6e4a-605a-44d8-81ad-320935d520e1",
+                        "label": "Engenheiro (a)"
+                      },
+                      {
+                        "id": "yUFHLG5HrnnU",
+                        "ref": "c97e39b0-d9fd-4f00-b2b2-c875cd0341a7",
+                        "label": "Arquiteto (a)"
+                      },
+                      {
+                        "id": "dG3KHuM34Hpn",
+                        "ref": "89fb52cc-8b98-4e6b-ac8a-b47e83a1c0d4",
+                        "label": "Empresário (a) ou empreendedor (a) no mercado imobiliário"
+                      },
+                      {
+                        "id": "zkFV6awF5CZ9",
+                        "ref": "c599e3a5-1262-4a10-8294-802e6bda8b1f",
+                        "label": "Incorporador (a)"
+                      },
+                      {
+                        "id": "kyvcaIPy58yf",
+                        "ref": "5ef79fb2-acb7-4e66-933f-5c80b8694945",
+                        "label": "Construtor"
+                      },
+                      {
+                        "id": "1BPRsKyh8hAf",
+                        "ref": "3e5f873e-9074-4827-b411-05881a8f180a",
+                        "label": "Nenhuma das opções"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "Z0FnJNbWVoCk",
+                    "ref": "5041df88-8396-4e10-b60c-509f7c65e4b7",
+                    "type": "multiple_choice",
+                    "title": "Atua ou tem interesse de atuar no mercado de desenvolvimento imobiliário (incorporação, loteamento, condomínios...)",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "9eIQ9v092lPV",
+                        "ref": "09e065ac-bcf6-4e23-91c2-3d9b6f89feca",
+                        "label": "Já atuo"
+                      },
+                      {
+                        "id": "IIlRGphbtpHf",
+                        "ref": "45f41dc9-5d17-4b67-8444-dde81403a1d2",
+                        "label": "Desejo atuar"
+                      },
+                      {
+                        "id": "GD6luLStWpv9",
+                        "ref": "f28401e4-6d52-490c-9055-fafca1e0190e",
+                        "label": "Não tenho interesse em atuar no mercado de desenvolvimento imobiliário"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "tig9cfjHqIUQ",
+                    "ref": "f7704bfa-2926-4d02-99f1-388558c343be",
+                    "type": "multiple_choice",
+                    "title": "Caso já atue no desenvolvimento imobiliário, qual tipo de produto você já desenvolveu?\n",
+                    "properties": {},
+                    "allow_other_choice": true,
+                    "choices": [
+                      {
+                        "id": "JR0ucLYKUcqV",
+                        "ref": "7c519669-063d-4a75-8b0e-e2718071b4b9",
+                        "label": "Incorporação"
+                      },
+                      {
+                        "id": "k4E3UpwT3pqY",
+                        "ref": "562fd4e4-bf61-4db9-a5bf-94a443ecd3d7",
+                        "label": "Loteamentos"
+                      },
+                      {
+                        "id": "IdeIurnCvWjg",
+                        "ref": "59cd2860-3ceb-420a-8e21-b13d6407f471",
+                        "label": "Condomínios"
+                      },
+                      {
+                        "id": "7ITbBQRNP5bd",
+                        "ref": "f2832a8f-b8e1-4403-ae72-9bcefd7f2f8f",
+                        "label": "Venda de casa na planta"
+                      },
+                      {
+                        "id": "YGaJ46sun55y",
+                        "ref": "114a08e3-b725-49ac-bda4-cfe525344261",
+                        "label": "Multipropriedade"
+                      },
+                      {
+                        "id": "fKGx8XLLjTLj",
+                        "ref": "250fec5c-36d4-4341-bb1d-02f374d87dce",
+                        "label": "Segunda moradia voltada para renda"
+                      },
+                      {
+                        "id": "Yb7o6UbX4wDH",
+                        "ref": "a78a5f44-2a00-4090-9206-64bef5fd4115",
+                        "label": "Comercial (lojas, shoppings, escritórios, galpões, etc..)"
+                      },
+                      {
+                        "id": "WjaOZILPNAs8",
+                        "ref": "0ae01c3a-7090-4c9b-a732-16787e022520",
+                        "label": "Industrial (parques ou galpões)"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nNPJGQcew3K6",
+                    "ref": "ffc8465b-16a2-47ce-ae31-7ee9325c3465",
+                    "type": "multiple_choice",
+                    "title": "Qual é o seu faturamento MENSAL médio em 2024?",
+                    "properties": {},
+                    "choices": [
+                      {
+                        "id": "xpsgD8Y7dfCl",
+                        "ref": "535bb8f0-ce4d-4041-9219-3ceecedb480d",
+                        "label": "Até R$10.000,00"
+                      },
+                      {
+                        "id": "sqIZWg1wstHq",
+                        "ref": "fc0882aa-d36a-4574-83c0-ae2af424d759",
+                        "label": "R$10.000,00 à R$20.000,00"
+                      },
+                      {
+                        "id": "ijkFtk1pFX9T",
+                        "ref": "b2aacc5e-5704-45f5-a3da-23bcac737b66",
+                        "label": "R$20.000,00 à R$50.000,00"
+                      },
+                      {
+                        "id": "ZPFWfKVT6S1V",
+                        "ref": "d73e5bf5-0cc6-4767-920c-2829a95cfe59",
+                        "label": "R$50.000,00 à R$100.000,00"
+                      },
+                      {
+                        "id": "3pDVpluWmpiD",
+                        "ref": "c5971b08-c6e5-4950-85b5-771f56dad3b8",
+                        "label": "R$100.000,00 à R$250.000,00"
+                      },
+                      {
+                        "id": "HLyONmpeJyGQ",
+                        "ref": "00954068-3b70-4c33-8460-932f92cc7fbe",
+                        "label": "R$250.000,00 à R$500.000,00"
+                      },
+                      {
+                        "id": "Bp8noCSeuDws",
+                        "ref": "fff6df55-22f4-4621-9cd7-fdcdfada0fa3",
+                        "label": "Acima de R$500.000,00"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "jcysqJJPUvtD",
+                    "ref": "92175807-9a54-47b1-8db5-b9bcccb25898",
+                    "type": "long_text",
+                    "title": "Qual seu principal objetivo nos próximos 12 meses dentro mercado imobiliário?",
+                    "properties": {}
+                  },
+                  {
+                    "id": "DrasCV5vVGhv",
+                    "ref": "d4c660cf-a96e-4994-bd78-acdb91263205",
+                    "type": "long_text",
+                    "title": "O que atualmente te impede de alcançar seu objetivo no mercado imobiliário?\n",
+                    "properties": {}
+                  }
+                ],
+                "endings": [
+                  {
+                    "id": "m19Fk7v3j6Dv",
+                    "ref": "6ef02538-8f04-46b8-82d3-fdb17077525c",
+                    "title": "obrigado-formacao",
+                    "type": "url_redirect",
+                    "properties": {
+                      "redirect_url": "https://incorporacaonapratica.com/cg-obrigado/"
+                    }
+                  }
+                ]
+              },
+              "answers": [
+                {
+                  "type": "text",
+                  "text": "maheus",
+                  "field": {
+                    "id": "ZkQeHBQjOoSU",
+                    "type": "long_text",
+                    "ref": "01GRS02X9XK9P4SPQ5BEFQJ0ZG"
+                  }
+                },
+                {
+                  "type": "email",
+                  "email": "matehus@gmail.com",
+                  "field": {
+                    "id": "mtmO19WXclBo",
+                    "type": "email",
+                    "ref": "398e2253-1361-47fa-8d25-c29388c17493"
+                  }
+                },
+                {
+                  "type": "number",
+                  "number": 81993155055,
+                  "field": {
+                    "id": "b76UpZVTS768",
+                    "type": "number",
+                    "ref": "01GRS02XAVCVRXG45HGTV62EST"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "math",
+                  "field": {
+                    "id": "82bY6BsUhpn3",
+                    "type": "short_text",
+                    "ref": "9790c345-d511-44ab-a35f-23dc349f1597"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "dG3KHuM34Hpn",
+                    "label": "Empresário (a) ou empreendedor (a) no mercado imobiliário",
+                    "ref": "89fb52cc-8b98-4e6b-ac8a-b47e83a1c0d4"
+                  },
+                  "field": {
+                    "id": "o44IyK3itqfw",
+                    "type": "multiple_choice",
+                    "ref": "9cdf796b-be5f-4f01-8130-92c48de282fb"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "IIlRGphbtpHf",
+                    "label": "Desejo atuar",
+                    "ref": "45f41dc9-5d17-4b67-8444-dde81403a1d2"
+                  },
+                  "field": {
+                    "id": "Z0FnJNbWVoCk",
+                    "type": "multiple_choice",
+                    "ref": "5041df88-8396-4e10-b60c-509f7c65e4b7"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "7ITbBQRNP5bd",
+                    "label": "Venda de casa na planta",
+                    "ref": "f2832a8f-b8e1-4403-ae72-9bcefd7f2f8f"
+                  },
+                  "field": {
+                    "id": "tig9cfjHqIUQ",
+                    "type": "multiple_choice",
+                    "ref": "f7704bfa-2926-4d02-99f1-388558c343be"
+                  }
+                },
+                {
+                  "type": "choice",
+                  "choice": {
+                    "id": "ZPFWfKVT6S1V",
+                    "label": "R$50.000,00 à R$100.000,00",
+                    "ref": "d73e5bf5-0cc6-4767-920c-2829a95cfe59"
+                  },
+                  "field": {
+                    "id": "nNPJGQcew3K6",
+                    "type": "multiple_choice",
+                    "ref": "ffc8465b-16a2-47ce-ae31-7ee9325c3465"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "Qual seu principal objetivo nos próximos 12 meses dentro mercado imobiliário?",
+                  "field": {
+                    "id": "jcysqJJPUvtD",
+                    "type": "long_text",
+                    "ref": "92175807-9a54-47b1-8db5-b9bcccb25898"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "O que atualmente te impede de alcançar seu objetivo no mercado imobiliário?",
+                  "field": {
+                    "id": "DrasCV5vVGhv",
+                    "type": "long_text",
+                    "ref": "d4c660cf-a96e-4994-bd78-acdb91263205"
+                  }
+                }
+              ],
+              "ending": {
+                "id": "m19Fk7v3j6Dv",
+                "ref": "6ef02538-8f04-46b8-82d3-fdb17077525c"
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/c54c8055-4690-4994-aff3-0245e240d580",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-10-27T16:21:26.971Z",
+  "versionId": "e825bd68-e26e-441b-a0e8-1abf3e0c15ae"
+}
