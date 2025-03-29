@@ -526,6 +526,17 @@
           }
         ]
       ]
+    },
+    "Notifica grupo | Deborah": {
+      "main": [
+        [
+          {
+            "node": "SDR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2024-10-22T01:16:51.472Z",
@@ -1692,7 +1703,8 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict"
+                  "typeValidation": "strict",
+                  "version": 1
                 },
                 "conditions": [
                   {
@@ -1716,7 +1728,8 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict"
+                  "typeValidation": "strict",
+                  "version": 1
                 },
                 "conditions": [
                   {
@@ -1740,7 +1753,8 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict"
+                  "typeValidation": "strict",
+                  "version": 1
                 },
                 "conditions": [
                   {
@@ -1764,7 +1778,8 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict"
+                  "typeValidation": "strict",
+                  "version": 1
                 },
                 "conditions": [
                   {
@@ -1788,7 +1803,8 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict"
+                  "typeValidation": "strict",
+                  "version": 1
                 },
                 "conditions": [
                   {
@@ -1812,7 +1828,8 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict"
+                  "typeValidation": "strict",
+                  "version": 1
                 },
                 "conditions": [
                   {
@@ -1843,6 +1860,103 @@
         1600,
         100
       ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb_c1ue8G22RvxGrrHdN27eSGSFNvo92QSVGQ8DaArH6hXBW20mFsbH1ynsbTrCaUm0xvQNMv0vQjCgr8-ic3sEr_Chqg7Xq5iao_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{$json['Name']}}\",\n  \"ValorOportunidade\": {{$json['Valor do Negócio']}},\n  \"NomeLead\": \"{{$json['Name']}}\",\n\"DocumentoLead\":\"64332848000109\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{$json['Data Call Agendada']}}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{$json['Faturamento']}}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{$json['Data de Aplicação']}}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "b91c93a5-92ac-49cb-a97b-5abe57004d3a",
+      "name": "Criar Oportunidade - Déborah",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3820,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}",
+                    "rightValue": "Fábio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "490b038d-696a-4d39-835e-4ab2553042e9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Fábio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2a530297-326b-4740-9c3a-528060bfdf7b",
+                    "leftValue": "={{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}",
+                    "rightValue": "Maria Paula",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Maria Paula"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        3460,
+        240
+      ],
+      "id": "5e485278-077c-4e85-8f20-9556aa8a4587",
+      "name": "SDR"
     }
   ],
   "pinData": {
@@ -2260,6 +2374,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-03-25T02:53:33.414Z",
-  "versionId": "73f3868d-870f-409e-843c-79c955188e52"
+  "updatedAt": "2025-03-28T17:54:41.048Z",
+  "versionId": "c96f1501-1d6c-40fc-9191-47ca00716922"
 }
