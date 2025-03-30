@@ -38,7 +38,7 @@
       "main": [
         [
           {
-            "node": "Aguarde",
+            "node": "Elimina respostas vazias",
             "type": "main",
             "index": 0
           }
@@ -117,6 +117,17 @@
           }
         ]
       ]
+    },
+    "Elimina respostas vazias": {
+      "main": [
+        [
+          {
+            "node": "Aguarde",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-03-29T04:13:18.064Z",
@@ -161,7 +172,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        140,
+        -80,
         380
       ]
     },
@@ -246,7 +257,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -80,
+        -300,
         380
       ],
       "webhookId": "e6119f39-1b96-4858-8835-a12b934e1356"
@@ -263,10 +274,10 @@
           "conditions": [
             {
               "id": "d8b33155-7ccd-44ae-a90c-97a9ed8090e3",
-              "leftValue": "={{ $('Trata Webhook').item.json.response.timeToComplete }}",
+              "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"67e42330bc1739db070e7a9b\"].content }}",
               "rightValue": "",
               "operator": {
-                "type": "number",
+                "type": "array",
                 "operation": "notEmpty",
                 "singleValue": true
               }
@@ -478,6 +489,40 @@
         1280,
         660
       ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4d51afe1-d038-45ab-a3ef-8af66d6f677e",
+              "leftValue": "={{ $json.response.answers[\"67e42229bd398b009f03a758\"].content }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        140,
+        380
+      ],
+      "id": "5ab23830-d2a5-488d-85bd-f600b13927f8",
+      "name": "Elimina respostas vazias"
     }
   ],
   "pinData": {
@@ -487,7 +532,7 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "4008",
+            "content-length": "3964",
             "content-type": "application/json",
             "x-forwarded-for": "67.205.154.223",
             "x-forwarded-host": "webhook.josepbijari.com",
@@ -501,27 +546,27 @@
           "query": {},
           "body": {
             "response": {
-              "id": "67e7737ee0ba4d9f8299111c",
+              "id": "67e815161101bd3b21e60dbe",
               "formId": "67e421562aa05ef03107e48a",
-              "ipAddress": "190.89.244.58",
-              "operatingSystem": "OS X",
-              "operatingSystemVersion": "10_15_7",
-              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-              "browser": "Chrome",
-              "browserVersion": "134.0.0.0",
+              "ipAddress": "2804:14d:5c59:9560:2d94:6e4b:8de6:742f",
+              "operatingSystem": "iOS",
+              "operatingSystemVersion": "18_3_2",
+              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3.1 Mobile/15E148 Safari/604.1",
+              "browser": "Safari",
+              "browserVersion": "18.3.1",
               "referrerUrl": null,
-              "deviceType": "desktop",
+              "deviceType": "mobile",
               "geolocation": {
                 "continent": "South America",
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "state": "Pernambuco",
-                "city": "Caruaru",
-                "zipcode": "55000",
-                "latitude": -8.1792,
-                "longitude": -36.0279,
-                "timezone": "America/Recife"
+                "state": "Rio de Janeiro",
+                "city": "Rio de Janeiro",
+                "zipcode": "24000",
+                "latitude": -22.9201,
+                "longitude": -43.0811,
+                "timezone": "America/Sao_Paulo"
               },
               "aiFeedback": null,
               "hiddenFields": [],
@@ -529,77 +574,76 @@
                 "score": 0
               },
               "tracking": {
-                "utm_source": "value",
-                "utm_medium": "value",
-                "utm_campaign": "value",
-                "utm_content": "value",
-                "utm_term": "value",
-                "_fbp": "fb.1.1742270412627.451017520152784457"
+                "utm_source": "zoom",
+                "utm_medium": "live",
+                "utm_campaign": "ipexpress",
+                "utm_content": "live",
+                "utm_term": "msg_aplicacao"
               },
-              "timeToComplete": 245.584,
-              "startedAt": "2025-03-29T04:14:24.908000Z",
-              "submittedAt": "2025-03-29T04:18:30.492000Z",
-              "createdAt": "2025-03-29T04:13:50.832000Z",
-              "updatedAt": "2025-03-29T04:18:30.844000Z",
+              "timeToComplete": null,
+              "startedAt": "2025-03-29T15:43:23.515000Z",
+              "submittedAt": "2025-03-29T15:47:28.634000Z",
+              "createdAt": "2025-03-29T15:43:18.211000Z",
+              "updatedAt": "2025-03-29T15:47:28.634000Z",
               "answers": {
                 "67e421c75923755f45041ed2": {
-                  "answerId": "67e7737ebcb2d1fbcf5bc912",
+                  "answerId": "67e81516bcb2d1fbcfb6c7c1",
                   "fieldTitle": "Atenção:",
                   "fieldDescription": "<p>A sua aplicação através deste questionário NÃO garante que você será aceito no programa Acelera.</p><p></p><p>Vou avaliar pessoalmente, de forma cautelosa, cada aplicação e selecionar apenas quem realmente pode aproveitar essa oportunidade e agregar ao grupo. Baseado nas suas respostas, você será ou não selecionado para uma entrevista pessoal comigo ou com um especialista do meu time.</p><p></p><p>Só preencha esse questionário se você está realmente comprometido em fazer a diferença para você e para as pessoas em volta.</p>",
                   "content": null
                 },
                 "67e42229bd398b009f03a758": {
-                  "answerId": "67e773a0bcb2d1fbcf5bd4ec",
+                  "answerId": "67e8151bbcb2d1fbcfb6cbc8",
                   "fieldTitle": "Seu nome:",
                   "fieldDescription": null,
-                  "content": "Matheus"
+                  "content": "Felipe"
                 },
                 "67e42239bc1739db070e7a94": {
-                  "answerId": "67e7747bbcb2d1fbcf5c1eb3",
+                  "answerId": "67e81520bcb2d1fbcfb6cfda",
                   "fieldTitle": "E-mail:",
                   "fieldDescription": null,
-                  "content": "matheus@gmail.com"
+                  "content": "engfelipealves@icloud.com"
                 },
                 "67e422485c2c1f19f700f7a3": {
-                  "answerId": "67e77480bcb2d1fbcf5c2049",
+                  "answerId": "67e81524bcb2d1fbcfb6d3f2",
                   "fieldTitle": "WhatsApp com DDD:",
                   "fieldDescription": null,
-                  "content": "+5581993515055"
+                  "content": "+5521984054198"
                 },
                 "67e4226c2c9797306a0d96b2": {
-                  "answerId": "67e77485bcb2d1fbcf5c22dd",
+                  "answerId": "67e8152abcb2d1fbcfb6d7cb",
                   "fieldTitle": "Qual das opções abaixo mais condiz com seu negócio hoje?",
                   "fieldDescription": null,
                   "content": [
-                    "Arquiteto-Incorporador"
+                    "Dono de Terreno"
                   ]
                 },
                 "67e422d8bc1739db070e7a97": {
-                  "answerId": "67e77486bcb2d1fbcf5c233b",
+                  "answerId": "67e81542bcb2d1fbcfb6e8f9",
                   "fieldTitle": "Qual seu faturamento médio mensal dos últimos 12 meses?",
                   "fieldDescription": null,
                   "content": [
-                    "R$ 50.000,00 a R$ 100.000,00"
+                    "R$ 10.000,00 a R$ 20.000,00"
                   ]
                 },
                 "67e4231010bde7d41202b8a2": {
-                  "answerId": "67e77488bcb2d1fbcf5c23d1",
+                  "answerId": "67e8154bbcb2d1fbcfb6ed2f",
                   "fieldTitle": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?",
                   "fieldDescription": null,
-                  "content": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?"
+                  "content": "Porque tenho disciplina e força de vontade para estudar e trabalhar duro fazendo acontecer"
                 },
                 "67e4231f10bde7d41202b8a3": {
-                  "answerId": "67e7748cbcb2d1fbcf5c25dc",
+                  "answerId": "67e81598bcb2d1fbcfb71929",
                   "fieldTitle": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
                   "fieldDescription": null,
-                  "content": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?  *"
+                  "content": "Porque tenho bastante ideais e sonhos que pode agregar nesse grupo. Tenho conhecimento em gerenciamento de obras na área de energia solar e engenharia de telecom"
                 },
                 "67e42330bc1739db070e7a9b": {
-                  "answerId": "67e7748fbcb2d1fbcf5c273b",
+                  "answerId": "67e815dabcb2d1fbcfb75a20",
                   "fieldTitle": "O investimento para a participação no Acelera é de até 12x de R$ 13.500,00 no cartão de crédito ou R$ 120.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?",
                   "fieldDescription": null,
                   "content": [
-                    "Sim, parcelado em até 12x."
+                    "Quero falar com o atendimento VIP."
                   ]
                 }
               }
@@ -607,27 +651,6 @@
           },
           "webhookUrl": "https://webhook.josepbijari.com/webhook/e6119f39-1b96-4858-8835-a12b934e1356",
           "executionMode": "production"
-        }
-      }
-    ],
-    "Monday.com": [
-      {
-        "json": {
-          "id": "8811383381"
-        }
-      }
-    ],
-    "Monday.com1": [
-      {
-        "json": {
-          "id": "3990462874"
-        }
-      }
-    ],
-    "Monday.com3": [
-      {
-        "json": {
-          "id": "8811383381"
         }
       }
     ]
@@ -648,6 +671,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-03-29T04:46:00.825Z",
-  "versionId": "f63dafa1-4f22-447a-9b42-38a659627757"
+  "updatedAt": "2025-03-29T17:44:44.429Z",
+  "versionId": "4dcee1fe-e9e9-41fc-8ae0-90f5da56851f"
 }
