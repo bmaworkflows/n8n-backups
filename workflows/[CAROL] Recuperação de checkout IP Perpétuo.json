@@ -160,7 +160,13 @@
     },
     "Aguarda 15 minutos": {
       "main": [
-        []
+        [
+          {
+            "node": "Busca venda",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Recebe Dados": {
@@ -168,6 +174,28 @@
         [
           {
             "node": "Aguarda 15 minutos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca venda": {
+      "main": [
+        [
+          {
+            "node": "nao comprou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "nao comprou": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone1",
             "type": "main",
             "index": 0
           }
@@ -182,12 +210,13 @@
   "nodes": [
     {
       "parameters": {
-        "amount": 1
+        "amount": 15,
+        "unit": "minutes"
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -300,
+        -180,
         0
       ],
       "id": "9ad1cf2e-9e24-41d5-afac-b8c141a1ec9f",
@@ -711,11 +740,85 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -540,
+        -420,
         0
       ],
       "id": "9dca3649-c0bc-4a79-8218-559927698fd3",
       "name": "Recebe Dados"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1mZyyFuA_4UU8rpV7CdhyZnYTDcdOoGQfwUuTDTJ1D1o/edit?gid=315736848#gid=315736848",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 315736848,
+          "mode": "list",
+          "cachedResultName": "vendas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mZyyFuA_4UU8rpV7CdhyZnYTDcdOoGQfwUuTDTJ1D1o/edit#gid=315736848"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "email",
+              "lookupValue": "={{ $json.Seu_melhor_e_mail }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6a6ffa9f-e7ce-435a-a673-71263d5e37e7",
+      "name": "Busca venda",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        40,
+        0
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6fac72f7-4754-4bb6-8cb4-0952c3889d1b",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        260,
+        0
+      ],
+      "id": "50eebefd-f8eb-4674-b2ff-326069d042d9",
+      "name": "nao comprou"
     }
   ],
   "pinData": {
@@ -754,6 +857,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-03T03:48:36.702Z",
-  "versionId": "469fa8af-346e-413f-aecd-66cbd058fb4b"
+  "updatedAt": "2025-04-03T03:50:09.905Z",
+  "versionId": "80d0435d-f4a4-44ba-b63f-b0ced9d26102"
 }
