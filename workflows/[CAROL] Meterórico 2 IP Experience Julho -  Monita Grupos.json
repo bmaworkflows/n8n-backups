@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Trata Webhook": {
       "main": [
@@ -130,6 +130,11 @@
             "node": "Adiciona na planilha",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Adiciona na planilha2",
+            "type": "main",
+            "index": 0
           }
         ],
         [
@@ -146,6 +151,11 @@
         [
           {
             "node": "Adiciona na planilha existe",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Adiciona na planilha existe1",
             "type": "main",
             "index": 0
           }
@@ -177,15 +187,9 @@
             "node": "busca contato1",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "ActiveCampaign": {
-      "main": [
-        [
+          },
           {
-            "node": "Filter",
+            "node": "busca contato2",
             "type": "main",
             "index": 0
           }
@@ -230,6 +234,17 @@
         [
           {
             "node": "Ação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato2": {
+      "main": [
+        [
+          {
+            "node": "adiciona saída1",
             "type": "main",
             "index": 0
           }
@@ -1110,60 +1125,6 @@
     },
     {
       "parameters": {
-        "resource": "tag",
-        "operation": "getAll",
-        "returnAll": true
-      },
-      "id": "72786378-8acf-48c8-ab8c-bfe9a3510bd8",
-      "name": "ActiveCampaign",
-      "type": "n8n-nodes-base.activeCampaign",
-      "typeVersion": 1,
-      "position": [
-        780,
-        860
-      ],
-      "credentials": {
-        "activeCampaignApi": {
-          "id": "4ygJeCXAzG5KRUPW",
-          "name": "Active Carol"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict"
-          },
-          "conditions": [
-            {
-              "id": "36f65ee9-ce55-4c37-ae64-5213b3d22db3",
-              "leftValue": "={{ $json.tag }}",
-              "rightValue": "[2025][LEAD][AULA EXCLUSIVA 02]",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "7ec864c0-3dd1-4057-b59c-d272edbcade8",
-      "name": "Filter",
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.1,
-      "position": [
-        1000,
-        860
-      ]
-    },
-    {
-      "parameters": {
         "httpMethod": "POST",
         "path": "meteorico2-ipjulho-2025",
         "options": {}
@@ -1297,6 +1258,474 @@
         1000,
         320
       ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Xrs9GFQbkBZo7cVEQv9pCl5DMkJzO9S3JST_MgaBWVA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xrs9GFQbkBZo7cVEQv9pCl5DMkJzO9S3JST_MgaBWVA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format('dd/MM/yyyy') }}",
+            "whatsapp": "={{ $node[\"Trata Número\"].json[\"notificationParameters\"][\"0\"] }}",
+            "encontrado": "não"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "encontrado",
+              "displayName": "encontrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "13f86095-d093-4c68-ae8d-d867e5289819",
+      "name": "Adiciona na planilha1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        0,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=318430599#gid=318430599",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1760281719,
+          "mode": "list",
+          "cachedResultName": "meteórico 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1760281719"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format('dd/MM/yyyy') }}",
+            "whatsapp": "={{ $node[\"Trata Número\"].json[\"notificationParameters\"][\"0\"] }}",
+            "encontrado": "não"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "encontrado",
+              "displayName": "encontrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "85e613c1-48c4-4fa0-a23a-773f6e6165ce",
+      "name": "Adiciona na planilha2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2660,
+        -200
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=318430599#gid=318430599",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1760281719,
+          "mode": "list",
+          "cachedResultName": "meteórico 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1760281719"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format('dd/MM/yyyy') }}",
+            "nome": "={{ $node[\"Limit\"].json[\"contacts\"][\"0\"][\"firstName\"] }}",
+            "whatsapp": "={{ $node[\"Trata Número\"].json[\"notificationParameters\"][\"0\"] }}",
+            "encontrado": "sim",
+            "email": "={{ $json.contacts[0].email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "encontrado",
+              "displayName": "encontrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "1024e65e-15eb-4d56-a736-f79cd024b228",
+      "name": "Adiciona na planilha existe1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2660,
+        160
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=318430599#gid=318430599",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1760281719,
+          "mode": "list",
+          "cachedResultName": "meteórico 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1760281719"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "whatsapp",
+              "lookupValue": "={{ $node[\"Trata Número\"].json[\"notificationParameters\"][\"0\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e1e03023-cc7b-4172-8663-01ac69d4e8a9",
+      "name": "busca contato2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1520,
+        1260
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=318430599#gid=318430599",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1760281719,
+          "mode": "list",
+          "cachedResultName": "meteórico 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1760281719"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "grupo": "saiu"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "encontrado",
+              "displayName": "encontrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "54224946-0141-4da7-8942-a0c7ea96e4ab",
+      "name": "adiciona saída1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1800,
+        1260
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1360,6 +1789,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-03T17:41:08.235Z",
-  "versionId": "e9f4b214-43d2-44fa-9713-0f41c659159c"
+  "updatedAt": "2025-04-04T03:59:28.525Z",
+  "versionId": "9a17d1cd-09b2-4aa8-8344-8284e50f35d2"
 }
