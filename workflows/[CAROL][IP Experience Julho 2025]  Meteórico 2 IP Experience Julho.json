@@ -1,0 +1,1173 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "novo": {
+      "main": [
+        [
+          {
+            "node": "att contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria contato": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "att contact": {
+      "main": [
+        [
+          {
+            "node": "add tag2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "existe": {
+      "main": [
+        [
+          {
+            "node": "busca contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "existe",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone1": {
+      "main": [
+        [
+          {
+            "node": "Cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sem nono digito": {
+      "main": [
+        [
+          {
+            "node": "busca contato1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato1": {
+      "main": [
+        [
+          {
+            "node": "add tag1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "sem nono digito",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag1": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag2": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-04T17:36:08.401Z",
+  "id": "6pNssGzObMNHYGGX",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL][IP Experience Julho 2025]  Meteórico 2 IP Experience Julho",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "66394154-b73d-429d-8a8c-2f987704c2b8",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"DDD_WhatsApp\"] = formataTelefone($input.all()[0].json[\"DDD_WhatsApp\"]) \n\nreturn $input.all();"
+      },
+      "id": "0e3d0d5c-4a5d-4f94-8014-dadb0c05454f",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9c4f5b87-1d47-484e-828a-e7c6011cdf03",
+        "options": {}
+      },
+      "id": "611cbd7e-4bef-4bce-af4b-cafdc0e91061",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        820,
+        380
+      ],
+      "webhookId": "9c4f5b87-1d47-484e-828a-e7c6011cdf03"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Xrs9GFQbkBZo7cVEQv9pCl5DMkJzO9S3JST_MgaBWVA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1344738496,
+          "mode": "list",
+          "cachedResultName": "leads teste página",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xrs9GFQbkBZo7cVEQv9pCl5DMkJzO9S3JST_MgaBWVA/edit#gid=1344738496"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format('dd/MM/yyyy') }}",
+            "nome": "={{ $json.Seu_nome }}",
+            "whatsapp": "={{ $json.DDD_WhatsApp }}",
+            "email": "={{ $json.Seu_e_mail }}",
+            "pagina": "={{ $json.pagina }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "grupo": "não",
+            "chave": "={{ $json.DDD_WhatsApp.slice(-7) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "79180380-44a4-4161-936d-d2e8e78f2c1e",
+      "name": "Adiciona na planilha existe",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1660,
+        440
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=318430599#gid=318430599",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1435579293,
+          "mode": "list",
+          "cachedResultName": "meteórico 2 - teste pagina",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1435579293"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ new DateTime($now).format('dd/MM/yyyy') }}",
+            "nome": "={{ $json.Seu_nome }}",
+            "whatsapp": "={{ $json.DDD_WhatsApp }}",
+            "email": "={{ $json.Seu_e_mail }}",
+            "pagina": "={{ $json.pagina }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "grupo": "não",
+            "chave": "={{ $json.DDD_WhatsApp.slice(-7) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "0281fcf4-ebc8-405c-a7df-1d9aef8fb644",
+      "name": "Adiciona na planilha existe1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1660,
+        200
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2440,
+        920
+      ],
+      "id": "40da3a62-e8cd-41fe-8d66-9cd6ee20a3af",
+      "name": "novo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/createSubscriber",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"phone\": \"{{\"+\"+ $json.numerosFormatados.comNonoDigito }}\",\n  \"whatsapp_phone\": \"{{\"+\"+ $json.numerosFormatados.comNonoDigito }}\",\n  \"has_opt_in_sms\": false,\n  \"has_opt_in_email\": false,\n  \"consent_phrase\": \"string\"\n} ",
+        "options": {}
+      },
+      "id": "d12054a0-8bc7-4e5c-96a3-1fe135a728cb",
+      "name": "Cria contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        840
+      ],
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
+            },
+            {
+              "name": "field_id",
+              "value": "12789794"
+            },
+            {
+              "name": "field_value",
+              "value": "={{ $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ac88563b-0eb3-4b4b-9298-3fa65a61dd90",
+      "name": "att contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2660,
+        920
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2440,
+        540
+      ],
+      "id": "e466201a-ea33-4c23-ad9f-a3eddb3deb2b",
+      "name": "existe"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12789794&field_value={{ $('Formata Telefone1').item.json.numerosFormatados.comNonoDigito }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6c3e158a-d5f7-4cef-9d1b-3d666ba77115",
+      "name": "busca contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2660,
+        540
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "4b47ac03-1259-4e8c-9e8e-22786f6bf427",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "This WhatsApp ID already exists",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "05b000d7-531b-4e58-abec-1d3448bddba3",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        2160,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\");\n    let ddi = \"55\";\n    let ddd, telefone;\n\n    if (number.length === 13) {\n        ddi = number.substring(0, 2);\n        ddd = number.substring(2, 4);\n        telefone = number.substring(4);\n    } else if (number.length === 12) {\n        if (number.startsWith(\"55\")) {\n            ddd = number.substring(2, 4);\n            telefone = number.substring(4);\n        } else if (number.startsWith(\"0\")) {\n            return formataTelefone(number.substring(1));\n        } else {\n            return { comNonoDigito: number, semNonoDigito: number };\n        }\n    } else if (number.length === 11) {\n        ddd = number.substring(0, 2);\n        telefone = number.substring(2);\n    } else if (number.length === 10) {\n        ddd = number.substring(0, 2);\n        telefone = \"9\" + number.substring(2);\n    } else {\n        return { comNonoDigito: number, semNonoDigito: number };\n    }\n\n    let telefoneComNono = telefone.length === 8 ? \"9\" + telefone : telefone;\n    let telefoneSemNono = telefoneComNono.startsWith(\"9\") ? telefoneComNono.substring(1) : telefoneComNono;\n\n    return {\n        comNonoDigito: ddi + ddd + telefoneComNono,\n        semNonoDigito: ddi + ddd + telefoneSemNono\n    };\n}\n\nlet numerosFormatados = formataTelefone($node['Formata Telefone'].json['DDD_WhatsApp']);\n\n$input.all()[0].json[\"numerosFormatados\"] = numerosFormatados\nreturn $input.all();\n"
+      },
+      "id": "9bf5787c-1bbe-4d0d-b172-3b58e4a087f1",
+      "name": "Formata Telefone1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        840
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3180,
+        340
+      ],
+      "id": "cbf46646-172f-4d87-ad44-4a0bf82e3612",
+      "name": "sem nono digito"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12789794&field_value={{$node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "80765092-3b06-4c4e-9ac9-afb5d6a15d71",
+      "name": "busca contato1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3380,
+        340
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "49a86e22-a9c4-4d6a-b179-2a4335dbb72e",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9d598093-8a37-48c5-999d-addd2646c1cc",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        2940,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "61006975"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3b63bc73-5be0-4f28-a5e3-3e05b08f2fef",
+      "name": "add tag",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3180,
+        540
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "61006975"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e6b03db1-6d9f-4801-8c23-69d7605fcba4",
+      "name": "add tag1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3820,
+        320
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "61006975"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3111c446-be64-42ec-85e9-8890b401c0f1",
+      "name": "add tag2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2960,
+        900
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"busca contato1\"].json[\"data\"][\"0\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20250404232936_129132"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f6a9f5d2-334c-42f5-82f0-b9720c7dcccd",
+      "name": "envia fluxo1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4140,
+        300
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"busca contato\"].json[\"data\"][\"0\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20250404232936_129132"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c429380f-6abb-4799-9899-a8bcb63c4d9a",
+      "name": "envia fluxo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3520,
+        520
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20250404232936_129132"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "62b0553a-e477-4616-8678-2f067b7054a1",
+      "name": "envia fluxo3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3320,
+        880
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "content-length": "529",
+            "accept-encoding": "gzip",
+            "cdn-loop": "cloudflare; subreqs=1",
+            "cf-connecting-ip": "2a06:98c0:3600::103",
+            "cf-ray": "92b4a68523902cbc-DFW",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "greatsoftwares.workers.dev",
+            "content-type": "application/x-www-form-urlencoded",
+            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTc0MzgxMDAyM30.zFqJEOBbjUrwt0y85vfz1yXM4CLgXY-Xrk_jkysM0uc",
+            "great-server": "GreatApps",
+            "great-service": "gpages-r2-pages-integrations",
+            "x-forwarded-for": "172.71.166.57",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "172.71.166.57"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Seu_nome": "matheus",
+            "DDD_WhatsApp": "81993515055",
+            "Seu_e_mail": "matheus@gmail.com",
+            "utm_source": "",
+            "utm_medium": "",
+            "utm_campaign": "",
+            "utm_term": "",
+            "utm_content": "",
+            "fbclid": "",
+            "gclid": "",
+            "pagina": "ip-grupo-exclusivo-v4",
+            "Referral_Source": "Acesso direto",
+            "Dispositivo": "Desktop",
+            "URL": "https://www.incorporacaonapratica.com/ip-grupo-exclusivo-v4",
+            "IP_do_usuario": "190.89.244.58",
+            "Data_da_conversao": "2025-04-04 23:40:15",
+            "Id_do_formulario": "2113936_1_174378292567f0040d8e3d9925339603",
+            "Pais_do_usuario": "BR",
+            "Regiao_do_usuario": "Pernambuco",
+            "Cidade_do_usuario": "Caruaru",
+            "Id_da_pagina": "2113936"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/9c4f5b87-1d47-484e-828a-e7c6011cdf03",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-04T23:49:25.745Z",
+  "versionId": "13945bfc-2985-492e-8afb-a7a743d616ed"
+}
