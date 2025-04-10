@@ -30,13 +30,7 @@
     },
     "Adiciona na Lista": {
       "main": [
-        [
-          {
-            "node": "Mapeamento de Campos",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "ID Usuário": {
@@ -147,7 +141,13 @@
     },
     "Dados Planilha |Meteórico 1": {
       "main": [
-        []
+        [
+          {
+            "node": "ID Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Formata Telefone1": {
@@ -261,6 +261,17 @@
         [
           {
             "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ActiveCampaign": {
+      "main": [
+        [
+          {
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -404,7 +415,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        80,
+        100,
         460
       ]
     },
@@ -451,7 +462,7 @@
     {
       "parameters": {
         "resource": "contactList",
-        "listId": 226,
+        "listId": 229,
         "contactId": "={{ $('ID Usuário').item.json.id }}"
       },
       "id": "2a6c100e-5adb-4c7c-83b0-7250c85daf81",
@@ -528,7 +539,7 @@
     {
       "parameters": {
         "resource": "contactTag",
-        "tagId": "=1508",
+        "tagId": "=1510",
         "contactId": "={{ $json.id }}"
       },
       "id": "964d090c-46fe-4b17-9a28-3f8bdf355638",
@@ -1271,6 +1282,60 @@
         460
       ],
       "webhookId": "3e38917c-33cd-491e-8c76-d61f61157775"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aac1beed-1fd0-4db2-b0ee-1c73621e5e5d",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "[2025][LEAD][IP EXPRESS 02]",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        720
+      ],
+      "id": "daced4a2-362c-4518-9ad1-5eed6b67c2ef",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "resource": "list",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        80,
+        720
+      ],
+      "id": "f5e2bbe4-a57d-49b3-a1df-2cb8f2410f4d",
+      "name": "ActiveCampaign",
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1344,6 +1409,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-04-09T22:41:07.342Z",
-  "versionId": "cb579d50-07ae-43f5-a399-8dcd2b74116f"
+  "updatedAt": "2025-04-10T04:21:14.025Z",
+  "versionId": "d1501892-228f-43a2-873f-055e6163c8ef"
 }
