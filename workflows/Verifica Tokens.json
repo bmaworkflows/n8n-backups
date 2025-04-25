@@ -1,0 +1,378 @@
+{
+  "active": false,
+  "connections": {
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split In Batches": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-25T05:02:39.397Z",
+  "id": "zvDN66q2AFj4QlhK",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Verifica Tokens",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v{{ $json[\"Versao\"] }}.0/act_{{ $json[\"Id_Conta\"] }}/insights",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "access_token",
+              "value": "={{ $json[\"Token\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "b84594b6-beda-480d-b6fb-43ed24e508e4",
+      "name": "HTTP Request4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        600
+      ],
+      "retryOnFail": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $node['HTTP Request4'].json[\"error\"][\"message\"] }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "df3640f2-9cfb-424f-aeaa-768bf3fdc695",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        240,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Status",
+              "value": "Funcionando"
+            },
+            {
+              "name": "Id_Conta",
+              "value": "={{ $node[\"Split In Batches\"].json[\"Id_Conta\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1dd381f2-a291-49e2-8e8c-300d0d325667",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Status",
+              "value": "Parou"
+            },
+            {
+              "name": "Id_Conta",
+              "value": "={{ $node[\"Split In Batches\"].json[\"Id_Conta\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a327675e-44f1-4f97-aece-c800a6259659",
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        460,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "id": "47bee451-b92f-4fbf-a34d-5e32022f010e",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "1e90f4e4-f043-4f93-ba97-acebfaee001b",
+      "name": "Split In Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit?gid=1563248188#gid=1563248188",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1563248188,
+          "mode": "list",
+          "cachedResultName": "tokens",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit#gid=1563248188"
+        },
+        "options": {}
+      },
+      "id": "7b66ab42-807d-47b9-9c5e-4f4809caef54",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        -480,
+        620
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit?gid=1563248188#gid=1563248188",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1563248188,
+          "mode": "list",
+          "cachedResultName": "tokens",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ds_1I3BJsPsa2JuiBiVBCCIyMx0yOo8zRWkQDjQLb04/edit#gid=1563248188"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "Id_Conta": "={{ $json.Id_Conta }}"
+          },
+          "matchingColumns": [
+            "Id_Conta"
+          ],
+          "schema": [
+            {
+              "id": "Token",
+              "displayName": "Token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Id_Conta",
+              "displayName": "Id_Conta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Versao",
+              "displayName": "Versao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ad8bed7-e25d-48bf-974f-34d40a7bafda",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        720,
+        540
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-01-25T05:06:28.220Z",
+  "versionId": "88fbb565-e35b-4314-b37f-1b21eccde7e4"
+}
