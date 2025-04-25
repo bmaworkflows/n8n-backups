@@ -1,0 +1,331 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Define campos": {
+      "main": [
+        [
+          {
+            "node": "Aciona Fluxo Carol",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Define campos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Define campos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Define campos1": {
+      "main": [
+        [
+          {
+            "node": "Aciona Fluxo Carol1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-21T14:00:01.558Z",
+  "id": "VaVGk2MZAFvOyL2a",
+  "meta": null,
+  "name": "[JP] Monitora Respostas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "monitora-respostas-jp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3a4092fd-c60c-4498-9f55-f3284ab1eb86",
+      "name": "Webhook",
+      "webhookId": "3846045c-13f3-428c-ba3c-caf941abed83"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "7070e554-93d3-40a8-8ef3-df0cbf7de9e8",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bb8b61bb-dcf1-4c2e-a7df-327921c6077c",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -220
+      ],
+      "id": "1f3e46ae-8d6e-4058-b7cb-3cac3844e01c",
+      "name": "Define campos"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "TsTs3Wsib11kZ65H",
+          "mode": "list",
+          "cachedResultName": "[CAROL] Report Diário - Disponibilidade do Calendly"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        -220
+      ],
+      "id": "1fb780fe-2972-46af-bee4-22b3c20d18dd",
+      "name": "Aciona Fluxo Carol"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.text.message }}",
+                    "rightValue": "#reportscarol",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fed254fb-61ad-4f49-89bf-40ccc574797e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CAROL"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ed252776-e761-42dd-934b-fa44e0bd438b",
+                    "leftValue": "={{ $json.text.message }}",
+                    "rightValue": "#reportsjp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "JP"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "9c4e3958-c9fe-4746-bec4-eefff26fedb7",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bb8b61bb-dcf1-4c2e-a7df-327921c6077c",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        580,
+        180
+      ],
+      "id": "2312cc43-0842-41fe-ad5c-a514478eb3ec",
+      "name": "Define campos1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "O79Em3p6J2cnPbJP",
+          "mode": "list",
+          "cachedResultName": "[JP] Report Diário - Disponibilidade do Calendly"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        180
+      ],
+      "id": "be63b6eb-6c59-4b70-9276-e88891aff383",
+      "name": "Aciona Fluxo Carol1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:111.0) Gecko/20100101 Firefox/111.0",
+            "content-length": "748",
+            "content-type": "application/json",
+            "origin": "https://api.z-api.io",
+            "server": "Z-API",
+            "x-forwarded-for": "167.234.247.31",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "167.234.247.31",
+            "z-api-token": "DA84CEA8EC9897345A31EA92",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "isStatusReply": false,
+            "chatLid": "252651501547525@lid",
+            "connectedPhone": "5511979558149",
+            "waitingMessage": false,
+            "isEdit": false,
+            "isGroup": false,
+            "isNewsletter": false,
+            "instanceId": "3CFE88963A26408D365B72B70F2FFCF9",
+            "messageId": "3A49C5274DB312013A09",
+            "phone": "558193515055",
+            "fromMe": false,
+            "momment": 1745244038216,
+            "status": "RECEIVED",
+            "chatName": "Matheus Cristhyan",
+            "senderPhoto": null,
+            "senderName": "Matheus Cristhyan",
+            "photo": "https://pps.whatsapp.net/v/t61.24694-24/418369142_358076134057808_4631271309357329076_n.jpg?ccb=11-4&oh=01_Q5Aa1QHVvSYI6o_0739NX8YeMZBbpjiyLRMaNno8_sbdRkN4rQ&oe=68134A3D&_nc_sid=5e03e0&_nc_cat=110",
+            "broadcast": false,
+            "participantLid": null,
+            "forwarded": false,
+            "type": "ReceivedCallback",
+            "fromApi": false,
+            "text": {
+              "message": "#reports"
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/monitora-respostas-jp",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-21T14:12:44.356Z",
+  "versionId": "71f0b8f8-223d-43de-8de2-5a12b8a6cd8b"
+}
