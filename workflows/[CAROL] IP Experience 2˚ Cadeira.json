@@ -1,0 +1,165 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ID Usuário": {
+      "main": [
+        [
+          {
+            "node": "Adiciona Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "ID Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-07T12:50:15.804Z",
+  "id": "X9RKl1kuIKHsDVqm",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] IP Experience 2˚ Cadeira",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "1f051610-4876-4b22-9f77-a8419a285990",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "782606a5-fcdf-4303-b5a6-a3771f9f9731",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        20,
+        0
+      ],
+      "id": "0f2e3a5a-8e5d-493c-9111-f33fd647a234",
+      "name": "Webhook",
+      "webhookId": "782606a5-fcdf-4303-b5a6-a3771f9f9731"
+    },
+    {
+      "parameters": {
+        "email": "={{ $json[\"E-mail\"] }}",
+        "updateIfExists": true,
+        "additionalFields": {
+          "firstName": "={{ $json[\"Nome Completo\"] }}",
+          "phone": "={{ $json[\"Telefone (WhatsApp)\"] }}"
+        }
+      },
+      "id": "c1dcd067-8edd-4e73-b5c6-c1ae7570f459",
+      "name": "ID Usuário",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        420,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contactTag",
+        "tagId": "=1470",
+        "contactId": "={{ $json.id }}"
+      },
+      "id": "07f3c808-956e-4a3a-895f-7e4c7542ac2c",
+      "name": "Adiciona Tag",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        640,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Mozilla/5.0 (compatible; Google-Apps-Script; beanserver; +https://script.google.com; id: UAEmdDd-aCsZmyYg-jU5NhjefQmqHYKSP7Fs)",
+            "content-length": "113",
+            "accept-encoding": "gzip, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "35.187.143.33",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "35.187.143.33"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Nome Completo": "Matheus",
+            "CPF": "938492384923",
+            "Telefone (WhatsApp)": "81993515055",
+            "E-mail": "matheus@gmail.com"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/782606a5-fcdf-4303-b5a6-a3771f9f9731",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-09T04:22:54.630Z",
+  "versionId": "b1e994d8-b2d9-46e0-a6db-4c32abe30787"
+}
