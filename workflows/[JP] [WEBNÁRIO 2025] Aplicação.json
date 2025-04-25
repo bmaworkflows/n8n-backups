@@ -1,0 +1,849 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Elimina respostas vazias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com10": {
+      "main": [
+        [
+          {
+            "node": "Monday.com18",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com18": {
+      "main": [
+        [
+          {
+            "node": "Monday.com12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form Completo": {
+      "main": [
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos": {
+      "main": [
+        [
+          {
+            "node": "Form Completo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguarde": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Parcial": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers  - Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Elimina respostas vazias": {
+      "main": [
+        [
+          {
+            "node": "Aguarde",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com19",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com19": {
+      "main": [
+        [
+          {
+            "node": "Monday.com13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com13": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers  - Parcial1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-24T19:57:17.776Z",
+  "id": "2PDJs0YhY5gQOIWY",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [WEBNÁRIO 2025] Aplicação",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "dcb12447-f979-4ade-a222-25df39bb3937",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        0,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "fdb558a6-48ec-4bc2-bf0e-f22850709a19",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        200,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "0ce2a12d-e6b7-407c-8fba-840b42802f27",
+        "options": {}
+      },
+      "id": "32bf5183-7124-4ad8-a32e-e768511e7747",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        220
+      ],
+      "webhookId": "0ce2a12d-e6b7-407c-8fba-840b42802f27"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "6628730688",
+        "groupId": "topics",
+        "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+        "additionalFields": {}
+      },
+      "id": "19f62787-610f-4e13-aebd-9f60ab076366",
+      "name": "Monday.com10",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        1180
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "6628730688",
+        "itemId": "={{ $('Monday.com10').item.json.id }}",
+        "columnValues": "={\"data_14__1\": \"{{ $('Date & Time').item.json.formattedDate }}\", \"texto0__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\", \"telefone__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"texto1__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"data__1\":\"2024-06-25\", \"person\":\"closerbma.ezequielneto@gmail.com\" }    "
+      },
+      "id": "d84b07f3-0e63-4519-bef6-cff28127a38a",
+      "name": "Monday.com12",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        1180
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=<b>Nome completo:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[0].text }}</span>\n\n\n----------\n<b>Whatsapp:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}</span>\n\n\n----------\n<b>Instagram:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[2].text }}</span>\n\n\n----------\n\n<b>Qual das opções abaixo mais condiz com seu negócio hoje?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}</span>\n\n\n----------\n<b>Considerando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}</span>\n\n\n----------\n<b>Por que você acredita que a Bijari Mentoria Avançada é a oportunidade ideal para o seu crescimento e do seu negócio?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[5].text }}</span>\n\n\n----------\n\n<b>Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Escreva abaixo por que você acha que devo escolher você entre os interessados:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[6].text }}</span>\n\n\n----------\n<b>O investimento para a participação na mentoria é de R$ 38.000,00 à vista ou em 12x de R$3.800,00 no cartão de crédito. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}</span>\n\n\n----------\n<b>Você está ciente que ao ser aprovado, entraremos em contato com você em até 24h para confirmar sua entrevista, caso não confirme dentro desse período, você perde direito a reunião.</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[8].choice.label }}</span>\n\n\n----------\n<b>Calendly:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Trata Webhook').item.json.form_response.answers[9].url }}</span>"
+      },
+      "id": "4f7abf58-81b1-4d8b-be1f-6ec2c3a95d83",
+      "name": "Monday.com18",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        1180
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d8b33155-7ccd-44ae-a90c-97a9ed8090e3",
+              "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"680a959aa27748c7c808b14b\"].content[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1020,
+        220
+      ],
+      "id": "fbf956c3-4e30-441b-88c2-a0d6f6827ede",
+      "name": "Form Completo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d554fa62-4b8e-4af6-b219-148849e33eff",
+              "name": "nome",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260aa\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "982c2c3f-8e2e-4e24-8bd4-8250dd00081f",
+              "name": "email",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ad\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7e7a4-8c5c-44ba-a261-2a0feca10f58",
+              "name": "whatsapp",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ab\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "91d59ec9-4689-4067-9c67-a987c942d9e8",
+              "name": "nicho atual",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ac\"].content }}",
+              "type": "array"
+            },
+            {
+              "id": "dadf2585-25fc-4a41-85a7-d17010f6a188",
+              "name": "ticket medio",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ae\"].content[0] }}",
+              "type": "array"
+            },
+            {
+              "id": "1b162a1b-59b0-40dd-bfd9-f49f51bd8b43",
+              "name": "faturamento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260af\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "d4d70891-a2f2-43e7-86b2-f3cdd36b195e",
+              "name": "onde está travado",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b7\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "16dd229e-2eea-4e63-8de0-6363390dbcf7",
+              "name": "tem alguém que fecha vendas?",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b0\"].content[0] }}",
+              "type": "array"
+            },
+            {
+              "id": "b0bf1619-54aa-476e-9235-5deb23bb2d3b",
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "3963442e-4392-45b7-a0f2-2d78e6426796",
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "bb0025ee-7695-4494-9740-e280da33ee3e",
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "1fd75d16-7620-4889-8733-419ad792103f",
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "f45fc219-4e11-476b-aa92-99a5650a21fb",
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "a4232b31-3f54-403e-8f16-e6f5bb3dde44",
+              "name": "O que mudaria no seu negócio?",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b1\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "cf093be3-bbb5-4d5d-87ff-98d97b149c36",
+              "name": "Você entende que essa mentoria exige comprometimento, foco e investimento de R$ 60 mil?",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b2\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f7c6d1f-d1ad-425e-8f7d-c2f5d1f50dbd",
+              "name": "Se for aprovado, qual o melhor momento para conversar?",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a959aa27748c7c808b14b\"].content[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        220
+      ],
+      "id": "232a0b52-f758-4256-a6a2-c16e7f6c9f71",
+      "name": "Campos"
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random()* 6) + 15 }}"
+      },
+      "id": "7155505d-b441-49b0-83c0-a94f45f6c6d9",
+      "name": "Aguarde",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        220
+      ],
+      "webhookId": "dcfb2b76-20f9-4df4-a734-31086583161a"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação AULA EXCLUSIVA:* ✅🔥\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json[\"tipo de negócio\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\n*Origens:*\nFormulário: Aplicação - Aula Exclusiva\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "223e09ff-e4f7-42fd-980c-44a43b44acab",
+      "name": "Report - Agendamentos Closers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2780,
+        260
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        460
+      ],
+      "id": "b7243e49-a81f-4d64-88f9-e43d01a19fec",
+      "name": "Lead Parcial"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação PARCIAL WEBNÁRIO JP:* 🚨\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Nicho Atual*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ac'].content }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c04c1338-5a3d-4f6b-a413-be67febe37a6",
+      "name": "Report - Agendamentos Closers  - Parcial",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4d51afe1-d038-45ab-a3ef-8af66d6f677e",
+              "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260aa\"].content }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        220
+      ],
+      "id": "71d7a7d7-9f1f-4aff-b893-f6d311738c03",
+      "name": "Elimina respostas vazias"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "6628730688",
+        "groupId": "topics",
+        "name": "={{ $json.nome }}",
+        "additionalFields": {}
+      },
+      "id": "f933235e-e4bd-4c09-8b9c-2c26fe2456ff",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        200
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "6628730688",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"data_14__1\": \"{{ $('Date & Time').item.json.formattedDate }}\", \"texto0__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\", \"telefone__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"texto1__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"data__1\":\"2024-06-25\", \"person\":\"closerbma.ezequielneto@gmail.com\" }    "
+      },
+      "id": "eddb8863-79f4-4bbb-9921-553543352d84",
+      "name": "Monday.com13",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        200
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=<b>Nome completo:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.nome }}</span>\n\n\n----------\n<b>Whatsapp:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.whatsapp }}</span>\n\n\n----------\n<b>Email:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.email }}</span>\n\n\n----------\n<b>Qual o seu nicho atual?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['nicho atual'] }}</span>\n\n\n----------\n<b>Qual é o seu ticket médio atual?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['ticket medio'] }}</span>\n\n\n----------\n<b>Quanto você fatura, em média, por mês?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.faturamento }}</span>\n\n\n----------\n\n<b>Onde você está mais travado hoje?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['onde está travado'] }}</span>\n\n\n----------\n<b>Você tem alguém que fecha vendas pra você hoje?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['tem alguém que fecha vendas?'] }}</span>\n\n\n----------\n<b>O que mudaria no seu negócio se você conseguisse escalar cobrando R$ 30k, R$ 60k ou mais — sem depender da sua agenda?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['O que mudaria no seu negócio?'] }}</span>\n\n\n----------\n<b>Você entende que essa mentoria exige comprometimento, foco e investimento de R$ 60 mil?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['Você entende que essa mentoria exige comprometimento, foco e investimento de R$ 60 mil?'] }}</span>\n\n\n----------\n<b> Se for aprovado, qual o melhor momento para conversar?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['Se for aprovado, qual o melhor momento para conversar?'] }}</span>"
+      },
+      "id": "3644ec7f-cf9e-4458-94ed-4dbbb65d21a6",
+      "name": "Monday.com19",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        200
+      ],
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação WEBNÁRIO JP:* ✅🔥\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Nicho Atual*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ac'].content }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d445d8d8-e80f-4d63-aed3-1e1a613d7e3e",
+      "name": "Report - Agendamentos Closers  - Parcial1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2000,
+        200
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "4435",
+            "content-type": "application/json",
+            "x-forwarded-for": "68.183.27.182",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "68.183.27.182",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "680a96a4028b6c763c119e8f",
+              "formId": "680a8f0a75a63ec8840260a8",
+              "ipAddress": "2804:29b8:50ad:5268:78ed:d974:11d3:314f",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "135.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_gcl_au": "1.1.599869318.1744865246",
+                "_ga": "GA1.2.1550280858.1744865246",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "ttcsid": "1744865246730.1.1744865246730",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjpmYWxzZX0=",
+                "_clck": "cymcv9|2|fv5|0|1933",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1744865246729.1.1744865247435",
+                "_ga_QMHGX1WZCF": "GS1.1.1744865245.1.1.1744866841.60.0.1678656892"
+              },
+              "timeToComplete": 102.331,
+              "startedAt": "2025-04-24T19:53:11.536000Z",
+              "submittedAt": "2025-04-24T19:54:53.867000Z",
+              "createdAt": "2025-04-24T19:53:08.265000Z",
+              "updatedAt": "2025-04-24T19:54:56.299000Z",
+              "answers": {
+                "680a9441fce7dfb6ef094aa3": {
+                  "answerId": "680a96a4bcb2d1fbcff48a13",
+                  "fieldTitle": "Aplicação para a Mentoria High Ticket",
+                  "fieldDescription": "<p>Essa mentoria é pra mentores e infoprodutores que já vendem, mas querem escalar sem depender da própria agenda. </p><p></p><p>⚠️ Importante: o investimento é de R$ 60 mil. Se isso não faz sentido pra você agora, não continue. Caso contrário, clique em <strong>\"Começar\"</strong>.</p>",
+                  "content": null
+                },
+                "680a8f0b75a63ec8840260aa": {
+                  "answerId": "680a96a7bcb2d1fbcff48b78",
+                  "fieldTitle": "Nome completo",
+                  "fieldDescription": null,
+                  "content": "Matheus"
+                },
+                "680a8f0b75a63ec8840260ad": {
+                  "answerId": "680a96aabcb2d1fbcff48e50",
+                  "fieldTitle": "E-mail",
+                  "fieldDescription": null,
+                  "content": "matheus@gmail.com"
+                },
+                "680a8f0b75a63ec8840260ab": {
+                  "answerId": "680a96b0bcb2d1fbcff493fc",
+                  "fieldTitle": "WhatsApp com DDD",
+                  "fieldDescription": null,
+                  "content": "+5581993515055"
+                },
+                "680a8f0b75a63ec8840260ac": {
+                  "answerId": "680a96b4bcb2d1fbcff49685",
+                  "fieldTitle": "Qual o seu nicho atual?",
+                  "fieldDescription": null,
+                  "content": "teste nicho"
+                },
+                "680a8f0b75a63ec8840260ae": {
+                  "answerId": "680a96b7bcb2d1fbcff499c3",
+                  "fieldTitle": "Qual é o seu ticket médio atual?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Entre R$ 3.001 e R$ 10.000"
+                  ]
+                },
+                "680a8f0b75a63ec8840260af": {
+                  "answerId": "680a96bbbcb2d1fbcff49ec6",
+                  "fieldTitle": "Quanto você fatura, em média, por mês?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Entre R$ 10 mil e R$ 30 mil"
+                  ]
+                },
+                "680a8f0b75a63ec8840260b7": {
+                  "answerId": "680a96bdbcb2d1fbcff49fee",
+                  "fieldTitle": "Onde você está mais travado hoje?",
+                  "fieldDescription": "<p></p>",
+                  "content": [
+                    "Quero aumentar meu ticket"
+                  ]
+                },
+                "680a8f0b75a63ec8840260b0": {
+                  "answerId": "680a96bfbcb2d1fbcff4a096",
+                  "fieldTitle": "Você tem alguém que fecha vendas pra você hoje?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sim, já tenho um closer"
+                  ]
+                },
+                "680a8f0b75a63ec8840260b1": {
+                  "answerId": "680a96c1bcb2d1fbcff4a22e",
+                  "fieldTitle": "O que mudaria no seu negócio se você conseguisse escalar cobrando R$ 30k, R$ 60k ou mais — sem depender da sua agenda?",
+                  "fieldDescription": "<p>Exemplo: eu poderia me afastar da operação, escalar sem depender de lançamentos, etc.</p>",
+                  "content": "O que mudaria no seu negócio se você conseguisse escalar cobrando R$ 30k, R$ 60k ou mais — sem depender da sua agenda?"
+                },
+                "680a8f0b75a63ec8840260b2": {
+                  "answerId": "680a96c5bcb2d1fbcff4a783",
+                  "fieldTitle": "Você entende que essa mentoria exige comprometimento, foco e investimento de R$ 60 mil?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sim, estou pronto para investir se for aceito"
+                  ]
+                },
+                "680a959aa27748c7c808b14b": {
+                  "answerId": "680a96c7bcb2d1fbcff4a914",
+                  "fieldTitle": "&nbsp;Se for aprovado, qual o melhor momento para conversar?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Amanhã"
+                  ]
+                },
+                "680a8f0b75a63ec8840260b3": {
+                  "answerId": "680a96c8bcb2d1fbcff4a9c3",
+                  "fieldTitle": null,
+                  "fieldDescription": null,
+                  "content": null
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/0ce2a12d-e6b7-407c-8fba-840b42802f27",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-24T20:14:50.632Z",
+  "versionId": "3dfa96ff-2765-4295-ae4b-cf14da23f560"
+}
