@@ -71,7 +71,7 @@
       "main": [
         [
           {
-            "node": "Extrai Path",
+            "node": "If2",
             "type": "main",
             "index": 0
           }
@@ -261,6 +261,46 @@
           }
         ]
       ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Extrai Path",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extrair UTMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair UTMS": {
+      "main": [
+        [
+          {
+            "node": "Extrai Path1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrai Path1": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-24T18:47:02.226Z",
@@ -279,7 +319,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -120,
+        -360,
         260
       ]
     },
@@ -292,7 +332,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        280,
+        40,
         260
       ]
     },
@@ -327,31 +367,31 @@
             {
               "id": "2a6c5226-c045-4095-b133-00f54d82e245",
               "name": "utm_source",
-              "value": "={{ $('Formata Telefone').item.json.utm_source }}",
+              "value": "={{ $('Formata Telefone').item.json.utm_source }}{{ $('Extrair UTMS').item.json.utmsource }}",
               "type": "string"
             },
             {
               "id": "ae81e3b4-9a73-4b1e-ad38-75bf2fb3682b",
               "name": "utm_medium",
-              "value": "={{ $('Formata Telefone').item.json.utm_medium }}",
+              "value": "={{ $('Formata Telefone').item.json.utm_medium }}{{ $('Extrair UTMS').item.json.utmmedium }}",
               "type": "string"
             },
             {
               "id": "30476025-0543-469c-9d9d-a7fee91cde39",
               "name": "utm_campaign",
-              "value": "={{ $('Formata Telefone').item.json.utm_campaign }}",
+              "value": "={{ $('Formata Telefone').item.json.utm_campaign }}{{ $('Extrair UTMS').item.json.utmcampaign }}",
               "type": "string"
             },
             {
               "id": "6b50b30c-15db-4d2b-a3cc-119a4e209925",
               "name": "utm_term",
-              "value": "={{ $('Formata Telefone').item.json.utm_term }}",
+              "value": "={{ $('Formata Telefone').item.json.utm_term }}{{ $('Extrair UTMS').item.json.utmterm }}",
               "type": "string"
             },
             {
               "id": "0fa84181-01f4-4f7c-85f2-90aafb4906ca",
               "name": "utm_content",
-              "value": "={{ $('Formata Telefone').item.json.utm_content }}",
+              "value": "={{ $('Formata Telefone').item.json.utm_content }}{{ $('Extrair UTMS').item.json.utmcontent }}",
               "type": "string"
             },
             {
@@ -389,7 +429,7 @@
       "typeVersion": 3.4,
       "position": [
         700,
-        260
+        240
       ]
     },
     {
@@ -399,7 +439,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        80,
+        -160,
         260
       ]
     },
@@ -413,7 +453,7 @@
       "typeVersion": 2,
       "position": [
         500,
-        260
+        240
       ]
     },
     {
@@ -431,7 +471,7 @@
       "typeVersion": 1,
       "position": [
         1100,
-        260
+        240
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -455,7 +495,7 @@
       "typeVersion": 1,
       "position": [
         1520,
-        260
+        240
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -504,7 +544,7 @@
       "typeVersion": 1,
       "position": [
         1720,
-        260
+        240
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -528,7 +568,7 @@
       "typeVersion": 1,
       "position": [
         1320,
-        260
+        240
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -694,7 +734,7 @@
       "typeVersion": 4.3,
       "position": [
         900,
-        260
+        240
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -717,7 +757,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -360,
+        -600,
         260
       ],
       "webhookId": "49965a1b-6361-4b56-9df5-455bc80c9ab9"
@@ -1228,6 +1268,66 @@
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6e13f0c0-4cff-4a96-999b-de33ed8b8cb1",
+              "leftValue": "={{ $json.utm_source }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        260,
+        260
+      ],
+      "id": "493fd468-6762-4a3c-ac22-d9e5250fc9fc",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n - node \"Code\" - JavaScript\n\n// Suponha que sua URL venha em `item.url`\nconst url = $input.all()[0].json[\"URL\"];\n\n// Função para extrair parâmetros UTM\nfunction getUTMs(url) {\n  const params = {};\n  const queryString = url.split('?')[1];\n  if (!queryString) return params;\n\n  const pairs = queryString.split('&');\n  for (const pair of pairs) {\n    const [key, value] = pair.split('=');\n    if (key.startsWith('utm')) {\n      params[key] = decodeURIComponent(value || '');\n    }\n  }\n  return params;\n}\n\n// Resultado\nconst utms = getUTMs(url);\n\n// Retorna para o fluxo do n8n\nreturn {\n  json: utms\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        540
+      ],
+      "id": "c9eb5f48-1c3e-49ef-a0b3-6933f24c3670",
+      "name": "Extrair UTMS"
+    },
+    {
+      "parameters": {
+        "jsCode": "function getPathFromURL(url) {\n    try {\n        // Usa regex para extrair o caminho da URL\n        const match = url.match(/^https?:\\/\\/[^/]+(\\/[^?#]*)/);\n        if (match) {\n            return match[1]; // Retorna o path\n        } else {\n            return \"Invalid URL\";\n        }\n    } catch (error) {\n        console.error(\"Erro ao processar a URL:\", error.message);\n        return \"Invalid URL\";\n    }\n}\n\n// Exemplo de uso\nconst url = $node[\"Formata Telefone\"].json[\"URL\"]\nconst pathname = (getPathFromURL(url)); // Retorna \"/ip-ano-novo-v3\"\n\nreturn {pathname}"
+      },
+      "id": "2440162c-3278-4331-9438-c7736b37d148",
+      "name": "Extrai Path1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        540
+      ]
     }
   ],
   "pinData": {
@@ -1236,46 +1336,46 @@
         "json": {
           "headers": {
             "host": "webhook.josepbijari.com",
-            "content-length": "540",
+            "content-length": "659",
             "accept-encoding": "gzip",
             "cdn-loop": "cloudflare; subreqs=1",
             "cf-connecting-ip": "2a06:98c0:3600::103",
-            "cf-ray": "9357db0aa03ceb2f-DFW",
+            "cf-ray": "93671e1cd470eab0-DFW",
             "cf-visitor": "{\"scheme\":\"https\"}",
             "cf-worker": "greatsoftwares.workers.dev",
             "content-type": "application/x-www-form-urlencoded",
-            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTc0NTUyMTM1M30.PMGpYvQVUinCIL--qW7c3RzqcSk0ILojo30WKlb4KKQ",
+            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTc0NTY4MTM4N30.7mh77nc8y4X2bZ5hd4quXDbQRBNW1qmfxFb4Sm65V28",
             "great-product": "product",
             "great-server": "GreatApps",
             "great-service": "gpages-r2-pages-integrations",
-            "x-forwarded-for": "172.71.170.16",
+            "x-forwarded-for": "172.71.170.118",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "706860589d6c",
-            "x-real-ip": "172.71.170.16"
+            "x-real-ip": "172.71.170.118"
           },
           "params": {},
           "query": {},
           "body": {
-            "Seu_nome": "matheus",
-            "Seu_e_mail": "matheus@gmail.com",
-            "DDD_WhatsApp": "81993515055",
+            "Seu_nome": "Tiago",
+            "Seu_e_mail": "tiagogregorconsult@gmail.com",
+            "DDD_WhatsApp": "34984133437",
             "utm_source": "",
             "utm_campaign": "",
             "utm_medium": "",
             "utm_term": "",
             "utm_content": "",
             "pagina": "webnario",
-            "Referral_Source": "https://app.greatpages.com.br/",
-            "Dispositivo": "Desktop",
-            "URL": "https://www.josepbijari.com/webnario",
-            "IP_do_usuario": "2804:29b8:50ad:5268:78ed:d974:11d3:314f",
-            "Data_da_conversao": "2025-04-24 19:02:17",
+            "Referral_Source": "Acesso direto",
+            "Dispositivo": "Mobile",
+            "URL": "https://www.josepbijari.com/webnario?utmsource=whatsapp&utmcampaign=organico&utmmedium=whatsapp&utmterm=gruposANTIGOS&utmcontent=mensagem",
+            "IP_do_usuario": "2804:7f4:8082:f47f:17:9406:9430:6d86",
+            "Data_da_conversao": "2025-04-26 15:29:41",
             "Id_do_formulario": "2341170_1_1745496967680a2b8701ccc224932110",
             "Pais_do_usuario": "BR",
-            "Regiao_do_usuario": "Pernambuco",
-            "Cidade_do_usuario": "Caruaru",
+            "Regiao_do_usuario": "Paraná",
+            "Cidade_do_usuario": "Foz do Iguaçu",
             "Id_da_pagina": "2341170"
           },
           "webhookUrl": "https://webhook.josepbijari.com/webhook/49965a1b-6361-4b56-9df5-455bc80c9ab9",
@@ -1300,6 +1400,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-04-25T04:03:52.126Z",
-  "versionId": "07149c01-e96f-48e6-b542-01df9fcd9a34"
+  "updatedAt": "2025-04-26T16:10:49.747Z",
+  "versionId": "864cfc9d-997c-4fa2-a802-405a123c8332"
 }
