@@ -12,39 +12,6 @@
         ]
       ]
     },
-    "Date & Time3": {
-      "main": [
-        [
-          {
-            "node": "Monday.com13",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Monday.com13": {
-      "main": [
-        [
-          {
-            "node": "Monday.com1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Monday.com1": {
-      "main": [
-        [
-          {
-            "node": "Monday.com14",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         []
@@ -116,7 +83,7 @@
       "main": [
         [
           {
-            "node": "Google Sheets",
+            "node": "gera cnpj",
             "type": "main",
             "index": 0
           },
@@ -124,8 +91,40 @@
             "node": "Notifica Grupo1",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
           }
         ]
+      ]
+    },
+    "gera cnpj": {
+      "main": [
+        [
+          {
+            "node": "Criar Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Lead": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade": {
+      "main": [
+        []
       ]
     }
   },
@@ -148,93 +147,6 @@
         -1420,
         480
       ]
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
-        "format": "custom",
-        "customFormat": "yyyy-MM-dd ",
-        "options": {
-          "timezone": true
-        }
-      },
-      "id": "f472c20c-3db7-4ebb-8b98-0e1f591df530",
-      "name": "Date & Time3",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        380,
-        320
-      ]
-    },
-    {
-      "parameters": {
-        "resource": "boardItem",
-        "boardId": "5689478999",
-        "groupId": "topics",
-        "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
-        "additionalFields": {}
-      },
-      "id": "fa5d360f-76a3-4933-a85c-55b1499f6a32",
-      "name": "Monday.com13",
-      "type": "n8n-nodes-base.mondayCom",
-      "typeVersion": 1,
-      "position": [
-        580,
-        320
-      ],
-      "credentials": {
-        "mondayComApi": {
-          "id": "ZHdCRr90m7Qp2m7i",
-          "name": "Carol Caribé"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "boardItem",
-        "operation": "changeMultipleColumnValues",
-        "boardId": "5689478999",
-        "itemId": "={{ $('Monday.com13').item.json.id }}",
-        "columnValues": "={\"texto3__1\":\"{{ \"wa.me/\" + $node[\"Campos confirmou dados\"].json[\"whatsapp\"] }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Campos confirmou dados\"].json[\"faturamento\"] }}\", \"n_meros\": \"{{ $node[\"Campos confirmou dados\"].json[\"whatsapp\"] }}\", \"texto9__1\": \"{{ $node[\"Campos confirmou dados\"].json[\"email\"] }}\", \"data\": \"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"texto34__1\":\"Ingresso/IP\" }    "
-      },
-      "id": "44393815-a6bf-43d9-bd83-134e69c2a32d",
-      "name": "Monday.com14",
-      "type": "n8n-nodes-base.mondayCom",
-      "typeVersion": 1,
-      "position": [
-        960,
-        320
-      ],
-      "credentials": {
-        "mondayComApi": {
-          "id": "ZHdCRr90m7Qp2m7i",
-          "name": "Carol Caribé"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "boardItem",
-        "operation": "addUpdate",
-        "itemId": "={{ $json.id }}",
-        "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\n@ do Instagram:\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual seu faturamento médio mensal dos últimos 12 meses?:\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][5][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que participar do IP Experience na categoria Diamond é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][6][\"text\"] }}\n\n\n----------\nEssa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][7][\"text\"] }}\n\n\n----------\nO investimento para adquirir o Ingresso Diamond é de até 12x de R$969,32 no cartão de crédito ou R$9.690,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][8][\"choice\"][\"label\"] }}\n"
-      },
-      "id": "657bedd1-e8a2-45b8-a5bb-c811068faca8",
-      "name": "Monday.com1",
-      "type": "n8n-nodes-base.mondayCom",
-      "typeVersion": 1,
-      "position": [
-        760,
-        320
-      ],
-      "credentials": {
-        "mondayComApi": {
-          "id": "ZHdCRr90m7Qp2m7i",
-          "name": "Carol Caribé"
-        }
-      }
     },
     {
       "parameters": {
@@ -286,8 +198,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        380,
-        80
+        60,
+        200
       ]
     },
     {
@@ -421,8 +333,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        380,
-        -140
+        60,
+        -20
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -682,6 +594,142 @@
       ],
       "id": "8fc76902-c5fd-4e1c-90d6-a848e67f37a8",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"Aplicacao Diamond {{ $('Merge').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Merge').item.json.nome }}\",\n  \"DocumentoLead\": \"{{ $('gera cnpj').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\":\"{{ $('Merge').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "3007f9e4-6b5d-480c-9447-539d770156a9",
+      "name": "Criar Oportunidade",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        280,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        420
+      ],
+      "id": "53b30645-0e58-4906-a5d6-57208831299c",
+      "name": "gera cnpj"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-i4DIG6UbelHS1wxJAwH4FLOsWtg0yxJx_5l3XuneUKtlfJ-O1ByYhynsbTrCaUm3EG2bUck3CK79QS7Qk5PpIkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Merge').item.json.nome }}\",\n    \"RazaoSocial\": \"{{ $('Merge').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Merge').item.json.nome }}\",\n      \"Email\": \"{{ $('Merge').item.json.email }}\",\n      \"Telefone\": \"{{ $('Merge').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Merge').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "c919288e-561a-44ea-8240-a5c0d0c190ec",
+      "name": "Criar Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/AtividadeCrm/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "IdOportunidade",
+              "value": "={{ $json }}"
+            },
+            {
+              "name": "Titulo",
+              "value": "Nova Aplicaçao para o ingresso Diamond"
+            },
+            {
+              "name": "Descricao",
+              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\nNome: {{ $('Merge').item.json.nome }}\n\nEmail: {{ $('Merge').item.json.email }}\n\nTelefone: {{ $('Merge').item.json.whatsapp }}\n\nNegócio: {{ $('Merge').item.json.tipo_negocio }}\n\nFaturamento: {{ $('Merge').item.json.faturamento }}\n\nInvestimento: {{ $('Merge').item.json.investimento }}\n\nOrigens:\n\nutm_source: {{ $('Merge').item.json.utm_source }}\nutm_campaign: {{ $('Merge').item.json.utm_campaign }}\nutm_medium: {{ $('Merge').item.json.utm_medium }}\nutm_content: {{ $('Merge').item.json.utm_content }}\nutm_term: {{ $('Merge').item.json.utm_term }}"
+            },
+            {
+              "name": "IdAtividadeOportunidade",
+              "value": "=4"
+            },
+            {
+              "name": "DataInicio",
+              "value": "={{new DateTime($now)}}"
+            },
+            {
+              "name": "Realizada",
+              "value": "={{ false }}"
+            },
+            {
+              "name": "DataFim",
+              "value": "={{new DateTime($now)}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "75a22449-b0de-4b6a-8623-efc3be8ac6fc",
+      "name": "Adicionar nota",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        660
+      ]
     }
   ],
   "pinData": {
@@ -1153,6 +1201,16 @@
           "executionMode": "production"
         }
       }
+    ],
+    "Criar Lead": [
+      {
+        "json": 1976
+      }
+    ],
+    "Criar Oportunidade": [
+      {
+        "json": 1648
+      }
     ]
   },
   "settings": {
@@ -1170,6 +1228,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-03T03:07:49.050Z",
-  "versionId": "42052373-5dd4-4d0d-9dae-42c5cf460b44"
+  "updatedAt": "2025-05-03T05:14:08.136Z",
+  "versionId": "783c7f13-b992-4d57-82e9-741a15ee371f"
 }
