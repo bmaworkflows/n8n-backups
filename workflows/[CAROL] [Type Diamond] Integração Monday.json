@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Formata Telefone",
+            "node": "Confirmou dados",
             "type": "main",
             "index": 0
           }
@@ -45,7 +45,74 @@
         ]
       ]
     },
+    "Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Yayform": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmou dados": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Campos mudou dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Campos confirmou dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos confirmou dados": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos mudou dados": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
       "main": [
         [
           {
@@ -55,28 +122,6 @@
           },
           {
             "node": "Notifica Grupo1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Date & Time3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Webhook": {
-      "main": [
-        [
-          {
-            "node": "Trata Webhook",
             "type": "main",
             "index": 0
           }
@@ -93,28 +138,15 @@
   "nodes": [
     {
       "parameters": {
-        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        "jsCode": "return typeof $node[\"Yayform\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Yayform\"].json[\"body\"]) : $node[\"Yayform\"].json[\"body\"]\n"
       },
       "id": "a3e031c7-3695-481f-9919-ce694806d187",
       "name": "Trata Webhook",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -420,
-        320
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
-      },
-      "id": "ce176c70-4114-4d0a-9c15-fa933d0b388e",
-      "name": "Formata Telefone",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 1,
-      "position": [
-        -220,
-        320
+        -1420,
+        480
       ]
     },
     {
@@ -165,7 +197,7 @@
         "operation": "changeMultipleColumnValues",
         "boardId": "5689478999",
         "itemId": "={{ $('Monday.com13').item.json.id }}",
-        "columnValues": "={\"texto3__1\":\"{{ \"wa.me/\" + $node[\"Edit Fields\"].json[\"whatsapp\"] }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Edit Fields\"].json[\"faturamento\"] }}\", \"n_meros\": \"{{ $node[\"Edit Fields\"].json[\"whatsapp\"] }}\", \"texto9__1\": \"{{ $node[\"Edit Fields\"].json[\"email\"] }}\", \"data\": \"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"texto34__1\":\"Ingresso/IP\" }    "
+        "columnValues": "={\"texto3__1\":\"{{ \"wa.me/\" + $node[\"Campos confirmou dados\"].json[\"whatsapp\"] }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Campos confirmou dados\"].json[\"faturamento\"] }}\", \"n_meros\": \"{{ $node[\"Campos confirmou dados\"].json[\"whatsapp\"] }}\", \"texto9__1\": \"{{ $node[\"Campos confirmou dados\"].json[\"email\"] }}\", \"data\": \"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"texto34__1\":\"Ingresso/IP\" }    "
       },
       "id": "44393815-a6bf-43d9-bd83-134e69c2a32d",
       "name": "Monday.com14",
@@ -206,71 +238,6 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "db85c75e-f224-413c-926c-82b9f619f99c",
-              "name": "nome",
-              "value": "={{ $json.form_response.answers[0].text }}",
-              "type": "string"
-            },
-            {
-              "id": "9575814d-9088-4183-8e9e-bf235e515a3e",
-              "name": "email",
-              "value": "={{ $json.form_response.answers[2].email }}",
-              "type": "string"
-            },
-            {
-              "id": "20359791-9f55-4d02-a3ea-7111bb86c9c1",
-              "name": "negocio",
-              "value": "={{ $json.form_response.answers[3].choice.label }}",
-              "type": "string"
-            },
-            {
-              "id": "26df2578-c3b2-4483-b9fe-5e9aa0cb5912",
-              "name": "faturamento",
-              "value": "={{ $json.form_response.answers[4].choice.label }}",
-              "type": "string"
-            },
-            {
-              "id": "4297bf9d-8ceb-4717-8a5d-cc61d0bb8b65",
-              "name": "oportunidade_ip",
-              "value": "={{ $json.form_response.answers[5].text }}",
-              "type": "string"
-            },
-            {
-              "id": "3b3469ad-04f7-4c5d-acb2-7a71be5d829e",
-              "name": "aceitar_aplicacao",
-              "value": "={{ $json.form_response.answers[6].text }}",
-              "type": "string"
-            },
-            {
-              "id": "fa549b22-040e-4bc5-b9e1-dd1a679aa5cb",
-              "name": "pagamento",
-              "value": "={{ $json.form_response.answers[7].choice.label }}",
-              "type": "string"
-            },
-            {
-              "id": "2d1681d2-8ba2-40f0-8e4a-bdee4f0e1d53",
-              "name": "whatsapp",
-              "value": "={{ $json.form_response.answers[1].number }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "c0e1b1d9-6926-449c-b910-e6fdead25168",
-      "name": "Edit Fields",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.3,
-      "position": [
-        -20,
-        320
-      ]
-    },
-    {
-      "parameters": {
         "httpMethod": "POST",
         "path": "8a2d477a-556d-4766-a6b6-6803f5f8696c",
         "options": {}
@@ -280,10 +247,11 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -640,
-        320
+        -820,
+        -480
       ],
-      "webhookId": "8a2d477a-556d-4766-a6b6-6803f5f8696c"
+      "webhookId": "8a2d477a-556d-4766-a6b6-6803f5f8696c",
+      "disabled": true
     },
     {
       "parameters": {
@@ -303,7 +271,7 @@
           "parameters": [
             {
               "name": "message",
-              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\nNome: {{ $('Formata Telefone').item.json.form_response.answers[0].text }}\nEmail: {{ $('Formata Telefone').item.json.form_response.answers[2].email }}\nTelefone: {{ $('Formata Telefone').item.json.form_response.answers[1].number }}\n\nOrigem: {{ $('Formata Telefone').item.json.form_response.hidden.utm_source }}\nPágina: {{ $('Formata Telefone').item.json.form_response.hidden.pagina }}"
+              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\nNome: {{ $json.nome }}\n\nEmail: {{ $json.email }}\n\nTelefone: {{ $json.whatsapp }}\n\nNegócio: {{ $json.tipo_negocio }}\n\nFaturamento: {{ $json.faturamento }}\n\nInvestimento: {{ $json.investimento }}\n\nOrigens:\n\nutm_source: {{ $json.utm_source }}\nutm_campaign: {{ $json.utm_campaign }}\nutm_medium: {{ $json.utm_medium }}\nutm_content: {{ $json.utm_content }}\nutm_term: {{ $json.utm_term }}"
             },
             {
               "name": "phone",
@@ -340,15 +308,15 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "página": "={{ $json.form_response.hidden.pagina }}",
-            "nome": "={{ $json.form_response.answers[0].text }}",
-            "telefone": "={{ $json.form_response.answers[1].number }}",
-            "email": "={{ $json.form_response.answers[2].email }}",
-            "utm_campaign": "={{ $json.form_response.hidden.utm_campaign }}",
-            "utm_source": "={{ $json.form_response.hidden.utm_source }}",
-            "utm_medium": "={{ $json.form_response.hidden.utm_medium }}",
-            "utm_content": "={{ $json.form_response.hidden.utm_content }}",
-            "utm_term": "={{ $json.form_response.hidden.utm_term }}"
+            "página": "=",
+            "nome": "={{ $json.nome }}",
+            "telefone": "={{ $json.whatsapp }}",
+            "email": "={{ $json.email }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -442,7 +410,9 @@
               "type": "string",
               "canBeUsedToMatch": true
             }
-          ]
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
         "options": {}
       },
@@ -460,6 +430,258 @@
           "name": "Matheus BMA"
         }
       }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "366fa734-f5e0-4151-8f09-5a94d0abaa6b",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1660,
+        480
+      ],
+      "id": "5a8bb14c-5923-4753-b3a3-dd443f3fb422",
+      "name": "Yayform",
+      "webhookId": "366fa734-f5e0-4151-8f09-5a94d0abaa6b"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a8ad9a76-0040-46e5-9b93-21b37676aed5",
+              "leftValue": "={{ $json.response.answers[\"681509d0f52511b61306dd89\"].content[0] }}",
+              "rightValue": "Sim, estão corretos.",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1160,
+        480
+      ],
+      "id": "b34b04eb-3a1a-4b39-8fcb-237d51ac6d20",
+      "name": "Confirmou dados"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.first().json.response.hiddenFields.phone = formataTelefone($input.first().json.response.hiddenFields.phone) \n\nreturn $input.all();\n\n"
+      },
+      "id": "398db46e-fc2f-46ff-b533-a5f5bc96bf7a",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db85c75e-f224-413c-926c-82b9f619f99c",
+              "name": "nome",
+              "value": "={{ $json.response.hiddenFields.name }}",
+              "type": "string"
+            },
+            {
+              "id": "9575814d-9088-4183-8e9e-bf235e515a3e",
+              "name": "email",
+              "value": "={{ $json.response.hiddenFields.email }}",
+              "type": "string"
+            },
+            {
+              "id": "26df2578-c3b2-4483-b9fe-5e9aa0cb5912",
+              "name": "faturamento",
+              "value": "={{ $json.response.answers[\"68150629e1f12d2dd90f8681\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "4297bf9d-8ceb-4717-8a5d-cc61d0bb8b65",
+              "name": "tipo_negocio",
+              "value": "={{ $json.response.answers[\"68150684a9f9a0720208201b\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "3b3469ad-04f7-4c5d-acb2-7a71be5d829e",
+              "name": "aceitar_aplicacao",
+              "value": "={{ $json.response.answers[\"68150629e1f12d2dd90f8683\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "fa549b22-040e-4bc5-b9e1-dd1a679aa5cb",
+              "name": "investimento",
+              "value": "={{ $json.response.answers[\"68150628e1f12d2dd90f8680\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "2d1681d2-8ba2-40f0-8e4a-bdee4f0e1d53",
+              "name": "whatsapp",
+              "value": "={{ $json.response.hiddenFields.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "739677d7-7902-4bd2-97b3-eb7f5a65fb1f",
+              "name": "utm_source",
+              "value": "={{ $json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "a4684b1b-86b4-4d03-aaf2-9cea6cf6c62b",
+              "name": "utm_medium",
+              "value": "={{ $json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "6cbe0ad2-54d0-41e9-804b-eb97f8e6d3d5",
+              "name": "utm_campaign",
+              "value": "={{ $json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "d3651eaf-e43c-4953-a8e6-3350cfdbf940",
+              "name": "utm_content",
+              "value": "={{ $json.response.tracking.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "41f90f0b-42cf-4656-afe6-0672782e9fa3",
+              "name": "utm_term",
+              "value": "={{ $json.response.tracking.utm_term }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c0e1b1d9-6926-449c-b910-e6fdead25168",
+      "name": "Campos confirmou dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -700,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db85c75e-f224-413c-926c-82b9f619f99c",
+              "name": "nome",
+              "value": "={{ $json.response.answers[\"68150628e1f12d2dd90f867d\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "9575814d-9088-4183-8e9e-bf235e515a3e",
+              "name": "email",
+              "value": "={{ $json.response.answers[\"68150628e1f12d2dd90f867e\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "26df2578-c3b2-4483-b9fe-5e9aa0cb5912",
+              "name": "faturamento",
+              "value": "={{ $json.response.answers[\"68150629e1f12d2dd90f8681\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "4297bf9d-8ceb-4717-8a5d-cc61d0bb8b65",
+              "name": "tipo_negocio",
+              "value": "={{ $json.response.answers[\"68150684a9f9a0720208201b\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "3b3469ad-04f7-4c5d-acb2-7a71be5d829e",
+              "name": "aceitar_aplicacao",
+              "value": "={{ $json.response.answers[\"68150629e1f12d2dd90f8683\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "fa549b22-040e-4bc5-b9e1-dd1a679aa5cb",
+              "name": "investimento",
+              "value": "={{ $json.response.answers[\"68150628e1f12d2dd90f8680\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "2d1681d2-8ba2-40f0-8e4a-bdee4f0e1d53",
+              "name": "whatsapp",
+              "value": "={{ $json.response.answers[\"68150628e1f12d2dd90f867f\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "4cde7c87-9988-45fb-9554-495e99b6c8f6",
+              "name": "utm_source",
+              "value": "={{ $json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "d1f91d2d-7363-4954-8c0d-85349ab8eb50",
+              "name": "utm_medium",
+              "value": "={{ $json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "d90372c9-d96c-42f3-ad57-936ba485d76d",
+              "name": "utm_campaign",
+              "value": "={{ $json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "6b995820-4dec-4558-837d-4842f100d52c",
+              "name": "utm_content",
+              "value": "={{ $json.response.tracking.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "90091b80-b93a-4dd4-9912-36c8a7ee0e2d",
+              "name": "utm_term",
+              "value": "={{ $json.response.tracking.utm_term }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "913f83de-97c4-474b-92c5-e982416996cd",
+      "name": "Campos mudou dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -700,
+        500
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -420,
+        420
+      ],
+      "id": "8fc76902-c5fd-4e1c-90d6-a848e67f37a8",
+      "name": "Merge"
     }
   ],
   "pinData": {
@@ -787,6 +1009,150 @@
           "executionMode": "production"
         }
       }
+    ],
+    "Yayform": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "4334",
+            "content-type": "application/json",
+            "x-forwarded-for": "167.99.13.111",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "706860589d6c",
+            "x-real-ip": "167.99.13.111",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "681585f1028b6c763c1205fb",
+              "formId": "68150628e1f12d2dd90f867a",
+              "ipAddress": "190.89.244.58",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "135.0.0.0",
+              "referrerUrl": "https://www.incorporacaonapratica.com/",
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
+              },
+              "aiFeedback": null,
+              "hiddenFields": {
+                "name": "dfd",
+                "email": "sf@GMAIL.COM",
+                "phone": "2312"
+              },
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "utm_source": "ig",
+                "utm_medium": "organico",
+                "utm_campaign": "meteorico1ipjulho",
+                "utm_content": "ig_incorporacao",
+                "utm_term": "story",
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_gcl_au": "1.1.599869318.1744865246",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_clck": "cymcv9|2|fvi|0|1933",
+                "_ga": "GA1.1.1550280858.1744865246",
+                "ttcsid": "1746032526075::bw_WhQQPZA7lUO_YUCDx.4.1746032865472",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1746032526075::etJ4CN62XvLc-HWYjFHa.4.1746032867279",
+                "_ga_QMHGX1WZCF": "GS1.1.1746032524.4.1.1746032887.31.0.344277224"
+              },
+              "timeToComplete": 54.459,
+              "startedAt": "2025-05-03T02:58:53.100000Z",
+              "submittedAt": "2025-05-03T02:59:47.559000Z",
+              "createdAt": "2025-05-03T02:56:49.461000Z",
+              "updatedAt": "2025-05-03T02:59:48.633000Z",
+              "answers": {
+                "68150628e1f12d2dd90f867b": {
+                  "answerId": "681585f1bcb2d1fbcf74aee4",
+                  "fieldTitle": "Atenção",
+                  "fieldDescription": "<p>A sua aplicação através deste questionário NÃO garante que você será aprovado para participar da experiência Diamond do IP Experience</p><p></p><p>Vou avaliar pessoalmente, de forma cautelosa, cada aplicação e selecionar apenas quem realmente pode aproveitar essa oportunidade de ter o acesso mais exclusivo do meu evento presencial. Baseado nas suas respostas, você será ou não selecionado para uma entrevista pessoal comigo ou com um especialista do meu time.</p><p></p><p>Só preencha esse questionário se você está realmente comprometido.</p>",
+                  "content": null
+                },
+                "68150684a9f9a0720208201b": {
+                  "answerId": "6815866dbcb2d1fbcf7501a5",
+                  "fieldTitle": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Dono de imobiliária"
+                  ]
+                },
+                "68150629e1f12d2dd90f8681": {
+                  "answerId": "6815866ebcb2d1fbcf7502ce",
+                  "fieldTitle": "Qual seu faturamento médio mensal dos últimos 12 meses?",
+                  "fieldDescription": null,
+                  "content": [
+                    "R$ 50.000,00 a R$ 100.000,00"
+                  ]
+                },
+                "68150629e1f12d2dd90f8683": {
+                  "answerId": "68158670bcb2d1fbcf7503bc",
+                  "fieldTitle": "Essa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
+                  "fieldDescription": null,
+                  "content": "teste aceito"
+                },
+                "68150628e1f12d2dd90f8680": {
+                  "answerId": "68158673bcb2d1fbcf750685",
+                  "fieldTitle": "O investimento para adquirir o Ingresso Diamond é de até 12x de R$ 886,60 no cartão de crédito ou R$8.863,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sim, R$8.863,00 a vista"
+                  ]
+                },
+                "681509d0f52511b61306dd89": {
+                  "answerId": "68158674bcb2d1fbcf750761",
+                  "fieldTitle": "Para finalizar, confirme os seus dados de contato abaixo:Nome: nameEmail: emailWhatsApp: phone",
+                  "fieldDescription": null,
+                  "content": [
+                    "Quero mudar."
+                  ]
+                },
+                "68150628e1f12d2dd90f867d": {
+                  "answerId": "6815867fbcb2d1fbcf750e38",
+                  "fieldTitle": "Qual o seu nome completo?",
+                  "fieldDescription": null,
+                  "content": "matheus"
+                },
+                "68150628e1f12d2dd90f867f": {
+                  "answerId": "68158681bcb2d1fbcf7510af",
+                  "fieldTitle": "Número de WhatsApp com DDD :",
+                  "fieldDescription": null,
+                  "content": "+5581993515055"
+                },
+                "68150628e1f12d2dd90f867e": {
+                  "answerId": "6815868abcb2d1fbcf751825",
+                  "fieldTitle": "Seu melhor e-mail",
+                  "fieldDescription": null,
+                  "content": "matheuscristh@gmail.com"
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/366fa734-f5e0-4151-8f09-5a94d0abaa6b",
+          "executionMode": "production"
+        }
+      }
     ]
   },
   "settings": {
@@ -804,6 +1170,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-04-11T14:34:39.327Z",
-  "versionId": "a714dc71-c514-47a5-9c6c-15b5181b7d40"
+  "updatedAt": "2025-05-03T03:07:49.050Z",
+  "versionId": "42052373-5dd4-4d0d-9dae-42c5cf460b44"
 }
