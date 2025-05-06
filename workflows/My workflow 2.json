@@ -1,173 +1,43 @@
 {
   "active": false,
   "connections": {
-    "On clicking 'execute'": {
+    "pega dados de sdrs": {
       "main": [
         [
           {
-            "node": "Globals",
+            "node": "Rodízio",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "GitHub": {
+    "Rodízio": {
+      "main": [
+        []
+      ]
+    },
+    "atualiza vez": {
+      "main": [
+        []
+      ]
+    },
+    "sdr da vez": {
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "email sdr",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "github_status": {
+    "Execute Workflow Trigger": {
       "main": [
         [
           {
-            "node": "same",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "different",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "new",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "same": {
-      "main": [
-        [
-          {
-            "node": "OneAtATime",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "different": {
-      "main": [
-        [
-          {
-            "node": "GitHub Edit",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "new": {
-      "main": [
-        [
-          {
-            "node": "GitHub Create",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "GitHub Edit": {
-      "main": [
-        [
-          {
-            "node": "OneAtATime",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "GitHub Create": {
-      "main": [
-        [
-          {
-            "node": "OneAtATime",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OneAtATime": {
-      "main": [
-        [
-          {
-            "node": "GitHub",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Globals": {
-      "main": [
-        [
-          {
-            "node": "n8n",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Every 12 hours": {
-      "main": [
-        [
-          {
-            "node": "Globals",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "n8n": {
-      "main": [
-        [
-          {
-            "node": "OneAtATime",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "isDiffOrNew": {
-      "main": [
-        [
-          {
-            "node": "github_status",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "isDiffOrNew",
+            "node": "pega dados de sdrs",
             "type": "main",
             "index": 0
           }
@@ -175,313 +45,309 @@
       ]
     }
   },
-  "createdAt": "2024-10-01T02:10:31.905Z",
-  "id": "KE1lhGkFcdEx46nY",
+  "createdAt": "2025-05-06T13:10:26.214Z",
+  "id": "QgSdpRcbdjuZ3vfM",
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "name": "My workflow 2",
   "nodes": [
     {
-      "parameters": {},
-      "id": "7fe5dc62-884f-4228-9f59-90ec8593090e",
-      "name": "On clicking 'execute'",
-      "type": "n8n-nodes-base.manualTrigger",
+      "parameters": {
+        "jsCode": "// O N8N envia os dados em `items`. Precisamos extrair o campo apropriado.\nconst items = $input.all(); // Obter todos os itens de entrada\n\n// Transformar os dados recebidos em um array de objetos (pessoas)\nlet pessoas = items.map(item => item.json); // Extrair o campo `json` de cada item\n\n// Ordenar por 'vez'\npessoas.sort((a, b) => a.vez - b.vez);\n\n// Encontrar a pessoa com vez 1 e reorganizar a ordem\nconst pessoaAtual = pessoas.shift(); // Remove o primeiro elemento (vez 1)\n\n// Atualizar as posições\npessoas.forEach(pessoa => pessoa.vez--); // Reduz a vez de todos em 1\npessoaAtual.vez = pessoas.length + 1;   // Coloca a pessoa atual no final\npessoas.push(pessoaAtual);              // Adiciona de volta à lista\n\n// Retornar os dados atualizados para o N8N (preservando row_number)\nreturn pessoas.map(pessoa => ({ json: pessoa }));\n"
+      },
+      "id": "01d18f70-1cb5-4e89-b971-468aec10cd18",
+      "name": "Rodízio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        -320,
-        620
-      ],
-      "typeVersion": 1
+        -640,
+        20
+      ]
     },
     {
       "parameters": {
-        "resource": "file",
-        "operation": "get",
-        "owner": "={{$node[\"Globals\"].json[\"repo\"][\"owner\"]}}",
-        "repository": "={{$node[\"Globals\"].json[\"repo\"][\"name\"]}}",
-        "filePath": "={{$node[\"Globals\"].json[\"repo\"][\"path\"]}}{{$json[\"name\"]}}.json",
-        "asBinaryProperty": false,
-        "additionalParameters": {}
-      },
-      "id": "664d38b9-4d69-43c3-b976-a213aaa311c5",
-      "name": "GitHub",
-      "type": "n8n-nodes-base.github",
-      "position": [
-        520,
-        600
-      ],
-      "typeVersion": 1,
-      "alwaysOutputData": true,
-      "credentials": {
-        "githubApi": {
-          "id": "TzjEYe60XnWuREcA",
-          "name": "GitHub account"
-        }
-      },
-      "continueOnFail": true
-    },
-    {
-      "parameters": {
-        "dataType": "string",
-        "value1": "={{$json[\"github_status\"]}}",
-        "rules": {
-          "rules": [
-            {
-              "value2": "same"
-            },
-            {
-              "value2": "different",
-              "output": 1
-            },
-            {
-              "value2": "new",
-              "output": 2
-            }
-          ]
-        }
-      },
-      "id": "bc1ccebc-c2e7-4a32-82ed-776a8ea10c13",
-      "name": "github_status",
-      "type": "n8n-nodes-base.switch",
-      "position": [
-        1160,
-        740
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {},
-      "id": "2694c5b9-8788-4e77-8aa8-0d9321bdf463",
-      "name": "same",
-      "type": "n8n-nodes-base.noOp",
-      "position": [
-        1400,
-        540
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {},
-      "id": "b61fcb96-c677-4895-ad5d-49178be81e0d",
-      "name": "different",
-      "type": "n8n-nodes-base.noOp",
-      "position": [
-        1400,
-        740
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {},
-      "id": "128712f0-19cc-4d9d-b9de-c053b31fc7ee",
-      "name": "new",
-      "type": "n8n-nodes-base.noOp",
-      "position": [
-        1400,
-        920
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "resource": "file",
-        "operation": "edit",
-        "owner": "={{$node[\"Globals\"].json[\"repo\"][\"owner\"]}}",
-        "repository": "={{$node[\"Globals\"].json[\"repo\"][\"name\"]}}",
-        "filePath": "={{$node[\"Globals\"].json[\"repo\"][\"path\"]}}{{$node[\"OneAtATime\"].json[\"name\"]}}.json",
-        "fileContent": "={{$node[\"isDiffOrNew\"].json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "=[N8N Backup] {{$node[\"OneAtATime\"].json[\"name\"]}}.json ({{$json[\"github_status\"]}})"
-      },
-      "id": "be324220-2637-44a8-bb6c-8a8ac1179c4d",
-      "name": "GitHub Edit",
-      "type": "n8n-nodes-base.github",
-      "position": [
-        1580,
-        740
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "githubApi": {
-          "id": "TzjEYe60XnWuREcA",
-          "name": "GitHub account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "file",
-        "owner": "={{$node[\"Globals\"].json[\"repo\"][\"owner\"]}}",
-        "repository": "={{$node[\"Globals\"].json[\"repo\"][\"name\"]}}",
-        "filePath": "={{$node[\"Globals\"].json[\"repo\"][\"path\"]}}{{$node[\"OneAtATime\"].json[\"name\"]}}.json",
-        "fileContent": "={{$node[\"isDiffOrNew\"].json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "=[N8N Backup] {{$node[\"OneAtATime\"].json[\"name\"]}}.json ({{$json[\"github_status\"]}})"
-      },
-      "id": "6bb4ed67-df26-4547-83f0-ede366880f91",
-      "name": "GitHub Create",
-      "type": "n8n-nodes-base.github",
-      "position": [
-        1580,
-        920
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "githubApi": {
-          "id": "TzjEYe60XnWuREcA",
-          "name": "GitHub account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "batchSize": 1,
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit#gid=0"
+        },
         "options": {}
       },
-      "id": "76e30075-22fb-4cc8-a269-006b323798e6",
-      "name": "OneAtATime",
-      "type": "n8n-nodes-base.splitInBatches",
+      "id": "cf5b0556-b22c-4ead-ae99-23662b9a00d7",
+      "name": "pega dados de sdrs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
       "position": [
-        300,
-        760
+        -820,
+        20
       ],
-      "typeVersion": 1
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
     },
     {
       "parameters": {
-        "values": {
-          "string": [
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u-dXVGsbVmMasuixy59lR_1jphKJ8cB245pQk_SUV2E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "nome": "={{ $json.nome }}",
+            "vez": "={{ $json.vez }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
             {
-              "name": "repo.owner",
-              "value": "math-cristhyan"
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
             },
             {
-              "name": "repo.name",
-              "value": "n8n-backups-jp"
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "name": "repo.path",
-              "value": "workflows/"
+              "id": "vez",
+              "displayName": "vez",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "3710f217-11b0-4303-bb72-ff4b15c458ce",
+      "name": "atualiza vez",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -440,
+        20
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "15853b62-59c1-4313-9b88-7cc0e1542acb",
+              "leftValue": "={{ $json.vez }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "da999e30-87d7-4cc5-9716-510da59d7868",
+      "name": "sdr da vez",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        -220,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "408278de-3191-445c-b663-17ea3129a7d1",
+              "name": "nome_sdr",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "d07d8349-e690-4113-93b2-3bd158150740",
+              "name": "id_clickup",
+              "value": "={{ $json.id_clickup }}",
+              "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "id": "6a01a3b2-ad0a-478e-8782-d79375e8ddbf",
-      "name": "Globals",
+      "id": "91a4accd-1369-4a9f-b63b-20f406d6db9e",
+      "name": "email sdr",
       "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        -140,
-        760
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "triggerTimes": {
-          "item": [
-            {
-              "mode": "everyX",
-              "value": 12
-            }
-          ]
-        }
-      },
-      "id": "dbfee12f-f124-4bd3-a51a-4d02803255ad",
-      "name": "Every 12 hours",
-      "type": "n8n-nodes-base.cron",
-      "position": [
-        -325,
-        895
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## Workflow Backups\nThis workflow will automatically backup your workflows to your Github account every 12 hours.\n\n### Setup\nOpen Globals and update the values below\n**repo.owner:** This is your Github username\n**repo.name:** This is the name of your repository\n**repo.path:** This is the folder to use within the repository, If it doesn't exist it will be created.\n\nIf your username was `n8n-io` and your repository was called `n8n-backups` and you wanted the workflows to go into a `workflows` folder you would set:\n\nrepo.owner - n8n-io\nrepo.name - n8n-backups\nrepo.path - workflows",
-        "height": 464.79920462713443,
-        "width": 389.78906250000017
-      },
-      "id": "bdd95d14-6fcf-464d-aa87-f8469962427b",
-      "name": "Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -780,
-        540
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## Single Item Loop\nWe process each workflow item one at a time, We first check Github to see if a file exists then we merge the Github Data and the API item so we can check if the values match in the function node `isDiffOrNew` we then set a status of `same`, `different` or `new`",
-        "height": 424.04333333333386,
-        "width": 755.2349999999991
-      },
-      "id": "64ed1472-4e57-48bc-8e7e-217f6b8365f5",
-      "name": "Note2",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        280,
-        480
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## Save the data\nUsing the switch node we work out what to do based on the previous status,  If it is the same we do nothing, If it is different we update the file in Github and if it is new we create a new file. After this is done we loop back to the Split in Batches node (OneAtAtTime) to start the process again.",
-        "height": 693.9283333333326,
-        "width": 666.4416666666662
-      },
-      "id": "93e70e1d-8f24-4189-a468-3e27c7221502",
-      "name": "Note3",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1120,
-        420
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "filters": {},
-        "requestOptions": {}
-      },
-      "id": "c5185d3f-f258-49b8-a663-c53eda1bbb60",
-      "name": "n8n",
-      "type": "n8n-nodes-base.n8n",
-      "position": [
-        60,
-        760
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "n8nApi": {
-          "id": "I91jDfN8iP5GIJ2u",
-          "name": "n8n account 2"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "// File Returned with Content\nif (Object.keys($input.all()[0].json).includes(\"content\")) {\n  // Get JSON Objects\n  var origWorkflow = JSON.parse(Buffer.from($input.all()[0].json.content, 'base64'));\n  var n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON Objects\n  var orderedOriginal = {}\n  var orderedActual = {}\n  \n  Object.keys(origWorkflow).sort().forEach(function(key) {\n    orderedOriginal[key] = origWorkflow[key];\n  });\n  \n  Object.keys(n8nWorkflow).sort().forEach(function(key) {\n    orderedActual[key] = n8nWorkflow[key];\n  });\n\n  // Determine Difference\n  if ( JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual) ) {\n    $input.all()[0].json.github_status = \"same\";\n    $input.all()[0].json.content_decoded = orderedOriginal;\n  } else {\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.content_decoded = orderedOriginal;\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n// No File Returned / New Workflow\n} else {\n  // Order JSON Object\n  var n8nWorkflow = ($input.all()[1].json);\n  var orderedActual = {}\n  Object.keys(n8nWorkflow).sort().forEach(function(key) {\n    orderedActual[key] = n8nWorkflow[key];\n  });\n  \n  // Proper Formatting\n  $input.all()[0].json.github_status = \"new\";\n  $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n}\n\n// Return Items\nreturn $input.all();"
-      },
-      "id": "f590b66f-68fc-40f8-8c1c-98bc4a35b26c",
-      "name": "isDiffOrNew",
-      "type": "n8n-nodes-base.code",
-      "position": [
-        920,
-        740
-      ],
-      "typeVersion": 1
+        0,
+        0
+      ]
     },
     {
       "parameters": {},
-      "id": "8356460e-f301-4b80-b589-4ef0c6b70fdb",
-      "name": "Merge",
-      "type": "n8n-nodes-base.merge",
+      "id": "09604894-2fa1-4c26-8173-a72cccfb033e",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
       "position": [
-        740,
-        740
+        -1000,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1bAmfukJhZzKdK6_71RyXKuYfW3__mAcER3t1XFXhISg/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bAmfukJhZzKdK6_71RyXKuYfW3__mAcER3t1XFXhISg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "nome": "={{ $json.nome }}",
+            "vez": "={{ $json.vez }}",
+            "id_clickup": "={{ $json.id_clickup }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_clickup",
+              "displayName": "id_clickup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "vez",
+              "displayName": "vez",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7aa39985-0c31-49c1-ad65-d59c7cd6070c",
+      "name": "atualiza vez1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -440,
+        260
       ],
-      "typeVersion": 2
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -491,6 +357,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2024-10-01T02:17:57.824Z",
-  "versionId": "d7bc6962-4ecb-4261-8d8d-9e034e104cbc"
+  "updatedAt": "2025-05-06T13:10:26.214Z",
+  "versionId": "df4938ec-c203-4a2c-9622-829c70fb8d11"
 }
