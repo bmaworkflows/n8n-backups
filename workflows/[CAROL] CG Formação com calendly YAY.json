@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "nao é parcial",
+            "node": "Date & Time",
             "type": "main",
             "index": 0
           }
@@ -544,7 +544,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "nao é parcial",
             "type": "main",
             "index": 0
           }
@@ -599,7 +599,83 @@
       "main": [
         [
           {
-            "node": "Date & Time",
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Oportunidade - Agenda Reserva1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - João e Maria": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Deborah34",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - João e Rafaela": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Deborah36",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - João e Fábio4": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Deborah",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SDR": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade - João e Fábio4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Oportunidade - João e Maria",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Oportunidade - João e Rafaela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - Agenda Reserva1": {
+      "main": [
+        [
+          {
+            "node": "SDR",
             "type": "main",
             "index": 0
           }
@@ -642,7 +718,7 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        80,
+        -120,
         140
       ]
     },
@@ -665,7 +741,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        800,
+        600,
         120
       ],
       "onError": "continueErrorOutput"
@@ -679,7 +755,7 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        300,
+        100,
         140
       ]
     },
@@ -692,7 +768,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1440,
+        1240,
         320
       ],
       "webhookId": "0bf57dc5-be58-42fb-bfcb-ee7b3577d91d"
@@ -709,7 +785,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1,
       "position": [
-        1100,
+        900,
         100
       ],
       "onError": "continueErrorOutput"
@@ -736,7 +812,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - José e Fábio1\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* josé\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - José e Fábio1\"].json }}"
             }
           ]
         },
@@ -1076,7 +1152,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.1,
       "position": [
-        500,
+        300,
         140
       ]
     },
@@ -1110,7 +1186,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.1,
       "position": [
-        680,
+        480,
         300
       ]
     },
@@ -1133,7 +1209,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 2\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 6\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 6\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "13c09ade-ff55-4664-9dfe-0a4a0f1b941e",
@@ -1164,7 +1240,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 3\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 6\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 6\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "b81bd55d-1e8b-4ba2-b97b-51893fb3e237",
@@ -1195,7 +1271,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 2\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 10\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 10\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "0444619e-e64c-417e-9da2-1507eabdf4da",
@@ -1226,7 +1302,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 1\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "44aee3b4-2bf4-41c2-8560-c0ee8df4c2f7",
@@ -1257,7 +1333,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 1\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 6\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 6\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "ab189430-6ae5-4e92-ad9b-a0dc85d1a72e",
@@ -1288,7 +1364,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 3\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 10\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 10\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "844535f7-ec46-4d33-8712-ccc0fc8d438b",
@@ -1504,7 +1580,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Fábio\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Fábio\"].json }}"
             }
           ]
         },
@@ -1538,7 +1614,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 3\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "fdde325f-3009-427d-a85e-95e64441ae4f",
@@ -1569,7 +1645,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 1\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "3f2d563f-a4ad-4f47-b355-f67bfd732069",
@@ -1600,7 +1676,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 2\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 26,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 9\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "8c0d6fa9-e1ad-428d-809d-dc839bf838c3",
@@ -1762,7 +1838,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - Thais e Fábio1\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Thaís\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - Thais e Fábio1\"].json }}"
             }
           ]
         },
@@ -1836,7 +1912,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - Thais e Maria1\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Thaís\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - Thais e Maria1\"].json }}"
             }
           ]
         },
@@ -1910,7 +1986,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - Thais e Rafaela\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Thaís\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - Thais e Rafaela\"].json }}"
             }
           ]
         },
@@ -1984,7 +2060,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - José e Maria\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* josé\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - José e Maria\"].json }}"
             }
           ]
         },
@@ -2058,7 +2134,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - José e Rafaela1\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* josé\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - José e Rafaela1\"].json }}"
             }
           ]
         },
@@ -2132,7 +2208,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Maria1\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Maria1\"].json }}"
             }
           ]
         },
@@ -2206,7 +2282,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Rafaela1\"].json }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Rafaela1\"].json }}"
             }
           ]
         },
@@ -2280,7 +2356,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Fábio3\"].json }}"
+              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*SDR*Responsável:* Fábio\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Fábio3\"].json }}"
             }
           ]
         },
@@ -2501,7 +2577,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Maria3\"].json }}"
+              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*SDR*Responsável:* Maria Paula\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Maria3\"].json }}"
             }
           ]
         },
@@ -2538,7 +2614,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Rafaela3\"].json }}"
+              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*SDR*Responsável:* Rafaela\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Rafaela3\"].json }}"
             }
           ]
         },
@@ -2672,7 +2748,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2040,
+        1840,
         80
       ],
       "id": "64c720c3-0a63-4d63-b0fb-98397e87fadc",
@@ -2694,7 +2770,7 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        1560,
+        1360,
         80
       ]
     },
@@ -2713,7 +2789,7 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        1780,
+        1580,
         80
       ]
     },
@@ -2724,7 +2800,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2320,
+        2080,
         80
       ],
       "id": "dded42b2-2ac9-4946-b68b-9723c6e579fa",
@@ -2866,7 +2942,7 @@
           "conditions": [
             {
               "id": "e77431c5-73ca-4823-b630-06e3290b51ba",
-              "leftValue": "={{ $json.response.submittedAt }}",
+              "leftValue": "={{ $node[\"Trata Webhook\"].json[\"response\"][\"timeToComplete\"] }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -2882,11 +2958,337 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -160,
-        160
+        2320,
+        80
       ],
       "id": "09886a93-26a4-422c-b595-391b0831b9f1",
       "name": "nao é parcial"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*SDR*Responsável:* Fábio\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Fábio4\"].json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "49f585c2-9e8a-4e43-9da9-501ebf056cab",
+      "name": "Notifica grupo | Deborah",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4980,
+        2020
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb_Yg2gvoXl80th6B6C9Wh-OLp5WQEp2yTX2ugm5nTMmAt2jUuYtxvU0ynsbTrCaUm0NjRA3qms88SAvq4Jot37rkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 1\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "11bb8396-dfd3-4099-91ce-922a5cb2ef11",
+      "name": "Criar Oportunidade - João e Maria",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4760,
+        2200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-QSsVPVRFaQdWZWw5xAqab7MyZOmE_n-2xQUaAYtXZe5Lz0XiIDSTKynsbTrCaUm2PJpKHDCb0tVVcaHENUtkvI9DJWYrlQMmo_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 1\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "9c54024e-0ce8-4079-a58e-782ce587604a",
+      "name": "Criar Oportunidade - João e Rafaela",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4760,
+        2380
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb87L1Y3_r0N5cFInrsXuBAJKTTJZrW5sF4_KdLnM6sX1nMOhwjVEqrAynsbTrCaUm2d4V2pqY42qeLI82KuEPUrkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 16,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[0] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n    {\n      \"IdCampoFormulario\": 17,\n      \"IdConteudo\": 4,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da aplicacao'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 5,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.cenario }}\"\n    },\n    {\n      \"IdCampoFormulario\": 9,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['o que impede de alcançar seu objetivo'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n    {\n      \"IdCampoFormulario\": 4,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['data da call'].split(\" \")[1] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 1,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.instagram }}\"\n    },\n    {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negocio'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 6,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['produto que já desenvolveu'] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 21,\n      \"IdConteudo\": 6,\n      \"Conteudo\": 1\n    },\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n{\n      \"IdCampoFormulario\": 31,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $node[\"Campos\"].json[\"utm_source\"] }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "5f53f636-b170-4718-9e91-4b1dc5716a19",
+      "name": "Criar Oportunidade - João e Fábio4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4760,
+        2020
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}",
+                    "rightValue": "Fábio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "490b038d-696a-4d39-835e-4ab2553042e9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Fábio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2a530297-326b-4740-9c3a-528060bfdf7b",
+                    "leftValue": "={{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}",
+                    "rightValue": "Maria Paula",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Maria Paula"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "01681781-092b-4144-9928-6ea607fea45b",
+                    "leftValue": "={{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}",
+                    "rightValue": "Rafaela ",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rafaela "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        4140,
+        2220
+      ],
+      "id": "4d5008da-c2b8-4d5f-b7f2-29311eb1aeec",
+      "name": "SDR"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*SDR*Responsável:* Maria Paula\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Maria\"].json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "054cb279-74a5-4108-8a2f-01601e6dfbf6",
+      "name": "Notifica grupo | Deborah34",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4980,
+        2200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado - Agenda Alternativa 🚨*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*SDR*Responsável:* Rafaela\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $node[\"Criar Oportunidade - João e Rafaela\"].json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "afac4cca-f56e-4b45-a456-9881b5634639",
+      "name": "Notifica grupo | Deborah36",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4980,
+        2380
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-i4DIG6UbelHS1wxJAwH4FLOsWtg0yxJx_5l3XuneUKtlfJ-O1ByYhynsbTrCaUm3EG2bUck3CK79QS7Qk5PpIkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Campos').item.json.nome }}\",\n    \"RazaoSocial\": \"{{ $('Campos').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Campos').item.json.nome }}\",\n      \"Email\": \"{{ $('Campos').item.json.email }}\",\n      \"Telefone\": \"{{ $('Campos').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Campos').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "73ef6e7f-3450-4965-8143-e78ec3e553af",
+      "name": "Criar Oportunidade - Agenda Reserva1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3120,
+        2000
+      ]
     }
   ],
   "pinData": {
@@ -3066,6 +3468,11 @@
       {
         "json": 1980
       }
+    ],
+    "Criar Oportunidade - Agenda Reserva1": [
+      {
+        "json": 1980
+      }
     ]
   },
   "settings": {
@@ -3084,6 +3491,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-07T04:24:42.868Z",
-  "versionId": "8ae45f15-54a8-4f4e-b417-481aeee9c624"
+  "updatedAt": "2025-05-09T03:59:26.184Z",
+  "versionId": "0fae334c-e7f3-4ee1-8689-2920f8d285c5"
 }
