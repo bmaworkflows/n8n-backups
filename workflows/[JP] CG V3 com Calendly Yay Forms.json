@@ -1032,22 +1032,11 @@
         ]
       ]
     },
-    "formata data reunião5": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | José9",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Monday.com21": {
       "main": [
         [
           {
-            "node": "formata data reunião5",
+            "node": "Notifica grupo | José9",
             "type": "main",
             "index": 0
           }
@@ -3806,30 +3795,11 @@
     },
     {
       "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
-        "format": "custom",
-        "customFormat": "dd/MM/yyyy HH:mm",
-        "options": {
-          "timezone": true
-        }
-      },
-      "id": "a1732e2d-a9d7-4b14-ab12-03c75a7d72d1",
-      "name": "formata data reunião5",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        1240,
-        1280
-      ]
-    },
-    {
-      "parameters": {
         "resource": "boardItem",
         "operation": "changeMultipleColumnValues",
         "boardId": "5671139092",
         "itemId": "={{ $('Monday.com4').item.json.id }}",
-        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{new DateTime($now)}}\", \"texto\":\"{{ \"https://wa.me/\"+$('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"person\":\"gislenealexandre.bma@gmail.co\" }"
+        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{new DateTime($now).format(\"yyyy-MM-dd HH:mm:ss\")}}\", \"texto\":\"{{ \"https://wa.me/\"+$('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"person\":\"gislenealexandre.bma@gmail.com\" }"
       },
       "id": "cac30b1d-2372-493d-a594-396d0a66a809",
       "name": "Monday.com21",
@@ -3871,7 +3841,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead Pacial 🚨*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*SDR Responsável:* Gislene\n\n*Nome do lead*: {{ $node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d83087c9cdeff4740f1532\"][\"content\"] }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67d85cc363179a9b4503cc88'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67d85cd963179a9b4503cc8a'].content[0] }}\n\n*Origens:*\nFormulário: v3 calendly (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas no Monday*: https://bma47373.monday.com/boards/5671139092/pulses/{{ $('Monday.com4').item.json.id }}"
+              "value": "=*Novo lead Parcial 🚨*\n\n*SDR Responsável:* Gislene\n\n*Nome do lead*: {{ $node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d83087c9cdeff4740f1532\"][\"content\"] }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67d85cc363179a9b4503cc88'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67d85cd963179a9b4503cc8a'].content[0] }}\n\n*Origens:*\nFormulário: v3 calendly (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas no Monday*: https://bma47373.monday.com/boards/5671139092/pulses/{{ $('Monday.com4').item.json.id }}"
             }
           ]
         },
@@ -3882,7 +3852,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1480,
+        1280,
         1280
       ]
     },
@@ -4123,140 +4093,158 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "4898",
+            "content-length": "4100",
             "content-type": "application/json",
-            "x-forwarded-for": "134.122.126.40",
+            "x-forwarded-for": "143.244.172.193",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "706860589d6c",
-            "x-real-ip": "134.122.126.40",
+            "x-forwarded-server": "3b00e11001b6",
+            "x-real-ip": "143.244.172.193",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "681170e8f72593cc9377652d",
-              "formId": "680a8f0a75a63ec8840260a8",
-              "ipAddress": "138.0.80.141",
-              "operatingSystem": "Windows",
-              "operatingSystemVersion": "10.0",
-              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0",
-              "browser": "Opera",
-              "browserVersion": "118.0.0.0",
-              "referrerUrl": null,
-              "deviceType": "desktop",
+              "id": "6821e20ca048c713d1eafe09",
+              "formId": "67d8306a4642fbbe660b7f54",
+              "ipAddress": "177.101.42.197",
+              "operatingSystem": "AndroidOS",
+              "operatingSystemVersion": "14",
+              "userAgent": "Mozilla/5.0 (Linux; Android 14; SM-S911B Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/135.0.7049.111 Mobile Safari/537.36 Instagram 379.1.0.43.80 Android (34/14; 480dpi; 1080x2115; samsung; SM-S911B; dm1q; qcom; pt_BR; 731638146; IABMV/1)",
+              "browser": "Chrome",
+              "browserVersion": "135.0.7049.111",
+              "referrerUrl": "https://www.josepbijari.com/",
+              "deviceType": "mobile",
               "geolocation": {
                 "continent": "South America",
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "state": "Paraná",
-                "city": "Umuarama",
-                "zipcode": "87500",
-                "latitude": -23.7101,
-                "longitude": -53.3852,
+                "state": "Minas Gerais",
+                "city": "Montes Claros",
+                "zipcode": "39400",
+                "latitude": -16.5879,
+                "longitude": -43.9,
                 "timezone": "America/Sao_Paulo"
               },
               "aiFeedback": null,
-              "hiddenFields": [],
+              "hiddenFields": {
+                "pagina": "v18-v5b"
+              },
               "variables": {
                 "score": 0
               },
               "tracking": {
-                "utm_source": "zoom",
-                "utm_medium": "webnario",
-                "utm_campaign": "webnario",
-                "utm_content": "cta_aplicacao",
-                "utm_term": "msg",
-                "SLO_G_WPT_TO": "pt",
-                "SLO_GWPT_Show_Hide_tmp": "1",
-                "SLO_wptGlobTipTmp": "1"
+                "utm_source": "metaads",
+                "utm_medium": "00-QUENTE-365D-YAY",
+                "utm_campaign": "CADASTRO_LEADS_CG-AGENDAMENTO_QUENTE_IG-V18-365D-AD63 — Cópia",
+                "utm_content": "AD76",
+                "utm_term": "Instagram_Stories",
+                "_fbc": "fb.1.1747051020971.PAZXh0bgNhZW0BMABhZGlkAasdVJhlPR4Bp9k3EhMN3eD9bvUVRup6bgv9Lo77quPIfjQk4rP_Cs_cIU57KGptYnqLuoON_aem_UE_z9fbgUki1s_wob_n-Wg",
+                "_fbp": "fb.1.1747051020978.114759100438406044"
               },
               "timeToComplete": null,
-              "startedAt": "2025-04-30T00:40:17.459000Z",
-              "submittedAt": "2025-04-30T00:46:27.705000Z",
-              "createdAt": "2025-04-30T00:38:00.310000Z",
-              "updatedAt": "2025-04-30T00:46:27.705000Z",
+              "startedAt": "2025-05-12T11:57:04.332000Z",
+              "createdAt": "2025-05-12T11:57:00.318000Z",
+              "updatedAt": "2025-05-12T11:57:57.553000Z",
               "answers": {
-                "680a9441fce7dfb6ef094aa3": {
-                  "answerId": "681170e8bcb2d1fbcfa0cae3",
-                  "fieldTitle": "Aplicação para a Mentoria High Ticket",
-                  "fieldDescription": "<p>A sua aplicação através deste questionário NÃO garante que você será aceito na Bijari Mentoria Avançada.</p><p></p><p>Vou avaliar pessoalmente, de forma cautelosa, cada aplicação e selecionar apenas quem realmente pode aproveitar essa oportunidade e agregar ao grupo. Baseado nas suas respostas, você será ou não selecionado para uma entrevista pessoal comigo ou com um especialista do meu time.</p><p></p><p>Só preencha esse questionário se você está realmente comprometido em fazer a diferença para você e para as pessoas em volta.</p>",
-                  "content": null
-                },
-                "680a8f0b75a63ec8840260aa": {
-                  "answerId": "68117171bcb2d1fbcfa16695",
+                "67d83087c9cdeff4740f1532": {
+                  "answerId": "6821e20cbcb2d1fbcf3ac54f",
                   "fieldTitle": "Qual seu nome completo?",
                   "fieldDescription": null,
-                  "content": "Marcelo Ximenez Pereira"
+                  "content": "Géssika "
                 },
-                "680a8f0b75a63ec8840260ab": {
-                  "answerId": "68117176bcb2d1fbcfa16d02",
-                  "fieldTitle": "WhatsApp com DDD",
+                "67d830983b0494524b022b59": {
+                  "answerId": "6821e210bcb2d1fbcf3acb5a",
+                  "fieldTitle": "Número de WhatsApp com DDD",
                   "fieldDescription": null,
-                  "content": "+5544998162830"
+                  "content": "+5538992047479"
                 },
-                "68102aea50d695fe0b0d0d35": {
-                  "answerId": "6811717cbcb2d1fbcfa1718b",
-                  "fieldTitle": "Seu @ no Instagram?",
+                "67d830b2c9cdeff4740f1540": {
+                  "answerId": "6821e213bcb2d1fbcf3acd86",
+                  "fieldTitle": "Seu @ no Instagram",
                   "fieldDescription": null,
-                  "content": "@eng.marceloximenez"
+                  "content": "@agessikasantos"
                 },
-                "680a8f0b75a63ec8840260ad": {
-                  "answerId": "68117182bcb2d1fbcfa17701",
+                "67d85cc363179a9b4503cc88": {
+                  "answerId": "6821e220bcb2d1fbcf3ad90d",
                   "fieldTitle": "Qual o seu e-mail principal?",
                   "fieldDescription": null,
-                  "content": "eng.marceloximenez@gmail.com"
+                  "content": "santosgg9@gmail.com"
                 },
-                "680a8f0b75a63ec8840260ae": {
-                  "answerId": "68117189bcb2d1fbcfa17e9a",
+                "67d85cd963179a9b4503cc8a": {
+                  "answerId": "6821e225bcb2d1fbcf3adf43",
                   "fieldTitle": "Qual das opções abaixo mais condiz com seu negócio hoje?",
                   "fieldDescription": null,
                   "content": [
                     "Mentor, expert ou infoprodutor"
                   ]
                 },
-                "680a8f0b75a63ec8840260b7": {
-                  "answerId": "68117192bcb2d1fbcfa18750",
-                  "fieldTitle": "Qual é o seu ticket médio atual?",
-                  "fieldDescription": "<p></p>",
-                  "content": [
-                    "Entre R$ 10.001 e R$ 30.000"
-                  ]
-                },
-                "680a8f0b75a63ec8840260af": {
-                  "answerId": "6811719ebcb2d1fbcfa19542",
-                  "fieldTitle": "Qual seu faturamento médio mensal TOTAL (considerando investimento/sociedades/outros negócios);",
+                "67d85d1154c27f525602b09a": {
+                  "answerId": "6821e229bcb2d1fbcf3ae239",
+                  "fieldTitle": "Qual seu faturamento TOTAL (considerando investimento/sociedades/outros negócios);",
                   "fieldDescription": null,
                   "content": [
-                    "R$ 20.000,00 a R$ 50.000,00"
+                    "Até R$ 15.000,00"
                   ]
                 },
-                "68102bcc50faf442020c71f6": {
-                  "answerId": "681171a7bcb2d1fbcfa1a0c1",
-                  "fieldTitle": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?",
-                  "fieldDescription": "<p>Exemplo: eu poderia me afastar da operação, escalar sem depender de lançamentos, etc.</p>",
-                  "content": "Eu acompanho Bijari a um tempo, assisto bastente conteudo e pesquiso muito, recentemente eu criei minha mentoria focada em inspeção em engenharia, porém tenho varias dificuldades para escalar. Quero muito escalar melhorar isso. Tenho vontade de tornar mentoria umas das minha rendas principais. Porém tenho um problema meu financeiro hoje não comporta."
+                "67e42777aeb2a5aa080ed00b": {
+                  "answerId": "6821e22abcb2d1fbcf3ae477",
+                  "fieldTitle": "Quanto de RECEITA (entrada de caixa) você tem por mês?",
+                  "fieldDescription": "<p>PS: fique tranquilo, não vamos divulgar este dado ou te expor. É para calcularmos seu % de competência X caixa.</p>",
+                  "content": [
+                    "Até R$ 15.000,00"
+                  ]
                 },
-                "68102bda183b281bfd0eab64": {
-                  "answerId": "6811720fbcb2d1fbcfa20f2d",
-                  "fieldTitle": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
+                "67d85d63e08401ba690720f3": {
+                  "answerId": "6821e22cbcb2d1fbcf3ae62c",
+                  "fieldTitle": "Em qual cenário você se encaixa",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sou prestador de serviço e quero lançar minha mentoria"
+                  ]
+                },
+                "67d85d9354c27f525602b09e": {
+                  "answerId": "6821e231bcb2d1fbcf3aec47",
+                  "fieldTitle": "Descreva de forma clara o seu objetivo nos próximos 12 meses e as 3 principais dificuldades que estão te impedindo de alcançá-lo.",
+                  "fieldDescription": null,
+                  "content": "Vendas consistentes "
+                },
+                "67d85da054c27f525602b0a0": {
+                  "answerId": "6821e23bbcb2d1fbcf3af6d8",
+                  "fieldTitle": "Você foi pré-aprovado para uma das vagas da Consultoria. Caso você não responda à confirmação do nosso time no seu WhatsApp, sua vaga será transferida para outro interessado. Você está ciente?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Claro, quero aproveitar!"
+                  ]
+                },
+                "67d85db5958b4bee2f0906b4": {
+                  "answerId": "6821e245bcb2d1fbcf3b0043",
+                  "fieldTitle": "Agende seu horário abaixo e assim que confirmar, toque em CONTINUE no final do formulário para notificar o especialista da sua reunião",
                   "fieldDescription": "<p></p>",
-                  "content": "Eu tenho um proposito na minha vida me tornar um engenheiro reconhecido, tenho muita vontade, tive um crescimento muito alto muito rapido, agora nao consigo mais escalar."
-                },
-                "680a8f0b75a63ec8840260b2": {
-                  "answerId": "681172e1bcb2d1fbcfa2f2ad",
-                  "fieldTitle": "O investimento para a participação na Bijari Mentoria Avançada é de até 12x de R$ 6.000,00 no cartão de crédito ou R$ 60.000,00 à vista.&nbsp;",
-                  "fieldDescription": "<p>Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?</p>",
                   "content": null
                 }
               }
             }
           },
-          "webhookUrl": "https://webhook.josepbijari.com/webhook/0ce2a12d-e6b7-407c-8fba-840b42802f27",
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/vg-v3-calendly-yayforms",
           "executionMode": "production"
+        }
+      }
+    ],
+    "Monday.com4": [
+      {
+        "json": {
+          "id": "9125496173"
+        }
+      }
+    ],
+    "Monday.com20": [
+      {
+        "json": {
+          "id": "4110937144"
         }
       }
     ]
@@ -4277,6 +4265,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-09T21:20:20.161Z",
-  "versionId": "b1db6846-d6e6-4a4e-a52c-f1c54e096030"
+  "updatedAt": "2025-05-12T13:20:36.873Z",
+  "versionId": "9ecd8739-1b43-475f-9ba5-3d5b61bc09fb"
 }
