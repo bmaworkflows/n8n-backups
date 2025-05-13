@@ -37,17 +37,89 @@
       "main": [
         [
           {
-            "node": "Notifica Grupo",
+            "node": "Aciona fluxo de rodizio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aciona fluxo de rodizio": {
+      "main": [
+        [
+          {
+            "node": "gera cnpj",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vendedor da vez": {
+      "main": [
+        [
+          {
+            "node": "Notifica Thomas",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Notifica Gabi",
+            "node": "Notifica Grupo Thomas",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Criar Oportunidade",
+            "node": "Criar Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notifica Grupo1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notifica Gabi1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Criar Lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gera cnpj": {
+      "main": [
+        [
+          {
+            "node": "Vendedor da vez",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Lead": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade Thomas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Lead1": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade Thomas1",
             "type": "main",
             "index": 0
           }
@@ -90,111 +162,6 @@
         260
       ],
       "webhookId": "41b22a21-99b4-4c6e-8e0e-744268fed002"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"NomeLead\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"DocumentoLead\": \"64332848000109\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\"\n    }\n  ]\n}\n",
-        "options": {}
-      },
-      "id": "dc96eddd-88ca-46fc-b0fa-09e280d8f525",
-      "name": "Criar Oportunidade",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1320,
-        480
-      ]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "message",
-              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
-            },
-            {
-              "name": "phone",
-              "value": "120363401409129567-group"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "838a2421-0628-4414-ba31-32f2d48928a6",
-      "name": "Notifica Grupo",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1320,
-        40
-      ]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "message",
-              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
-            },
-            {
-              "name": "phone",
-              "value": "‪5561981669359‬"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "a255a61f-ad97-4411-91da-114063d5b4d9",
-      "name": "Notifica Gabi",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1320,
-        260
-      ]
     },
     {
       "parameters": {
@@ -591,11 +558,391 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1040,
+        1020,
         -160
       ],
       "id": "b1485e12-9066-4e8a-aa19-3181204a848c",
       "name": "Aciona fluxo de recuperaçao"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "tyO5B4Try9QAVIR1",
+          "mode": "list",
+          "cachedResultName": "Rodízio de Vendedor IP"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1240,
+        260
+      ],
+      "id": "244271a2-1571-4b25-825d-2d96fcc30ac0",
+      "name": "Aciona fluxo de rodizio"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Aciona fluxo de rodizio').item.json.nome_vendedor }}",
+                    "rightValue": "Thomas",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "75d243a7-a9b7-4996-a0c1-2e956af1dc51"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Thomas"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b29cfa48-6927-410d-8978-b3945473aa18",
+                    "leftValue": "={{ $('Aciona fluxo de rodizio').item.json.nome_vendedor }}",
+                    "rightValue": "Gabi de Paula",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Gabi de Paula"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1660,
+        260
+      ],
+      "id": "0f57b2ed-c999-4f3c-836e-86a733cbd416",
+      "name": "Vendedor da vez"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-17_wO5pmqY327FYK-9iLcOAIzY6MhSYry-DsWjHRn8G0lQq2Y09d4ynsbTrCaUm1XRreEdy1cVhJ20ZnAHNI4kS417HZljN5YZ-1jUmwVI75WkLBPPQmfV3_8-wrE0q4p2WCjKNwP5A.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"NomeLead\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"DocumentoLead\": \"{{ $node[\"gera cnpj\"].json[\"cnpj\"] }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "dc96eddd-88ca-46fc-b0fa-09e280d8f525",
+      "name": "Criar Oportunidade Thomas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2480,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\n*Responsável:* Gabi\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
+            },
+            {
+              "name": "phone",
+              "value": "120363401409129567-group"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f7522db7-c78d-4389-b117-55eaa60b6bd8",
+      "name": "Notifica Grupo1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\n*Responsável:* Gabi\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
+            },
+            {
+              "name": "phone",
+              "value": "‪5561981669359‬"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c8a9b7d-d8a5-4bcc-b865-3f5709eed541",
+      "name": "Notifica Gabi1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"NomeLead\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n  \"DocumentoLead\": \"{{ $node[\"gera cnpj\"].json[\"cnpj\"] }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "98cb52ca-b6e4-4fcd-bddf-d49f3eb475e1",
+      "name": "Criar Oportunidade Thomas1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2480,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\n*Responsável:* Thomas\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
+            },
+            {
+              "name": "phone",
+              "value": "120363401409129567-group"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "838a2421-0628-4414-ba31-32f2d48928a6",
+      "name": "Notifica Grupo Thomas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        -360
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*Novo lead do funil perpétuo do IP Experience:*\n\n*Responsável:* Thomas\n\nNome: {{ $('Trata Webhook').item.json.Seu_nome }}\nEmail: {{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\nWhatsapp: {{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\n\nPágina: {{ $('Trata Webhook').item.json.pagina }}\nIngresso: {{ $('Trata Webhook').item.json.ingresso }}\n\n*Origens:*\n_utm_source: {{ $('Trata Webhook').item.json.utm_source }}_\n_utm_campaign: {{ $('Trata Webhook').item.json.utm_campaign }}_\n_utm_medium: {{ $('Trata Webhook').item.json.utm_medium }}_\n_utm_content: {{ $('Trata Webhook').item.json.utm_content }}_\n_utm_term: {{ $('Trata Webhook').item.json.utm_term }}_"
+            },
+            {
+              "name": "phone",
+              "value": "‪5545998098544‬"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a255a61f-ad97-4411-91da-114063d5b4d9",
+      "name": "Notifica Thomas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        260
+      ],
+      "id": "473168b0-511c-42d4-a6e0-cd03f11cc29e",
+      "name": "gera cnpj"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-17_wO5pmqY327FYK-9iLcOAIzY6MhSYry-DsWjHRn8G0lQq2Y09d4ynsbTrCaUm1XRreEdy1cVhJ20ZnAHNI4kS417HZljN5YZ-1jUmwVI75WkLBPPQmfV3_8-wrE0q4p2WCjKNwP5A.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $node[\"gera cnpj\"].json[\"cnpj\"] }}\",\n    \"NomeFantasia\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n    \"RazaoSocial\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n      \"Email\": \"{{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\",\n      \"Telefone\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\",\n      \"Celular\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "e12b11dd-33ba-4bdd-87f7-162f94f1ef07",
+      "name": "Criar Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $node[\"gera cnpj\"].json[\"cnpj\"] }}\",\n    \"NomeFantasia\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n    \"RazaoSocial\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Trata Webhook').item.json.Seu_nome }}\",\n      \"Email\": \"{{ $('Trata Webhook').item.json.Seu_melhor_e_mail }}\",\n      \"Telefone\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\",\n      \"Celular\": \"{{ $('Trata Webhook').item.json.Telefone_WhatsApp_DDD }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "74062668-74a9-474e-9cc4-81d45af1f89b",
+      "name": "Criar Lead1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        820
+      ]
     }
   ],
   "pinData": {
@@ -667,6 +1014,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-04-09T04:29:37.161Z",
-  "versionId": "ed75a668-a2c9-49e6-9d7c-b010dd9660aa"
+  "updatedAt": "2025-05-13T15:38:53.168Z",
+  "versionId": "37dbc8de-2ae7-4d93-b001-ae0933bd0117"
 }
