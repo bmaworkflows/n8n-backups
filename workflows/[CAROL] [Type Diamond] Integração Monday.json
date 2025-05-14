@@ -83,28 +83,12 @@
       "main": [
         [
           {
-            "node": "gera cnpj",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Notifica Grupo1",
+            "node": "Aciona fluxo de rodizio",
             "type": "main",
             "index": 0
           },
           {
             "node": "Google Sheets",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "gera cnpj": {
-      "main": [
-        [
-          {
-            "node": "Criar Lead",
             "type": "main",
             "index": 0
           }
@@ -125,6 +109,67 @@
     "Criar Oportunidade": {
       "main": [
         []
+      ]
+    },
+    "Aciona fluxo de rodizio": {
+      "main": [
+        [
+          {
+            "node": "gera cnpj",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gera cnpj": {
+      "main": [
+        [
+          {
+            "node": "Vendedor da vez",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vendedor da vez": {
+      "main": [
+        [
+          {
+            "node": "Criar Lead1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notifica Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notifica Grupo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Lead1": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -183,7 +228,7 @@
           "parameters": [
             {
               "name": "message",
-              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\nNome: {{ $json.nome }}\n\nEmail: {{ $json.email }}\n\nTelefone: {{ $json.whatsapp }}\n\nNegócio: {{ $json.tipo_negocio }}\n\nFaturamento: {{ $json.faturamento }}\n\nInvestimento: {{ $json.investimento }}\n\nOrigens:\n\nutm_source: {{ $json.utm_source }}\nutm_campaign: {{ $json.utm_campaign }}\nutm_medium: {{ $json.utm_medium }}\nutm_content: {{ $json.utm_content }}\nutm_term: {{ $json.utm_term }}"
+              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\n*Responsável:* Gabi\n\nNome: {{ $('Merge').item.json.nome }}\n\nEmail: {{ $('Merge').item.json.email }}\n\nTelefone: {{ $('Merge').item.json.whatsapp }}\n\nNegócio: {{ $('Merge').item.json.tipo_negocio }}\n\nFaturamento: {{ $('Merge').item.json.faturamento }}\n\nInvestimento: {{ $('Merge').item.json.investimento }}\n\nOrigens:\n\nutm_source: {{ $('Merge').item.json.utm_source }}\nutm_campaign: {{ $('Merge').item.json.utm_campaign }}\nutm_medium: {{ $('Merge').item.json.utm_medium }}\nutm_content: {{ $('Merge').item.json.utm_content }}\nutm_term: {{ $('Merge').item.json.utm_term }}"
             },
             {
               "name": "phone",
@@ -198,8 +243,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        60,
-        200
+        740,
+        440
       ]
     },
     {
@@ -333,8 +378,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        60,
-        -20
+        0,
+        -200
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -622,22 +667,9 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        280,
-        420
+        960,
+        660
       ]
-    },
-    {
-      "parameters": {
-        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -180,
-        420
-      ],
-      "id": "53b30645-0e58-4906-a5d6-57208831299c",
-      "name": "gera cnpj"
     },
     {
       "parameters": {
@@ -648,7 +680,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "ApiKey Z0EjZPzTOb-i4DIG6UbelHS1wxJAwH4FLOsWtg0yxJx_5l3XuneUKtlfJ-O1ByYhynsbTrCaUm3EG2bUck3CK79QS7Qk5PpIkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
             },
             {
               "name": "Content-Type",
@@ -666,20 +698,165 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        60,
+        740,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "tyO5B4Try9QAVIR1",
+          "mode": "list",
+          "cachedResultName": "Rodízio de Vendedor IP"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -200,
         420
+      ],
+      "id": "a1f43461-cc26-4fd3-91bc-7a85f1690490",
+      "name": "Aciona fluxo de rodizio"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Aciona fluxo de rodizio').item.json.nome_vendedor }}",
+                    "rightValue": "Thomas",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "75d243a7-a9b7-4996-a0c1-2e956af1dc51"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Thomas"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b29cfa48-6927-410d-8978-b3945473aa18",
+                    "leftValue": "={{ $('Aciona fluxo de rodizio').item.json.nome_vendedor }}",
+                    "rightValue": "Gabi de Paula",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Gabi de Paula"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        220,
+        420
+      ],
+      "id": "865fbb00-aece-4bc6-bee4-4f3b6a54d7da",
+      "name": "Vendedor da vez"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        420
+      ],
+      "id": "3fec3b01-7c1c-4407-a588-ab571e44ded8",
+      "name": "gera cnpj"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\n*Responsável:* Thomas\n\nNome: {{ $('Merge').item.json.nome }}\n\nEmail: {{ $('Merge').item.json.email }}\n\nTelefone: {{ $('Merge').item.json.whatsapp }}\n\nNegócio: {{ $('Merge').item.json.tipo_negocio }}\n\nFaturamento: {{ $('Merge').item.json.faturamento }}\n\nInvestimento: {{ $('Merge').item.json.investimento }}\n\nOrigens:\n\nutm_source: {{ $('Merge').item.json.utm_source }}\nutm_campaign: {{ $('Merge').item.json.utm_campaign }}\nutm_medium: {{ $('Merge').item.json.utm_medium }}\nutm_content: {{ $('Merge').item.json.utm_content }}\nutm_term: {{ $('Merge').item.json.utm_term }}"
+            },
+            {
+              "name": "phone",
+              "value": "120363365606703751-group"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "53af25f6-8b0b-4829-8ebd-6a1d8e0f3b3f",
+      "name": "Notifica Grupo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        -220
       ]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/AtividadeCrm/Criar",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "ApiKey Z0EjZPzTOb-CFh9vpLxqv9YcJ54kBYIOgowaBDWvkyzO_wYOgPft56HL7L9WiFs0ynsbTrCaUm1X7LUt72QQcnVMhhWm7b70keN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+              "value": "ApiKey Z0EjZPzTOb-17_wO5pmqY327FYK-9iLcOAIzY6MhSYry-DsWjHRn8G0lQq2Y09d4ynsbTrCaUm1XRreEdy1cVhJ20ZnAHNI4kS417HZljN5YZ-1jUmwVI75WkLBPPQmfV3_8-wrE0q4p2WCjKNwP5A.."
             },
             {
               "name": "Content-Type",
@@ -688,47 +865,48 @@
           ]
         },
         "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "IdOportunidade",
-              "value": "={{ $json }}"
-            },
-            {
-              "name": "Titulo",
-              "value": "Nova Aplicaçao para o ingresso Diamond"
-            },
-            {
-              "name": "Descricao",
-              "value": "=Novo Aplicação para o ingresso *Diamond* 🎫\n\nNome: {{ $('Merge').item.json.nome }}\n\nEmail: {{ $('Merge').item.json.email }}\n\nTelefone: {{ $('Merge').item.json.whatsapp }}\n\nNegócio: {{ $('Merge').item.json.tipo_negocio }}\n\nFaturamento: {{ $('Merge').item.json.faturamento }}\n\nInvestimento: {{ $('Merge').item.json.investimento }}\n\nOrigens:\n\nutm_source: {{ $('Merge').item.json.utm_source }}\nutm_campaign: {{ $('Merge').item.json.utm_campaign }}\nutm_medium: {{ $('Merge').item.json.utm_medium }}\nutm_content: {{ $('Merge').item.json.utm_content }}\nutm_term: {{ $('Merge').item.json.utm_term }}"
-            },
-            {
-              "name": "IdAtividadeOportunidade",
-              "value": "=4"
-            },
-            {
-              "name": "DataInicio",
-              "value": "={{new DateTime($now)}}"
-            },
-            {
-              "name": "Realizada",
-              "value": "={{ false }}"
-            },
-            {
-              "name": "DataFim",
-              "value": "={{new DateTime($now)}}"
-            }
-          ]
-        },
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"Aplicacao Diamond {{ $('Merge').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Merge').item.json.nome }}\",\n  \"DocumentoLead\": \"{{ $('gera cnpj').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\":\"{{ $('Merge').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
-      "id": "75a22449-b0de-4b6a-8623-efc3be8ac6fc",
-      "name": "Adicionar nota",
+      "id": "160f2991-4353-470a-8951-cf9448a47561",
+      "name": "Criar Oportunidade1",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        900,
-        660
+        960,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb-17_wO5pmqY327FYK-9iLcOAIzY6MhSYry-DsWjHRn8G0lQq2Y09d4ynsbTrCaUm1XRreEdy1cVhJ20ZnAHNI4kS417HZljN5YZ-1jUmwVI75WkLBPPQmfV3_8-wrE0q4p2WCjKNwP5A.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Merge').item.json.nome }}\",\n    \"RazaoSocial\": \"{{ $('Merge').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Merge').item.json.nome }}\",\n      \"Email\": \"{{ $('Merge').item.json.email }}\",\n      \"Telefone\": \"{{ $('Merge').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Merge').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "8fed2b82-3bf1-411d-805a-135e968a3886",
+      "name": "Criar Lead1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        0
       ]
     }
   ],
@@ -1211,6 +1389,16 @@
       {
         "json": 1648
       }
+    ],
+    "Criar Oportunidade1": [
+      {
+        "json": 1648
+      }
+    ],
+    "Criar Lead1": [
+      {
+        "json": 1976
+      }
     ]
   },
   "settings": {
@@ -1228,6 +1416,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-03T05:14:08.136Z",
-  "versionId": "783c7f13-b992-4d57-82e9-741a15ee371f"
+  "updatedAt": "2025-05-13T17:32:21.004Z",
+  "versionId": "9da7e037-9516-4638-aa46-33176d9604b3"
 }
