@@ -1,0 +1,388 @@
+{
+  "active": false,
+  "connections": {
+    "Trata Etapas": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Central funis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Trata Etapas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Planilha |Central funis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-17T19:10:18.355Z",
+  "id": "0D8yRvEe6ZfYL6Zo",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] [AULA EXCLUSIVA MAIO] Formulário de Pesquisa RETROATIVOS",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=1055383475#gid=1055383475",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1264600397,
+          "mode": "list",
+          "cachedResultName": "pesquisa exclusiva maio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1264600397"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "já desenvolveu produto?": "={{ $json.desenvolve }}",
+            "faturamento": "={{ $json.faturamento }}",
+            "cenário": "={{ $json.cenario }}",
+            "telefone": "={{ $json.whatsapp }}",
+            "chave": "={{ $json.whatsapp.slice(-7) }}",
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cenário",
+              "displayName": "cenário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "já desenvolveu produto?",
+              "displayName": "já desenvolveu produto?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "44745e17-2d0e-4b0b-91a7-1c8f6611c8f1",
+      "name": "Dados Planilha |Central funis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        220,
+        100
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const entrada = [\n  {\n    \"cenario\": 2,\n    \"faturamento\": 3,\n    \"desenvolve\": 1,\n    \"whatsapp\": \"5575999928292\"\n  }\n];\n\nconst cenarios = {\n  \"1\": \"Corretor (a) de imóveis\",\n  \"2\": \"Engenheiro (a)\",\n  \"3\": \"Arquiteto (a)\",\n  \"4\": \"Empresário (a) ou empreendedor (a)\",\n  \"5\": \"no mercado imobiliário\",\n  \"6\": \"Incorporador (a)\",\n  \"7\": \"Construtor\",\n  \"8\": \"Sou de outro mercado, mas quero\",\n  \"9\": \"migrar para o desenvolvimento\",\n  \"10\": \"Outros\"\n};\n\nconst faturamentos = {\n  \"1\": \"Até R$ 10.000,00\",\n  \"2\": \"R$ 10.000,00 a R$ 20.000,00\",\n  \"3\": \"R$ 20.000,00 a R$ 50.000,00\",\n  \"4\": \"R$ 50.000,00 a R$ 100.000,00\",\n  \"5\": \"R$ 100.000,00 a R$ 250.000,00\",\n  \"6\": \"R$ 250.000,00 a R$ 500.000,00\",\n  \"7\": \"Acima de R$ 500.000,00\"\n};\n\nconst desenvolvimentos = {\n  \"1\": \"Estou construindo/incorporando no momento\",\n  \"2\": \"Já construí/incorporei, mas não estou construindo/incorporando no momento\",\n  \"3\": \"Nunca construí/incorporei, nem estou construindo/incorporando\"\n};\n\nconst processarLead = (lead) => {\n  return {\n    whatsapp: lead.whatsapp,\n    cenario: cenarios[String(lead.cenario)] || \"lead respondeu fora do padrão\",\n    faturamento: faturamentos[String(lead.faturamento)] || \"lead respondeu fora do padrão\",\n    desenvolve: desenvolvimentos[String(lead.desenvolve)] || \"lead respondeu fora do padrão\"\n  };\n};\n\n// Se estiver usando em um nó Function do n8n com múltiplos itens:\nreturn items.map(item => {\n  return {\n    json: processarLead(item.json)\n  };\n});\n"
+      },
+      "id": "e0803340-60eb-4172-87b7-8060c973c671",
+      "name": "Trata Etapas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -60,
+        100
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        80
+      ],
+      "id": "5417366c-ab24-48f8-9b83-698326197339",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=462834756#gid=462834756",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 462834756,
+          "mode": "list",
+          "cachedResultName": "Página28",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=462834756"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1220,
+        80
+      ],
+      "id": "bccef4e7-68de-46fe-9bbc-30ef31a472af",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -540,
+        80
+      ],
+      "id": "39b0acc4-6998-47f8-a2c0-e9169a64244b",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "77e960a6-18c9-4b72-9609-ed1897a0abbe",
+              "name": "cenario",
+              "value": "={{ $json[\"cenário\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "0c0f6970-e9ae-4017-9462-470cc8979c49",
+              "name": "faturamento",
+              "value": "={{ $json.faturamento }}",
+              "type": "number"
+            },
+            {
+              "id": "9080bccb-f78c-44b3-868d-a41a5495c5d0",
+              "name": "desenvolve",
+              "value": "={{ $json[\"já desenvolveu produto?\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "c12bd2ba-630e-4563-93fa-4ca0f7e8a36e",
+              "name": "whatsapp",
+              "value": "={{ $json.telefone }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        100
+      ],
+      "id": "962d6163-b840-4eb7-8280-2f51e1e1c0d2",
+      "name": "Edit Fields",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        100
+      ],
+      "id": "1f26e9fc-bb03-4a24-8287-64116cc76824",
+      "name": "Wait",
+      "webhookId": "1defc776-328c-4335-8dcf-fcb6a54c7313"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8d13f17f-2a87-48fd-afff-75c97766ac6d",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": 33,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1000,
+        80
+      ],
+      "id": "5c71e6fe-8dd2-499d-bb44-b955567b11a4",
+      "name": "Filter"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-17T19:41:16.974Z",
+  "versionId": "3dcd14c4-9650-4c75-92fa-4f6f35043305"
+}
