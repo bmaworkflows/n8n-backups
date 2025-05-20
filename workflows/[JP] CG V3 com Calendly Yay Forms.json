@@ -983,10 +983,16 @@
     },
     "If": {
       "main": [
-        [],
         [
           {
-            "node": "Date & Time9",
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rodizio SDR",
             "type": "main",
             "index": 0
           }
@@ -1053,6 +1059,17 @@
         [
           {
             "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rodizio SDR": {
+      "main": [
+        [
+          {
+            "node": "Date & Time9",
             "type": "main",
             "index": 0
           }
@@ -1446,7 +1463,7 @@
       "typeVersion": 3,
       "position": [
         1600,
-        100
+        60
       ]
     },
     {
@@ -3646,7 +3663,7 @@
       "typeVersion": 2.2,
       "position": [
         -240,
-        40
+        20
       ],
       "id": "a5573e05-c26d-4fa8-8b5e-05a4e0b7e50a",
       "name": "If"
@@ -3727,7 +3744,7 @@
         "operation": "changeMultipleColumnValues",
         "boardId": "5671139092",
         "itemId": "={{ $('Monday.com4').item.json.id }}",
-        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{new DateTime($now).format(\"yyyy-MM-dd HH:mm:ss\")}}\", \"texto\":\"{{ \"https://wa.me/\"+$('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"person\":\"gislenealexandre.bma@gmail.com\" }"
+        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{new DateTime($now).format(\"yyyy-MM-dd HH:mm:ss\")}}\", \"texto\":\"{{ \"https://wa.me/\"+$('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"person\":\"{{ $node[\"Rodizio SDR\"].json[\"email_sdr\"] }}\" }"
       },
       "id": "cac30b1d-2372-493d-a594-396d0a66a809",
       "name": "Monday.com21",
@@ -3769,7 +3786,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead Parcial funil JP🚨\n*\n\n*SDR Responsável:* Gislene\n\n*Nome do lead*: {{ $node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d83087c9cdeff4740f1532\"][\"content\"] }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67d85cc363179a9b4503cc88'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67d85cd963179a9b4503cc8a'].content[0] }}\n\n*Origens:*\nFormulário: v3 calendly (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas no Monday*: https://bma47373.monday.com/boards/5671139092/pulses/{{ $('Monday.com4').item.json.id }}"
+              "value": "=*Novo lead Parcial funil JP🚨\n*\n\n*SDR Responsável:* {{ $node[\"Rodizio SDR\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d83087c9cdeff4740f1532\"][\"content\"] }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67d85cc363179a9b4503cc88'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67d830983b0494524b022b59'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67d85d1154c27f525602b09a'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67d85cd963179a9b4503cc8a'].content[0] }}\n\n*Origens:*\nFormulário: v3 calendly (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas no Monday*: https://bma47373.monday.com/boards/5671139092/pulses/{{ $('Monday.com4').item.json.id }}"
             }
           ]
         },
@@ -3847,6 +3864,35 @@
       ],
       "id": "afec3441-d489-44ed-983c-4692d9d41e2d",
       "name": "Define campos"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LWmIGCByIZ3GpWo0",
+          "mode": "list",
+          "cachedResultName": "Rodízio de SDR BMA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        120,
+        1280
+      ],
+      "id": "29d16a0f-5a7d-404a-9cbf-5cef901096db",
+      "name": "Rodizio SDR"
     }
   ],
   "pinData": {
@@ -4004,6 +4050,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-14T18:32:48.963Z",
-  "versionId": "624ac2b0-e03b-4e13-b656-3c77f8a09b39"
+  "updatedAt": "2025-05-20T03:40:51.377Z",
+  "versionId": "5f54e18b-b2ad-4fdd-b86c-d5d99c502d2b"
 }
