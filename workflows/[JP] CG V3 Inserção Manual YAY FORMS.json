@@ -1,0 +1,819 @@
+{
+  "active": true,
+  "connections": {
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Date & Time4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time4": {
+      "main": [
+        [
+          {
+            "node": "Date & Time3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time3": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com9": {
+      "main": [
+        [
+          {
+            "node": "Monday.com10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com10": {
+      "main": [
+        [
+          {
+            "node": "Monday.com11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com11": {
+      "main": [
+        []
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Monday.com9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monday.com",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monday.com1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com": {
+      "main": [
+        [
+          {
+            "node": "Monday.com12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com12": {
+      "main": [
+        [
+          {
+            "node": "Monday.com13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com13": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com1": {
+      "main": [
+        [
+          {
+            "node": "Monday.com14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com14": {
+      "main": [
+        [
+          {
+            "node": "Monday.com15",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday.com15": {
+      "main": [
+        []
+      ]
+    },
+    "Campos": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-19T16:10:30.395Z",
+  "id": "uIbA19EBjp19hjvt",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] CG V3 Inserção Manual YAY FORMS",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "2f646c4e-e87a-4b4a-81fd-28f60ab03c06",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        540,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "b1e736f9-17a7-48c7-945e-6bd6665b55f4",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        740,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dd7025ce-0657-434c-b948-2e0e3f055a4a",
+      "name": "Date & Time4",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        960,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "28ff6823-66bb-42dc-889b-3dc09a6dbf23",
+      "name": "Date & Time3",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "topics",
+        "name": "={{ $('Campos').item.json.nome }}",
+        "additionalFields": {}
+      },
+      "id": "853c9029-acfb-4d01-9654-ed01fd7d67be",
+      "name": "Monday.com9",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        -160
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Campos').item.json.nome }}\n\n----------\nEmail:\n\n{{ $('Campos').item.json.email }}\n\n----------\nWhatsapp:\n\n{{ $('Campos').item.json.telefone }}\n\n\n----------\n@ do Instagram:\n\n{{ $('Campos').item.json.instagram }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje? ?\n\n{{ $('Campos').item.json.negocio }}\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes? \n\n{{ $('Campos').item.json.faturamento }}\n\n----------\nEm qual cenário você se encaixa\n\n{{ $('Campos').item.json.cenario }}\n\n\n----------\nDescreva de forma clara o seu objetivo nos próximos 12 meses e as 3 principais dificuldades que estão te impedindo de alcançá-lo.\n\n{{ $('Campos').item.json.dificuldade }}\n\n\n----------\nCloser Responsável:\n\n{{ $('Campos').item.json.closer }}\n\nOrigens:\nFormulário: Inserção Manual\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+      },
+      "id": "6dfad908-f610-43f2-a26d-e8e5a23818e1",
+      "name": "Monday.com10",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        -160
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com9').item.json.id }}",
+        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto\":\"{{ \"https://wa.me/\"+$('Campos').item.json.telefone.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Campos').item.json.telefone }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"data\":\"{{ $('Date & Time3').item.json.formattedDate }}\", \"person\":\"tiagogregorio@mentoriahighticket.com.br\" }"
+      },
+      "id": "760b17ae-4d9a-426e-a679-ecd159d8f2e9",
+      "name": "Monday.com11",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        -160
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "28dd7602-cc58-41a6-a5e2-c16d77c395aa",
+                    "leftValue": "={{ $json.closer }}",
+                    "rightValue": "Tiago Gregório",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Tiago Gregório"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8bfc06d0-82a2-405a-8174-f31d901a1941",
+                    "leftValue": "={{ $json.closer }}",
+                    "rightValue": "Guilherme Bijari",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Guilherme Bijari"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "32dd10d8-4eeb-40f8-a24e-f7f2d854f188",
+                    "leftValue": "={{ $json.closer }}",
+                    "rightValue": "João Bijari",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "João Bijari"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "30f18d70-3e1c-4bb0-8c55-54aba3349fe0",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "topics",
+        "name": "={{ $('Campos').item.json.nome }}",
+        "additionalFields": {}
+      },
+      "id": "7dbe264f-623a-4732-adfd-02a3038040b6",
+      "name": "Monday.com",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        80
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Campos').item.json.nome }}\n\n----------\nEmail:\n\n{{ $('Campos').item.json.email }}\n\n----------\nWhatsapp:\n\n{{ $('Campos').item.json.telefone }}\n\n\n----------\n@ do Instagram:\n\n{{ $('Campos').item.json.instagram }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje? ?\n\n{{ $('Campos').item.json.negocio }}\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes? \n\n{{ $('Campos').item.json.faturamento }}\n\n----------\nEm qual cenário você se encaixa\n\n{{ $('Campos').item.json.cenario }}\n\n\n----------\nDescreva de forma clara o seu objetivo nos próximos 12 meses e as 3 principais dificuldades que estão te impedindo de alcançá-lo.\n\n{{ $('Campos').item.json.dificuldade }}\n\n\n----------\nCloser Responsável:\n\n{{ $('Campos').item.json.closer }}\n\nOrigens:\nFormulário: Inserção Manual\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+      },
+      "id": "e5e1e0c9-72e6-42c5-b51e-07178624032d",
+      "name": "Monday.com12",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        80
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com').item.json.id }}",
+        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto\":\"{{ \"https://wa.me/\"+$('Campos').item.json.telefone.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Campos').item.json.telefone }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"data\":\"{{ $('Date & Time3').item.json.formattedDate }}\", \"person\":\"bma.guilhermebijari@gmail.com\" }"
+      },
+      "id": "047061df-b6e1-422c-bdb6-abfdca41975b",
+      "name": "Monday.com13",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        80
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d584ac68-d93c-4530-b886-f3df2fdbb785",
+        "options": {}
+      },
+      "id": "3624dd3b-0615-4a4f-8075-cfaf4bcdc90e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        320,
+        100
+      ],
+      "webhookId": "d584ac68-d93c-4530-b886-f3df2fdbb785"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5671139092",
+        "groupId": "topics",
+        "name": "={{ $('Campos').item.json.nome }}",
+        "additionalFields": {}
+      },
+      "id": "dd9998c6-0464-4312-9a51-ecc9b49c82fd",
+      "name": "Monday.com1",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "=Nome completo:\n\n{{ $('Campos').item.json.nome }}\n\n----------\nEmail:\n\n{{ $('Campos').item.json.email }}\n\n----------\nWhatsapp:\n\n{{ $('Campos').item.json.telefone }}\n\n\n----------\n@ do Instagram:\n\n{{ $('Campos').item.json.instagram }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje? ?\n\n{{ $('Campos').item.json.negocio }}\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes? \n\n{{ $('Campos').item.json.faturamento }}\n\n----------\nEm qual cenário você se encaixa\n\n{{ $('Campos').item.json.cenario }}\n\n\n----------\nDescreva de forma clara o seu objetivo nos próximos 12 meses e as 3 principais dificuldades que estão te impedindo de alcançá-lo.\n\n{{ $('Campos').item.json.dificuldade }}\n\n\n----------\nCloser Responsável:\n\n{{ $('Campos').item.json.closer }}\n\nOrigens:\nFormulário: Inserção Manual\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+      },
+      "id": "ec7317c4-d790-4b29-82d1-9b696b9f54bb",
+      "name": "Monday.com14",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "5671139092",
+        "itemId": "={{ $('Monday.com1').item.json.id }}",
+        "columnValues": "={\"n_meros\":\"20000\", \"data\":\"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto\":\"{{ \"https://wa.me/\"+$('Campos').item.json.telefone.replace(\"+\",\"\") }}\", \"texto3\":\"{{ $('Campos').item.json.telefone }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.response.tracking.utm_source }}\", \"data\":\"{{ $('Date & Time3').item.json.formattedDate }}\", \"person\":\"joaobijari.bma@gmail.com\" }"
+      },
+      "id": "07a6f766-84c3-4d13-b169-58655e77b903",
+      "name": "Monday.com15",
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "mondayComApi": {
+          "id": "fkqFP3ydsR7WQhmr",
+          "name": "JP Bijari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4aea508-f641-4855-aa18-e8ca3427ce11",
+              "name": "nome",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e043686\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "3fdfb2d2-0e7b-443a-a46c-ccf09581456f",
+              "name": "telefone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e043687\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "5bbfd769-425b-4a6f-a427-b8dca48db90b",
+              "name": "instagram",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e043688\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "32bc6076-f3c6-48f4-beae-ef7e8f5ef945",
+              "name": "email",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e043689\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "53b668b7-f1d4-4683-bbca-17a8db4ae95e",
+              "name": "negocio",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e04368a\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "31fe9e4f-e3db-4271-887e-c93d9b0bcb1e",
+              "name": "faturamento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e04368b\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "4ec81960-ac1b-499a-a904-d619d4ebdaac",
+              "name": "cenario",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e04368c\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "bf7d022c-b453-4ce1-872e-811393dc5773",
+              "name": "dificuldade",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e04368d\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "4c554fe7-6855-4fb5-ba74-6ab4fdab57b0",
+              "name": "closer",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682b56df7949dc439e04368e\"].content[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1380,
+        100
+      ],
+      "id": "be929ea1-436c-413c-ae63-0d6705edd2b8",
+      "name": "Campos"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "3454",
+            "content-type": "application/json",
+            "x-forwarded-for": "142.93.53.80",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3b00e11001b6",
+            "x-real-ip": "142.93.53.80",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "682b6c00ebdac3f14140c2b5",
+              "formId": "682b56df7949dc439e043684",
+              "ipAddress": "190.120.43.100",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "136.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_gcl_au": "1.1.599869318.1744865246",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_ga": "GA1.2.1550280858.1744865246",
+                "_clck": "cymcv9|2|fvo|0|1933",
+                "ttcsid": "1746554627484::ejNt8HjYm6-Xqeo5c9Ih.5.1746554627484",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1746554627483::5yIf-P3I_oDNK_Uo_5RI.5.1746554627692",
+                "_ga_QMHGX1WZCF": "GS2.1.s1746554623$o5$g1$t1746554674$j9$l0$h647153102"
+              },
+              "timeToComplete": null,
+              "startedAt": "2025-05-19T17:36:05.870000Z",
+              "submittedAt": "2025-05-19T17:38:00.987000Z",
+              "createdAt": "2025-05-19T17:36:00.163000Z",
+              "updatedAt": "2025-05-19T17:38:00.987000Z",
+              "answers": {
+                "682b56df7949dc439e043686": {
+                  "answerId": "682b6c00bcb2d1fbcff79191",
+                  "fieldTitle": "Qual nome completo do lead?",
+                  "fieldDescription": null,
+                  "content": "Matheus"
+                },
+                "682b56df7949dc439e043687": {
+                  "answerId": "682b6c05bcb2d1fbcff79403",
+                  "fieldTitle": "Número de WhatsApp do lead com DDD",
+                  "fieldDescription": null,
+                  "content": "+5581993515055"
+                },
+                "682b56df7949dc439e043688": {
+                  "answerId": "682b6c0fbcb2d1fbcff79a85",
+                  "fieldTitle": "Instagram do lead",
+                  "fieldDescription": null,
+                  "content": "matheus"
+                },
+                "682b56df7949dc439e043689": {
+                  "answerId": "682b6c13bcb2d1fbcff79e3e",
+                  "fieldTitle": "Qual é o principal e-mail do lead?",
+                  "fieldDescription": null,
+                  "content": "matheus@gmail.com"
+                },
+                "682b56df7949dc439e04368a": {
+                  "answerId": "682b6c18bcb2d1fbcff7a235",
+                  "fieldTitle": "Qual das opções abaixo mais condiz com o negócio do lead?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Gestor de tráfego ou outro prestador de serviço no digital"
+                  ]
+                },
+                "682b56df7949dc439e04368b": {
+                  "answerId": "682b6c19bcb2d1fbcff7a347",
+                  "fieldTitle": "Qual é o faturamento total do lead?",
+                  "fieldDescription": null,
+                  "content": [
+                    "R$ 20.000,00 a R$ 50.000,00"
+                  ]
+                },
+                "682b56df7949dc439e04368c": {
+                  "answerId": "682b6c1bbcb2d1fbcff7a4ce",
+                  "fieldTitle": "Em qual cenário o lead se encaixa?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sou coprodutor e quero aumentar as vendas de infoproduto do (s) meu (s) expert (s)"
+                  ]
+                },
+                "682b56df7949dc439e04368d": {
+                  "answerId": "682b6c1cbcb2d1fbcff7a5ef",
+                  "fieldTitle": "Qual é a dificuldade do lead e o objetivo nos próximos 12 meses?",
+                  "fieldDescription": null,
+                  "content": "teste dificuldade"
+                },
+                "682b56df7949dc439e04368e": {
+                  "answerId": "682b6c20bcb2d1fbcff7a925",
+                  "fieldTitle": "Selecione o seu nome. Sim, você que está preenchendo esse formulário, precisamos saber quem é o closer responsável pelo lead.",
+                  "fieldDescription": null,
+                  "content": [
+                    "Tiago Gregório"
+                  ]
+                },
+                "682b56df7949dc439e04368f": {
+                  "answerId": "682b6c22bcb2d1fbcff7ac00",
+                  "fieldTitle": null,
+                  "fieldDescription": null,
+                  "content": null
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/d584ac68-d93c-4530-b886-f3df2fdbb785",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-20T03:24:39.130Z",
+  "versionId": "1fc7e76f-8fd9-4005-a178-705f0f644fa2"
+}
