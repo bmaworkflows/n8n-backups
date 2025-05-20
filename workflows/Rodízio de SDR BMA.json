@@ -1,0 +1,293 @@
+{
+  "active": false,
+  "connections": {
+    "pega dados de sdrs": {
+      "main": [
+        [
+          {
+            "node": "Rodízio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rodízio": {
+      "main": [
+        [
+          {
+            "node": "atualiza vez",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza vez": {
+      "main": [
+        [
+          {
+            "node": "vendedor da vez",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "pega dados de sdrs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vendedor da vez": {
+      "main": [
+        [
+          {
+            "node": "email vendedor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-20T03:32:16.920Z",
+  "id": "LWmIGCByIZ3GpWo0",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Rodízio de SDR BMA",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// O N8N envia os dados em `items`. Precisamos extrair o campo apropriado.\nconst items = $input.all(); // Obter todos os itens de entrada\n\n// Transformar os dados recebidos em um array de objetos (pessoas)\nlet pessoas = items.map(item => item.json); // Extrair o campo `json` de cada item\n\n// Ordenar por 'vez'\npessoas.sort((a, b) => a.vez - b.vez);\n\n// Encontrar a pessoa com vez 1 e reorganizar a ordem\nconst pessoaAtual = pessoas.shift(); // Remove o primeiro elemento (vez 1)\n\n// Atualizar as posições\npessoas.forEach(pessoa => pessoa.vez--); // Reduz a vez de todos em 1\npessoaAtual.vez = pessoas.length + 1;   // Coloca a pessoa atual no final\npessoas.push(pessoaAtual);              // Adiciona de volta à lista\n\n// Retornar os dados atualizados para o N8N (preservando row_number)\nreturn pessoas.map(pessoa => ({ json: pessoa }));\n"
+      },
+      "id": "305d1c70-d852-4c50-86c3-6ccb68fb5f3c",
+      "name": "Rodízio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1eVmAaJxG1-P1tRSIz2zqTQvHF2BQEd7bRgxmTLLczfA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eVmAaJxG1-P1tRSIz2zqTQvHF2BQEd7bRgxmTLLczfA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "1c40fcc5-b45b-4918-a22b-8203b5bd6c10",
+      "name": "pega dados de sdrs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -820,
+        20
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1eVmAaJxG1-P1tRSIz2zqTQvHF2BQEd7bRgxmTLLczfA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sdrs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eVmAaJxG1-P1tRSIz2zqTQvHF2BQEd7bRgxmTLLczfA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "email": "={{ $json.email }}",
+            "nome": "={{ $json.nome }}",
+            "vez": "={{ $json.vez }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vez",
+              "displayName": "vez",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "8f5403cd-54cd-4f8e-8402-7c2d225768a1",
+      "name": "atualiza vez",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -440,
+        20
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "a984dcab-c974-4709-9814-58b5d7020e6a",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "15853b62-59c1-4313-9b88-7cc0e1542acb",
+              "leftValue": "={{ $json.vez }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0945a491-c0d2-4164-b666-ab84336fce53",
+      "name": "vendedor da vez",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        -220,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "408278de-3191-445c-b663-17ea3129a7d1",
+              "name": "nome_sdr",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "9fd18241-043f-4627-9b05-58a432361b00",
+              "name": "email_sdr",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a7697bc-727f-453f-8f60-d98585c0f20b",
+      "name": "email vendedor",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-20T03:39:09.933Z",
+  "versionId": "9c9b6e56-a029-470d-882b-e5de7e257606"
+}
