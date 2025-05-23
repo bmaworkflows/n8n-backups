@@ -1,0 +1,483 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "GreatPages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GreatPages": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrai Path": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Extrai Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Meteórico 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Planilha |Meteórico 1": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-22T17:15:29.010Z",
+  "id": "GcVnjS1Grmu5yLm7",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [ISCA 2025 ]Formulário",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "1b64a5db-6d81-42b9-84f9-6d9c60c73ec7",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['DDD_WhatsApp'] = formataTelefone($input.first().json.Telefone_do_Whatsapp_com_DDD)\n\nreturn $input.all();\n\n"
+      },
+      "id": "6fe47fad-9417-4e7d-9ecb-d4d78a04de37",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        20,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2a68488c-f0b4-4406-baf9-b2c4bff1f2fb",
+              "name": "nome",
+              "value": "={{ $('Formata Telefone').item.json.Seu_nome }}",
+              "type": "string"
+            },
+            {
+              "id": "62ec3931-595f-43f5-9181-73c400ca8c9a",
+              "name": "email",
+              "value": "={{ $('Formata Telefone').item.json.Seu_melhor_e_mail }}",
+              "type": "string"
+            },
+            {
+              "id": "b7f3a6f5-6974-4aaf-9140-e16dffdddf74",
+              "name": "whatsapp",
+              "value": "={{ $('Formata Telefone').item.json.DDD_WhatsApp }}",
+              "type": "string"
+            },
+            {
+              "id": "bcda957c-484a-41a0-aeea-85ec12bc898e",
+              "name": "pagina",
+              "value": "={{ $json.pathname }}",
+              "type": "string"
+            },
+            {
+              "id": "2a6c5226-c045-4095-b133-00f54d82e245",
+              "name": "utm_source",
+              "value": "={{ $('Formata Telefone').item.json.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "ae81e3b4-9a73-4b1e-ad38-75bf2fb3682b",
+              "name": "utm_medium",
+              "value": "={{ $('Formata Telefone').item.json.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "30476025-0543-469c-9d9d-a7fee91cde39",
+              "name": "utm_campaign",
+              "value": "={{ $('Formata Telefone').item.json.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "6b50b30c-15db-4d2b-a3cc-119a4e209925",
+              "name": "utm_term",
+              "value": "={{ $('Formata Telefone').item.json.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "0fa84181-01f4-4f7c-85f2-90aafb4906ca",
+              "name": "utm_content",
+              "value": "={{ $('Formata Telefone').item.json.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "1cad61e4-9a1a-4934-adc4-c7578f4baffa",
+              "name": "Data_da_conversao",
+              "value": "={{ $('GreatPages').item.json.Data_da_conversao.toDateTime().format('dd/MM/yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "521979f7-1046-4208-ae94-32c2973fc06b",
+              "name": "ip_usuário",
+              "value": "={{ $('Trata Webhook').item.json.IP_do_usuario }}",
+              "type": "string"
+            },
+            {
+              "id": "02913e47-45c4-4eb6-aaf9-b4b3e3f2eef2",
+              "name": "fbclid",
+              "value": "={{ $('Formata Telefone').item.json.fbclid }}",
+              "type": "string"
+            },
+            {
+              "id": "d7235bfe-e9e2-4086-9fde-56fdeb2732f4",
+              "name": "gclid",
+              "value": "={{ $('Formata Telefone').item.json.gclid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "154d2a2f-96a3-433f-a0dd-1edd6a3be15c",
+      "name": "Campos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        220
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "b904d21a-df29-4c2c-abdf-b16887b40e41",
+      "name": "GreatPages",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function getPathFromURL(url) {\n    try {\n        // Usa regex para extrair o caminho da URL\n        const match = url.match(/^https?:\\/\\/[^/]+(\\/[^?#]*)/);\n        if (match) {\n            return match[1]; // Retorna o path\n        } else {\n            return \"Invalid URL\";\n        }\n    } catch (error) {\n        console.error(\"Erro ao processar a URL:\", error.message);\n        return \"Invalid URL\";\n    }\n}\n\n// Exemplo de uso\nconst url = $input.all()[0].json['URL']\nconst pathname = (getPathFromURL(url)); // Retorna \"/ip-ano-novo-v3\"\n\nreturn {pathname}"
+      },
+      "id": "61d7cb6d-e841-44cf-980b-2414116b9b8f",
+      "name": "Extrai Path",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1785562214,
+          "mode": "list",
+          "cachedResultName": "isca",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=1785562214"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.Data_da_conversao }}",
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}",
+            "whatsapp": "={{ $json.whatsapp }}",
+            "pagina": "={{ $json.pagina }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "chave": "={{ $json.whatsapp.slice(-7) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "b9ea4057-db5f-484f-b111-fbed3e6753c9",
+      "name": "Dados Planilha |Meteórico 1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        660,
+        220
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "82b8d05a-fe0d-4c98-ab29-b59cb11d982e",
+        "options": {}
+      },
+      "id": "5f642997-91d5-45f8-bdc1-45e39da440f7",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        220
+      ],
+      "webhookId": "82b8d05a-fe0d-4c98-ab29-b59cb11d982e"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "content-length": "797",
+            "accept-encoding": "gzip",
+            "cdn-loop": "cloudflare; subreqs=1",
+            "cf-connecting-ip": "2a06:98c0:3600::103",
+            "cf-ray": "943dfe5cf2eef81d-DFW",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "greatsoftwares.workers.dev",
+            "content-type": "application/x-www-form-urlencoded",
+            "great-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncGFnZXMtcjItcGFnZXMtaW50ZWdyYXRpb25zIiwiYXVkIjoic2VydmljZSIsImlhdCI6MTc0NzkzNDUyNH0.OOTqGuDI8kIopRVIiTt6CBDIEFctYZEoxdlhUzb-Apk",
+            "great-server": "GreatApps",
+            "great-service": "gpages-r2-pages-integrations",
+            "x-forwarded-for": "172.71.170.10",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3b00e11001b6",
+            "x-real-ip": "172.71.170.10"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Seu_nome": "Matheus",
+            "Seu_melhor_e_mail": "matheus@gmai.com",
+            "Telefone_do_Whatsapp_com_DDD": "81993515055",
+            "Seu_do_Instagram": "teste",
+            "Qual_seu_faturamento_TOTAL_considerando_investimento_sociedades_outros_negocios_Novo_campo": "R$ 50.000,00 a R$ 100.000,00",
+            "Qual_das_opcoes_abaixo_mais_condiz_com_seu_negocio_hoje": "Mentor, expert ou infoprodutor",
+            "utm_source": "",
+            "utm_medium": "",
+            "utm_campaign": "",
+            "utm_term": "",
+            "utm_content": "",
+            "Referral_Source": "https://app.clickup.com/t/86dwtc8et",
+            "Dispositivo": "Desktop",
+            "URL": "https://www.josepbijari.com/guia-de-conducao-de-calls",
+            "IP_do_usuario": "2804:29b8:50ad:5268:619c:aadf:5f0d:b4bc",
+            "Data_da_conversao": "2025-05-22 17:21:42",
+            "Id_do_formulario": "2559799_1_36032",
+            "Pais_do_usuario": "BR",
+            "Regiao_do_usuario": "Pernambuco",
+            "Cidade_do_usuario": "Caruaru",
+            "Id_da_pagina": "2559799"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/82b8d05a-fe0d-4c98-ab29-b59cb11d982e",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-22T17:43:57.650Z",
+  "versionId": "414bf0f2-cd56-4777-9de0-3b4b212b70fb"
+}
