@@ -5,29 +5,7 @@
       "main": [
         [
           {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "Criar Oportunidade - Déborah e Fábio1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Criar Oportunidade - Déborah e Fábio1": {
-      "main": [
-        [
-          {
-            "node": "Criar Oportunidade - Déborah e Fábio",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -35,8 +13,8 @@
       ]
     }
   },
-  "createdAt": "2025-04-11T13:20:04.563Z",
-  "id": "nDYAybeAIFM0KFSV",
+  "createdAt": "2025-06-17T00:41:49.941Z",
+  "id": "bEbzk8RjAqjEF4xn",
   "meta": null,
   "name": "My workflow 10",
   "nodes": [
@@ -45,88 +23,35 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -480,
-        -40
+        0,
+        0
       ],
-      "id": "a4b9cc01-1bad-4ee5-8e77-a9fe737e53ab",
+      "id": "7967d48d-4033-45f0-8292-ceaf6ecbb1ee",
       "name": "When clicking ‘Test workflow’"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
-        "sendHeaders": true,
-        "headerParameters": {
+        "url": "https://chat.whatsapp.com/BS8vOo3myu1Aru8saojh4d",
+        "sendBody": true,
+        "bodyParameters": {
           "parameters": [
             {
-              "name": "Authorization",
-              "value": "ApiKey Z0EjZPzTOb9prHSTHi4MrFQBXrS_sw01wgm_4jqPvIyXVOPwn0XwHNB9sEuSWrJkynsbTrCaUm3CdpZGZNsh0BMfTWFhIvPnkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
+              "name": "nome",
+              "value": "matheus"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"Renan\",\n  \"NomeLead\": \"Renan\",\n\"DocumentoLead\":\"{{ $('Code').item.json.cnpj }}\"\n}\n",
         "options": {}
       },
-      "id": "51c8cbed-0dcf-42ab-a7ea-5421f3fb3e08",
-      "name": "Criar Oportunidade - Déborah e Fábio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        380,
-        -40
+        220,
+        0
       ],
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -200,
-        -40
-      ],
-      "id": "c77465a7-6f34-4eef-a1a7-fc2609e6b721",
-      "name": "Code"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "ApiKey Z0EjZPzTOb9prHSTHi4MrFQBXrS_sw01wgm_4jqPvIyXVOPwn0XwHNB9sEuSWrJkynsbTrCaUm3CdpZGZNsh0BMfTWFhIvPnkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $json.cnpj }}\",\n    \"NomeFantasia\": \"Renan\",\n    \"RazaoSocial\": \"Renan\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"Matheus\",\n      \"Email\": \"bma.matheus2024@gmail.com\",\n      \"Telefone\": \"11993152305\",\n      \"Celular\": \"11993152305\"\n    }\n  ]\n}\n",
-        "options": {}
-      },
-      "id": "f58c8c83-c595-4a62-9161-25a59ea0aa31",
-      "name": "Criar Oportunidade - Déborah e Fábio1",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        80,
-        -40
-      ],
-      "disabled": true
+      "id": "ad0b0015-dbfd-458c-ad5c-e78ca8516752",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {},
@@ -136,6 +61,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-14T14:43:52.631Z",
-  "versionId": "165c6953-6742-47c1-9da4-ad8180f6abc9"
+  "updatedAt": "2025-06-17T00:41:49.941Z",
+  "versionId": "9ab4e4ab-8c30-4060-9dc6-a1a3606796eb"
 }
