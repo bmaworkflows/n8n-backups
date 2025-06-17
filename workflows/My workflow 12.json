@@ -1,88 +1,56 @@
 {
   "active": false,
   "connections": {
-    "MSG PRE-CALL 1": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 2": {
-      "main": [
-        [
-          {
-            "node": "Wait1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait1": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 3": {
-      "main": [
-        [
-          {
-            "node": "Wait2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait2": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 4": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL PDF",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When clicking ‘Test workflow’": {
       "main": [
         [
           {
-            "node": "MSG PRE-CALL 1",
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extrair UTMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair UTMS": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -90,9 +58,11 @@
       ]
     }
   },
-  "createdAt": "2025-04-15T14:31:36.733Z",
-  "id": "ed1pvkanXqFKxsXJ",
-  "meta": null,
+  "createdAt": "2025-06-17T02:05:09.848Z",
+  "id": "g093cg5D5Hg9qB71",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "My workflow 12",
   "nodes": [
     {
@@ -100,240 +70,264 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -420,
+        80
       ],
-      "id": "406c809e-6c08-4d1e-8468-79c768d1e49d",
+      "id": "2d804f14-fe51-4a24-b1e6-9bf8c91bf0b8",
       "name": "When clicking ‘Test workflow’"
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=1954621190#gid=1954621190",
+          "mode": "url"
         },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "=5581993515055"
-            },
-            {
-              "name": "message",
-              "value": "=E aí, tudo bem? JP Bijari aqui. Você foi agendado com um consultor do meu time mas presta atenção: isso não garante sua vaga."
-            }
-          ]
+        "sheetName": {
+          "__rl": true,
+          "value": 1152473355,
+          "mode": "list",
+          "cachedResultName": "v3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1152473355"
         },
         "options": {}
       },
-      "id": "1c96b3d8-1cd4-4d91-9adb-01797bc08234",
-      "name": "MSG PRE-CALL 1",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
       "position": [
-        220,
-        0
-      ]
+        -200,
+        80
+      ],
+      "id": "84b3ba65-86a6-43e5-acb5-0ed2342967f9",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
+      "parameters": {
+        "jsCode": "// n8n - node \"Code\" - JavaScript\n\n// Suponha que sua URL venha em `item.url`\nconst url = $input.all()[0].json[\"URL\"];\n\n// Função para extrair parâmetros UTM\nfunction getUTMs(url) {\n  const params = {};\n  const queryString = url.split('?')[1];\n  if (!queryString) return params;\n\n  const pairs = queryString.split('&');\n  for (const pair of pairs) {\n    const [key, value] = pair.split('=');\n    if (key.startsWith('utm')) {\n      params[key] = decodeURIComponent(value || '');\n    }\n  }\n  return params;\n}\n\n// Resultado\nconst utms = getUTMs(url);\n\n// Retorna para o fluxo do n8n\nreturn {\n  json: utms\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        440,
+        580,
         0
       ],
-      "id": "f5241fe9-b43c-4cee-b92a-76fd2627552c",
-      "name": "Wait",
-      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+      "id": "c16111d0-ec7a-447f-a41b-4728bf373bd6",
+      "name": "Extrair UTMS"
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "=5581993515055"
-            },
-            {
-              "name": "message",
-              "value": "=Como de fato é uma consultoria de mais de 1:30h e não calls rápidas com foco em te vender como o mercado faz, temos muitos interessados e se a pessoa não confirmar, tiramos da agenda para ceder a vaga e quem não compareceu, não pode remarcar.\n \nEntão em breve o consultor que conduzirá sua reunião vai te mandar uma mensagem, responde ele para confirmar!"
-            }
-          ]
-        },
         "options": {}
       },
-      "id": "0c0334f5-8105-47ca-9a16-b80a3f50de2e",
-      "name": "MSG PRE-CALL 2",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
       "position": [
-        660,
-        0
-      ]
-    },
-    {
-      "parameters": {
-        "amount": 15
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        900,
-        0
+        360,
+        80
       ],
-      "id": "c9e548f0-3a98-4fc9-aed8-4603b93a0b86",
-      "name": "Wait1",
-      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+      "id": "e829252f-70d3-484c-96a6-308d35126b93",
+      "name": "Loop Over Items"
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=1954621190#gid=1954621190",
+          "mode": "url"
         },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
+        "sheetName": {
+          "__rl": true,
+          "value": 1152473355,
+          "mode": "list",
+          "cachedResultName": "v3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1152473355"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "row_number": "={{ $('Loop Over Items').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
             {
-              "name": "phone",
-              "value": "=5581993515055"
+              "id": "Data de conversão",
+              "displayName": "Data de conversão",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
             },
             {
-              "name": "message",
-              "value": "=Enquanto isso, vou te dar um presente: uma palestra secreta sobre como vender mais e mais caro e gerar leads mais qualificados e mais baratos.\n\nSugiro que assista antes da consultoria, pois o link vai expirar em 36h.\n\nhttps://vimeo.com/1074435848/c9a0a6c4f0"
+              "id": "Seu nome",
+              "displayName": "Seu nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Seu e-mail",
+              "displayName": "Seu e-mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DDD + WhatsApp",
+              "displayName": "DDD + WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pagina",
+              "displayName": "Pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grupo",
+              "displayName": "grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fbclid",
+              "displayName": "fbclid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gclid",
+              "displayName": "gclid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
             }
-          ]
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
         "options": {}
       },
-      "id": "bcd9e147-76b9-4cad-855f-a34c718033a2",
-      "name": "MSG PRE-CALL 3",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
       "position": [
-        1120,
-        0
-      ]
-    },
-    {
-      "parameters": {
-        "amount": 15
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        1360,
-        0
+        800,
+        75
       ],
-      "id": "cb627de8-be36-4de2-9efd-efb605509133",
-      "name": "Wait2",
-      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "=5581993515055"
-            },
-            {
-              "name": "message",
-              "value": "=E por último, algumas informações sobre nós e alguns cases de sucesso que pode se espelhar."
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "70c027ac-2dac-4f95-871b-8cb7b61b2ec8",
-      "name": "MSG PRE-CALL 4",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1580,
-        0
-      ]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-document/pdf",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "=5581993515055"
-            },
-            {
-              "name": "document",
-              "value": "https://raw.githubusercontent.com/bmaworkflows/arquivos/main/Pré-call BMA Abril 2025_compressed.pdf"
-            },
-            {
-              "name": "fileName",
-              "value": "Apresentacao-pre-call"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "b3e4191f-0fa7-4e7b-87f9-07a7fc9f924a",
-      "name": "MSG PRE-CALL PDF",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1800,
-        0
-      ]
+      "id": "f08d9676-655e-4d92-9906-79da34869dc9",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -343,6 +337,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-15T14:32:35.598Z",
-  "versionId": "3e00edeb-0a5b-4e91-b071-4a7955c7fe9d"
+  "updatedAt": "2025-06-17T02:16:53.439Z",
+  "versionId": "750dfac0-bc8c-40ef-8ae4-6902dbcad4a2"
 }
