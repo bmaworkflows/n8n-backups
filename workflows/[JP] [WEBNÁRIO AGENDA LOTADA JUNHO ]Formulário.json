@@ -19,6 +19,11 @@
             "node": "Formata Telefone",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -740,7 +745,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -773,7 +778,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -790,7 +795,7 @@
             },
             {
               "name": "field_id",
-              "value": "12964424"
+              "value": "13000729"
             },
             {
               "name": "field_value",
@@ -824,13 +829,13 @@
     },
     {
       "parameters": {
-        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12964424&field_value={{ $('Formata Telefone1').item.json.numerosFormatados.comNonoDigito }}",
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=13000729&field_value={{ $('Formata Telefone1').item.json.numerosFormatados.comNonoDigito }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -885,7 +890,7 @@
     },
     {
       "parameters": {
-        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\");\n    let ddi = \"55\";\n    let ddd, telefone;\n\n    if (number.length === 13) {\n        ddi = number.substring(0, 2);\n        ddd = number.substring(2, 4);\n        telefone = number.substring(4);\n    } else if (number.length === 12) {\n        if (number.startsWith(\"55\")) {\n            ddd = number.substring(2, 4);\n            telefone = number.substring(4);\n        } else if (number.startsWith(\"0\")) {\n            return formataTelefone(number.substring(1));\n        } else {\n            return { comNonoDigito: number, semNonoDigito: number };\n        }\n    } else if (number.length === 11) {\n        ddd = number.substring(0, 2);\n        telefone = number.substring(2);\n    } else if (number.length === 10) {\n        ddd = number.substring(0, 2);\n        telefone = \"9\" + number.substring(2);\n    } else {\n        return { comNonoDigito: number, semNonoDigito: number };\n    }\n\n    let telefoneComNono = telefone.length === 8 ? \"9\" + telefone : telefone;\n    let telefoneSemNono = telefoneComNono.startsWith(\"9\") ? telefoneComNono.substring(1) : telefoneComNono;\n\n    return {\n        comNonoDigito: ddi + ddd + telefoneComNono,\n        semNonoDigito: ddi + ddd + telefoneSemNono\n    };\n}\n\nlet numerosFormatados = formataTelefone($node['Trata Webhook'].json['DDD_WhatsApp']);\n\n$input.all()[0].json[\"numerosFormatados\"] = numerosFormatados\nreturn $input.all();\n"
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\");\n    let ddi = \"55\";\n    let ddd, telefone;\n\n    if (number.length === 13) {\n        ddi = number.substring(0, 2);\n        ddd = number.substring(2, 4);\n        telefone = number.substring(4);\n    } else if (number.length === 12) {\n        if (number.startsWith(\"55\")) {\n            ddd = number.substring(2, 4);\n            telefone = number.substring(4);\n        } else if (number.startsWith(\"0\")) {\n            return formataTelefone(number.substring(1));\n        } else {\n            return { comNonoDigito: number, semNonoDigito: number };\n        }\n    } else if (number.length === 11) {\n        ddd = number.substring(0, 2);\n        telefone = number.substring(2);\n    } else if (number.length === 10) {\n        ddd = number.substring(0, 2);\n        telefone = \"9\" + number.substring(2);\n    } else {\n        return { comNonoDigito: number, semNonoDigito: number };\n    }\n\n    let telefoneComNono = telefone.length === 8 ? \"9\" + telefone : telefone;\n    let telefoneSemNono = telefoneComNono.startsWith(\"9\") ? telefoneComNono.substring(1) : telefoneComNono;\n\n    return {\n        comNonoDigito: ddi + ddd + telefoneComNono,\n        semNonoDigito: ddi + ddd + telefoneSemNono\n    };\n}\n\nlet numerosFormatados = formataTelefone($node['Trata Webhook'].json['Telefone_do_Whatsapp_com_DDD']);\n\n$input.all()[0].json[\"numerosFormatados\"] = numerosFormatados\nreturn $input.all();\n"
       },
       "id": "d5cd8201-b89b-49e1-89d0-7946ee9f21ec",
       "name": "Formata Telefone1",
@@ -909,13 +914,13 @@
     },
     {
       "parameters": {
-        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12964424&field_value={{$node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"] }}",
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=13000729&field_value={{$node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"] }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -978,7 +983,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -995,7 +1000,7 @@
             },
             {
               "name": "tag_id",
-              "value": "61006975"
+              "value": "66865550"
             }
           ]
         },
@@ -1010,7 +1015,6 @@
         -680
       ],
       "retryOnFail": false,
-      "disabled": true,
       "onError": "continueErrorOutput"
     },
     {
@@ -1022,7 +1026,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -1039,7 +1043,7 @@
             },
             {
               "name": "tag_id",
-              "value": "61006975"
+              "value": "66865550"
             }
           ]
         },
@@ -1054,7 +1058,6 @@
         -900
       ],
       "retryOnFail": false,
-      "disabled": true,
       "onError": "continueErrorOutput"
     },
     {
@@ -1066,7 +1069,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -1079,11 +1082,11 @@
           "parameters": [
             {
               "name": "subscriber_id",
-              "value": "={{ $json.data[0].id }}"
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
             },
             {
               "name": "tag_id",
-              "value": "61006975"
+              "value": "66865550"
             }
           ]
         },
@@ -1098,7 +1101,6 @@
         -320
       ],
       "retryOnFail": false,
-      "disabled": true,
       "onError": "continueErrorOutput"
     },
     {
@@ -1110,7 +1112,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -1127,7 +1129,7 @@
             },
             {
               "name": "flow_ns",
-              "value": "content20250506211539_017510"
+              "value": "content20250619214751_867955"
             }
           ]
         },
@@ -1153,7 +1155,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -1170,7 +1172,7 @@
             },
             {
               "name": "flow_ns",
-              "value": "content20250506211539_017510"
+              "value": "content20250619214751_867955"
             }
           ]
         },
@@ -1196,7 +1198,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 2882676:9afa5b23ba82b17d519f5995fe1da2e8"
+              "value": "Bearer 512512:8e9b483799228930ff553e82c3e11514"
             },
             {
               "name": "Content-Type",
@@ -1213,7 +1215,7 @@
             },
             {
               "name": "flow_ns",
-              "value": "content20250506211539_017510"
+              "value": "content20250619214751_867955"
             }
           ]
         },
@@ -1300,6 +1302,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-06-18T21:36:05.949Z",
-  "versionId": "c6ef974e-c876-4c91-9577-3a02c9b35b75"
+  "updatedAt": "2025-06-19T21:58:19.376Z",
+  "versionId": "eddaa225-9b8c-41b3-a645-f139f082d9dd"
 }
