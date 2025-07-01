@@ -1,0 +1,223 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "busca matrículas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca matrículas": {
+      "main": [
+        [
+          {
+            "node": "Confere de Datas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T15:27:09.357Z",
+  "id": "mt3QPuoUuq9o8HO9",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 13",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5d4cb833-5d55-4565-8bf1-dcb7075bccd4",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_0ElM1Ygp8VYdLBEe1og5GB56-bAuBCLjasyzEdtPa4/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 781285383,
+          "mode": "list",
+          "cachedResultName": "alunos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_0ElM1Ygp8VYdLBEe1og5GB56-bAuBCLjasyzEdtPa4/edit#gid=781285383"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        0
+      ],
+      "id": "44fc69cf-8f55-4966-acb2-99469c870265",
+      "name": "busca matrículas",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
+                    "rightValue": 30,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "33e8d2bf-4585-4e41-aace-fdf1b127e74a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "3O DIAS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3422bd72-1411-4401-ae06-8ba444ef2786",
+                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
+                    "rightValue": 15,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "15 DIAS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "87801f82-7719-4834-9d17-f6565b022499",
+                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
+                    "rightValue": 7,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "7 DIAS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2082a47b-eb01-459c-a88d-452fc7b31b40",
+                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "1 DIA"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "25abd313-f112-45a0-b8da-a34860e126da",
+                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HOJE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        460,
+        -40
+      ],
+      "id": "d65ebe00-e34e-4488-b6b4-0e7fbbdd4387",
+      "name": "Confere de Datas"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T15:32:44.628Z",
+  "versionId": "94cfbd4d-40b8-48e4-b8c7-54858055aae3"
+}
