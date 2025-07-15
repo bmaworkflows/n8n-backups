@@ -38,7 +38,7 @@
       "main": [
         [
           {
-            "node": "Monday.com",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -119,6 +119,11 @@
       ]
     },
     "Monday.com13": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
       "main": [
         [
           {
@@ -437,8 +442,8 @@
       "type": "n8n-nodes-base.mondayCom",
       "typeVersion": 1,
       "position": [
-        1320,
-        200
+        1280,
+        -180
       ],
       "credentials": {
         "mondayComApi": {
@@ -460,8 +465,8 @@
       "type": "n8n-nodes-base.mondayCom",
       "typeVersion": 1,
       "position": [
-        1760,
-        200
+        1720,
+        -180
       ],
       "credentials": {
         "mondayComApi": {
@@ -482,8 +487,8 @@
       "type": "n8n-nodes-base.mondayCom",
       "typeVersion": 1,
       "position": [
-        1540,
-        200
+        1500,
+        -180
       ],
       "credentials": {
         "mondayComApi": {
@@ -514,7 +519,7 @@
             },
             {
               "name": "message",
-              "value": "=*Nova Aplicação WEBNÁRIO JP:* ✅🔥\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Ticket Médio*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b7'].content[0] }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Monday*: https://bma47373.monday.com/boards/6628730688/pulses/{{ $('Monday.com').item.json.id }}"
+              "value": "=*Nova Aplicação WEBNÁRIO JP:* ✅🔥\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Ticket Médio*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b7'].content[0] }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
             }
           ]
         },
@@ -525,9 +530,69 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2000,
-        200
+        1740,
+        100
       ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/7dff0b37-801c-48df-be15-e8470deea70d",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260aa\"][\"content\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ad\"][\"content\"] }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ab\"][\"content\"] }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102aea50d695fe0b0d0d35\"][\"content\"] }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ae\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260af\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "ticket",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260b7\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "ser_aceito",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102bda183b281bfd0eab64\"][\"content\"] }}"
+            },
+            {
+              "name": "oportunidade",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102bcc50faf442020c71f6\"][\"content\"] }}"
+            },
+            {
+              "name": "investimento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260b2\"][\"content\"][\"0\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        100
+      ],
+      "id": "aed5c1cc-9a24-470c-85d1-26576e410479",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {
@@ -699,6 +764,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-05-15T14:58:49.257Z",
-  "versionId": "4a27f4f9-6b54-447c-a871-bb22bf96684a"
+  "updatedAt": "2025-07-14T20:49:18.747Z",
+  "versionId": "c8fe65f0-7363-4fb6-8f55-4fc5ba370740"
 }
