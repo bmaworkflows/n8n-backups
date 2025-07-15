@@ -49,7 +49,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -895,6 +895,28 @@
           }
         ]
       ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-06-26T14:20:49.844Z",
@@ -913,7 +935,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -1400,
+        -1780,
         40
       ]
     },
@@ -1491,7 +1513,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -1620,
+        -2000,
         40
       ],
       "webhookId": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a"
@@ -2133,7 +2155,7 @@
           "conditions": [
             {
               "id": "78aff739-5436-49fe-af9e-20fcf1ce6f4c",
-              "leftValue": "={{ $json.response.submittedAt }}",
+              "leftValue": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"submittedAt\"] }}",
               "rightValue": "={{ null }}",
               "operator": {
                 "type": "string",
@@ -4012,6 +4034,52 @@
       ],
       "id": "573ead37-0033-432d-aa5f-853afe4c06df",
       "name": "Clint Guilherme1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Hora atual: {{$now.format(\"HH:mm\")}}\nNome: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\nCenário: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d402c58ad4238f4082362\"][\"content\"][\"0\"] }}\nDificuldade: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40d66128d7c13205cfa8\"][\"content\"] }}\nObjetivo: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40cb0c7815d8080d5082\"][\"content\"] }}",
+        "options": {
+          "systemMessage": "Você é um formatador de mensagens de boas vindas após o agendamento de uma sessão estratégica. O seu trabalho é gerar uma resposta nesse formato.\n\nBom dia/tarde/noite (Nome), tudo certo? Aqui é o Thiago, especialista da Metodologia BMA, acabei de receber aqui a sua aplicação e vi que você (CENÁRIO DO LEAD) e está com dificuldade em (DIFICULDADE DO LEAD) para (OBJETIVO DO LEAD)\n\nSeu papel é criar uma frase igual a essa com base nas variáveis passadas que você irá receber. Você deve cumprimentar o lead inicialmente com bom dia, tarde ou noite com base na hora que você também receberá. \"Bom dia\" (caso a hora esteja entre 5:00 até 11:59). \"Boa tarde\" (caso a hora esteja entre 12:00 até 17:59). \"Boa noite\" (caso a hora esteja entre 18:00 até 23:59). \"Boa madrugada\" (caso a hora esteja entre 00:00 até 04:59).\n\n#Atenção\n- Nunca comente nada em relação à frase ou os dados recebidos. Apenas devolva a frase conforme as suas instruções e mais nada além disso.\n- Faça a mensagem fazer sentido. O exemplo a cima é apenas para você se basear. Molde. amensagem conforme necessário para que ela faça sentido para o usuário."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -1480,
+        -400
+      ],
+      "id": "a7a37993-0159-44f5-a933-549a3e35757b",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1520,
+        -180
+      ],
+      "id": "ce84d16f-0eb2-48c2-9b9a-43b92c3500b3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Izy8EIDjYtQmX2bj",
+          "name": "bma"
+        }
+      }
     }
   ],
   "pinData": {
@@ -4021,45 +4089,64 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "3878",
+            "content-length": "4888",
             "content-type": "application/json",
-            "x-forwarded-for": "165.22.13.43",
+            "x-forwarded-for": "167.172.139.232",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "3b00e11001b6",
-            "x-real-ip": "165.22.13.43",
+            "x-real-ip": "167.172.139.232",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "686763035fc2b5321737dc51",
+              "id": "68719f3b4ab37849e084fcbc",
               "formId": "685d4019b13a7bb2320f94d6",
-              "ipAddress": "177.73.100.95",
-              "operatingSystem": null,
-              "operatingSystemVersion": null,
-              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22F76 Instagram 387.0.0.24.91 (iPhone17,2; iOS 18_5; pt_BR; pt; scale=3.00; 1320x2868; 755087652; IABMV/1)",
-              "browser": null,
-              "browserVersion": null,
+              "ipAddress": "186.194.232.212",
+              "operatingSystem": "iOS",
+              "operatingSystemVersion": "18_5",
+              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22F76 Instagram 387.0.0.24.91 (iPhone14,5; iOS 18_5; pt_BR; pt; scale=3.00; 1170x2532; 755087652; IABMV/1)",
+              "browser": "Mozilla",
+              "browserVersion": false,
               "referrerUrl": "https://www.josepbijari.com/",
-              "deviceType": null,
-              "geolocation": null,
+              "deviceType": "mobile",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "São Paulo",
+                "city": "Presidente Prudente",
+                "zipcode": "19053",
+                "latitude": -22.1231,
+                "longitude": -51.3881,
+                "timezone": "America/Sao_Paulo"
+              },
               "aiFeedback": null,
-              "hiddenFields": [],
+              "hiddenFields": {
+                "pagina": "mentor1"
+              },
               "variables": {
                 "score": 0
               },
-              "tracking": [],
+              "tracking": {
+                "utm_source": "metaads",
+                "utm_medium": "01_LAL",
+                "utm_campaign": "CADASTRO_LEADS_CG-AGENDAMENTO_QUENTE_MENTOR1",
+                "utm_content": "🔴AD03-50K",
+                "utm_term": "Instagram_Stories"
+              },
               "timeToComplete": null,
-              "startedAt": "2025-07-04T05:13:44.387000Z",
-              "submittedAt": "2025-07-04T05:18:03.663000Z",
-              "createdAt": "2025-07-04T05:13:39.937000Z",
-              "updatedAt": "2025-07-04T05:18:03.663000Z",
+              "startedAt": "2025-07-11T23:33:38.420000Z",
+              "submittedAt": "2025-07-11T23:37:32.576000Z",
+              "createdAt": "2025-07-11T23:33:15.715000Z",
+              "updatedAt": "2025-07-11T23:37:32.576000Z",
               "answers": {
                 "685d402c58ad4238f4082362": {
-                  "answerId": "68676304ec57f369fec3fe86",
+                  "answerId": "68719f3cec57f369fee21a66",
                   "fieldTitle": "Qual das opções abaixo melhor te representa:",
                   "fieldDescription": null,
                   "content": [
@@ -4067,84 +4154,96 @@
                   ]
                 },
                 "685d404b97e30a0017089364": {
-                  "answerId": "68676307ec57f369fec3fe87",
+                  "answerId": "68719f51ec57f369fee21aac",
                   "fieldTitle": "Qual o ticket da sua mentoria?",
                   "fieldDescription": null,
                   "content": [
-                    "Entre 21k e 50k"
+                    "Até 10k"
                   ]
                 },
                 "685d407a97e30a0017089369": {
-                  "answerId": "68676310ec57f369fec3fe8c",
+                  "answerId": "68719f58ec57f369fee21ac7",
                   "fieldTitle": "Além da mentoria, você tem algum curso ou infoproduto?",
                   "fieldDescription": null,
                   "content": [
-                    "Entre 11k e 20k&nbsp;"
+                    "Não tenho."
                   ]
                 },
                 "685d40a0b13a7bb2320f94dd": {
-                  "answerId": "6867632bec57f369fec3fe97",
+                  "answerId": "68719f61ec57f369fee21aeb",
                   "fieldTitle": "Qual seu faturamento médio mensal? (Somando a venda de mentoria e outras fontes de renda)",
                   "fieldDescription": null,
                   "content": [
-                    "Acima de R$ 500.000,00"
+                    "R$ 15.000,00 a R$ 20.000,00"
                   ]
                 },
                 "685d40b0b13a7bb2320f94df": {
-                  "answerId": "68676330ec57f369fec3fe9a",
+                  "answerId": "68719f6eec57f369fee21b0e",
                   "fieldTitle": "&nbsp;Em qual nicho você mentora (ou quer mentorar)?",
                   "fieldDescription": null,
-                  "content": "Inside sales"
+                  "content": "Gestão de restaurantes "
                 },
                 "685d40cb0c7815d8080d5082": {
-                  "answerId": "68676340ec57f369fec3fea8",
+                  "answerId": "68719f88ec57f369fee21b6c",
                   "fieldTitle": "Qual seu objetivo de faturamento para os próximos 12 meses com vendas de mentoria?",
                   "fieldDescription": null,
-                  "content": "1mm"
+                  "content": "150k"
                 },
                 "685d40d66128d7c13205cfa8": {
-                  "answerId": "6867637cec57f369fec3fec3",
+                  "answerId": "68719fa6ec57f369fee21bc5",
                   "fieldTitle": "Qual a principal dificuldade que você enfrenta HOJE, para alcançar esse objetivo?",
                   "fieldDescription": null,
-                  "content": "Método e criação "
+                  "content": "Não saber como posicionar e fazer o processo"
+                },
+                "68712c954b2c93e188055a47": {
+                  "answerId": "68719fbaec57f369fee21c0d",
+                  "fieldTitle": "Porque você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?*",
+                  "fieldDescription": null,
+                  "content": "Me convenceu"
+                },
+                "68712c9e11c21c36a3063c64": {
+                  "answerId": "68719fd8ec57f369fee21c6f",
+                  "fieldTitle": "Caso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que deveríamos aceitar sua aplicação dentre os demais interessados?*",
+                  "fieldDescription": null,
+                  "content": "."
                 },
                 "685d40e60c7815d8080d5084": {
-                  "answerId": "68676389ec57f369fec3fec7",
+                  "answerId": "68719fe8ec57f369fee21ca7",
                   "fieldTitle": "Qual o seu nome?",
                   "fieldDescription": null,
-                  "content": "Alvaro Almeida"
+                  "content": "Daniel Muniz"
                 },
                 "685d43c035bd886b580246b4": {
-                  "answerId": "68676392ec57f369fec3fecb",
+                  "answerId": "68719feeec57f369fee21cbe",
                   "fieldTitle": "Qual o seu e-mail?",
                   "fieldDescription": null,
-                  "content": "alvaro.almeida@bcmed.com.br"
+                  "content": "danielmunizfbi@gmail.com"
                 },
                 "685d40f2f8f9e3904c0b0eb4": {
-                  "answerId": "6867639cec57f369fec3fed1",
+                  "answerId": "68719ff1ec57f369fee21cc4",
                   "fieldTitle": "Qual o seu WhatsApp?",
                   "fieldDescription": null,
-                  "content": "+5545999739441"
+                  "content": "+5518997336830"
                 },
                 "685d40fd0c7815d8080d5085": {
-                  "answerId": "686763a5ec57f369fec3fed4",
+                  "answerId": "68719ff7ec57f369fee21cdb",
                   "fieldTitle": "Qual o seu Instagram?",
                   "fieldDescription": null,
-                  "content": "@alvaroalmeida"
+                  "content": "lb_foodss"
                 },
                 "685d411a574c9086b60d27f9": {
-                  "answerId": "686763aeec57f369fec3fedb",
+                  "answerId": "6871a00fec57f369fee21d24",
                   "fieldTitle": "Você foi pré-aprovado para uma das vagas da nossa Consultoria.Importante: se você não confirmar com o nosso time via WhatsApp dentro do prazo, sua vaga será automaticamente transferida para outro interessado.Você confirma que está ciente e comprometido?",
                   "fieldDescription": null,
                   "content": [
                     "SIM"
                   ]
                 },
-                "685d438435bd886b580246b2": {
-                  "answerId": "686763d5ec57f369fec3fef8",
+                "685d43796f718f411f0407b8": {
+                  "answerId": "6871a011ec57f369fee21d2b",
                   "fieldTitle": "Sua consultoria está quase agendada...",
                   "fieldDescription": "<p>Escolha um horário abaixo e clique<strong> \"CONTINUE\" </strong>para confirmar seu agendamento e receber um plano de ação personalizado, seguindo a metodologia que gerou <strong>+R$ 900 MILHÕES</strong> em vendas de <strong>ofertas High Tickets</strong>!</p>",
-                  "content": "https://calendly.com/scheduled_events/3c0a2356-7f64-4222-83d3-c07eadd7dbf5/invitees/8431716c-0c44-4eab-bdcb-7038aae2e6d6"
+                  "content": "https://calendly.com/scheduled_events/cb8e4b29-c7fd-4d24-aefc-1f5c32d61a45/invitees/c49311b6-263a-4c60-8feb-8baa3308f6cd"
                 }
               }
             }
@@ -4171,6 +4270,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-10T05:13:28.947Z",
-  "versionId": "5ae28b4d-58ee-4aa7-891c-3ee601d801ea"
+  "updatedAt": "2025-07-15T04:41:19.560Z",
+  "versionId": "1308521e-731f-452a-aff6-752bb416f960"
 }
