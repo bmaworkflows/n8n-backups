@@ -49,7 +49,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -280,7 +280,7 @@
       "main": [
         [
           {
-            "node": "MSG PRE-CALL 1",
+            "node": "MSG PRE-CALL 21",
             "type": "main",
             "index": 0
           }
@@ -443,13 +443,7 @@
     },
     "Notifica grupo | José4": {
       "main": [
-        [
-          {
-            "node": "MSG PRE-CALL ",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Call Agendada1": {
@@ -920,6 +914,83 @@
           {
             "node": "AI Agent",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait15": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 22",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 21": {
+      "main": [
+        [
+          {
+            "node": "Wait15",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait16": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 23",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 22": {
+      "main": [
+        [
+          {
+            "node": "Wait16",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait17": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 24",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 23": {
+      "main": [
+        [
+          {
+            "node": "Wait17",
+            "type": "main",
             "index": 0
           }
         ]
@@ -3796,7 +3867,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Hora atual: {{$now.format(\"HH:mm\")}}\nNome: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d83087c9cdeff4740f1532\"][\"content\"] }}\nCenário: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d85d63e08401ba690720f3\"][\"content\"][\"0\"] }}\nDificuldade: ",
+        "text": "=Hora atual: {{$now.format(\"HH:mm\")}}\nNome: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d83087c9cdeff4740f1532\"][\"content\"] }}\nCenário: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d85d63e08401ba690720f3\"][\"content\"][\"0\"] }}\nObjetivo e Dificuldade: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67d85d9354c27f525602b09e\"][\"content\"] }}",
         "options": {
           "systemMessage": "Você é um formatador de mensagens de boas vindas após o agendamento de uma sessão estratégica. O seu trabalho é gerar uma resposta nesse formato.\n\nBom dia/tarde/noite (Nome), tudo certo? Aqui é o Thiago, especialista da Metodologia BMA, acabei de receber aqui a sua aplicação e vi que você (CENÁRIO DO LEAD) e está com dificuldade em (DIFICULDADE DO LEAD) para (OBJETIVO DO LEAD)\n\nSeu papel é criar uma frase igual a essa com base nas variáveis passadas que você irá receber. Você deve cumprimentar o lead inicialmente com bom dia, tarde ou noite com base na hora que você também receberá.\n\n#Atenção\n- Nunca comente nada em relação à frase ou os dados recebidos. Apenas devolva a frase conforme as suas instruções e mais nada além disso."
         }
@@ -3834,6 +3905,227 @@
           "name": "bma"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67d830983b0494524b022b59\"].content }}"
+            },
+            {
+              "name": "message",
+              "value": "=E aí, tudo bem? JP Bijari aqui. Você foi agendado com um consultor do meu time, mas presta atenção: isso não garante sua vaga."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f82e1d25-4d72-4b3b-9a97-d3bdc0ab14f8",
+      "name": "MSG PRE-CALL 20",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -580,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3D988782948B509EAB57D68D1B7EED95/token/8CA26C6FE554568DD46A30A6/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67d830983b0494524b022b59\"].content }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $item(\"0\").$node[\"AI Agent\"].json[\"output\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87778c91-1bb9-4ce0-abca-29ae2fc50f5c",
+      "name": "MSG PRE-CALL 21",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3400,
+        -2040
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3600,
+        -2040
+      ],
+      "id": "e7f29d60-9038-4051-ab87-eaec5bd80bae",
+      "name": "Wait15",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67d830983b0494524b022b59\"].content }}"
+            },
+            {
+              "name": "message",
+              "value": "=Bora que depois dessa sua consultoria, você vai ter mapeado certinho o que precisa fazer para escalar suas vendas. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "22a4f444-6a6a-426c-af2c-53bbd3715012",
+      "name": "MSG PRE-CALL 22",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3820,
+        -2040
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4080,
+        -2040
+      ],
+      "id": "3dfee296-301c-4d1a-896e-6d1ded910de5",
+      "name": "Wait16",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67d830983b0494524b022b59\"].content }}"
+            },
+            {
+              "name": "message",
+              "value": "=E pode ficar tranquilo, essa não é uma reunião como 90% que o objetivo é só fazer um pitch de vendas, realmente temos uma formação na metodologia do Bijari e entregamos um plano de ação de alto valor, por isso as vagas são bem disputadas"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "303eee07-1ead-434e-ab97-1822d4282f43",
+      "name": "MSG PRE-CALL 23",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4300,
+        -2040
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4520,
+        -2040
+      ],
+      "id": "ad0107ab-149a-4e7d-b618-50879e5ef842",
+      "name": "Wait17",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67d830983b0494524b022b59\"].content }}"
+            },
+            {
+              "name": "message",
+              "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "78acf46a-e329-4f18-b4cd-1537e506cb80",
+      "name": "MSG PRE-CALL 24",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4740,
+        -2040
+      ]
     }
   ],
   "pinData": {
@@ -4006,6 +4298,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-15T04:33:48.266Z",
-  "versionId": "5a68501d-8ec3-4716-8e01-35b34b7f3a85"
+  "updatedAt": "2025-07-16T02:06:39.371Z",
+  "versionId": "527187d1-f7f9-46d5-978c-7580c406d97a"
 }
