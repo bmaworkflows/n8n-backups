@@ -1,0 +1,684 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Date & Time4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time4": {
+      "main": [
+        [
+          {
+            "node": "data da aplicacao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos": {
+      "main": [
+        [
+          {
+            "node": "Gerar CNPJ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data da aplicacao": {
+      "main": [
+        [
+          {
+            "node": "Busca Invite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar CNPJ": {
+      "main": [
+        [
+          {
+            "node": "Criar Lead - Renan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "não é parcial": {
+      "main": [
+        []
+      ]
+    },
+    "Criar Lead - Renan": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade - Renan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - Renan": {
+      "main": [
+        []
+      ]
+    },
+    "Criar Lead - Renan1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Invite": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-17T17:36:11.219Z",
+  "id": "Z1lE5NieAj2puX8O",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] ]APLICACAO ACELERA] [IP] Página e YAY Forms",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "61e33099-19e6-46fd-94f4-2faaed0c01c5",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "b7a7e07d-4084-40f3-9853-63f11c1be3dd",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        120,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "838761c1-f47a-460c-8c3c-edfdf10a36f3",
+      "name": "Date & Time4",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        340,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "065c5653-43b4-4bd5-b6d0-4338e5d1e1eb",
+        "options": {}
+      },
+      "id": "749670ee-83d6-467b-8196-3465e93dec45",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        120
+      ],
+      "webhookId": "065c5653-43b4-4bd5-b6d0-4338e5d1e1eb"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e6502b5-87b7-471a-b380-b19f9a3f97f6",
+              "name": "nome",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43a\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "149210d9-9f6b-4851-9284-98de9b788a81",
+              "name": "email",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43b\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "4fb9b988-1edc-46fc-815a-5af8db220607",
+              "name": "whatsapp",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43c\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "3e6ed3b6-94d2-46d1-abe7-9c1c440e8de2",
+              "name": "atuacao",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43f\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "3cfee21f-b1ec-4390-af75-3e31fc9eac39",
+              "name": "faturamento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43e\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "0bce8ae9-c543-46fc-b923-a3dec62bfda9",
+              "name": "oportunidade",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b440\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "45f2c6ac-f807-47fd-8717-abf51913814b",
+              "name": "investimento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43d\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "ff208309-fee9-45b0-bdab-96eb0c0e9c3d",
+              "name": "data da aplicacao",
+              "value": "={{ $json.formattedDate }}",
+              "type": "string"
+            },
+            {
+              "id": "291a1ed8-cf3a-4a4f-a71a-2c8dbf3e7171",
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "403a84f8-2f90-4504-9f03-0a9cef7d3164",
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "aba98cf8-8622-44c0-95c5-bb01dcd38312",
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "f0388b2d-0935-48d1-8da0-dcf2c45daee2",
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "1ecafbd5-f383-4938-ae30-b495b78fb086",
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "9248cdf2-4149-4626-ba6e-beee79f7d38c",
+              "name": "data_reuniao",
+              "value": "={{ $json.collection[0].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "d000487c-b784-495c-b544-e0a891a50de7",
+              "name": "hora_reuniao",
+              "value": "={{ $json.collection[0].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat('HH:mm') }}",
+              "type": "string"
+            },
+            {
+              "id": "11937d40-a6b4-4c0d-9781-7532375bca10",
+              "name": "closer",
+              "value": "={{ $json.collection[0].event_memberships[0].user_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1140,
+        100
+      ],
+      "id": "3f803c37-dc73-4c5d-b720-27b05f222671",
+      "name": "Campos"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $node[\"Trata Webhook\"].json[\"response\"][\"submittedAt\"] }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd ",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "695da7d1-87d0-4949-97c4-4ac8b0271bf2",
+      "name": "data da aplicacao",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        540,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        100
+      ],
+      "id": "769a5f6b-720f-42f7-a202-2c6fe3a58f73",
+      "name": "Gerar CNPJ"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "78aff739-5436-49fe-af9e-20fcf1ce6f4c",
+              "leftValue": "={{ $json.response.answers[\"6878e5e913f6fa2a1c06b442\"].content }}",
+              "rightValue": "={{ null }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -800,
+        560
+      ],
+      "id": "d34abba8-8ba4-44e7-9700-173f1de44bc3",
+      "name": "não é parcial"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8wO91PLNYpQegV9Uxxl3Bn5oJwq0AY3u4CiN8N5pIVW_LbJuSQNQAPynsbTrCaUm2qumb5F6CmL3stAx8P3NrjwKY0fBbi7iiKfALhCIjci8wN4kDuedbqglu9faZ1_ykYZYpTTN6QZQ.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Campos').item.json.nome}}\",\n    \"RazaoSocial\": \"{{ $('Campos').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Campos').item.json.nome}}\",\n      \"Email\": \"{{ $('Campos').item.json.email }}\",\n      \"Telefone\": \"{{ $('Campos').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Campos').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "3dcf6366-0e3a-4ded-908a-8dbf935ae5b1",
+      "name": "Criar Lead - Renan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8wO91PLNYpQegV9Uxxl3Bn5oJwq0AY3u4CiN8N5pIVW_LbJuSQNQAPynsbTrCaUm2qumb5F6CmL3stAx8P3NrjwKY0fBbi7iiKfALhCIjci8wN4kDuedbqglu9faZ1_ykYZYpTTN6QZQ.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 32,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 34,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 33,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 35,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"atuacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 36,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 37,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"oportunidade\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 38,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"investimento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 40,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"data da aplicacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 42,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"data_reuniao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 43,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"hora_reuniao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 44,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"closer\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 39,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Acelera\"\n    },\n     {\n      \"IdCampoFormulario\": 41,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Aplicação - Acelera - Página\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "64041f08-7991-496f-8973-218dfa390059",
+      "name": "Criar Oportunidade - Renan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/ObterCamposPersonalizados",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb9prHSTHi4MrFQBXrS_sw01wgm_4jqPvIyXVOPwn0XwHNB9sEuSWrJkynsbTrCaUm3CdpZGZNsh0BMfTWFhIvPnkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "74b59cd2-3056-4247-b20f-d18c00008770",
+      "name": "Criar Lead - Renan1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -140,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd8dd192-2270-443e-beed-004da6ab7571",
+              "leftValue": "={{ $json.NomeCampo }}",
+              "rightValue": "[IP]",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        620
+      ],
+      "id": "282e28b9-51d9-4a36-a9c5-b47a0c48c698",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.calendly.com/scheduled_events?organization=\thttps://api.calendly.com/organizations/85e6ccb1-b72c-49b9-abde-9608c02a1d01&invitee_email={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e5e913f6fa2a1c06b43b\"][\"content\"] }}&min_start_time={{ $item(\"0\").$node[\"Date & Time4\"].json[\"currentDate\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4bfafa54-f593-4751-9e68-fe77de2671c1",
+      "name": "Busca Invite",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        820,
+        120
+      ],
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "4061",
+            "content-type": "application/json",
+            "x-forwarded-for": "159.223.163.29",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3b00e11001b6",
+            "x-real-ip": "159.223.163.29",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "6879366738a0a4cef578cd70",
+              "formId": "6878e5e913f6fa2a1c06b437",
+              "ipAddress": "190.89.246.224",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "138.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "hotid": "eyJzaWQiOiJjZjkxYmU4NmE0Yzc0NThjYWJhMDViOTA4YTk0MjNjZiIsImNpZCI6IjE3NTEzMTM0ODgzOTE3OTcyNDAxODI5Njc5NDM4MDAiLCJiaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIn0=",
+                "_ga_QMHGX1WZCF": "GS2.1.s1752089935$o7$g0$t1752089935$j60$l0$h814121879",
+                "_clck": "cymcv9|2|fxg|0|1933",
+                "_ga": "GA1.2.1550280858.1744865246",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1752167503350::ryH-Dp4vg6o99WoBhpJB.8.1752167503351",
+                "ttcsid": "1752167503350::_mbXQGo1vKucTAuGCa19.8.1752167503351"
+              },
+              "timeToComplete": null,
+              "startedAt": "2025-07-17T17:44:10.350000Z",
+              "submittedAt": "2025-07-17T17:44:49.894000Z",
+              "createdAt": "2025-07-17T17:44:07.436000Z",
+              "updatedAt": "2025-07-17T17:44:49.890000Z",
+              "answers": {
+                "6878e5e913f6fa2a1c06b438": {
+                  "answerId": "68793667c7e58bf26eeaea81",
+                  "fieldTitle": "IMPORTANTE: ",
+                  "fieldDescription": "<p>A sua aplicação através deste questionário <strong>NÃO</strong> garante que você será aceito para uma das vagas. Vamos avaliar cautelosamente suas respostas e entraremos em contato.</p>",
+                  "content": null
+                },
+                "6878e5e913f6fa2a1c06b43a": {
+                  "answerId": "68793669c7e58bf26eeaea8a",
+                  "fieldTitle": "Seu nome:",
+                  "fieldDescription": null,
+                  "content": "mATHEUS"
+                },
+                "6878e5e913f6fa2a1c06b43c": {
+                  "answerId": "6879366bc7e58bf26eeaea8c",
+                  "fieldTitle": "WhatsApp com DDD:",
+                  "fieldDescription": null,
+                  "content": "+5581993515055"
+                },
+                "6878e5e913f6fa2a1c06b43b": {
+                  "answerId": "68793670c7e58bf26eeaea9a",
+                  "fieldTitle": "E-mail:",
+                  "fieldDescription": null,
+                  "content": "matheus@gmail.com"
+                },
+                "6878e5e913f6fa2a1c06b43f": {
+                  "answerId": "68793674c7e58bf26eeaeaa1",
+                  "fieldTitle": "Descreva de forma clara e objetiva a sua atuação no mercado imobiliário.",
+                  "fieldDescription": null,
+                  "content": "atuacao"
+                },
+                "6878e5e913f6fa2a1c06b43e": {
+                  "answerId": "6879367bc7e58bf26eeaeab2",
+                  "fieldTitle": "Qual é o seu faturamento médio MENSAL em 2025?",
+                  "fieldDescription": null,
+                  "content": [
+                    "R$ 100.000,00 a R$ 250.000,00"
+                  ]
+                },
+                "6878e5e913f6fa2a1c06b440": {
+                  "answerId": "6879367dc7e58bf26eeaeab6",
+                  "fieldTitle": "Por que você acredita que precisa fazer parte do ACELERA ON DEMAND?",
+                  "fieldDescription": null,
+                  "content": "Por que você acredita que precisa fazer parte do ACELERA ON DEMAND?"
+                },
+                "6878e5e913f6fa2a1c06b43d": {
+                  "answerId": "68793681c7e58bf26eeaeac3",
+                  "fieldTitle": "⁠O investimento para a participação anual no Acelera On Demand é de R$ 120.000,00 à vista ou até 12x de R$ 12.000,00 no cartão de crédito. Você tem capacidade de investir agora esse valor em VOCÊ e no seu NEGÓCIO? Se sim, qual a forma de investimento?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sim, 120.000 ,00 à vista."
+                  ]
+                },
+                "6878e5e913f6fa2a1c06b441": {
+                  "answerId": "68793682c7e58bf26eeaeac8",
+                  "fieldTitle": "Você está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua entrevista e, caso não confirme dentro desse período, você perde direito a reunião?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sim"
+                  ]
+                },
+                "6878e5e913f6fa2a1c06b442": {
+                  "answerId": "68793684c7e58bf26eeaeace",
+                  "fieldTitle": "Agende o seu horário:",
+                  "fieldDescription": null,
+                  "content": null
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/065c5653-43b4-4bd5-b6d0-4338e5d1e1eb",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Criar Lead - Renan": [
+      {
+        "json": 3823
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-05-23T03:18:57.576Z",
+      "updatedAt": "2024-05-23T03:18:57.576Z",
+      "id": "ZAUbeJXqG1plGMYs",
+      "name": "carol"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-17T18:14:21.469Z",
+  "versionId": "d77b1b59-af9f-4dab-8c04-75ec6591fcbe"
+}
