@@ -97,6 +97,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Campos1",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -116,11 +123,33 @@
         []
       ]
     },
+    "Campos1": {
+      "main": [
+        [
+          {
+            "node": "Gerar CNPJ1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar CNPJ1": {
+      "main": [
+        [
+          {
+            "node": "Criar Lead - Renan1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Criar Lead - Renan1": {
       "main": [
         [
           {
-            "node": "Filter",
+            "node": "Criar Oportunidade - Renan1",
             "type": "main",
             "index": 0
           }
@@ -482,7 +511,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 32,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 34,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 33,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 35,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"atuacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 36,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 37,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"oportunidade\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 38,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"investimento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 40,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"data da aplicacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 39,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Bootcamp\"\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 32,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 34,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 33,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 35,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"atuacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 36,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 37,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"oportunidade\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 38,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"investimento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 40,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos\"].json[\"data da aplicacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 39,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Bootcamp\"\n    },\n        {\n      \"IdCampoFormulario\": 41,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Aplicação - Bootcamp - IP Experience\"\n    }\n  ]\n}\n",
         "options": {}
       },
       "id": "f39e8033-ee2e-42a9-813b-8c42477b90c2",
@@ -496,7 +525,116 @@
     },
     {
       "parameters": {
-        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/ObterCamposPersonalizados",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e6502b5-87b7-471a-b380-b19f9a3f97f6",
+              "name": "nome",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffb13ce3eeba633030598\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "149210d9-9f6b-4851-9284-98de9b788a81",
+              "name": "email",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffb13ce3eeba633030599\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "4fb9b988-1edc-46fc-815a-5af8db220607",
+              "name": "whatsapp",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffb13ce3eeba63303059a\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "3e6ed3b6-94d2-46d1-abe7-9c1c440e8de2",
+              "name": "atuacao",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffd3669021aedb3075855\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "3cfee21f-b1ec-4390-af75-3e31fc9eac39",
+              "name": "faturamento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffb13ce3eeba63303059c\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "0bce8ae9-c543-46fc-b923-a3dec62bfda9",
+              "name": "oportunidade",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffb13ce3eeba63303059e\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "45f2c6ac-f807-47fd-8717-abf51913814b",
+              "name": "investimento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"682ffb13ce3eeba6330305a6\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "ff208309-fee9-45b0-bdab-96eb0c0e9c3d",
+              "name": "data da aplicacao",
+              "value": "={{ $json.formattedDate }}",
+              "type": "string"
+            },
+            {
+              "id": "291a1ed8-cf3a-4a4f-a71a-2c8dbf3e7171",
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "403a84f8-2f90-4504-9f03-0a9cef7d3164",
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "aba98cf8-8622-44c0-95c5-bb01dcd38312",
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "f0388b2d-0935-48d1-8da0-dcf2c45daee2",
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "1ecafbd5-f383-4938-ae30-b495b78fb086",
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        420
+      ],
+      "id": "e196104d-c307-4989-9a67-63aeabb759da",
+      "name": "Campos1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        420
+      ],
+      "id": "05c3a7b6-f8ee-4cee-91d6-b47d0168851f",
+      "name": "Gerar CNPJ1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -510,49 +648,50 @@
             }
           ]
         },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $('Gerar CNPJ1').item.json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Campos1').item.json.nome}}\",\n    \"RazaoSocial\": \"{{ $('Campos1').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Campos1').item.json.nome}}\",\n      \"Email\": \"{{ $('Campos1').item.json.email }}\",\n      \"Telefone\": \"{{ $('Campos1').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Campos1').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
         "options": {}
       },
-      "id": "45b7ec8c-8af6-43ad-997c-5c1b8634b6ed",
+      "id": "59a1c32f-61b9-41b3-b1cc-1349926fa584",
       "name": "Criar Lead - Renan1",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -140,
-        620
+        660,
+        420
       ]
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
             {
-              "id": "fd8dd192-2270-443e-beed-004da6ab7571",
-              "leftValue": "={{ $json.NomeCampo }}",
-              "rightValue": "[IP]",
-              "operator": {
-                "type": "string",
-                "operation": "contains"
-              }
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8y24FRqgqFunrgqwm_cl0_5FtiRckGvQt05ziCxB3c8SKt63kOfl7_ynsbTrCaUm3NqCGYGBCIf6FxWaEVf45SkeN9kx32iS_DEUTFZFJvUZnrY44htiJFvQwjRqQO3zzcl-BfdcUzhA.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
             }
-          ],
-          "combinator": "and"
+          ]
         },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos1').item.json.nome + (parcial) }}\",\n  \"NomeLead\": \"{{ $('Campos1').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Gerar CNPJ1').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 32,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"nome\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 34,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"email\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 33,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"whatsapp\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 35,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"atuacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 36,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"faturamento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 37,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"oportunidade\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 38,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"investimento\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 40,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $item(\"0\").$node[\"Campos1\"].json[\"data da aplicacao\"] }}\"\n    },\n    {\n      \"IdCampoFormulario\": 39,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Bootcamp\"\n    },\n        {\n      \"IdCampoFormulario\": 41,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"Aplicação - Bootcamp - IP Experience\"\n    }\n  ]\n}\n",
         "options": {}
       },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
+      "id": "cb6c9291-54b5-4e3f-95a0-2cc3d6f0adff",
+      "name": "Criar Oportunidade - Renan1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        80,
-        620
-      ],
-      "id": "869ddf2d-124a-40c9-82c1-0da0cc59ed5a",
-      "name": "Filter"
+        900,
+        420
+      ]
     }
   ],
   "pinData": {
@@ -691,6 +830,16 @@
       {
         "json": 3377
       }
+    ],
+    "Criar Lead - Renan1": [
+      {
+        "json": 3806
+      }
+    ],
+    "Criar Oportunidade - Renan1": [
+      {
+        "json": 3377
+      }
     ]
   },
   "settings": {
@@ -709,6 +858,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-17T14:37:16.607Z",
-  "versionId": "2f833644-b4a8-43ce-b298-f250deaf0b18"
+  "updatedAt": "2025-07-17T19:46:48.729Z",
+  "versionId": "17557c20-1e77-4f69-8ac7-6d4654266817"
 }
