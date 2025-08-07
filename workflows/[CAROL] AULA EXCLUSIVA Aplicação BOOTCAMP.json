@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "Campos",
+            "node": "Code",
             "type": "main",
             "index": 0
           }
@@ -34,7 +34,7 @@
       "main": [
         [
           {
-            "node": "Code",
+            "node": "Form Completo",
             "type": "main",
             "index": 0
           }
@@ -45,7 +45,7 @@
       "main": [
         [
           {
-            "node": "Form Completo",
+            "node": "Campos",
             "type": "main",
             "index": 0
           }
@@ -56,7 +56,7 @@
       "main": [
         [
           {
-            "node": "Report - Agendamentos Closers  - Parcial",
+            "node": "Code1",
             "type": "main",
             "index": 0
           }
@@ -117,6 +117,39 @@
           }
         ]
       ]
+    },
+    "Criar Oportunidade - Thais e Fábio": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - Déborah e Fábio": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade - Thais e Fábio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade - Déborah e Fábio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-22T13:50:43.813Z",
@@ -167,7 +200,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        340,
+        560,
         380
       ],
       "id": "f7215c01-5f54-4378-b36b-06958625e11e",
@@ -264,8 +297,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        580,
-        360
+        360,
+        380
       ],
       "id": "728ba124-ad8d-46b1-bdd8-e1e10a53a586",
       "name": "Campos"
@@ -282,7 +315,8 @@
         140,
         380
       ],
-      "webhookId": "dcfb2b76-20f9-4df4-a734-31086583161a"
+      "webhookId": "dcfb2b76-20f9-4df4-a734-31086583161a",
+      "disabled": true
     },
     {
       "parameters": {
@@ -326,8 +360,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        580,
-        620
+        780,
+        600
       ],
       "id": "af45b328-87d0-4e21-b484-34cdada27cd6",
       "name": "Lead Parcial"
@@ -354,7 +388,7 @@
             },
             {
               "name": "message",
-              "value": "=*Nova Aplicação PARCIAL AULA EXCLUSIVA:* 🚨\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json[\"tipo de negócio\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\n*Origens:*\nFormulário: Aplicação - Aula Exclusiva\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
+              "value": "=*Nova Aplicação PARCIAL AULA EXCLUSIVA:* 🚨\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['67ffafea12715558e1035edc'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67ffafea12715558e1035edd'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67ffafea12715558e1035ede'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67ffafea12715558e1035ee0'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67ffafea12715558e1035edf'].content[0] }}\n\n*Origens:*\nFormulário: Aplicação - Aula Exclusiva\n\n*_utm_source:_* {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\n*_utm_campaign:_* {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\n*_utm_medium:_* {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\n*_utm_content:_* {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\n*_utm_term:_* {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
             }
           ]
         },
@@ -365,8 +399,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        800,
-        620
+        2040,
+        580
       ]
     },
     {
@@ -493,6 +527,118 @@
       ],
       "id": "60f603f4-fe45-4587-b5ee-be0669274716",
       "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação PARCIAL AULA EXCLUSIVA:* 🚨\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json[\"tipo de negócio\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\n*Origens:*\nFormulário: Aplicação - Aula Exclusiva\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "45696114-f706-4f2e-ae94-1dd96f27f2d2",
+      "name": "Report - Agendamentos Closers1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8mYpXFef7IDDSLuLaxEnzDHcM9tL-_-ijnL66oBJ2KfCwJkhAUjuttynsbTrCaUm0lidMhEoTUK0BHeIF3sRVOdI83G0RPWpOo_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"[Parcial] {{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Code1').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n{\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n{\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negócio'] }}\"\n    },\n {\n      \"IdCampoFormulario\": 28,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['porque acredita que participar do programa é uma oportunidade'] }}\"\n    },\n {\n      \"IdCampoFormulario\": 27,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['porque deve ser aceito'] }}\"\n    },\n {\n      \"IdCampoFormulario\": 29,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.investimento }}\"\n    },\n {\n      \"IdCampoFormulario\": 30,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"10/07/2025\"\n    } \n  ]\n}\n",
+        "options": {}
+      },
+      "id": "667b7062-690e-4bfc-8415-b125fa12da07",
+      "name": "Criar Oportunidade - Thais e Fábio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1460,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8mYpXFef7IDDSLuLaxEnzDHcM9tL-_-ijnL66oBJ2KfCwJkhAUjuttynsbTrCaUm0lidMhEoTUK0BHeIF3sRVOdI83G0RPWpOo_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Campos').item.json.nome }}\",\n    \"RazaoSocial\": \"{{ $('Campos').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Campos').item.json.nome }}\",\n      \"Email\": \"{{ $('Campos').item.json.email }}\",\n      \"Telefone\": \"{{ $('Campos').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Campos').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "ada7ce14-9b49-4c2a-b5d7-5f60fc0e62b2",
+      "name": "Criar Oportunidade - Déborah e Fábio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1240,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        600
+      ],
+      "id": "47525946-f3d1-4d3c-8e4a-06182c94f8fe",
+      "name": "Code1"
     }
   ],
   "pinData": {
@@ -502,41 +648,41 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "4406",
+            "content-length": "3973",
             "content-type": "application/json",
-            "x-forwarded-for": "67.205.146.40",
+            "x-forwarded-for": "157.230.95.44",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "706860589d6c",
-            "x-real-ip": "67.205.146.40",
+            "x-forwarded-server": "bec1c24ede7b",
+            "x-real-ip": "157.230.95.44",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "6807e0281e932f13adf8b91c",
+              "id": "68909f5f7c143448ec8bdb20",
               "formId": "67ffafea12715558e1035ed9",
-              "ipAddress": "2804:29b8:50ad:5268:ed80:b477:4ceb:dc65",
+              "ipAddress": "2804:1c88:100:8990:d402:b89f:2a2e:49f4",
               "operatingSystem": "OS X",
               "operatingSystemVersion": "10_15_7",
-              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
               "browser": "Chrome",
-              "browserVersion": "135.0.0.0",
-              "referrerUrl": null,
+              "browserVersion": "138.0.0.0",
+              "referrerUrl": "https://app.clickup.com/t/86dx827pr",
               "deviceType": "desktop",
               "geolocation": {
                 "continent": "South America",
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "state": "Pernambuco",
-                "city": "Caruaru",
-                "zipcode": "55000",
-                "latitude": -8.1792,
-                "longitude": -36.0279,
-                "timezone": "America/Recife"
+                "state": "Rio de Janeiro",
+                "city": "Niterói",
+                "zipcode": "24000",
+                "latitude": -22.8896,
+                "longitude": -43.1054,
+                "timezone": "America/Sao_Paulo"
               },
               "aiFeedback": null,
               "hiddenFields": [],
@@ -544,82 +690,78 @@
                 "score": 0
               },
               "tracking": {
-                "_fbp": "fb.1.1742270412627.451017520152784457",
-                "_gcl_au": "1.1.599869318.1744865246",
-                "_ga": "GA1.2.1550280858.1744865246",
+                "utm_source": "zoom",
+                "utm_medium": "zoom",
+                "utm_campaign": "aulaexclusiva",
+                "utm_content": "chat",
+                "utm_term": "ctaaplicacao",
+                "_fbp": "fb.1.1744379129523.364267897250507464",
                 "_tt_enable_cookie": "1",
-                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
-                "ttcsid": "1744865246730.1.1744865246730",
-                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjpmYWxzZX0=",
-                "_clck": "cymcv9|2|fv5|0|1933",
-                "ttcsid_C5URFDOVMNUPJ15SHS00": "1744865246729.1.1744865247435",
-                "_ga_QMHGX1WZCF": "GS1.1.1744865245.1.1.1744866841.60.0.1678656892"
+                "_ttp": "01JRTP7HASGCJQN46FBJT88EWX_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6IjIzMGVhMTVlLTRmZjgtNTIzNi1hMmRjLTY5MjgxZTQ0MTYwNyIsImNyZWF0ZWQiOjE3NDQ2NTI0NTMyOTYsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_clck": "l0qqmj|2|fxh|0|1930",
+                "hotid": "eyJjaWQiOiIxNzI2NjAzMzMxNTE2NjYxODQyODQ1NDEwMjk5MTAwIiwiYmlkIjoiMTcyNjYwMzMzMTUxNjY2MTg0Mjg0NTQxMDI5OTEwMCIsInNpZCI6IjNhZTQzOGIwMDdlODQ0YTQ5MDkzZTZlNDc4M2RkMDQ3In0=",
+                "_ga": "GA1.1.128664043.1744652453",
+                "ttcsid": "1752167473413::57lhhbot6QL1HUA8Pb3K.9.1752168032240",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1752167473413::FbXnLD1bjKkItNIFhLR8.9.1752168038011",
+                "_ga_QMHGX1WZCF": "GS2.1.s1752167473$o9$g1$t1752168040$j51$l0$h713444141"
               },
               "timeToComplete": null,
-              "startedAt": "2025-04-22T18:30:02.093000Z",
-              "submittedAt": "2025-04-22T18:30:26.998000Z",
-              "createdAt": "2025-04-22T18:30:00.822000Z",
-              "updatedAt": "2025-04-22T18:30:26.998000Z",
+              "startedAt": "2025-08-04T11:54:09.819000Z",
+              "createdAt": "2025-08-04T11:54:07.804000Z",
+              "updatedAt": "2025-08-04T11:54:28.460000Z",
               "answers": {
                 "67ffafea12715558e1035eda": {
-                  "answerId": "6807e029bcb2d1fbcf03e3cf",
+                  "answerId": "68909f60c7e58bf26e0bc2ba",
                   "fieldTitle": "Atenção!",
                   "fieldDescription": "<p>A sua aplicação através deste questionário NÃO garante que você será aceito na Mentoria Bootcamp.</p><p></p><p>Vou avaliar pessoalmente, de forma cautelosa, cada aplicação e selecionar apenas quem realmente pode aproveitar essa oportunidade e agregar ao grupo. Baseado nas suas respostas, você será ou não selecionado para uma entrevista pessoal comigo ou com um especialista do meu time.</p><p></p><p>Só preencha esse questionário se você está realmente comprometido em fazer a diferença para você e para as pessoas em volta.</p>",
                   "content": null
                 },
                 "67ffafea12715558e1035edc": {
-                  "answerId": "6807e029bcb2d1fbcf03e67f",
+                  "answerId": "68909f61c7e58bf26e0bc2c0",
                   "fieldTitle": "Seu nome:",
                   "fieldDescription": null,
-                  "content": "matheus"
+                  "content": "teste victor parcial 04/08"
                 },
                 "67ffafea12715558e1035edd": {
-                  "answerId": "6807e02ebcb2d1fbcf03f8f0",
+                  "answerId": "68909f66c7e58bf26e0bc2c7",
                   "fieldTitle": "E-mail:",
                   "fieldDescription": null,
-                  "content": "mathteste@gmail.com"
+                  "content": "teste@teste.ig"
                 },
                 "67ffafea12715558e1035ede": {
-                  "answerId": "6807e033bcb2d1fbcf040c82",
+                  "answerId": "68909f69c7e58bf26e0bc2cc",
                   "fieldTitle": "WhatsApp com DDD:",
                   "fieldDescription": null,
-                  "content": "+5581993515055"
+                  "content": "+552222222222"
                 },
                 "67ffafea12715558e1035edf": {
-                  "answerId": "6807e03abcb2d1fbcf042105",
+                  "answerId": "68909f6dc7e58bf26e0bc2d3",
                   "fieldTitle": "Qual das opções abaixo mais condiz com seu negócio hoje?",
                   "fieldDescription": null,
                   "content": [
-                    "Arquiteto-Incorporador"
+                    "Incorporador"
                   ]
                 },
                 "67ffafea12715558e1035ee0": {
-                  "answerId": "6807e03bbcb2d1fbcf042293",
+                  "answerId": "68909f6fc7e58bf26e0bc2d5",
                   "fieldTitle": "Qual seu faturamento médio mensal dos últimos 12 meses?",
                   "fieldDescription": null,
                   "content": [
-                    "R$ 20.000,00 a R$ 50.000,00"
+                    "R$ 50.000,00 a R$ 100.000,00"
                   ]
                 },
                 "67ffafea12715558e1035ee1": {
-                  "answerId": "6807e03cbcb2d1fbcf042366",
+                  "answerId": "68909f72c7e58bf26e0bc2da",
                   "fieldTitle": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?",
                   "fieldDescription": null,
-                  "content": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?"
+                  "content": "teste"
                 },
                 "67ffafea12715558e1035ee2": {
-                  "answerId": "6807e03fbcb2d1fbcf042685",
+                  "answerId": "68909f74c7e58bf26e0bc2de",
                   "fieldTitle": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
                   "fieldDescription": null,
-                  "content": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?"
-                },
-                "67ffafea12715558e1035ee3": {
-                  "answerId": "6807e041bcb2d1fbcf042c55",
-                  "fieldTitle": "O investimento para a participação no Bootcamp é de até 12x de R$ 3.000,00 no cartão de crédito ou R$ 30.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?",
-                  "fieldDescription": null,
-                  "content": [
-                    "Sim, R$ 30.000,00 à vista."
-                  ]
+                  "content": null
                 }
               }
             }
@@ -646,6 +788,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-11T00:23:46.463Z",
-  "versionId": "b0ae194c-4677-4ece-96cc-eab13c239d0e"
+  "updatedAt": "2025-08-06T17:52:58.217Z",
+  "versionId": "50b84d95-8efd-44b0-af13-f1ac425772cd"
 }
