@@ -1,0 +1,390 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "busca paginas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca paginas": {
+      "main": [
+        [
+          {
+            "node": "atualiza dados do rodizio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza dados do rodizio": {
+      "main": [
+        [
+          {
+            "node": "reseta rodizio?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "reseta rodizio?": {
+      "main": [
+        [
+          {
+            "node": "atualiza rodizio na pagina escolhida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "atualiza rodizio no banco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza rodizio na pagina escolhida": {
+      "main": [
+        [
+          {
+            "node": "reseta rodizio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "reseta rodizio": {
+      "main": [
+        [
+          {
+            "node": "devolve pagina",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza rodizio no banco": {
+      "main": [
+        [
+          {
+            "node": "devolve pagina1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-03T13:38:28.155Z",
+  "id": "KU0wrSV7intEIkYa",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL] Rodízio link BIO",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rodizio-link-bio",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        100,
+        0
+      ],
+      "id": "ad0ec676-d3c5-4626-b079-46bf7fec1c85",
+      "name": "Webhook",
+      "webhookId": "96bb15ad-5ac7-449c-888b-5c9f53743c66"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "4c1bb92a-9d45-4f86-91e6-fe9a9f471677",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        280,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "rodizio_paginas_bio",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "id": "72ea38e2-bb1b-4510-9606-c189b8b23a30",
+      "name": "busca paginas",
+      "credentials": {
+        "supabaseApi": {
+          "id": "8ZVTQjP2XHFeNXtM",
+          "name": "bma"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ====================================\n// CÓDIGO PARA NODE \"CODE\" NO N8N\n// Modo: \"Run Once for All Items\"\n// Recebe array do Supabase e retorna página + dados para update\n// ====================================\n\n// Pegar o array de dados do Supabase\nconst paginas = $input.all();\n\nconsole.log('Dados recebidos do Supabase:', JSON.stringify(paginas, null, 2));\n\n// Validar se temos dados\nif (!paginas || paginas.length === 0) {\n  return [{\n    json: {\n      erro: 'Nenhuma página encontrada',\n      pagina_redirect: null,\n      update: null,\n      sucesso: false\n    }\n  }];\n}\n\n// Extrair o array de páginas do primeiro item (que contém o array)\nlet arrayPaginas;\nif (Array.isArray(paginas[0].json)) {\n  // Se o primeiro item já é um array\n  arrayPaginas = paginas[0].json;\n} else {\n  // Se cada item do $input.all() é uma página individual\n  arrayPaginas = paginas.map(item => item.json);\n}\n\nconsole.log('Array de páginas processado:', JSON.stringify(arrayPaginas, null, 2));\n\n// ====================================\n// LÓGICA DE RODÍZIO 2x1\n// ====================================\n\nfunction obterProximaPagina(arrayPaginas) {\n  // Encontrar as páginas específicas\n  const paginaV1 = arrayPaginas.find(p => \n    p.pagina.includes('cg-yay-v1') && !p.pagina.includes('bsb')\n  );\n  const paginaBSB = arrayPaginas.find(p => \n    p.pagina.includes('cg-yay-v1-bsb')\n  );\n  \n  if (!paginaV1 || !paginaBSB) {\n    console.log('Erro: Páginas não encontradas', { \n      paginaV1: !!paginaV1, \n      paginaBSB: !!paginaBSB \n    });\n    return null;\n  }\n  \n  console.log('Estado atual das páginas:', {\n    'v1_id': paginaV1.id,\n    'v1_usado': paginaV1.usado,\n    'bsb_id': paginaBSB.id,\n    'bsb_usado': paginaBSB.usado\n  });\n  \n  // Calcular total de usos (para logs)\n  const totalUsos = paginaV1.usado + paginaBSB.usado;\n  \n  // Lógica do rodízio 2x1 baseada no estado atual das páginas\n  // Sequência correta: V1 -> V1 -> BSB -> (reset) -> V1 -> V1 -> BSB...\n  \n  let paginaEscolhida;\n  let resetarContadores = false;\n  \n  console.log('Analisando estado atual:', {\n    v1_usado: paginaV1.usado,\n    bsb_usado: paginaBSB.usado,\n    totalUsos\n  });\n  \n  // Lógica baseada no estado atual das páginas\n  if (paginaV1.usado < 2 && paginaBSB.usado === 0) {\n    // V1 ainda não completou suas 2 vezes no ciclo atual\n    paginaEscolhida = paginaV1;\n    resetarContadores = false;\n  } else if (paginaV1.usado === 2 && paginaBSB.usado === 0) {\n    // V1 completou 2 usos, agora usar BSB e resetar\n    paginaEscolhida = paginaBSB;\n    resetarContadores = true;\n  } else {\n    // Qualquer outro estado: resetar tudo e começar com V1\n    // Isso inclui casos como [V1:1, BSB:1] ou [V1:0, BSB:1]\n    paginaEscolhida = paginaV1;\n    resetarContadores = true;\n  }\n  \n  console.log('Decisão tomada:', {\n    totalUsos,\n    v1_usado: paginaV1.usado,\n    bsb_usado: paginaBSB.usado,\n    paginaEscolhida_id: paginaEscolhida.id,\n    paginaEscolhida_url: paginaEscolhida.pagina,\n    resetarContadores,\n    proximoValorUso: resetarContadores ? 1 : paginaEscolhida.usado + 1\n  });\n  \n  return {\n    pagina: paginaEscolhida,\n    resetarContadores,\n    proximoUso: resetarContadores ? 1 : paginaEscolhida.usado + 1,\n    todasPaginas: arrayPaginas\n  };\n}\n\n// Executar lógica\nconst resultado = obterProximaPagina(arrayPaginas);\n\nif (!resultado) {\n  return [{\n    json: {\n      erro: 'Erro na lógica de rodízio',\n      pagina_redirect: null,\n      update: null,\n      sucesso: false\n    }\n  }];\n}\n\n// ====================================\n// PREPARAR DADOS DE RETORNO\n// ====================================\n\nlet dadosUpdate;\n\nif (resultado.resetarContadores) {\n  // Resetar todos os contadores e definir o escolhido como 1\n  console.log('Resetando contadores após completar ciclo');\n  \n  dadosUpdate = {\n    tipo: 'reset_e_incrementa',\n    id_escolhido: resultado.pagina.id,\n    reset_todos: true,\n    id_para_incrementar: resultado.pagina.id,\n    usado_anterior: resultado.pagina.usado,\n    incremento: 1,\n    valor_final: 1\n  };\n} else {\n  // Apenas incrementar o contador da página escolhida\n  console.log('Incrementando contador da página escolhida');\n  \n  dadosUpdate = {\n    tipo: 'incrementa',\n    id: resultado.pagina.id,\n    reset_todos: false,\n    id_para_incrementar: resultado.pagina.id,\n    usado_anterior: resultado.pagina.usado,\n    incremento: 1,\n    valor_final: resultado.pagina.usado + 1\n  };\n}\n\n// ====================================\n// RETORNO FINAL\n// ====================================\n\nconst retorno = {\n  // URL para redirecionar o usuário\n  pagina_redirect: resultado.pagina.pagina,\n  \n  // Dados para debug/log\n  debug: {\n    pagina_escolhida: resultado.pagina.pagina,\n    id_pagina: resultado.pagina.id,\n    uso_anterior: resultado.pagina.usado,\n    uso_novo: resultado.proximoUso,\n    reset_contadores: resultado.resetarContadores,\n    todas_paginas: resultado.todasPaginas,\n    timestamp: new Date().toISOString()\n  },\n  \n  // Dados para atualização na tabela\n  update: dadosUpdate,\n  \n  // Status\n  sucesso: true\n};\n\nconsole.log('Retorno final:', JSON.stringify(retorno, null, 2));\n\n// Retornar como array (necessário para \"Run Once for All Items\")\nreturn [{ json: retorno }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "8c25360d-2f36-4f35-99a7-f561384b8364",
+      "name": "atualiza dados do rodizio"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8c7b1829-acae-4952-b8f4-d94626922c66",
+              "leftValue": "={{ $json.update.reset_todos }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        0
+      ],
+      "id": "35a1669c-9bda-4c0a-90cb-3a58193bc728",
+      "name": "reseta rodizio?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "rodizio_paginas_bio",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.update.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "usado",
+              "fieldValue": "={{ $json.update.valor_final }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        140
+      ],
+      "id": "4c0509f6-f21a-49b2-aeb6-4e7708209503",
+      "name": "atualiza rodizio no banco",
+      "credentials": {
+        "supabaseApi": {
+          "id": "8ZVTQjP2XHFeNXtM",
+          "name": "bma"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "rodizio_paginas_bio",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.update.id_escolhido }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "usado",
+              "fieldValue": "={{ $json.update.valor_final }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -120
+      ],
+      "id": "7d8a2467-b0be-43fe-918e-b76674487474",
+      "name": "atualiza rodizio na pagina escolhida",
+      "credentials": {
+        "supabaseApi": {
+          "id": "8ZVTQjP2XHFeNXtM",
+          "name": "bma"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "rodizio_paginas_bio",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "neq",
+              "keyValue": "={{ $('reseta rodizio?').item.json.update.id_escolhido }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "usado",
+              "fieldValue": "=0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        -120
+      ],
+      "id": "ae5b7b72-760a-41c7-ba5f-97632e52bd4c",
+      "name": "reseta rodizio",
+      "credentials": {
+        "supabaseApi": {
+          "id": "8ZVTQjP2XHFeNXtM",
+          "name": "bma"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.pagina }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1480,
+        -120
+      ],
+      "id": "21457aad-f528-4299-8bd5-2133dd7ffb55",
+      "name": "devolve pagina"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.pagina }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1260,
+        140
+      ],
+      "id": "64c1467f-ebd4-44ca-8214-41b25c7ec8cf",
+      "name": "devolve pagina1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "node",
+            "content-length": "108",
+            "accept": "*/*",
+            "accept-encoding": "br, gzip, deflate",
+            "accept-language": "*",
+            "baggage": "sentry-environment=production,sentry-release=f61ff004b798cdf4009c5c67133153bf3ce0f7a2,sentry-public_key=1e9d48de323f44ccf2515857412e9fc5,sentry-trace_id=56bc06ef97d1a20e2c2f19daac5cb02f,sentry-org_id=4508812279349248",
+            "content-type": "application/json",
+            "sec-fetch-mode": "cors",
+            "sentry-trace": "56bc06ef97d1a20e2c2f19daac5cb02f-e7048fb0c6698c3f",
+            "x-forwarded-for": "18.134.9.173",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "869fd5766395",
+            "x-real-ip": "18.134.9.173",
+            "x-vercel-id": "gru1::gq5mv-1756906810487-bcc25e7ec351"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "submittedAt": "2025-09-03T13:40:10.638Z",
+            "message": "This is a sample result, it has been generated ⬇️"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/rodizio-link-bio",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-03T15:10:55.168Z",
+  "versionId": "5c0a0959-2f8e-402c-a018-b42c6187836d"
+}
