@@ -1,22 +1,191 @@
 {
   "active": false,
   "connections": {
-    "When clicking ‘Test workflow’": {
+    "Set": {
       "main": [
         [
           {
-            "node": "busca matrículas",
+            "node": "Google Sheets",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "busca matrículas": {
+    "Item Lists": {
       "main": [
         [
           {
-            "node": "Confere de Datas",
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "setup campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time3": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets2": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Item Lists1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Date & Time3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "IF1",
             "type": "main",
             "index": 0
           }
@@ -24,48 +193,216 @@
       ]
     }
   },
-  "createdAt": "2025-07-01T15:27:09.357Z",
-  "id": "mt3QPuoUuq9o8HO9",
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
+  "createdAt": "2025-09-04T21:58:21.670Z",
+  "id": "0GCivoEbK81y9J75",
+  "meta": null,
   "name": "My workflow 13",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "gasto",
+              "value": "={{ $node[\"HTTP Request\"].json[\"data\"][\"0\"][\"spend\"].toString().replace('.',',') }}"
+            },
+            {
+              "name": "BM",
+              "value": "={{ $item(\"0\").$node[\"SplitInBatches\"].json[\"nome\"] }}"
+            },
+            {
+              "name": "data",
+              "value": "={{ $json[\"data\"] }}"
+            },
+            {
+              "name": "campanha",
+              "value": "={{ $node[\"HTTP Request\"].json[\"data\"][\"0\"][\"campaign_name\"] }}"
+            },
+            {
+              "name": "conjunto",
+              "value": "={{ $node[\"HTTP Request\"].json[\"data\"][\"0\"][\"adset_name\"] }}"
+            },
+            {
+              "name": "ad",
+              "value": "={{ $node[\"HTTP Request\"].json[\"data\"][\"0\"][\"ad_name\"] }}"
+            },
+            {
+              "name": "impressoes",
+              "value": "={{ $node[\"HTTP Request\"].json[\"data\"][\"0\"][\"impressions\"] }}"
+            },
+            {
+              "name": "clicks",
+              "value": "={{ $node[\"HTTP Request\"].json[\"data\"][\"0\"][\"inline_link_clicks\"] }}"
+            },
+            {
+              "name": "initiate_checkout",
+              "value": "={{ $node[\"Code1\"].json.data[0][\"initiate_checkout\"] }}"
+            },
+            {
+              "name": "land_page_views",
+              "value": "={{ $node[\"Code1\"].json.data[0][\"land_page_views\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b6c18378-114d-43cf-ada9-40938512a633",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -1120,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "id": "b0d1ca2e-f533-41dd-ae17-f26c35ca8e6d",
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        -2000,
+        20
       ],
-      "id": "5d4cb833-5d55-4565-8bf1-dcb7075bccd4",
-      "name": "When clicking ‘Test workflow’"
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "aeee3d54-5a8e-4723-ae3a-1069f574657d",
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        -2880,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v{{ $json.versao }}.0/act_{{ $json[\"id da conta\"] }}/insights",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "time_range",
+              "value": "={'since':'{{$now.minus(86400000).year}}-{{$now.minus(86400000).month}}-{{$now.minus(86400000).day}}','until':'{{$now.minus(86400000).year}}-{{$now.minus(86400000).month}}-{{$now.minus(86400000).day}}'}"
+            },
+            {
+              "name": "fields",
+              "value": "ad_id"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $json[\"token\"] }}"
+            },
+            {
+              "name": "level",
+              "value": "ad"
+            }
+          ]
+        }
+      },
+      "id": "e44cda64-c2db-4b34-88cc-25099804233d",
+      "name": "HTTP Request4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -2440,
+        40
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 2
+            }
+          ]
+        }
+      },
+      "id": "2d1dc425-0d7b-4359-af2d-03b612583d73",
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -3320,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "value": "={{ $node[\"Item Lists\"].json[\"date_start\"] }}",
+        "custom": true,
+        "toFormat": "Y-MM-DD",
+        "options": {
+          "fromFormat": "Y-MM-DD"
+        }
+      },
+      "id": "cefc1056-c556-40df-9509-b6ae183c72f8",
+      "name": "Date & Time3",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        -1340,
+        20
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $node[\"HTTP Request4\"].json[\"data\"] }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "f43b6624-0b77-4d6a-866c-449579c97f70",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -2220,
+        40
+      ]
     },
     {
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "https://docs.google.com/spreadsheets/d/1_0ElM1Ygp8VYdLBEe1og5GB56-bAuBCLjasyzEdtPa4/edit?gid=0#gid=0",
-          "mode": "url"
+          "value": "https://docs.google.com/spreadsheets/d/1py71bw9SWTukhL2G-YC-i7g9xBEU7zauTzK3PLwQltk/edit#gid=0",
+          "mode": "url",
+          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com\\/\\w+\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
         },
         "sheetName": {
           "__rl": true,
-          "value": 781285383,
+          "value": "gid=0",
           "mode": "list",
-          "cachedResultName": "alunos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_0ElM1Ygp8VYdLBEe1og5GB56-bAuBCLjasyzEdtPa4/edit#gid=781285383"
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1py71bw9SWTukhL2G-YC-i7g9xBEU7zauTzK3PLwQltk/edit#gid=0"
         },
         "options": {}
       },
+      "id": "9d2cf4ea-fd9c-4010-9a46-116eba1b67d4",
+      "name": "Google Sheets2",
       "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.5,
+      "typeVersion": 3,
       "position": [
-        220,
-        0
+        -3080,
+        460
       ],
-      "id": "44fc69cf-8f55-4966-acb2-99469c870265",
-      "name": "busca matrículas",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "PLr9msB1lyoRblyJ",
@@ -75,140 +412,203 @@
     },
     {
       "parameters": {
-        "rules": {
-          "values": [
+        "url": "=https://graph.facebook.com/v{{ $item(\"0\").$node[\"SplitInBatches\"].json[\"versao\"] }}.0/{{ $json[\"ad_id\"] }}/insights",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
-                    "rightValue": 30,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    },
-                    "id": "33e8d2bf-4585-4e41-aace-fdf1b127e74a"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "3O DIAS"
+              "name": "time_range",
+              "value": "={'since':'{{$now.minus(86400000).year}}-{{$now.minus(86400000).month}}-{{$now.minus(86400000).day}}','until':'{{$now.minus(86400000).year}}-{{$now.minus(86400000).month}}-{{$now.minus(86400000).day}}'}"
             },
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "3422bd72-1411-4401-ae06-8ba444ef2786",
-                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
-                    "rightValue": 15,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "15 DIAS"
+              "name": "fields",
+              "value": "campaign_name,adset_name,ad_name,spend,inline_link_clicks,full_view_impressions,impressions,actions"
             },
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "87801f82-7719-4834-9d17-f6565b022499",
-                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
-                    "rightValue": 7,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "7 DIAS"
-            },
+              "name": "access_token",
+              "value": "={{ $item(\"0\").$node[\"SplitInBatches\"].json[\"token\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "ff316bec-9202-4c89-a8ba-b5d63682c44c",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -1780,
+        20
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1py71bw9SWTukhL2G-YC-i7g9xBEU7zauTzK3PLwQltk/edit#gid=0",
+          "mode": "url",
+          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com\\/\\w+\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 175803984,
+          "mode": "list",
+          "cachedResultName": "Página2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1py71bw9SWTukhL2G-YC-i7g9xBEU7zauTzK3PLwQltk/edit#gid=175803984"
+        },
+        "dataMode": "autoMapInputData",
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "f0b8d2ce-99dd-4d1e-a88f-a44183d85de1",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        -900,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "2082a47b-eb01-459c-a88d-452fc7b31b40",
-                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
-                    "rightValue": 1,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "1 DIA"
-            },
+              "value1": "={{ $json[\"status\"] }}",
+              "value2": "Funcionando"
+            }
+          ]
+        }
+      },
+      "id": "191480e4-2160-4d28-bf05-d99a88b62737",
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -2660,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.json.data[0][\"initiate_checkout\"] = 0\n$input.item.json.data[0][\"land_page_views\"] = 0\n\nlet el = $node[\"HTTP Request\"].json.data[0]\n\nif(el.actions){\n  el.actions.forEach(el=>{\n    if(el.action_type == 'initiate_checkout'){\n      $input.item.json.data[0][\"initiate_checkout\"] = el.value\n    }\n    if(el.action_type == 'landing_page_view'){\n      $input.item.json.data[0][\"land_page_views\"] = el.value\n    }\n  })\n}\n\nreturn $input.item;"
+      },
+      "id": "fabc34a1-8c93-4ac8-a1df-c5d514877bed",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -1560,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "aggregateItems",
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "25abd313-f112-45a0-b8da-a34860e126da",
-                    "leftValue": "={{ $json[\"Data de expiração\"].toDateTime().diffTo($now, 'days').round() }}",
-                    "rightValue": 0,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "HOJE"
+              "fieldToAggregate": "gasto"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
+      "id": "e639914e-65ad-459f-9e1c-abb7c3792b8d",
+      "name": "Item Lists1",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 2,
       "position": [
-        460,
-        -40
+        -680,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.gasto.length * 1.05 }}",
+        "unit": "seconds"
+      },
+      "id": "e4c818af-a945-402a-8910-112850df8d6e",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        20
       ],
-      "id": "d65ebe00-e34e-4488-b6b4-0e7fbbdd4387",
-      "name": "Confere de Datas"
+      "webhookId": "a6562f4e-9d8f-46d0-bc3b-20a2744b9854"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $node[\"IF1\"].json[\"paging\"][\"next\"] }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "80ab3922-effc-4278-8d79-0cd148c2f5d8",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $node[\"IF1\"].json[\"paging\"][\"next\"] }}",
+        "options": {}
+      },
+      "id": "f6906d41-42d1-4a13-b0aa-aadc0c818aec",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4220047-20e5-4747-b310-6a3756399444",
+              "name": "token",
+              "value": "EAAPp1CYdsDgBPWLuqogf6rxMqyZAWZBWpgTs1fDRglW5CKYl9vEvD9XlEOIg3W7DfbZAuZA0RHfwsukwkrcLkS4dOO82PT5BCtst6yEBfFzbrrR2y3MyFHWXpGweH0OSfxY6upD7q4g12UCkQho4wBQnZBewtQiLuYgOnI7K40glZBjm1qV4wgffkf6G8ZCfuv2c6IrcyZAS",
+              "type": "string"
+            },
+            {
+              "id": "c29a3a68-cfac-4266-852b-c5237c6d1b04",
+              "name": "id_conta",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "2eb654f3-ce26-4ef0-a7cd-0ce1b2196515",
+              "name": "versao",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3100,
+        60
+      ],
+      "id": "acbb8953-8224-4c89-824d-3127461ee07d",
+      "name": "setup campos"
     }
   ],
   "pinData": {},
@@ -218,6 +618,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-07-01T15:32:44.628Z",
-  "versionId": "94cfbd4d-40b8-48e4-b8c7-54858055aae3"
+  "updatedAt": "2025-09-04T21:58:21.670Z",
+  "versionId": "903e30f7-cc35-499f-838e-cae9d9d463e6"
 }
