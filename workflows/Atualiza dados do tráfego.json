@@ -1,0 +1,969 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL": {
+      "main": [
+        []
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-05T03:18:44.187Z",
+  "id": "jQnT2fZ3B54ZqCFs",
+  "meta": null,
+  "name": "Atualiza dados do tráfego",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -300,
+        -180
+      ],
+      "id": "09c7ce31-ee98-45cd-a5ec-619b4d67a0da",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Zh0GG5_FJ2HRlzdkbx6DYZatIlNdnGAaxUpLRhredKg/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "DADOS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Zh0GG5_FJ2HRlzdkbx6DYZatIlNdnGAaxUpLRhredKg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -80,
+        -180
+      ],
+      "id": "d0dd4264-3b53-4bc9-85ec-be79f86e6a58",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "56b1c9df-0478-46aa-b47a-25cf9a1e4781",
+              "leftValue": "={{ parseInt($now.format('HH')) }}",
+              "rightValue": 6,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        140,
+        -180
+      ],
+      "id": "bac506c5-b6ab-49bc-a433-f240d7b010bb",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let data\nlet i = 1\nlet dias = []\n\nlet dataInicial = $now.minus({days:1}).toFormat('yyyy-MM-dd')\n\n// dataInicial = '2024-03-02'\n\nwhile (data != dataInicial && i <= 1126) {\n    data = $now.minus({ days:1 * i })\n    data = data.toFormat('yyyy-MM-dd')\n    dias[dias.length] = data\n    i++\n}\n\ndias = dias.reverse()\n\n$input.item.json.data = dias\n\nreturn $input.item"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        -100
+      ],
+      "id": "13a2bcfc-d61a-4760-be16-15bdb5537c5a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.json.data = [$now.toFormat('yyyy-MM-dd')]\n\nreturn $input.item"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        -260
+      ],
+      "id": "64a3d0c5-fb2f-41d7-a0ca-34093df9b855",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        580,
+        -180
+      ],
+      "id": "c0c2b84d-59f3-43f0-86ab-97715b6ff432",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        800,
+        -180
+      ],
+      "id": "2c2fd7fb-21f4-460a-9f2f-cf6d57597c18",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v20.0/act_{{ $json[\"Id da Conta\"] }}/insights",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "time_range",
+              "value": "={'since':'{{ $json[\"data\"] }}','until':'{{ $json[\"data\"] }}'}"
+            },
+            {
+              "name": "fields",
+              "value": "ad_id"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $json[\"Token\"] }}"
+            },
+            {
+              "name": "level",
+              "value": "ad"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        -160
+      ],
+      "id": "9c851f7e-0b52-41a5-9c69-f4922dda4f7f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6b22eb56-e5c1-4116-8f39-56c5d7373c57",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1240,
+        -160
+      ],
+      "id": "1b339101-58f0-4ba9-b761-5f390d4de5a6",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        -180
+      ],
+      "id": "59504e1b-bff2-42f9-8800-1aca9295c328",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v20.0/{{ $json[\"ad_id\"] }}/insights",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "time_range",
+              "value": "={'since':'{{ $item(\"0\").$node[\"Loop Over Items\"].json[\"data\"] }}','until':'{{ $item(\"0\").$node[\"Loop Over Items\"].json[\"data\"] }}'}"
+            },
+            {
+              "name": "fields",
+              "value": "ad_name,spend,impressions,full_view_impressions,actions,inline_link_clicks,engagement_rate_ranking,frequency,inline_post_engagement,quality_ranking,reach,video_p25_watched_actions,video_p50_watched_actions,video_p75_watched_actions,video_p100_watched_actions,video_play_actions,campaign_name,adset_name,ad_id,conversion_rate_ranking,conversions,unique_inline_link_clicks"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $item(\"0\").$node[\"Loop Over Items\"].json[\"Token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        -180
+      ],
+      "id": "408630a6-d1ee-4b57-8eed-3bea012fe01f",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "if($input.item.json.data[0]){\n  if($input.item.json.data[0].actions){\n    $input.item.json.data[0].actions.forEach(el=>{\n      $input.item.json[el.action_type] = el.value\n    })\n  }\n}\n\nreturn $input.item;"
+      },
+      "id": "a7b41c81-3091-4ce0-a936-defd8758cb4b",
+      "name": "Code2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1900,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3333a634-8999-43aa-b512-dbf4b8ba5757",
+              "name": "gasto",
+              "value": "={{ $json.data[0].spend }}",
+              "type": "string"
+            },
+            {
+              "id": "709f9e9a-942a-4298-907b-718e48dfafb5",
+              "name": "BM",
+              "value": "={{ $item(\"0\").$node[\"Loop Over Items\"].json[\"Nome da Conta\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "0ba476f9-2b46-404e-adef-359b01e6c388",
+              "name": "data",
+              "value": "={{ $json.data[0].date_start }}",
+              "type": "string"
+            },
+            {
+              "id": "e28c83eb-27a1-474b-871b-594413638774",
+              "name": "impressoes",
+              "value": "={{ $json.data[0].impressions }}",
+              "type": "string"
+            },
+            {
+              "id": "8cce66e8-adda-45ff-8338-d6b07c53deef",
+              "name": "Campanha",
+              "value": "={{ $json.data[0].campaign_name }}",
+              "type": "string"
+            },
+            {
+              "id": "9fd990e5-e941-49b0-8950-1c73f097fae6",
+              "name": "Conjunto",
+              "value": "={{ $json.data[0].adset_name }}",
+              "type": "string"
+            },
+            {
+              "id": "be0be4b1-f191-4033-9756-7899c2d07f96",
+              "name": "ad",
+              "value": "={{ $json.data[0].ad_name }}",
+              "type": "string"
+            },
+            {
+              "id": "aa68bf71-b05a-4a05-83b1-05933c05cbaf",
+              "name": "clicks",
+              "value": "={{ $json.data[0].inline_link_clicks }}",
+              "type": "string"
+            },
+            {
+              "id": "e2171988-0e25-404e-bc9f-4f86bf8c956f",
+              "name": "initiate_checkout",
+              "value": "={{ $json.initiate_checkout}}",
+              "type": "string"
+            },
+            {
+              "id": "441cdce4-ebe7-4218-a513-53c52b098e0d",
+              "name": "land_page_views",
+              "value": "={{ $json.land_page_views }}",
+              "type": "string"
+            },
+            {
+              "id": "c89f1170-c192-4fe8-820e-96c109ce6aab",
+              "name": "video_view",
+              "value": "={{ $json.video_view }}",
+              "type": "string"
+            },
+            {
+              "id": "d8b31ba0-9236-4c32-8744-8e4a62a2feef",
+              "name": "video_p25_watched_actions",
+              "value": "={{ $json.data[0].video_p25_watched_actions[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "b0a35611-1548-428a-b265-86d41a27865f",
+              "name": "video_p50_watched_actions",
+              "value": "={{ $json.data[0].video_p50_watched_actions[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "87c15989-1927-4872-b572-703509b50664",
+              "name": "video_p75_watched_actions",
+              "value": "={{ $json.data[0].video_p75_watched_actions[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "37120d3e-0ccc-49b0-9436-5450bbce188f",
+              "name": "video_p100_watched_actions",
+              "value": "={{ $json.data[0].video_p100_watched_actions[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "4ea2225c-ba83-4d81-9ce7-dc4564a0c022",
+              "name": "reach",
+              "value": "={{ $json.data[0].reach }}",
+              "type": "string"
+            },
+            {
+              "id": "d0098cfb-b519-4f15-a3de-bfb680590835",
+              "name": "inline_post_engagement",
+              "value": "={{ $json.data[0].inline_post_engagement }}",
+              "type": "string"
+            },
+            {
+              "id": "0a1ee327-9143-4bff-84b1-119c4f7d999d",
+              "name": "frequency",
+              "value": "={{ $json.data[0].frequency }}",
+              "type": "string"
+            },
+            {
+              "id": "70460fbf-721f-4362-826b-1be405d448bd",
+              "name": "unique_clicks",
+              "value": "={{ $json.data[0].unique_inline_link_clicks }}",
+              "type": "string"
+            },
+            {
+              "id": "87ef9c8e-01a9-40cc-a303-39defb616ac7",
+              "name": "ad_id",
+              "value": "={{ $json.data[0].ad_id }}",
+              "type": "string"
+            },
+            {
+              "id": "26cd42f9-93a7-40ee-b91d-8403bdf5ec04",
+              "name": "click_botao",
+              "value": "={{ $json[\"offsite_conversion.custom.1118954493012248\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2120,
+        -180
+      ],
+      "id": "4a7027fe-dfe6-4506-970b-0692352a5e24",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "table": {
+          "__rl": true,
+          "value": "tabela_aula",
+          "mode": "list",
+          "cachedResultName": "tabela_aula"
+        },
+        "columnToMatchOn": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        2120,
+        200
+      ],
+      "id": "8ceabdcf-4cf0-4321-8415-0bb672194c37",
+      "name": "MySQL"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7bc436c9-8dea-4556-aed7-2536e13535ba",
+              "leftValue": "={{ $('If1').item.json.paging.next }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2560,
+        -180
+      ],
+      "id": "9dcb9a5f-b4a1-4415-88fa-ea53d951fcaf",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('If1').item.json.paging.next }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2780,
+        -200
+      ],
+      "id": "fed6e471-a580-4476-a957-84ae08429f77",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "campanhas_ads",
+          "mode": "list",
+          "cachedResultName": "campanhas_ads"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "gasto": "={{ $json.gasto }}",
+            "impressoes": "={{ $json.impressoes }}",
+            "clicks": "={{ $json.clicks }}",
+            "initiate_checkout": "={{ $json.initiate_checkout }}",
+            "land_page_views": "={{ $json.land_page_views }}",
+            "video_view": "={{ $json.video_view }}",
+            "video_p25_watched_actions": "={{ $json.video_p25_watched_actions }}",
+            "video_p50_watched_actions": "={{ $json.video_p50_watched_actions }}",
+            "video_p75_watched_actions": "={{ $json.video_p75_watched_actions }}",
+            "video_p100_watched_actions": "={{ $json.video_p100_watched_actions }}",
+            "reach": "={{ $json.reach }}",
+            "inline_post_engagement": "={{ $json.inline_post_engagement }}",
+            "frequency": "={{ $json.frequency }}",
+            "unique_clicks": "={{ $json.unique_clicks }}",
+            "click_botao": "={{ $json.click_botao }}",
+            "data": "={{ $json.data }}",
+            "ad": "={{ $json.ad }}",
+            "ad_id": "={{ $json.ad_id }}",
+            "id_tabela_aula": 0
+          },
+          "matchingColumns": [
+            "ad_id",
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "id_tabela_aula",
+              "displayName": "id_tabela_aula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "gasto",
+              "displayName": "gasto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "BM",
+              "displayName": "BM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "impressoes",
+              "displayName": "impressoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "Campanha",
+              "displayName": "Campanha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "Conjunto",
+              "displayName": "Conjunto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "ad",
+              "displayName": "ad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "clicks",
+              "displayName": "clicks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "initiate_checkout",
+              "displayName": "initiate_checkout",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "land_page_views",
+              "displayName": "land_page_views",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "video_view",
+              "displayName": "video_view",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "video_p25_watched_actions",
+              "displayName": "video_p25_watched_actions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "video_p50_watched_actions",
+              "displayName": "video_p50_watched_actions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "video_p75_watched_actions",
+              "displayName": "video_p75_watched_actions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "video_p100_watched_actions",
+              "displayName": "video_p100_watched_actions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "reach",
+              "displayName": "reach",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "inline_post_engagement",
+              "displayName": "inline_post_engagement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "frequency",
+              "displayName": "frequency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "unique_clicks",
+              "displayName": "unique_clicks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ad_id",
+              "displayName": "ad_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "click_botao",
+              "displayName": "click_botao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2340,
+        -180
+      ],
+      "id": "d0fcb9f5-c613-46e6-b56f-7a1d7ee3d8fc",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "icKiGLaZzX4Mm7m2",
+          "name": "supabase jp"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-09T01:29:41.559Z",
+  "versionId": "51086b2d-5fa6-4571-968e-af020bec65c4"
+}
