@@ -16,9 +16,14 @@
       "main": [
         [
           {
-            "node": "aprovada",
+            "node": "aprovado",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
           }
         ]
       ]
@@ -27,12 +32,14 @@
       "main": [
         [
           {
-            "node": "adiciona comprador",
+            "node": "novo1",
             "type": "main",
             "index": 0
-          },
+          }
+        ],
+        [
           {
-            "node": "Formata Telefone1",
+            "node": "adiciona comprador1",
             "type": "main",
             "index": 0
           }
@@ -255,6 +262,78 @@
           }
         ]
       ]
+    },
+    "aprovado": {
+      "main": [
+        [
+          {
+            "node": "busca evento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "busca evento": {
+      "main": [
+        [
+          {
+            "node": "existe1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "existe1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "add evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "aprovada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "novo1": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "adiciona comprador",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notifica grupo | Renan2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-10T18:03:23.683Z",
@@ -273,7 +352,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        20,
+        -900,
         0
       ],
       "id": "b5f86ceb-f3b8-4fec-956e-ae2c51f33ea8",
@@ -289,7 +368,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        240,
+        -680,
         0
       ]
     },
@@ -321,8 +400,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        460,
-        0
+        380,
+        -20
       ],
       "id": "396d2abb-c33f-4e45-8bce-464bce63b38b",
       "name": "aprovada"
@@ -1162,6 +1241,382 @@
       ],
       "id": "5ac467f8-de19-46ca-8237-ed582a3b885a",
       "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1PJ7sUI90q7YemvstNJWLRu8SMFZzfMQo7PQPU6FJ4gw/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 609726885,
+          "mode": "list",
+          "cachedResultName": "recuperação",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PJ7sUI90q7YemvstNJWLRu8SMFZzfMQo7PQPU6FJ4gw/edit#gid=609726885"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.contact.name }}",
+            "email": "={{ $json.contact.email }}",
+            "telefone": "={{ $json.contact.phone_number }}",
+            "oferta": "={{ $json.items[0].total_value }}",
+            "utm_source": "={{ $json.source.utm_source }}",
+            "utm_campaign": "={{ $json.source.utm_campaign }}",
+            "utm_medium": "={{ $json.source.utm_medium }}",
+            "utm_content": "={{ $json.source.utm_content }}",
+            "utm_term": "={{ $json.source.utm_term }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "oferta",
+              "displayName": "oferta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "comprou",
+              "displayName": "comprou",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        760,
+        0
+      ],
+      "id": "e90b088c-bde7-4ad9-ba30-f34e52da4047",
+      "name": "adiciona comprador1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*+1 venda IP EXPRESS*\n\nnome: {{ $json.contact.name }}\nemail: {{ $json.contact.email }}\ntelefone: {{ $json.contact.phone_number }}\n\nutm_source: {{ $json.source.utm_source }}\nutm_campaign: {{ $json.source.utm_campaign }}\nutm_medium: {{ $json.source.utm_medium }}\nutm_content: {{ $json.source.utm_content }}\nutm_term: {{ $json.source.utm_term }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7c29895f-417a-4427-9774-27ecc682e54e",
+      "name": "Notifica grupo | Renan2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        -2000
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "eventos_guru",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id_contato",
+              "condition": "eq",
+              "keyValue": "={{ $json.contact.id }}"
+            },
+            {
+              "keyName": "id_oferta",
+              "condition": "eq",
+              "keyValue": "={{ $json.items[0].offer.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -240
+      ],
+      "id": "fc07436a-90c9-4324-b6cf-a68f0a1c10e6",
+      "name": "busca evento",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "8ZVTQjP2XHFeNXtM",
+          "name": "bma"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a485b9dc-ec0b-4fad-ad5e-3c65fa500da1",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "approved",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -460,
+        0
+      ],
+      "id": "db58b516-6f40-42ec-b648-a97390dedf00",
+      "name": "aprovado"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f760240a-5458-4573-ad3c-58c2d997b90a",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -220,
+        -240
+      ],
+      "id": "a79464b5-eee8-461e-8e8f-2a4221e746d6",
+      "name": "existe1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        100,
+        -20
+      ],
+      "id": "ea138a8e-dcb3-4024-a804-741d9c8c32ba",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "tableId": "eventos_guru",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id_contato",
+              "fieldValue": "={{ $('Trata webhook').item.json.contact.id }}"
+            },
+            {
+              "fieldId": "id_oferta",
+              "fieldValue": "={{ $('Trata webhook').item.json.items[0].offer.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -220
+      ],
+      "id": "636d235d-d3db-40db-aa35-2a64fa7a9b53",
+      "name": "add evento",
+      "credentials": {
+        "supabaseApi": {
+          "id": "8ZVTQjP2XHFeNXtM",
+          "name": "bma"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cdd13823-73cd-4131-930b-63f44db6fc9c",
+              "leftValue": "={{ $item(\"0\").$node[\"busca evento\"].json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -260
+      ],
+      "id": "86c56054-de47-4046-92f6-ed927128477d",
+      "name": "novo1"
     }
   ],
   "pinData": {
@@ -1171,15 +1626,15 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "digitalmanager.guru (dev@digitalmanager.guru)",
-            "content-length": "3915",
+            "content-length": "3987",
             "content-type": "application/json",
-            "x-forwarded-for": "35.190.139.38",
+            "x-forwarded-for": "34.148.82.21",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "869fd5766395",
-            "x-real-ip": "35.190.139.38",
-            "x-request-id": "9fd8a2da-b72a-4414-bcea-d22eaaa9b769",
+            "x-real-ip": "34.148.82.21",
+            "x-request-id": "9fdcd2ae-63f1-4f8d-9240-ebfe95c405a2",
             "accept-encoding": "gzip"
           },
           "params": {},
@@ -1189,51 +1644,51 @@
             "api_token": "4MOQW1GNtH0Ok8F0XNVXJnRXiFt33bbFq4l3MLri",
             "checkout_url": "https://clkdmg.site/pay/9fd8a114-9f2c-4f4a-92ec-65b6b0776836",
             "contact": {
-              "id": "9dfa39ea-1abb-44cf-85b8-6a954dda8b5d",
-              "name": "Matheus Cristhyan",
+              "id": "9fdaefcd-2e90-42b4-85a0-53b0756c285b",
+              "name": "Raysa Freitas",
               "company_name": "",
-              "email": "matheuscristhyan.2@gmail.com",
-              "doc": "09103787460",
-              "phone_number": "81991013614",
+              "email": "raysa.bma@gmail.com",
+              "doc": "12951995725",
+              "phone_number": "21991526973",
               "phone_local_code": "55",
-              "address": "Rua Alto São José",
-              "address_number": "148",
-              "address_comp": "",
-              "address_district": "Alto do Moura",
-              "address_city": "Caruaru",
-              "address_state": "PE",
-              "address_state_full_name": "PE",
+              "address": "Rua Tailândia",
+              "address_number": "419",
+              "address_comp": "Casa 1",
+              "address_district": "Brás de Pina",
+              "address_city": "Rio de Janeiro",
+              "address_state": "RJ",
+              "address_state_full_name": "RJ",
               "address_country": "BR",
-              "address_zip_code": "55040070",
+              "address_zip_code": "21011350",
               "lead": []
             },
             "contracts": [],
             "dates": {
               "canceled_at": null,
-              "confirmed_at": "2025-09-10T18:11:58Z",
-              "created_at": "2025-09-10T18:11:06Z",
-              "expires_at": "2025-09-11T03:00:00Z",
-              "ordered_at": "2025-09-10T18:10:32Z",
-              "unavailable_until": "2025-10-10T18:11:58Z",
-              "updated_at": "2025-09-10T18:12:02Z",
-              "warranty_until": "2025-10-10T18:11:58Z"
+              "confirmed_at": "2025-09-12T20:08:39Z",
+              "created_at": "2025-09-12T20:07:56Z",
+              "expires_at": "2025-09-13T03:00:00Z",
+              "ordered_at": "2025-09-12T20:07:33Z",
+              "unavailable_until": "2025-10-12T20:08:39Z",
+              "updated_at": "2025-09-12T20:09:10Z",
+              "warranty_until": "2025-10-12T20:08:39Z"
             },
             "ecommerces": [],
             "extras": {
               "accepted_terms_url": 0,
               "accepted_privacy_policy_url": 0
             },
-            "id": "9fd8a236-319d-4dd2-a420-8f8fd2d49477",
+            "id": "9fdcd208-7ffe-4621-a394-0ace4a03fb17",
             "infrastructure": {
-              "ip": "186.235.185.14",
-              "city": "?",
+              "ip": "187.67.200.69",
+              "city": "rio de janeiro",
               "host": "clkdmg.site",
-              "ga_id": "",
-              "region": "pe",
+              "ga_id": "GA1.1.461835163.1722346833",
+              "region": "rj",
               "country": "BR",
-              "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1",
-              "city_lat_long": "0.000000,0.000000",
-              "facebook_browser_id": ""
+              "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36",
+              "city_lat_long": "-22.906847,-43.172897",
+              "facebook_browser_id": "fb.1.1757626480803.59795019686759271"
             },
             "invoice": [],
             "is_order_bump": 0,
@@ -1244,7 +1699,7 @@
                 "image_url": "https://storage.googleapis.com/disk.clkdmg.site/clients/9ae96ffc-5ae6-4368-ad95-2a28f5b8a4e1/images/products/9fd89ed7-ecf2-4422-8287-2effdc216187.png",
                 "internal_id": "9fd6bd06-f2aa-44ef-a15c-94c0fd020e4d",
                 "marketplace_id": "1757446431",
-                "marketplace_name": "pagarme",
+                "marketplace_name": "pagarme2",
                 "name": "IP EXPRESS - Setembro",
                 "offer": {
                   "id": "9fd8a114-9f2c-4f4a-92ec-65b6b0776836",
@@ -1265,11 +1720,11 @@
             "payment": {
               "affiliate_value": 0,
               "acquirer": {
-                "code": "",
+                "code": "0",
                 "message": "",
-                "name": "pagarme",
-                "nsu": "",
-                "tid": 4094168218
+                "name": "none",
+                "nsu": "4096880616",
+                "tid": "4096880616"
               },
               "can_try_again": 1,
               "coupon": null,
@@ -1281,18 +1736,18 @@
                 "qty": 1,
                 "interest": 0
               },
-              "marketplace_id": "4094168218",
-              "marketplace_name": "pagarme",
+              "marketplace_id": "ch_nz2bVW4hPlFKxNed",
+              "marketplace_name": "pagarme2",
               "marketplace_value": 0.01,
               "method": "pix",
               "net": 0.99,
               "processing_times": {
-                "started_at": "2025-09-10T18:11:30.327Z",
-                "finished_at": "2025-09-10T18:11:31.308Z",
-                "delay_in_seconds": 0
+                "started_at": "2025-09-12T20:08:12.287Z",
+                "finished_at": "2025-09-12T20:08:13.652Z",
+                "delay_in_seconds": 1
               },
               "refund_reason": "",
-              "refuse_reason": "",
+              "refuse_reason": " (0)",
               "tax": {
                 "value": 0,
                 "rate": 0
@@ -1300,10 +1755,10 @@
               "total": 1,
               "pix": {
                 "qrcode": {
-                  "signature": "00020101021226820014br.gov.bcb.pix2560pix.stone.com.br/pix/v2/6f70b1a6-a69e-4875-9872-482a9e9f1c4f52040000530398654041.005802BR5925Carolina Caribe Negocios 6014RIO DE JANEIRO622905256af960dc9240fde8968b909a063047631",
-                  "url": "https://clkdmg.site/api/checkout/invoices/9fd8a236-319d-4dd2-a420-8f8fd2d49477/qrcodes/pix"
+                  "signature": "00020101021226820014br.gov.bcb.pix2560pix.stone.com.br/pix/v2/fdd4c821-1893-4332-a415-bb510904e0f752040000530398654041.005802BR5925Carolina Caribe Negocios 6014RIO DE JANEIRO622905250bdf62853fd18bce2c35d5e656304C24C",
+                  "url": "https://clkdmg.site/api/checkout/invoices/9fdcd208-7ffe-4621-a394-0ace4a03fb17/qrcodes/pix"
                 },
-                "expiration_date": "2025-09-11"
+                "expiration_date": "2025-09-13"
               }
             },
             "product": {
@@ -1311,7 +1766,7 @@
               "image_url": "https://storage.googleapis.com/disk.clkdmg.site/clients/9ae96ffc-5ae6-4368-ad95-2a28f5b8a4e1/images/products/9fd89ed7-ecf2-4422-8287-2effdc216187.png",
               "internal_id": "9fd6bd06-f2aa-44ef-a15c-94c0fd020e4d",
               "marketplace_id": "1757446431",
-              "marketplace_name": "pagarme",
+              "marketplace_name": "pagarme2",
               "name": "IP EXPRESS - Setembro",
               "offer": {
                 "id": "9fd8a114-9f2c-4f4a-92ec-65b6b0776836",
@@ -1367,6 +1822,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-11T19:43:43.186Z",
-  "versionId": "b6503ffa-bc0d-48a6-8072-13ddf03c44b9"
+  "updatedAt": "2025-09-12T20:15:53.954Z",
+  "versionId": "30df5986-3284-41e3-b045-52f16f7af6ba"
 }
