@@ -151,6 +151,13 @@
       "main": [
         [
           {
+            "node": "DQ",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "CG5",
             "type": "main",
             "index": 0
@@ -158,7 +165,7 @@
         ],
         [
           {
-            "node": "CG",
+            "node": "CG1",
             "type": "main",
             "index": 0
           }
@@ -183,20 +190,9 @@
       "main": [
         [
           {
-            "node": "DQ",
+            "node": "Merge",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "CG": {
-      "main": [
-        [
-          {
-            "node": "DQ",
-            "type": "main",
-            "index": 0
+            "index": 1
           }
         ]
       ]
@@ -723,12 +719,37 @@
                 "conditions": [
                   {
                     "leftValue": "={{ $json.Faturamento }}",
-                    "rightValue": "Até R$ 15.000,00",
+                    "rightValue": "Até R$ 5.000,00",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
                     },
                     "id": "5b181551-a0bd-48b9-919f-a0913dc29b13"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Desqualificado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b6d95bb1-866f-4377-a348-f35e2fbf3339",
+                    "leftValue": "={{ $json.Faturamento }}",
+                    "rightValue": "R$ 5.000,00 a R$ 15.000,00",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -759,7 +780,7 @@
                 "combinator": "and"
               },
               "renameOutput": true,
-              "outputKey": "CG5"
+              "outputKey": "CG10"
             },
             {
               "conditions": {
@@ -820,34 +841,10 @@
       "typeVersion": 3.4,
       "position": [
         -720,
-        -400
+        -240
       ],
       "id": "f58789e3-00ca-4852-8151-9e3a955d6561",
       "name": "CG5"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "d41d9b8d-f9df-48ba-8a76-f5677591183f",
-              "name": "CG",
-              "value": "cg5-consultoria-gratis",
-              "type": "string"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -720,
-        -240
-      ],
-      "id": "8b656d14-af62-4265-a666-9b67b807ae40",
-      "name": "CG"
     },
     {
       "parameters": {
@@ -1043,8 +1040,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -340,
-        -660
+        -720,
+        -400
       ],
       "id": "6494574f-0c0b-4e55-a9ae-7da5b204600d",
       "name": "DQ"
@@ -1067,6 +1064,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-09-09T00:49:52.261Z",
-  "versionId": "678b4c82-1040-478f-99ee-3f434b93a764"
+  "updatedAt": "2025-09-17T16:15:07.960Z",
+  "versionId": "01290db4-a643-4325-9ca6-102a99bc8554"
 }
