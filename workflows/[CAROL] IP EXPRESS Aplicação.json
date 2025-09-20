@@ -1,39 +1,6 @@
 {
   "active": true,
   "connections": {
-    "Monday.com": {
-      "main": [
-        [
-          {
-            "node": "Monday.com1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Monday.com1": {
-      "main": [
-        [
-          {
-            "node": "Monday.com3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Date & Time": {
-      "main": [
-        [
-          {
-            "node": "Monday.com",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Trata Webhook": {
       "main": [
         [
@@ -56,20 +23,15 @@
         ]
       ]
     },
-    "Monday.com3": {
+    "Form Completo": {
       "main": [
         [
           {
-            "node": "Report - Agendamentos Closers",
+            "node": "Code",
             "type": "main",
             "index": 0
           }
-        ]
-      ]
-    },
-    "Form Completo": {
-      "main": [
-        [],
+        ],
         []
       ]
     },
@@ -116,6 +78,39 @@
           }
         ]
       ]
+    },
+    "Criar Oportunidade - Thais e Fábio1": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Oportunidade - Déborah e Fábio1": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade - Thais e Fábio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Criar Oportunidade - Déborah e Fábio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-03-29T04:13:18.064Z",
@@ -127,32 +122,6 @@
   "nodes": [
     {
       "parameters": {
-        "resource": "boardItem",
-        "boardId": "6713820059",
-        "groupId": "group_mkpfveet",
-        "name": "={{ $('Campos').item.json.nome }}",
-        "additionalFields": {}
-      },
-      "id": "d783e9b6-a401-4501-89f9-abc8a3c48d69",
-      "name": "Monday.com",
-      "type": "n8n-nodes-base.mondayCom",
-      "typeVersion": 1,
-      "position": [
-        1280,
-        360
-      ],
-      "retryOnFail": true,
-      "maxTries": 5,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "mondayComApi": {
-          "id": "ZHdCRr90m7Qp2m7i",
-          "name": "Carol Caribé"
-        }
-      }
-    },
-    {
-      "parameters": {
         "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
       },
       "id": "fdf28b1c-4b98-4488-898b-465506bb2f24",
@@ -162,76 +131,6 @@
       "position": [
         -80,
         380
-      ]
-    },
-    {
-      "parameters": {
-        "resource": "boardItem",
-        "operation": "addUpdate",
-        "itemId": "={{ $json.id }}",
-        "value": "=Nome completo:\n\n{{ $('Campos').item.json.nome }}\n\n----------\nE-mail\n\n{{ $('Campos').item.json.email }}\n\n----------\nWhatsapp:\n\n{{ $('Campos').item.json.whatsapp }}\n\n----------\n\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Campos').item.json[\"tipo de negócio\"][0] }}\n\n----------\nQual seu faturamento médio mensal dos últimos 12 meses ?\n\n{{ $('Campos').item.json.faturamento }}\n\n\n----------\nPor que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio? \n\n{{ $('Campos').item.json[\"porque acredita que participar do programa é uma oportunidade\"] }}\n\n\n----------\nEsse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Campos').item.json[\"porque deve ser aceito\"] }}\n\n----------\nO investimento para a participação no Acelera é de até 12x de R$ 13.500,00 no cartão de crédito ou R$ 120.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $('Campos').item.json.investimento[0] }}"
-      },
-      "id": "8e9d362e-2a09-4cbe-85a1-37ed69fd4f4f",
-      "name": "Monday.com1",
-      "type": "n8n-nodes-base.mondayCom",
-      "typeVersion": 1,
-      "position": [
-        1520,
-        360
-      ],
-      "retryOnFail": true,
-      "maxTries": 5,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "mondayComApi": {
-          "id": "ZHdCRr90m7Qp2m7i",
-          "name": "Carol Caribé"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "boardItem",
-        "operation": "changeMultipleColumnValues",
-        "boardId": "6713820059",
-        "itemId": "={{ $('Monday.com').item.json.id }}",
-        "columnValues": "={\"whatsapp__1\": \"{{ $('Campos').item.json.whatsapp }}\", \"whatsapp_link__1\": \"wa.me/{{ $('Campos').item.json.whatsapp.replace(\"+\",\"\") }}\", \"data_de_aplica__o__1\":\"{{ $node[\"Date & Time\"].json[\"formattedDate\"] }}\", \"origem__1\":\"{{ $('Campos').item.json.utm_source }}\", \"etapa__1\":\"0\", \"faturamento__1\":\"{{ $('Campos').item.json.faturamento }}\", \"data_1__1\": \"2025-03-29\", \"valor_do_neg_cio__1\": \"120000\" }"
-      },
-      "id": "4fe89a84-5d94-4e95-ac8b-b39034cda48c",
-      "name": "Monday.com3",
-      "type": "n8n-nodes-base.mondayCom",
-      "typeVersion": 1,
-      "position": [
-        1740,
-        360
-      ],
-      "retryOnFail": true,
-      "maxTries": 5,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "mondayComApi": {
-          "id": "ZHdCRr90m7Qp2m7i",
-          "name": "Carol Caribé"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $json.response.submittedAt }}",
-        "format": "custom",
-        "customFormat": "yyyy-MM-dd",
-        "options": {
-          "timezone": true
-        }
-      },
-      "id": "2a0ebdcd-acf4-4e8c-a5bc-f7cb80515aca",
-      "name": "Date & Time",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        1060,
-        360
       ]
     },
     {
@@ -309,8 +208,8 @@
             {
               "id": "91d59ec9-4689-4067-9c67-a987c942d9e8",
               "name": "tipo de negócio",
-              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67e4226c2c9797306a0d96b2\"].content }}",
-              "type": "array"
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67e4226c2c9797306a0d96b2\"].content[0] }}",
+              "type": "string"
             },
             {
               "id": "dadf2585-25fc-4a41-85a7-d17010f6a188",
@@ -333,8 +232,8 @@
             {
               "id": "16dd229e-2eea-4e63-8de0-6363390dbcf7",
               "name": "investimento",
-              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67e42330bc1739db070e7a9b\"].content }}",
-              "type": "array"
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67e42330bc1739db070e7a9b\"].content[0] }}",
+              "type": "string"
             },
             {
               "id": "b0bf1619-54aa-476e-9235-5deb23bb2d3b",
@@ -391,7 +290,8 @@
         360,
         380
       ],
-      "webhookId": "f3be1286-273e-4a70-adf6-ec7eb4d03d16"
+      "webhookId": "f3be1286-273e-4a70-adf6-ec7eb4d03d16",
+      "disabled": true
     },
     {
       "parameters": {
@@ -426,8 +326,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1960,
-        360
+        2240,
+        340
       ]
     },
     {
@@ -511,6 +411,118 @@
       ],
       "id": "5ab23830-d2a5-488d-85bd-f600b13927f8",
       "name": "Elimina respostas vazias"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Oportunidade/CriarOportunidade",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8mYpXFef7IDDSLuLaxEnzDHcM9tL-_-ijnL66oBJ2KfCwJkhAUjuttynsbTrCaUm0lidMhEoTUK0BHeIF3sRVOdI83G0RPWpOo_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"TituloOportunidade\": \"{{ $('Campos').item.json.nome }}\",\n  \"NomeLead\": \"{{ $('Campos').item.json.nome }}\",\n\"DocumentoLead\":\"{{ $('Code').item.json.cnpj }}\",\n  \"Campos\": [\n    {\n      \"IdCampoFormulario\": 7,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.faturamento }}\"\n    },\n{\n      \"IdCampoFormulario\": 2,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.email }}\"\n    },\n{\n      \"IdCampoFormulario\": 22,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.whatsapp }}\"\n    },\n {\n      \"IdCampoFormulario\": 10,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['tipo de negócio'] }}\"\n    },\n {\n      \"IdCampoFormulario\": 28,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['porque acredita que participar do programa é uma oportunidade'] }}\"\n    },\n {\n      \"IdCampoFormulario\": 27,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json['porque deve ser aceito'] }}\"\n    },\n {\n      \"IdCampoFormulario\": 29,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"{{ $('Campos').item.json.investimento }}\"\n    },\n {\n      \"IdCampoFormulario\": 30,\n      \"IdConteudo\": 1,\n      \"Conteudo\": \"21/09/2025\"\n    } \n  ]\n}\n",
+        "options": {}
+      },
+      "id": "4ff818ee-672e-4164-ae6c-c55491429317",
+      "name": "Criar Oportunidade - Thais e Fábio1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1520,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://apinewintegracao.bomcontrole.com.br/integracao/Lead/Criar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "ApiKey Z0EjZPzTOb8mYpXFef7IDDSLuLaxEnzDHcM9tL-_-ijnL66oBJ2KfCwJkhAUjuttynsbTrCaUm0lidMhEoTUK0BHeIF3sRVOdI83G0RPWpOo_erG4K7M9uM596NsOdVjAp3szAxHWrCxbXqRAWFz3g.."
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"PessoaJuridica\": {\n    \"Documento\": \"{{ $json.cnpj }}\",\n    \"NomeFantasia\": \"{{ $('Campos').item.json.nome }}\",\n    \"RazaoSocial\": \"{{ $('Campos').item.json.nome }}\"\n  },\n  \"Enderecos\": [\n    {\n      \"Cep\": \"55000000\",\n      \"Logradouro\": \"Rua Teste\",\n      \"Numero\": \"123\",\n      \"Complemento\": \"Sala 1\",\n      \"Bairro\": \"Centro\",\n      \"Padrao\": true,\n      \"Referencia\": \"Próximo à praça\",\n      \"TipoLogradouro\": {\n        \"Id\": 1\n      },\n      \"Uf\": \"PE\",\n      \"Cidade\": \"Caruaru\"\n    }\n  ],\n  \"Contatos\": [\n    {\n      \"Nome\": \"{{ $('Campos').item.json.nome }}\",\n      \"Email\": \"{{ $('Campos').item.json.email }}\",\n      \"Telefone\": \"{{ $('Campos').item.json.whatsapp }}\",\n      \"Celular\": \"{{ $('Campos').item.json.whatsapp }}\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "id": "c1138c18-017d-4489-8303-eab655eb74c3",
+      "name": "Criar Oportunidade - Déborah e Fábio1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um CNPJ válido com 14 dígitos sem formatação\n\nfunction gerarCNPJ() {\n  function getRandomInt(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n  }\n\n  const n = [];\n  for (let i = 0; i < 8; i++) {\n    n.push(getRandomInt(0, 9));\n  }\n\n  // Fixo: 0001 (filial padrão)\n  n.push(0, 0, 0, 1);\n\n  const peso1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\n  let soma = n.reduce((acc, val, idx) => acc + val * peso1[idx], 0);\n  let d1 = soma % 11;\n  d1 = d1 < 2 ? 0 : 11 - d1;\n  n.push(d1);\n\n  const peso2 = [6].concat(peso1);\n  soma = n.reduce((acc, val, idx) => acc + val * peso2[idx], 0);\n  let d2 = soma % 11;\n  d2 = d2 < 2 ? 0 : 11 - d2;\n  n.push(d2);\n\n  return n.join('');\n}\n\n// Retorna como saída\nreturn [\n  {\n    json: {\n      cnpj: gerarCNPJ()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        360
+      ],
+      "id": "f2b1680b-a641-42b9-8e8e-5ee559ab97ad",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação AULA EXCLUSIVA:* ✅🔥\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json[\"tipo de negócio\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\n*Origens:*\nFormulário: Aplicação - Aula Exclusiva\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "171d196e-9b74-449c-af2c-6384a14999fe",
+      "name": "Report - Agendamentos Closers1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1740,
+        360
+      ]
     }
   ],
   "pinData": {
@@ -667,6 +679,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-19T12:59:24.649Z",
-  "versionId": "659b291b-c3dd-4640-94c9-8350cf5ed35c"
+  "updatedAt": "2025-09-19T17:32:18.256Z",
+  "versionId": "b76f7354-46df-433b-a778-42c1dd069586"
 }
