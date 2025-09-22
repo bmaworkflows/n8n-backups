@@ -60,7 +60,7 @@
       "main": [
         [
           {
-            "node": "Busca Invite",
+            "node": "Campos",
             "type": "main",
             "index": 0
           }
@@ -96,7 +96,13 @@
     },
     "Criar Oportunidade - Renan": {
       "main": [
-        []
+        [
+          {
+            "node": "Report - Agendamentos Closers1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Criar Lead - Renan1": {
@@ -104,17 +110,6 @@
         [
           {
             "node": "Filter",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Busca Invite": {
-      "main": [
-        [
-          {
-            "node": "Campos",
             "type": "main",
             "index": 0
           }
@@ -297,8 +292,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1140,
-        100
+        780,
+        120
       ],
       "id": "3f803c37-dc73-4c5d-b720-27b05f222671",
       "name": "Campos"
@@ -329,8 +324,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1400,
-        100
+        1000,
+        120
       ],
       "id": "769a5f6b-720f-42f7-a202-2c6fe3a58f73",
       "name": "Gerar CNPJ"
@@ -397,8 +392,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1660,
-        100
+        1260,
+        120
       ]
     },
     {
@@ -428,8 +423,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1900,
-        100
+        1520,
+        120
       ]
     },
     {
@@ -494,27 +489,40 @@
     },
     {
       "parameters": {
-        "url": "=https://api.calendly.com/scheduled_events?organization=\thttps://api.calendly.com/organizations/85e6ccb1-b72c-49b9-abde-9608c02a1d01&invitee_email={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e5e913f6fa2a1c06b43b\"][\"content\"] }}&min_start_time={{ $item(\"0\").$node[\"Date & Time4\"].json[\"currentDate\"] }}",
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
-              "name": "Authorization",
-              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação ACELERA:* ✅🔥\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação no Mercado*: {{ $('Campos').item.json[\"atuacao\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\nPorque quer fazer parte do ACELERA?\n{{ $('Campos').item.json.oportunidade }}\n\n*Origens:*\nFormulário: Aplicação - Aula Exclusiva\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas no Bom Controle*: https://new.bomcontrole.com.br/crm/oportunidade/detalhes/{{ $json }}"
             }
           ]
         },
         "options": {}
       },
-      "id": "4bfafa54-f593-4751-9e68-fe77de2671c1",
-      "name": "Busca Invite",
+      "id": "ea90f2de-609c-4671-80bf-c1e8154215a2",
+      "name": "Report - Agendamentos Closers1",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        820,
+        1740,
         120
-      ],
-      "onError": "continueErrorOutput"
+      ]
     }
   ],
   "pinData": {
@@ -656,11 +664,6 @@
           "executionMode": "production"
         }
       }
-    ],
-    "Criar Lead - Renan": [
-      {
-        "json": 3823
-      }
     ]
   },
   "settings": {
@@ -679,6 +682,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-07-17T18:14:21.469Z",
-  "versionId": "d77b1b59-af9f-4dab-8c04-75ec6591fcbe"
+  "updatedAt": "2025-09-22T14:21:26.844Z",
+  "versionId": "402b29e7-c255-4b39-a8c6-d1cc88289513"
 }
