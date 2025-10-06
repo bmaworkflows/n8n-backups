@@ -36,7 +36,13 @@
     },
     "Campos": {
       "main": [
-        []
+        [
+          {
+            "node": "Dados Planilha |Meteórico 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Dados Planilha |Meteórico 1": {
@@ -84,7 +90,7 @@
     },
     {
       "parameters": {
-        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['Telefone_do_Whatsapp_com_DDD'] = formataTelefone($node['Trata Webhook'].json['Telefone_do_Whatsapp_com_DDD'])\n\nreturn $input.all();"
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n$input.all()[0].json[\"No Label telefone\"] = formataTelefone($node['Trata Webhook'].json[\"No Label telefone\"])\n\nreturn $input.all();"
       },
       "id": "2d863c74-dda2-4980-ab1e-521493e3dc95",
       "name": "Formata Telefone",
@@ -102,19 +108,19 @@
             {
               "id": "2a68488c-f0b4-4406-baf9-b2c4bff1f2fb",
               "name": "nome",
-              "value": "={{ $('Formata Telefone').item.json.Seu_nome }}",
+              "value": "={{ $('Formata Telefone').item.json[\"No Label nome\"] }}",
               "type": "string"
             },
             {
               "id": "62ec3931-595f-43f5-9181-73c400ca8c9a",
               "name": "email",
-              "value": "={{ $('Formata Telefone').item.json.Seu_melhor_e_mail }}",
+              "value": "={{ $('Formata Telefone').item.json[\"No Label email\"] }}",
               "type": "string"
             },
             {
               "id": "b7f3a6f5-6974-4aaf-9140-e16dffdddf74",
               "name": "whatsapp",
-              "value": "={{ $('Formata Telefone').item.json.Telefone_do_Whatsapp_com_DDD }}",
+              "value": "={{ $('Formata Telefone').item.json[\"No Label telefone\"] }}",
               "type": "string"
             },
             {
@@ -154,27 +160,15 @@
               "type": "string"
             },
             {
-              "id": "1cad61e4-9a1a-4934-adc4-c7578f4baffa",
-              "name": "Data_da_conversao",
-              "value": "={{ $('GreatPages').item.json.Data_da_conversao.toDateTime().format('dd/MM/yyyy HH:mm') }}",
+              "id": "2e7d81ac-7cd0-435e-844d-b78ff73d90bb",
+              "name": "modelo",
+              "value": "={{ $('Formata Telefone').item.json.modelo }}",
               "type": "string"
             },
             {
-              "id": "521979f7-1046-4208-ae94-32c2973fc06b",
-              "name": "ip_usuário",
-              "value": "={{ $('Trata Webhook').item.json.IP_do_usuario }}",
-              "type": "string"
-            },
-            {
-              "id": "02913e47-45c4-4eb6-aaf9-b4b3e3f2eef2",
-              "name": "fbclid",
-              "value": "={{ $('Formata Telefone').item.json.fbclid }}",
-              "type": "string"
-            },
-            {
-              "id": "d7235bfe-e9e2-4086-9fde-56fdeb2732f4",
-              "name": "gclid",
-              "value": "={{ $('Formata Telefone').item.json.gclid }}",
+              "id": "22749694-f939-463b-b6c0-c643b0e7b999",
+              "name": "faturamento",
+              "value": "={{ $('Formata Telefone').item.json.faturamento }}",
               "type": "string"
             }
           ]
@@ -214,25 +208,25 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": 249694619,
+          "value": 1366043750,
           "mode": "list",
-          "cachedResultName": "IMERSÃO 2025 - PERPÉTUO",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=249694619"
+          "cachedResultName": "ISCA - AULA GRAVADA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=1366043750"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
             "nome": "={{ $json.nome }}",
-            "whatsapp": "={{ $json.whatsapp }}",
             "email": "={{ $json.email }}",
-            "pagina": "={{ $json.pagina }}",
+            "telefone": "={{ $json.whatsapp }}",
             "utm_source": "={{ $json.utm_source }}",
             "utm_campaign": "={{ $json.utm_campaign }}",
             "utm_medium": "={{ $json.utm_medium }}",
             "utm_content": "={{ $json.utm_content }}",
             "utm_term": "={{ $json.utm_term }}",
-            "chave": "={{ $json.whatsapp.slice(-7) }}",
-            "data": "={{ $json.Data_da_conversao }}"
+            "modelo de negócio": "={{ $json.modelo }}",
+            "faturamento": "={{ $json.faturamento }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -264,23 +258,13 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "whatsapp",
-              "displayName": "whatsapp",
+              "id": "telefone",
+              "displayName": "telefone",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
-            },
-            {
-              "id": "ingresso",
-              "displayName": "ingresso",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
             },
             {
               "id": "pagina",
@@ -290,6 +274,26 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "modelo de negócio",
+              "displayName": "modelo de negócio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "utm_source",
@@ -330,24 +334,6 @@
             {
               "id": "utm_term",
               "displayName": "utm_term",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "grupo",
-              "displayName": "grupo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "chave",
-              "displayName": "chave",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -412,7 +398,7 @@
           "parameters": [
             {
               "name": "message",
-              "value": "=*+1 Lead do perpétuo: Imersão presencial - Mentoria High Ticket®*\n\nNome: {{ $('Campos').item.json.nome }}\nWhatsapp: {{ $('Campos').item.json.whatsapp }}\n\nOrigens:\n\nsource: {{ $('Campos').item.json.utm_source }}\ncampaign: {{ $('Campos').item.json.utm_campaign }}\nmedium: {{ $('Campos').item.json.utm_medium }}\ncontent: {{ $('Campos').item.json.utm_content }}\nterm: {{ $('Campos').item.json.utm_term }}"
+              "value": "=*+1 Lead da isca - _AULA GRAVADA_* 🎣\n\nNome: {{ $('Campos').item.json.nome }}\nWhatsapp: {{ $('Campos').item.json.whatsapp }}\n\nNegócio: {{ $json['modelo de negócio'] }}\nFaturamento: {{ $json.faturamento }}\n\nOrigens:\n\nsource: {{ $('Campos').item.json.utm_source }}\ncampaign: {{ $('Campos').item.json.utm_campaign }}\nmedium: {{ $('Campos').item.json.utm_medium }}\ncontent: {{ $('Campos').item.json.utm_content }}\nterm: {{ $('Campos').item.json.utm_term }}"
             },
             {
               "name": "phone",
@@ -439,7 +425,7 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "WordPress/6.8.3; https://josepbijari.com",
-            "content-length": "295",
+            "content-length": "296",
             "accept": "*/*",
             "accept-encoding": "deflate, gzip",
             "content-type": "application/x-www-form-urlencoded",
@@ -461,7 +447,7 @@
             "utm_medium": "",
             "utm_campaign": "",
             "utm_term": "",
-            "modelo": "Tenho curso online e quero lançar minha mentoria",
+            "modelo": "Sou mentor e quero escalar as vendas da minha mentoria",
             "faturamento": "R$ 15.000,00 a R$ 20.000,00",
             "form_id": "6847d5cf",
             "form_name": "FORM-V18-V3"
@@ -488,6 +474,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-02T17:22:11.184Z",
-  "versionId": "0ef348a6-a5ca-44af-821f-424e68fc02f1"
+  "updatedAt": "2025-10-06T12:52:13.492Z",
+  "versionId": "cd805570-406f-46b4-a6c9-aba0e297febd"
 }
