@@ -243,6 +243,105 @@
           }
         ]
       ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "PRE-CALL 2 - THAIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PRE-CALL 1 - THAIS": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "PRE-CALL 2 - GABRIEL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PRE-CALL 1 - GABRIEL": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "PRE-CALL 2 - MATHEUS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PRE-CALL 1 - MATHEUS": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo | Thaís3": {
+      "main": [
+        [
+          {
+            "node": "PRE-CALL 1 - THAIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo | Deborah16": {
+      "main": [
+        [
+          {
+            "node": "PRE-CALL 1 - GABRIEL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo | Deborah8": {
+      "main": [
+        [
+          {
+            "node": "PRE-CALL 1 - MATHEUS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-17T04:31:19.059Z",
@@ -1194,6 +1293,264 @@
       ],
       "id": "e96ba9d4-0e03-4b40-bc80-adfe1f5ae778",
       "name": "Thais CLINT"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4560,
+        -680
+      ],
+      "id": "cdc34a93-7ca4-4743-9a1a-f1bd797ea180",
+      "name": "Wait1",
+      "webhookId": "19a107f0-aa3c-452b-af88-d097f337ba2e"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E7663DE20C4B09544DBBEF0AADBDFFC/token/F239CE16ECAC4C2379436002/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fb37fbcf369a04af5ac8f627e7b8eb668S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Opa, {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"].split(\" \")[0] }}, tudo certo? Aqui é a Thais, especialista na metodologia Fluxo de Desenvolvimento Imobiliário da Carolina Caribé. Acabei de receber a sua aplicação para nossa consultoria gratuita! Nosso objetivo é diagnosticar sua situação real, mapear os obstáculos no desenvolvimento do seu negócio imobiliário e entregar algo que você possa colocar em prática assim que sair da consultoria."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4340,
+        -680
+      ],
+      "id": "b49010ec-9e1b-46b3-803e-3bf5edb77827",
+      "name": "PRE-CALL 1 - THAIS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E7663DE20C4B09544DBBEF0AADBDFFC/token/F239CE16ECAC4C2379436002/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fb37fbcf369a04af5ac8f627e7b8eb668S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Importante: Nossas vagas são extremamente limitadas, caso você NÃO confirme sua presença nas próximas horas, essa vaga será cedida a outra pessoa. Posso confirmar sua participação no dia {{ $item(0).$node[\"Busca Invite\"].json.collection[\"0\"].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat(\"dd/MM\") }} às {{ $item(0).$node[\"Busca Invite\"].json.collection[\"0\"].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat(\"HH:mm\") }}?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4780,
+        -680
+      ],
+      "id": "c6a610ac-7352-4229-b0c2-d48e2eb7f7ab",
+      "name": "PRE-CALL 2 - THAIS"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4560,
+        -100
+      ],
+      "id": "ac4a9996-5317-4d71-9151-dd883dd30239",
+      "name": "Wait2",
+      "webhookId": "19a107f0-aa3c-452b-af88-d097f337ba2e"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E760A7B138CD120EDE452988BE3B884/token/C504ED6F38F61E60F94A3843/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fb37fbcf369a04af5ac8f627e7b8eb668S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Opa, {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"].split(\" \")[0] }}, tudo certo? Aqui é o Gabriel, especialista na metodologia Fluxo de Desenvolvimento Imobiliário da Carolina Caribé. Acabei de receber a sua aplicação para nossa consultoria gratuita! Nosso objetivo é diagnosticar sua situação real, mapear os obstáculos no desenvolvimento do seu negócio imobiliário e entregar algo que você possa colocar em prática assim que sair da consultoria."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4340,
+        -100
+      ],
+      "id": "6fa3363b-94cc-48d9-86e4-8641289399c2",
+      "name": "PRE-CALL 1 - GABRIEL"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E760A7B138CD120EDE452988BE3B884/token/C504ED6F38F61E60F94A3843/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fb37fbcf369a04af5ac8f627e7b8eb668S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Importante: Nossas vagas são extremamente limitadas, caso você NÃO confirme sua presença nas próximas horas, essa vaga será cedida a outra pessoa. Posso confirmar sua participação no dia {{ $item(0).$node[\"Busca Invite\"].json.collection[\"0\"].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat(\"dd/MM\") }} às {{ $item(0).$node[\"Busca Invite\"].json.collection[\"0\"].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat(\"HH:mm\") }}?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4780,
+        -100
+      ],
+      "id": "fac44220-8aef-494c-9de1-4237fac03d9d",
+      "name": "PRE-CALL 2 - GABRIEL"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4600,
+        600
+      ],
+      "id": "fbe1e40b-5935-4220-813c-214eca91b8b2",
+      "name": "Wait3",
+      "webhookId": "19a107f0-aa3c-452b-af88-d097f337ba2e"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E7663D3BB06705E37C93A15F2D9F67D/token/C08C1E0C657D2257DFC41053/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fb37fbcf369a04af5ac8f627e7b8eb668S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Opa, {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"].split(\" \")[0] }}, tudo certo? Aqui é o Matheus, especialista na metodologia Fluxo de Desenvolvimento Imobiliário da Carolina Caribé. Acabei de receber a sua aplicação para nossa consultoria gratuita! Nosso objetivo é diagnosticar sua situação real, mapear os obstáculos no desenvolvimento do seu negócio imobiliário e entregar algo que você possa colocar em prática assim que sair da consultoria."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4380,
+        600
+      ],
+      "id": "78996598-5d45-4f26-aab5-be1c3a468fa0",
+      "name": "PRE-CALL 1 - MATHEUS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E7663D3BB06705E37C93A15F2D9F67D/token/C08C1E0C657D2257DFC41053/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fb37fbcf369a04af5ac8f627e7b8eb668S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Importante: Nossas vagas são extremamente limitadas, caso você NÃO confirme sua presença nas próximas horas, essa vaga será cedida a outra pessoa. Posso confirmar sua participação no dia {{ $item(0).$node[\"Busca Invite\"].json.collection[\"0\"].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat(\"dd/MM\") }} às {{ $item(0).$node[\"Busca Invite\"].json.collection[\"0\"].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat(\"HH:mm\") }}?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4820,
+        600
+      ],
+      "id": "0086a6cc-2446-4d1c-8f71-f4495da4ca0b",
+      "name": "PRE-CALL 2 - MATHEUS"
     }
   ],
   "pinData": {
@@ -1387,6 +1744,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-13T15:21:29.541Z",
-  "versionId": "a10ce0b0-f0b0-4286-9cd9-37ef6d5f783e"
+  "updatedAt": "2025-10-16T04:24:51.277Z",
+  "versionId": "0927ab55-af35-4702-be19-daeaf1db92ff"
 }
