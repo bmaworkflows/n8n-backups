@@ -1,0 +1,233 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-30T14:19:16.851Z",
+  "id": "grkd7da6L2vSsDkw",
+  "meta": null,
+  "name": "[BMInc] Report",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2c3613dc-7c4a-40af-819c-961a5852725f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7bd2995e-c63b-4144-a39d-8b6415b91cd0",
+      "name": "Webhook",
+      "webhookId": "2c3613dc-7c4a-40af-819c-961a5852725f"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "e76923d1-83e7-4f75-9a2f-dd38b9d6e563",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=554184701287"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead BMAinc*\n\n*Nome do lead*: {{ $json.response.answers[\"68f774eac726520d6a0afb27\"].content }}\n\n*E-mail*: {{ $json.response.answers[\"68f774eac726520d6a0afb29\"].content }}\n\n*Whatsapp*: {{ $json.response.answers[\"68f774eac726520d6a0afb28\"].content }}\n\n*Profissão:* {{ $json.response.answers[\"68f774eac726520d6a0afb2a\"].content[0] }}\n\n*Tempo que tem interesse em adquirir o terreno:* {{ $json.response.answers[\"68f775e39d5ba80f830e165d\"].content[0] }}\n\n*Disponível pra investir:* {{ $json.response.answers[\"68f775e99d5ba80f830e165e\"].content[0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3708c05b-24eb-49c7-9196-e81f67e7cc25",
+      "name": "Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        0
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "3155",
+            "content-type": "application/json",
+            "x-forwarded-for": "68.183.123.93",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "869fd5766395",
+            "x-real-ip": "68.183.123.93",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "6903741cd313de6e08119ce2",
+              "formId": "68f774e9c726520d6a0afb25",
+              "ipAddress": "190.89.246.152",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "141.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_gcl_au": "1.1.1598151795.1754967679",
+                "hotid": "eyJjaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIiwiYmlkIjoiMTc1MTMxMzQ4ODM5MTc5NzI0MDE4Mjk2Nzk0MzgwMCIsInNpZCI6ImNmOTFiZTg2YTRjNzQ1OGNhYmEwNWI5MDhhOTQyM2NmIn0=",
+                "_ltusession": "1759376967413__1",
+                "_ltuid": "19DU0z",
+                "ttcsid_CEDLAVJC77UDF9713HP0": "1759376967555::pp0K8Hdh_e4bBJKUV_tv.1.1759376967760.0",
+                "_ga_324806166": "GS2.1.s1759376966$o1$g0$t1759376969$j57$l0$h0",
+                "_ga_5GVPZDVNW9": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h1138898967",
+                "_ga_BJR0JVV5FR": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
+                "_ga_PEGMJDK06R": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
+                "_fbc": "fb.1.1761053239943.fbclid",
+                "_clck": "cymcv9^2^g0c^0^1933",
+                "_ga": "GA1.1.1550280858.1744865246",
+                "ttcsid": "1761053240321::ZWoVQS_pFH2rYwh3CVN9.13.1761053584780.0",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1761053240320::Yj1D0jw09kyMRNQQwFr5.12.1761053584780.0",
+                "_ga_QMHGX1WZCF": "GS2.1.s1761053240$o11$g1$t1761053650$j60$l0$h1168345197"
+              },
+              "timeToComplete": 11.905,
+              "startedAt": "2025-10-30T14:20:17.635000Z",
+              "submittedAt": "2025-10-30T14:20:29.540000Z",
+              "createdAt": "2025-10-30T14:20:12.654000Z",
+              "updatedAt": "2025-10-30T14:20:30.341000Z",
+              "answers": {
+                "68f774eac726520d6a0afb27": {
+                  "answerId": "6903741c397b622b92ffc344",
+                  "fieldTitle": "Qual seu nome completo?",
+                  "fieldDescription": null,
+                  "content": "Matheus"
+                },
+                "68f774eac726520d6a0afb29": {
+                  "answerId": "69037420397b622b92ffc350",
+                  "fieldTitle": "Digite seu melhor e-mail",
+                  "fieldDescription": null,
+                  "content": "matheus@gmail.com"
+                },
+                "68f774eac726520d6a0afb28": {
+                  "answerId": "69037425397b622b92ffc35c",
+                  "fieldTitle": "Número de WhatsApp com DDD",
+                  "fieldDescription": null,
+                  "content": "+558191013614"
+                },
+                "68f774eac726520d6a0afb2a": {
+                  "answerId": "69037428397b622b92ffc366",
+                  "fieldTitle": "Qual sua profissão atual?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Empresário (a)"
+                  ]
+                },
+                "68f775e39d5ba80f830e165d": {
+                  "answerId": "6903742a397b622b92ffc36b",
+                  "fieldTitle": "Você tem interesse em adquirir um terreno quando?&nbsp;",
+                  "fieldDescription": null,
+                  "content": [
+                    "Até 6 meses"
+                  ]
+                },
+                "68f775e99d5ba80f830e165e": {
+                  "answerId": "6903742c397b622b92ffc36d",
+                  "fieldTitle": "Quanto você está disposto a investir?&nbsp;",
+                  "fieldDescription": null,
+                  "content": [
+                    "A partir de R$ 550 mil"
+                  ]
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/2c3613dc-7c4a-40af-819c-961a5852725f",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-30T14:27:00.059Z",
+  "versionId": "6cbaf0eb-bc7a-45b1-82e2-194f6f0b6140"
+}
