@@ -16,7 +16,29 @@
       "main": [
         [
           {
+            "node": "campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos": {
+      "main": [
+        [
+          {
             "node": "Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
             "type": "main",
             "index": 0
           }
@@ -26,7 +48,9 @@
   },
   "createdAt": "2025-10-30T14:19:16.851Z",
   "id": "grkd7da6L2vSsDkw",
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "[BMInc] Report",
   "nodes": [
     {
@@ -76,11 +100,11 @@
           "parameters": [
             {
               "name": "phone",
-              "value": "=554184701287"
+              "value": "=554188494211"
             },
             {
               "name": "message",
-              "value": "=*Novo lead BMAinc*\n\n*Nome do lead*: {{ $json.response.answers[\"68f774eac726520d6a0afb27\"].content }}\n\n*E-mail*: {{ $json.response.answers[\"68f774eac726520d6a0afb29\"].content }}\n\n*Whatsapp*: {{ $json.response.answers[\"68f774eac726520d6a0afb28\"].content }}\n\n*Profissão:* {{ $json.response.answers[\"68f774eac726520d6a0afb2a\"].content[0] }}\n\n*Tempo que tem interesse em adquirir o terreno:* {{ $json.response.answers[\"68f775e39d5ba80f830e165d\"].content[0] }}\n\n*Disponível pra investir:* {{ $json.response.answers[\"68f775e99d5ba80f830e165e\"].content[0] }}"
+              "value": "=*Novo lead BMAinc*\n\n*Nome do lead*: {{ $json.nome }}\n\n*E-mail*: {{ $json.email }}\n\n*Whatsapp*: {{ $json.telefone }}\n\n*Profissão:* {{ $json.tempo[0] }}\n\n*Tempo que tem interesse em adquirir o terreno:* {{ $json.tempo[0] }}\n\n*Disponível pra investir:* {{ $json.investimento[0] }}"
             }
           ]
         },
@@ -91,9 +115,177 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        460,
+        640,
         0
       ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1f61b421-dc70-45ea-b7ca-01c030e47a6d",
+              "name": "nome",
+              "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb27\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "29179bfe-a39d-4a61-a450-f7f7b4be1cce",
+              "name": "email",
+              "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb29\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "9e414a14-1ecd-492e-9f9f-5af40c795f70",
+              "name": "telefone",
+              "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb28\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "395da50d-2217-4a57-8428-6c3bf7c89471",
+              "name": "profissao",
+              "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb2a\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "dba47fef-89db-4bfe-b6cb-e933c6d2780f",
+              "name": "tempo",
+              "value": "={{ $json.response.answers[\"68f775e39d5ba80f830e165d\"].content }}",
+              "type": "array"
+            },
+            {
+              "id": "5fe17506-61a3-40a0-a994-99b8b2303f7c",
+              "name": "investimento",
+              "value": "={{ $json.response.answers[\"68f775e99d5ba80f830e165e\"].content }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "14d54764-f976-410b-9c1a-5c00e08f6963",
+      "name": "campos"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1m8WGH58WpMi8c4XqxCCbdIq6CaPH0GglJJVutureQto/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1m8WGH58WpMi8c4XqxCCbdIq6CaPH0GglJJVutureQto/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $('campos').item.json.nome }}",
+            "email": "={{ $('campos').item.json.email }}",
+            "telefone": "={{ $('campos').item.json.telefone }}",
+            "profissao": "={{ $('campos').item.json.profissao }}",
+            "tempo": "={{ $('campos').item.json.tempo[0] }}",
+            "investimento": "={{ $('campos').item.json.investimento[0] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "profissao",
+              "displayName": "profissao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tempo",
+              "displayName": "tempo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "investimento",
+              "displayName": "investimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        860,
+        0
+      ],
+      "id": "05e4e9c8-6b82-4a94-ae62-576ef95b9380",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
     }
   ],
   "pinData": {
@@ -228,6 +420,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-30T14:27:00.059Z",
-  "versionId": "6cbaf0eb-bc7a-45b1-82e2-194f6f0b6140"
+  "updatedAt": "2025-10-31T16:48:37.645Z",
+  "versionId": "758cbbc8-c5b0-4909-85e2-66621be4d769"
 }
