@@ -150,7 +150,13 @@
     },
     "preencheu whatsapp": {
       "main": [
-        []
+        [
+          {
+            "node": "PARCIAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Switch": {
@@ -337,6 +343,17 @@
         [
           {
             "node": "PRE-CALL 1 - MATHEUS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PARCIAL": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Deborah",
             "type": "main",
             "index": 0
           }
@@ -1038,6 +1055,10 @@
             {
               "name": "dono",
               "value": "matheusschefer.bma@gmail.com"
+            },
+            {
+              "name": "formulario",
+              "value": "Consultoria Grátis - CG com Calendly v2"
             }
           ]
         },
@@ -1122,6 +1143,10 @@
             {
               "name": "dono",
               "value": "gabrielfernandes.bma@gmail.com"
+            },
+            {
+              "name": "formulario",
+              "value": "Consultoria Grátis - CG com Calendly v2"
             }
           ]
         },
@@ -1280,6 +1305,10 @@
             {
               "name": "dono",
               "value": "bma.thaiscloser@gmail.com"
+            },
+            {
+              "name": "formulario",
+              "value": "Consultoria Grátis - CG com Calendly v2"
             }
           ]
         },
@@ -1551,6 +1580,127 @@
       ],
       "id": "0086a6cc-2446-4d1c-8f71-f4495da4ca0b",
       "name": "PRE-CALL 2 - MATHEUS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363421884512548-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead PARCIAL Carolina Caribé 🔥*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\nFormulario:Consultoria Grátis - CG com Calendly V2\n\n*Informações completas na Clint*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0db53d1e-2977-4f2c-9375-93ceb46fbe41",
+      "name": "Notifica grupo | Deborah",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3140,
+        2260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/39a1b8b1-dcd0-4559-838f-a3af3425121c",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"instagram\"] }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"tipo de negocio\"] }}"
+            },
+            {
+              "name": "cenario",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+            },
+            {
+              "name": "dificuldade",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"o que impede de alcançar seu objetivo\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+            },
+            {
+              "name": "objetivo",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+            },
+            {
+              "name": "produto",
+              "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"produto que já desenvolveu\"] }}"
+            },
+            {
+              "name": "utm_source",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+            },
+            {
+              "name": "utm_campaign",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+            },
+            {
+              "name": "utm_medium",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+            },
+            {
+              "name": "utm_content",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+            },
+            {
+              "name": "utm_term",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+            },
+            {
+              "name": "formulario",
+              "value": "Consultoria Grátis - CG com Calendly v2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2880,
+        2260
+      ],
+      "id": "ca8d8a2e-a4ec-44c4-96ab-889e35b4a7f8",
+      "name": "PARCIAL"
     }
   ],
   "pinData": {
@@ -1744,6 +1894,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-16T04:24:51.277Z",
-  "versionId": "0927ab55-af35-4702-be19-daeaf1db92ff"
+  "updatedAt": "2025-11-04T01:46:12.662Z",
+  "versionId": "e3c5d0fe-eca7-44eb-986e-67179b4507c0"
 }
