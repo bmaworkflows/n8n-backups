@@ -1,0 +1,1048 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata webhook": {
+      "main": [
+        [
+          {
+            "node": "aprovada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aprovada": {
+      "main": [
+        [
+          {
+            "node": "Constrói utms",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "novo": {
+      "main": [
+        [
+          {
+            "node": "att contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria contato": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "att contact": {
+      "main": [
+        [
+          {
+            "node": "add tag2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "existe": {
+      "main": [
+        [
+          {
+            "node": "busca contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "existe",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone1": {
+      "main": [
+        []
+      ]
+    },
+    "sem nono digito": {
+      "main": [
+        [
+          {
+            "node": "busca contato1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato1": {
+      "main": [
+        [
+          {
+            "node": "add tag1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "sem nono digito",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag1": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag2": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Constrói utms": {
+      "main": [
+        [
+          {
+            "node": "campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-04T18:17:25.504Z",
+  "id": "dESUd7rLSs6bFoDi",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL][IP ONLINE][PAGO][NOVEMBRO] Compradores V.HOTMART",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4faac331-7536-4017-9b4d-1fc248c919f4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        -920
+      ],
+      "id": "a6b044e2-a262-4988-bb2b-6c94ea56f267",
+      "name": "Webhook",
+      "webhookId": "4faac331-7536-4017-9b4d-1fc248c919f4"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "a1cb0862-8d8b-4e55-b6e0-9c3c679f3db1",
+      "name": "Trata webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        -920
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "34ebb34a-a8d8-4405-a445-78e2b6207df3",
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "PURCHASE_APPROVED",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -460,
+        -920
+      ],
+      "id": "09b5315d-ba8c-488d-8c76-51bf86568510",
+      "name": "aprovada"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        -860
+      ],
+      "id": "01a214d5-4fb5-4b66-add5-e167a8e9c11d",
+      "name": "novo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/createSubscriber",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"phone\": \"{{\"+\"+ $json.numerosFormatados.comNonoDigito }}\",\n  \"whatsapp_phone\": \"{{\"+\"+ $json.numerosFormatados.comNonoDigito }}\",\n  \"has_opt_in_sms\": false,\n  \"has_opt_in_email\": false,\n  \"consent_phrase\": \"string\"\n} ",
+        "options": {}
+      },
+      "id": "d74c451d-cd50-465d-bde5-c6291cd0ebb0",
+      "name": "Cria contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        -940
+      ],
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
+            },
+            {
+              "name": "field_id",
+              "value": "12789794"
+            },
+            {
+              "name": "field_value",
+              "value": "={{ $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2a65c836-c909-4937-a3b5-22b66ed59766",
+      "name": "att contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        -860
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        -1240
+      ],
+      "id": "59c32d43-3842-45c3-a1b8-9760e1b926c1",
+      "name": "existe"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12789794&field_value={{ $('Formata Telefone1').item.json.numerosFormatados.comNonoDigito }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "89dce08d-5b8b-47bb-a057-508b49abff66",
+      "name": "busca contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        -1240
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "4b47ac03-1259-4e8c-9e8e-22786f6bf427",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "This WhatsApp ID already exists",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4383bb7b-3e00-4144-a680-62aafa2b2eb7",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        -940
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\");\n    let ddi = \"55\";\n    let ddd, telefone;\n\n    if (number.length === 13) {\n        ddi = number.substring(0, 2);\n        ddd = number.substring(2, 4);\n        telefone = number.substring(4);\n    } else if (number.length === 12) {\n        if (number.startsWith(\"55\")) {\n            ddd = number.substring(2, 4);\n            telefone = number.substring(4);\n        } else if (number.startsWith(\"0\")) {\n            return formataTelefone(number.substring(1));\n        } else {\n            return { comNonoDigito: number, semNonoDigito: number };\n        }\n    } else if (number.length === 11) {\n        ddd = number.substring(0, 2);\n        telefone = number.substring(2);\n    } else if (number.length === 10) {\n        ddd = number.substring(0, 2);\n        telefone = \"9\" + number.substring(2);\n    } else {\n        return { comNonoDigito: number, semNonoDigito: number };\n    }\n\n    let telefoneComNono = telefone.length === 8 ? \"9\" + telefone : telefone;\n    let telefoneSemNono = telefoneComNono.startsWith(\"9\") ? telefoneComNono.substring(1) : telefoneComNono;\n\n    return {\n        comNonoDigito: ddi + ddd + telefoneComNono,\n        semNonoDigito: ddi + ddd + telefoneSemNono\n    };\n}\n\nlet numerosFormatados = formataTelefone($input.first().json.telefone);\n\n$input.all()[0].json[\"numerosFormatados\"] = numerosFormatados\nreturn $input.all();\n"
+      },
+      "id": "c9cbc40c-a8e0-4e0e-800f-dbf71983445e",
+      "name": "Formata Telefone1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        260,
+        -940
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2140,
+        -1440
+      ],
+      "id": "d4d6b126-cc61-4dad-a869-f9ca3fe361be",
+      "name": "sem nono digito"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12789794&field_value={{$node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1b38e327-e99d-419d-bf51-11dff3f531a4",
+      "name": "busca contato1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2340,
+        -1440
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "49a86e22-a9c4-4d6a-b179-2a4335dbb72e",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "899e735b-cc1b-4ded-aa8a-5d1c61068d1a",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1900,
+        -1260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "61006975"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a021b4e6-cac8-447c-b6d2-9c748af38687",
+      "name": "add tag",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2140,
+        -1240
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "61006975"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c5fa48e6-c970-4bb9-b19e-00e9e4210fba",
+      "name": "add tag1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2780,
+        -1460
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "61006975"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9af1ebea-5b92-4393-a9f5-959b42d2fea3",
+      "name": "add tag2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        -880
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"busca contato1\"].json[\"data\"][\"0\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20250911193709_233641"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "775abead-8574-45d6-bab6-6024cc7377fb",
+      "name": "envia fluxo1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3100,
+        -1480
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"busca contato\"].json[\"data\"][\"0\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20250911193709_233641"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bfe48769-71ef-43aa-8db7-c9b10d9dedbb",
+      "name": "envia fluxo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2480,
+        -1260
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 2668563:65dc8b763e88cf8b9b0955b1871493fc"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20250911193709_233641"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d150e79-57a5-46b9-b8dd-810107c60218",
+      "name": "envia fluxo3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2280,
+        -900
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*+1 venda IP EXPRESS*\n\nnome: {{ $json.nome }}\nemail: {{ $json.email }}\ntelefone: {{ $json.telefone }}\n\nutm_source: {{ $json.utm_source }}\nutm_campaign: {{ $json.utm_campaign }}\nutm_medium: {{ $json.utm_medium }}\nutm_content: {{ $json.utm_content }}\nutm_term: {{ $json.utm_term }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "52cd63e8-5406-4697-8f55-6e64e1afd836",
+      "name": "Notifica grupo | Renan2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        -1900
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Lê data.purchase.origin.sck e gera os campos UTM no item de saída\n\nconst UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];\n\nreturn items.map(({ json, binary }) => {\n  // Pega o sck (garante string) e faz URL-decode\n  const rawSck = (json?.data?.purchase?.origin?.sck ?? '') + '';\n  const decoded = decodeURIComponent(rawSck).trim();\n\n  // Se vier algo no formato \"...?x=1&sck=foo|bar\", tenta extrair \"sck=\" da query também\n  let sckValue = decoded;\n  if (decoded.includes('sck=')) {\n    try {\n      const q = decoded.split('?')[1] || decoded;\n      const pairs = q.split('&');\n      const found = pairs.find(p => p.startsWith('sck='));\n      if (found) sckValue = decodeURIComponent(found.split('=')[1] || '');\n    } catch (_) {}\n  }\n\n  // Quebra pelos pipes e normaliza\n  const parts = sckValue.split('|').map(s => s?.trim() ?? '');\n\n  // Monta objeto UTM respeitando a ordem pedida\n  const utms = {};\n  UTM_KEYS.forEach((key, idx) => {\n    utms[key] = parts[idx] ?? '';\n  });\n\n  // Retorna o item com os campos adicionados\n  return {\n    json: {\n      ...json,\n      // adiciona também como campos \"flat\" para facilitar mapeamentos\n      ...utms,\n      // e um bloco agrupado\n      utms,\n      // ecoa o sck lido (útil para debug)\n      _sck_raw: rawSck,\n      _sck_decoded: sckValue,\n    },\n    binary,\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        -940
+      ],
+      "id": "7c2ddfb8-f415-4581-8810-d7eaa2f78716",
+      "name": "Constrói utms"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "21951545-0d03-438a-9cda-9b9a91fecea1",
+              "name": "nome",
+              "value": "={{ $json.data.buyer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "7230ffb4-707b-4e21-bc49-99b734ea8bfd",
+              "name": "telefone",
+              "value": "={{ $json.data.buyer.checkout_phone }}",
+              "type": "string"
+            },
+            {
+              "id": "79be138b-4b03-443f-87af-d93f0a5054fe",
+              "name": "email",
+              "value": "={{ $json.data.buyer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "3d126e47-86e3-4d2d-b7e3-1b5b7711b4a5",
+              "name": "oferta",
+              "value": "={{ $json.data.purchase.full_price.value }}",
+              "type": "number"
+            },
+            {
+              "id": "52c21a64-5418-4d45-821b-ef05787ac97e",
+              "name": "utm_source",
+              "value": "={{ $json.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "4f2d3969-7e5d-4ecb-8200-24ce160d10ad",
+              "name": "utm_medium",
+              "value": "={{ $json.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "3c9b16b5-8424-425f-b98e-baf44925670c",
+              "name": "utm_campaign",
+              "value": "={{ $json.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "4d33d8c6-b1df-4a32-a25f-8e911a19fd1f",
+              "name": "utm_term",
+              "value": "={{ $json.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "4a4fd00c-0273-4b7c-8e02-b7954dca2dcd",
+              "name": "utm_content",
+              "value": "={{ $json.utm_content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        -940
+      ],
+      "id": "e549b9a4-767d-4ca5-a5d7-767d17dbafd1",
+      "name": "campos"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Jodd HTTP",
+            "content-length": "2024",
+            "content-type": "application/json",
+            "x-forwarded-for": "54.167.205.251",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "869fd5766395",
+            "x-hotmart-hottok": "w2mOi6xp3w1dAI2D5lAl63ehN5F96E476840",
+            "x-real-ip": "54.167.205.251",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "data": {
+              "product": {
+                "support_email": "",
+                "has_co_production": false,
+                "name": "IP EXPRESS - Setembro",
+                "warranty_date": "2025-09-22T00:00:00Z",
+                "is_physical_product": false,
+                "id": 6253575,
+                "ucode": "03a7aaeb-22a8-4f81-af30-540215584373"
+              },
+              "commissions": [
+                {
+                  "currency_value": "BRL",
+                  "source": "MARKETPLACE",
+                  "value": 0.2
+                },
+                {
+                  "currency_value": "BRL",
+                  "source": "PRODUCER",
+                  "value": 0.8
+                }
+              ],
+              "purchase": {
+                "original_offer_price": {
+                  "currency_value": "BRL",
+                  "value": 1
+                },
+                "subscription_anticipation_purchase": false,
+                "checkout_country": {
+                  "iso": "BR",
+                  "name": "Brasil"
+                },
+                "origin": {
+                  "sck": "cg|ads|meteorico|yayforms|ad"
+                },
+                "order_bump": {
+                  "is_order_bump": false
+                },
+                "approved_date": 1757969827000,
+                "offer": {
+                  "code": "ssofzsgb",
+                  "description": "TESTE"
+                },
+                "is_funnel": false,
+                "order_date": 1757969781000,
+                "price": {
+                  "currency_value": "BRL",
+                  "value": 1
+                },
+                "payment": {
+                  "pix_qrcode": "https://live-us.adyen.com/hpp/generateQRCodeImage.shtml?url=00020101021226900014br.gov.bcb.pix2568pix.adyen.com%2Fpixqrcodelocation%2Fpixloc%2Fv1%2Floc%2Fs0tfpPNpRo-jBydOn1PHwQ5204000053039865802BR5924LAUNCH+PAD+TECNOLOGIA+SE6009SAO+PAULO62070503***63045DC4",
+                  "pix_expiration_date": 1758142581000,
+                  "installments_number": 1,
+                  "type": "PIX",
+                  "pix_code": "00020101021226900014br.gov.bcb.pix2568pix.adyen.com/pixqrcodelocation/pixloc/v1/loc/s0tfpPNpRo-jBydOn1PHwQ5204000053039865802BR5924LAUNCH PAD TECNOLOGIA SE6009SAO PAULO62070503***63045DC4"
+                },
+                "full_price": {
+                  "currency_value": "BRL",
+                  "value": 1
+                },
+                "business_model": "I",
+                "invoice_by": "HOTMART",
+                "transaction": "HP1385847803",
+                "status": "APPROVED"
+              },
+              "affiliates": [
+                {
+                  "affiliate_code": "",
+                  "name": ""
+                }
+              ],
+              "producer": {
+                "legal_nature": "Pessoa Jurídica",
+                "document": "39676212000129",
+                "name": "CAROLINA CARIBE NEGOCIOS DIGITAIS LTDA"
+              },
+              "buyer": {
+                "checkout_phone_code": "81",
+                "address": {
+                  "country": "Brasil",
+                  "country_iso": "BR"
+                },
+                "document": "",
+                "name": "Matheus Cristhyan",
+                "last_name": "Cristhyan",
+                "checkout_phone": "81993515055",
+                "first_name": "Matheus",
+                "email": "bma.matheus2024@gmail.com",
+                "document_type": ""
+              }
+            },
+            "id": "5a80ce03-8c0d-4363-904f-2567d68a47d9",
+            "creation_date": 1757969837613,
+            "event": "PURCHASE_APPROVED",
+            "version": "2.0.0"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/13861e62-9e73-40d0-a58d-d438e3eeef66",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-04T21:21:53.632Z",
+  "versionId": "63369bc3-b97e-4ca0-ad25-321305aaeeee"
+}
