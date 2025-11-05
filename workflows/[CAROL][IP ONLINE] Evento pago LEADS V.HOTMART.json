@@ -1,0 +1,323 @@
+{
+  "active": true,
+  "connections": {
+    "Trata webhook": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-11-04T18:19:03.004Z",
+  "id": "Ut1QOAIsQlknn7wG",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[CAROL][IP ONLINE] Evento pago LEADS V.HOTMART",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "471bd715-e679-4e8d-9d0b-7f3a5d6cd854",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6c8fb78c-dd1b-417c-9036-3b4cb9bd5284",
+      "name": "Webhook",
+      "webhookId": "471bd715-e679-4e8d-9d0b-7f3a5d6cd854"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "760f9f64-6d1f-4e06-80f8-7a2bf49aca58",
+      "name": "Trata webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['whatsapp'] = formataTelefone($input.first().json.whatsapp)\n\nreturn $input.all();"
+      },
+      "id": "db8982e9-5dea-4e1f-a9a4-991da103e6a6",
+      "name": "Formata Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        420,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1121061241,
+          "mode": "list",
+          "cachedResultName": "lead",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=1121061241"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}",
+            "telefone": "={{ $json.whatsapp }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "pagina": "={{ $json.pagina }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagina",
+              "displayName": "pagina",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        640,
+        0
+      ],
+      "id": "b086c894-9feb-47f8-86e8-5e714d21b37d",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*+1 LEAD IP EXPRESS*\n\nnome: {{ $('Formata Telefone').item.json.nome }}\nemail: {{ $('Formata Telefone').item.json.email }}\ntelefone: {{ $('Formata Telefone').item.json.whatsapp }}\n\nutm_source: {{ $('Formata Telefone').item.json.utm_source }}\nutm_campaign: {{ $('Formata Telefone').item.json.utm_campaign }}\nutm_medium: {{ $('Formata Telefone').item.json.utm_medium }}\nutm_content: {{ $('Formata Telefone').item.json.utm_content }}\nutm_term: {{ $('Formata Telefone').item.json.utm_term }}\n\npagina: {{ $('Formata Telefone').item.json.pagina }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ce40968c-af5a-4ef1-af45-50e3a7cc1e06",
+      "name": "Notifica grupo | Renan2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.8.3; https://incorporacaonapratica.com",
+            "content-length": "217",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.93.106.144",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "869fd5766395",
+            "x-real-ip": "177.93.106.144"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nome": "matheus",
+            "email": "matheus@gmail.com",
+            "whatsapp": "81993515055",
+            "utm_source": "cg",
+            "utm_campaign": "meteorico",
+            "utm_medium": "ads",
+            "utm_content": "ad",
+            "utm_term": "yayforms",
+            "pagina": "ipexperienceonline",
+            "form_id": "66cd2288",
+            "form_name": "ip-express-setembro"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/471bd715-e679-4e8d-9d0b-7f3a5d6cd854",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-04T21:22:21.713Z",
+  "versionId": "ced7d7ed-082a-4d47-a8d8-c96a2f9f1c65"
+}
