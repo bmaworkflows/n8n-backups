@@ -44,6 +44,90 @@
           }
         ]
       ]
+    },
+    "Notifica grupo | Agendamento carol": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Busca comprador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca comprador": {
+      "main": [
+        [
+          {
+            "node": "comprou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "comprou?": {
+      "main": [
+        [
+          {
+            "node": "não comprou",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "comprou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "adiciona comprador": {
+      "main": [
+        [
+          {
+            "node": "ID Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ID Usuário": {
+      "main": [
+        [
+          {
+            "node": "Adiciona na Lista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "não comprou": {
+      "main": [
+        [
+          {
+            "node": "adiciona comprador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-04T18:19:03.004Z",
@@ -277,6 +361,318 @@
       "retryOnFail": true,
       "maxTries": 5,
       "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "31d41852-2aaa-47c5-b571-74aea1902639",
+      "name": "Wait",
+      "webhookId": "3cb9df9e-9eea-439a-9934-0486131d169d"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "compradores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "email",
+              "lookupValue": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"email\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        0
+      ],
+      "id": "72d900c0-a372-45f2-9285-aa4377ed8cd3",
+      "name": "Busca comprador",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "88b4c0f8-a176-4984-b2a4-4785697a9508",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1540,
+        0
+      ],
+      "id": "fac8f75b-f98e-4d74-a432-b211805f8f52",
+      "name": "comprou?"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        -140
+      ],
+      "id": "fff1f33e-23b7-4455-893d-331c69d8e3b5",
+      "name": "não comprou"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        80
+      ],
+      "id": "81029f71-31a9-480b-82cc-e524999198e3",
+      "name": "comprou"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 609726885,
+          "mode": "list",
+          "cachedResultName": "recuperação",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=609726885"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"nome\"] }}",
+            "email": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"email\"] }}",
+            "telefone": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"whatsapp\"] }}",
+            "utm_source": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_source\"] }}",
+            "utm_campaign": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_campaign\"] }}",
+            "utm_medium": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_medium\"] }}",
+            "utm_content": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_content\"] }}",
+            "utm_term": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_term\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "oferta",
+              "displayName": "oferta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "comprou",
+              "displayName": "comprou",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2040,
+        -140
+      ],
+      "id": "6037f7f9-4c51-4481-8b05-0e1e963fb0ac",
+      "name": "adiciona comprador",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "email": "={{ $item(\"0\").$node[\"campos\"].json[\"email\"] }}",
+        "updateIfExists": true,
+        "additionalFields": {
+          "firstName": "={{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}",
+          "phone": "={{ $item(\"0\").$node[\"campos\"].json[\"telefone\"] }}"
+        }
+      },
+      "id": "1c14be8a-5764-4cda-a7eb-0f966f8d6991",
+      "name": "ID Usuário",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2280,
+        -140
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contactList",
+        "listId": 240,
+        "contactId": "={{ $('ID Usuário').item.json.id }}"
+      },
+      "id": "f1584283-56b3-4e3e-968b-563bdf11dd8b",
+      "name": "Adiciona na Lista",
+      "type": "n8n-nodes-base.activeCampaign",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        -140
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "4ygJeCXAzG5KRUPW",
+          "name": "Active Carol"
+        }
+      }
     }
   ],
   "pinData": {
@@ -324,6 +720,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T14:01:18.749Z",
-  "versionId": "7b8b334e-4b81-434f-9ef1-eb5f290d686e"
+  "updatedAt": "2025-11-05T17:45:36.859Z",
+  "versionId": "f2ac8933-9f2e-443b-8e03-d297a3e095b0"
 }
