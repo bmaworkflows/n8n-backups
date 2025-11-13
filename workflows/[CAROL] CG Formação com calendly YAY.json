@@ -27,7 +27,7 @@
       "main": [
         [
           {
-            "node": "agendou?",
+            "node": "é desqualificado",
             "type": "main",
             "index": 0
           }
@@ -377,6 +377,192 @@
           }
         ]
       ]
+    },
+    "é desqualificado": {
+      "main": [
+        [
+          {
+            "node": "pega telefone",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "agendou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pega telefone": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone1": {
+      "main": [
+        [
+          {
+            "node": "Cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "novo": {
+      "main": [
+        [
+          {
+            "node": "att contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria contato": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "att contact": {
+      "main": [
+        [
+          {
+            "node": "add tag2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "existe": {
+      "main": [
+        [
+          {
+            "node": "busca contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "existe",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sem nono digito": {
+      "main": [
+        [
+          {
+            "node": "busca contato1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca contato1": {
+      "main": [
+        [
+          {
+            "node": "add tag1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "sem nono digito",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag1": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add tag2": {
+      "main": [
+        [
+          {
+            "node": "envia fluxo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-10T15:10:03.521Z",
@@ -395,8 +581,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -360,
-        140
+        -680,
+        120
       ]
     },
     {
@@ -414,8 +600,8 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        -120,
-        140
+        -440,
+        120
       ]
     },
     {
@@ -451,8 +637,8 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        100,
-        140
+        -220,
+        120
       ]
     },
     {
@@ -497,8 +683,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -580,
-        140
+        -900,
+        120
       ],
       "webhookId": "09f33e8f-17ae-42a7-9fdb-96e2711687a8"
     },
@@ -1771,6 +1957,610 @@
       ],
       "id": "efbfb7e3-575b-4f01-8848-6c28a486e69d",
       "name": "PARCIAL"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "41fa2aa8-4696-4f27-a122-4d7d5f6d4d0b",
+              "leftValue": "={{ $('Trata Webhook').item.json.response.variables.quali }}",
+              "rightValue": "desqualificado",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        120
+      ],
+      "id": "fe266c85-821f-464b-adef-cb3ede9ef3bb",
+      "name": "é desqualificado"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f7c8f1eaf7504471009b87\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado Carolina Caribé 🔥*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json['data da call'].toDateTime().format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Thaís\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas na Clint*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b73c938f-007d-44a0-b63e-c30fcae14459",
+      "name": "Msg desquali",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\");\n    let ddi = \"55\";\n    let ddd, telefone;\n\n    if (number.length === 13) {\n        ddi = number.substring(0, 2);\n        ddd = number.substring(2, 4);\n        telefone = number.substring(4);\n    } else if (number.length === 12) {\n        if (number.startsWith(\"55\")) {\n            ddd = number.substring(2, 4);\n            telefone = number.substring(4);\n        } else if (number.startsWith(\"0\")) {\n            return formataTelefone(number.substring(1));\n        } else {\n            return { comNonoDigito: number, semNonoDigito: number };\n        }\n    } else if (number.length === 11) {\n        ddd = number.substring(0, 2);\n        telefone = number.substring(2);\n    } else if (number.length === 10) {\n        ddd = number.substring(0, 2);\n        telefone = \"9\" + number.substring(2);\n    } else {\n        return { comNonoDigito: number, semNonoDigito: number };\n    }\n\n    let telefoneComNono = telefone.length === 8 ? \"9\" + telefone : telefone;\n    let telefoneSemNono = telefoneComNono.startsWith(\"9\") ? telefoneComNono.substring(1) : telefoneComNono;\n\n    return {\n        comNonoDigito: ddi + ddd + telefoneComNono,\n        semNonoDigito: ddi + ddd + telefoneSemNono\n    };\n}\n\nlet numerosFormatados = formataTelefone($input.first().json.telefone);\n\n$input.all()[0].json[\"numerosFormatados\"] = numerosFormatados\nreturn $input.all();\n"
+      },
+      "id": "527ed8e4-00a1-49ba-a787-50fa7cc91e63",
+      "name": "Formata Telefone1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "09b32b8e-9ae7-49c0-9a02-d41ada0b437a",
+              "name": "telefone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67f7c8f1eaf7504471009b87\"].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -60,
+        -420
+      ],
+      "id": "7d1691bd-0d19-4f55-bed9-01308f3770b7",
+      "name": "pega telefone"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -340
+      ],
+      "id": "5fc41d68-26ae-4ebc-a82a-850dde61112b",
+      "name": "novo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/createSubscriber",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"phone\": \"{{\"+\"+ $json.numerosFormatados.comNonoDigito }}\",\n  \"whatsapp_phone\": \"{{\"+\"+ $json.numerosFormatados.comNonoDigito }}\",\n  \"has_opt_in_sms\": false,\n  \"has_opt_in_email\": false,\n  \"consent_phrase\": \"string\"\n} ",
+        "options": {}
+      },
+      "id": "7f540089-fc5d-42d1-b7cb-8c9afaa49ed9",
+      "name": "Cria contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        380,
+        -420
+      ],
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
+            },
+            {
+              "name": "field_id",
+              "value": "12359951"
+            },
+            {
+              "name": "field_value",
+              "value": "={{ $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0d6f08ad-be78-408c-a099-89e1c9326dd8",
+      "name": "att contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        -340
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -720
+      ],
+      "id": "81a3053d-1c30-4eb8-97c8-74649a94cf59",
+      "name": "existe"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12359951&field_value={{ $('Formata Telefone1').item.json.numerosFormatados.comNonoDigito }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6a3c1d44-65d9-4c0f-86e6-69466d1a0a4c",
+      "name": "busca contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        -720
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "4b47ac03-1259-4e8c-9e8e-22786f6bf427",
+              "leftValue": "={{ $json.error.message }}",
+              "rightValue": "This WhatsApp ID already exists",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "decee018-5ec1-4785-b2cd-82b69e592e1d",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        -420
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        -920
+      ],
+      "id": "9c55694f-2dcf-4832-9d72-fad6e7c9a2fd",
+      "name": "sem nono digito"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=12359951&field_value={{$node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f1d8df9f-6eee-4b2c-b94e-1b098b93571d",
+      "name": "busca contato1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1860,
+        -920
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "49a86e22-a9c4-4d6a-b179-2a4335dbb72e",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "95c801af-3afa-4dce-87ef-360c40aa1205",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1420,
+        -740
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "75005247"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5fd518ae-3d8c-420e-bc54-0a6b3536fba4",
+      "name": "add tag",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        -720
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "75005247"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7037102f-f97c-4309-8530-2b86a47a782f",
+      "name": "add tag1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2300,
+        -940
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/addTag",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $json.data[0].id }}"
+            },
+            {
+              "name": "tag_id",
+              "value": "75005247"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "657438fd-afd1-4754-a48d-3d05d2b915db",
+      "name": "add tag2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        -360
+      ],
+      "retryOnFail": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"busca contato1\"].json[\"data\"][\"0\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20251113050218_384980"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fdb6eb22-db0b-4254-b6c9-32619d1bf003",
+      "name": "envia fluxo1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2620,
+        -960
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"busca contato\"].json[\"data\"][\"0\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20251113050218_384980"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6964d476-28b6-4a76-bff9-010abe1eedc5",
+      "name": "envia fluxo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        -660
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendFlow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 992532:cc8fa1dc88700e115938c625cc148dc6"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "subscriber_id",
+              "value": "={{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}"
+            },
+            {
+              "name": "flow_ns",
+              "value": "content20251113050218_384980"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "04af6574-445b-434b-ab31-9f0cba1c0c3a",
+      "name": "envia fluxo3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1800,
+        -380
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
     }
   ],
   "pinData": {
@@ -1780,116 +2570,117 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "6824",
+            "content-length": "5550",
             "content-type": "application/json",
-            "x-forwarded-for": "104.248.57.202",
+            "x-forwarded-for": "68.183.17.208",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "869fd5766395",
-            "x-real-ip": "104.248.57.202",
+            "x-forwarded-server": "467c905f5c94",
+            "x-real-ip": "68.183.17.208",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "68dba08bc83154a4910de79a",
+              "id": "6915645619584afe3ed18c5c",
               "formId": "67f7c8f1eaf7504471009b82",
-              "ipAddress": "191.193.70.45",
-              "operatingSystem": "iOS",
-              "operatingSystemVersion": "18_6",
-              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23A341 Instagram 399.0.0.34.84 (iPhone15,3; iOS 26_0; pt_BR; pt; scale=3.00; 1290x2796; IABMV/1; 795719514)",
-              "browser": "Mozilla",
-              "browserVersion": false,
-              "referrerUrl": "https://www.incorporacaonapratica.com/",
-              "deviceType": "mobile",
+              "ipAddress": "2804:6ba0:8064:f01:8026:621d:1e0e:bc4b",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "142.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
               "geolocation": {
                 "continent": "South America",
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "state": "São Paulo",
-                "city": "Sorocaba",
-                "zipcode": "18000",
-                "latitude": -23.4736,
-                "longitude": -47.4425,
-                "timezone": "America/Sao_Paulo"
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
               },
               "aiFeedback": null,
               "hiddenFields": [],
               "variables": {
-                "score": 0
+                "score": 0,
+                "quali": "desqualificado"
               },
               "tracking": {
-                "utm_source": "MetaAds",
-                "utm_medium": "Instagram_Feed",
-                "utm_campaign": "CADASTRO_LEADS_CG_QUENTE_AUTO-v3_Melhores_criativos 09-09",
-                "utm_content": "AD17-TERRENO",
-                "utm_term": "00-QUENTE-GERAL",
-                "_fbc": "fb.1.1759223948181.PAZXh0bgNhZW0BMABhZGlkAasvLtRHtUgBpwd93SGYYHbe0u9Eh02pHirHaXKzRGvYPiNoZr7n9Jdj2LOntUxtU3UIbOr8_aem_020MLTZrdzlWW81pxe2SPQ",
-                "_fbp": "fb.1.1759069092902.864109675985540209",
-                "hotid": "eyJzaWQiOiIwNzI4MTVjN2YyOGQ0NTIwYTNkNDQ1Y2I2NGQ3MjEyMiIsImNpZCI6IjE3NTkyMjM5NDk3NDE5MzcyNjI4ODMxMTQ3ODAzMDAiLCJiaWQiOiIxNzU5MjIzOTQ5NzQxOTM3MjYyODgzMTE0NzgwMzAwIn0=",
-                "_clck": "fpbinz^2^fzr^0^2097",
-                "_ga": "GA1.1.1404981279.1759069093",
-                "_ga_QMHGX1WZCF": "GS2.1.s1759223948$o1$g0$t1759223948$j60$l0$h977150355",
-                "_gat_UA-126618422-1": "1",
-                "_gcl_au": "1.1.88432585.1759069093",
-                "_gid": "GA1.2.51016912.1759223948",
-                "_hjSessionUser_2246065": "eyJpZCI6IjIzZjhmNDFlLWNhMzMtNTI5NC04NjIwLTQwZmE4ZjExOTQzYyIsImNyZWF0ZWQiOjE3NTkyMjM5NDg2MjIsImV4aXN0aW5nIjpmYWxzZX0=",
-                "_hjSession_2246065": "eyJpZCI6ImQ2YzAyOTI1LWZlZWEtNDc0Ni05NjUzLWY5NDU4ZTk3OTM0ZiIsImMiOjE3NTkyMjM5NDg2MjMsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=",
+                "_fbp": "fb.1.1742270412627.451017520152784457",
                 "_tt_enable_cookie": "1",
-                "_ttp": "01K68B0F0CZKQK0PGQH2Z5EG8N_.tt.1",
-                "ttcsid": "1759223948584::kky5WlKFIEZ3CqElXAWg.2.1759224021466.0",
-                "ttcsid_C5URFDOVMNUPJ15SHS00": "1759223948584::JCEgOANhC93F9GE3eUpG.1.1759224021466.0",
-                "_ga_FHRQJESNYQ": "GS2.1.s1759069092$o1$g1$t1759069163$j60$l0$h1056278899",
-                "ttcsid_D32BJAJC77U1PDQ70K5G": "1759069092878::rtZG6bEeH1l8Gvc4541J.1.1759069137282.0",
-                "_clsk": "hln31n^1759223949425^1^1^l.clarity.ms/collect"
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "hotid": "eyJjaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIiwiYmlkIjoiMTc1MTMxMzQ4ODM5MTc5NzI0MDE4Mjk2Nzk0MzgwMCIsInNpZCI6ImNmOTFiZTg2YTRjNzQ1OGNhYmEwNWI5MDhhOTQyM2NmIn0=",
+                "_ltusession": "1759376967413__1",
+                "_ltuid": "19DU0z",
+                "ttcsid_CEDLAVJC77UDF9713HP0": "1759376967555::pp0K8Hdh_e4bBJKUV_tv.1.1759376967760.0",
+                "_ga_324806166": "GS2.1.s1759376966$o1$g0$t1759376969$j57$l0$h0",
+                "_ga_5GVPZDVNW9": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h1138898967",
+                "_ga_BJR0JVV5FR": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
+                "_ga_PEGMJDK06R": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
+                "_fbc": "fb.1.1761053239943.fbclid",
+                "_gcl_au": "1.1.1754743123.1763009515",
+                "_gid": "GA1.2.141324193.1763009516",
+                "_clck": "cymcv9^2^g0z^0^1933",
+                "_hjSession_2246065": "eyJpZCI6ImNjYzBmMzU3LWZhYzAtNDA2Ny1hZWY2LWJkMDA3ZjU5NWI1ZSIsImMiOjE3NjMwMDk1MTU4MjQsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjowLCJzcCI6MH0=",
+                "_gat_UA-126618422-1": "1",
+                "_ga": "GA1.1.1550280858.1744865246",
+                "_ga_QMHGX1WZCF": "GS2.1.s1763009515$o12$g1$t1763009622$j60$l0$h1746857264",
+                "ttcsid": "1763009515558::CbKUMNdaP4fcZ2enf5P2.14.1763009622690.0",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1763009515557::bSh386I6gpZJiC8VwDPV.13.1763009622690.0",
+                "_clsk": "1aw0qv9^1763009622730^2^1^i.clarity.ms/collect"
               },
-              "timeToComplete": 329.431,
-              "startedAt": "2025-09-30T09:20:22.542000Z",
-              "submittedAt": "2025-09-30T09:25:51.973000Z",
-              "createdAt": "2025-09-30T09:19:07.754000Z",
-              "updatedAt": "2025-09-30T09:25:54.633000Z",
+              "timeToComplete": 20.044,
+              "startedAt": "2025-11-13T04:53:44.108000Z",
+              "submittedAt": "2025-11-13T04:54:04.152000Z",
+              "createdAt": "2025-11-13T04:53:42.344000Z",
+              "updatedAt": "2025-11-13T04:54:05.681000Z",
               "answers": {
                 "67f7c8f1eaf7504471009b83": {
-                  "answerId": "68dba08c397b622b92b02c8e",
+                  "answerId": "69156456397b622b922b22b6",
                   "fieldTitle": "Aplicação para Consultoria Grátis:",
                   "fieldDescription": "<p>Você terá uma consultoria grátis comigo ou com um dos estrategistas do meu time.</p><p></p><p>Nós faremos um diagnóstico completo do seu negócio, identificando os gargalos e criando um plano de ação para que você possa alcançar o próximo nível no desenvolvimento imobiliário.</p><p></p><p>IMPORTANTE: A sua aplicação através deste questionário NÃO garante que você será aceito para uma das vagas. Avaliaremos cautelosamente cada aplicação e entraremos em contato com os aprovados.</p>",
                   "content": null
                 },
                 "67f7c8f1eaf7504471009b85": {
-                  "answerId": "68dba0d5397b622b92b02cdd",
+                  "answerId": "69156457397b622b922b22b8",
                   "fieldTitle": "Seu primeiro nome:",
                   "fieldDescription": null,
-                  "content": "Felipe "
+                  "content": "math"
                 },
                 "683760bd07d28e53600701e7": {
-                  "answerId": "68dba0de397b622b92b02ce2",
+                  "answerId": "69156459397b622b922b22ba",
                   "fieldTitle": "Seu sobrenome",
                   "fieldDescription": null,
-                  "content": "Grotti "
+                  "content": "cris"
                 },
                 "67f7c8f1eaf7504471009b86": {
-                  "answerId": "68dba0e5397b622b92b02ce8",
+                  "answerId": "6915645a397b622b922b22bb",
                   "fieldTitle": "E-mail:",
                   "fieldDescription": null,
-                  "content": "f.grotti@yahoo.com.br"
+                  "content": "math2@gmail.com"
                 },
                 "67f7c8f1eaf7504471009b87": {
-                  "answerId": "68dba0e8397b622b92b02ced",
+                  "answerId": "6915645e397b622b922b22bc",
                   "fieldTitle": "WhatsApp com DDD:",
                   "fieldDescription": null,
-                  "content": "+5515974037977"
+                  "content": "+558191013614"
                 },
                 "67f7c932b4e54680e80128c5": {
-                  "answerId": "68dba108397b622b92b02d0a",
+                  "answerId": "69156461397b622b922b22bf",
                   "fieldTitle": "Seu @ do instagram",
                   "fieldDescription": null,
-                  "content": "@felipegrotti"
+                  "content": "teste"
                 },
                 "67f7c8f1eaf7504471009b88": {
-                  "answerId": "68dba11a397b622b92b02d1b",
+                  "answerId": "69156463397b622b922b22c0",
                   "fieldTitle": "Qual das opções abaixo mais condiz com seu negócio hoje?",
                   "fieldDescription": null,
                   "content": [
@@ -1897,59 +2688,45 @@
                   ]
                 },
                 "67f7c96486aeabfbe8008238": {
-                  "answerId": "68dba11f397b622b92b02d22",
+                  "answerId": "69156464397b622b922b22c2",
                   "fieldTitle": "Qual dos cenários abaixo mais combina com o seu momento?",
                   "fieldDescription": null,
                   "content": [
-                    "Quero prestar serviço para incorporadoras ou desenvolvedores imobiliários"
+                    "Nunca construí/incorporei, nem estou construindo/incorporando"
                   ]
                 },
                 "67f7c9a0896156dc380d07be": {
-                  "answerId": "68dba12d397b622b92b02d38",
+                  "answerId": "69156466397b622b922b22c5",
                   "fieldTitle": "Caso já atue no desenvolvimento imobiliário, qual tipo de produto você já desenvolveu?",
                   "fieldDescription": null,
                   "content": [
-                    "Incorporação"
+                    "Multipropriedade"
                   ]
                 },
                 "67f7c8f1eaf7504471009b89": {
-                  "answerId": "68dba157397b622b92b02d81",
+                  "answerId": "69156467397b622b922b22c6",
                   "fieldTitle": "Qual é o seu faturamento médio MENSAL em 2025?",
                   "fieldDescription": null,
                   "content": [
-                    "Acima de R$ 500.000,00"
+                    "R$ 250.000,00 a R$ 500.000,00"
                   ]
                 },
                 "67f7c8f1eaf7504471009b8a": {
-                  "answerId": "68dba164397b622b92b02d99",
+                  "answerId": "69156468397b622b922b22c7",
                   "fieldTitle": "Qual seu principal objetivo nos próximos 12 meses dentro do mercado de desenvolvimento imobiliário? Seja o mais específico possível.",
                   "fieldDescription": null,
-                  "content": "Me tornar especialista na venda de áreas para incorporação e loteamento "
+                  "content": "teste"
                 },
                 "67f7c8f1eaf7504471009b8b": {
-                  "answerId": "68dba1ac397b622b92b02e1f",
+                  "answerId": "69156469397b622b922b22c8",
                   "fieldTitle": "O que atualmente te impede de alcançar seu objetivo no mercado imobiliário? Seja o mais específico possível.",
                   "fieldDescription": null,
-                  "content": "Conhecimento "
+                  "content": "teste"
                 },
-                "68123d943dfc68b05b0b5d8f": {
-                  "answerId": "68dba1cd397b622b92b02e55",
-                  "fieldTitle": "Você foi aprovado para uma  das vagas na consultoria. Caso você não responda à confirmação do nosso time no seu WhatsApp, sua vaga será transferida para outro interessado. Você está ciente?",
+                "67f83ebd8d63078e840c9fa2": {
+                  "answerId": "6915646a397b622b922b22ca",
+                  "fieldTitle": "Toque abaixo para enviar suas respostas",
                   "fieldDescription": null,
-                  "content": [
-                    "Claro, quero aproveitar!"
-                  ]
-                },
-                "67f7ca64ab4d54d1fb06762c": {
-                  "answerId": "68dba1e6397b622b92b02e85",
-                  "fieldTitle": "Agende seu horário abaixo e assim que confirmar, toque em ENVIAR no final do formulário para notificar o especialista da sua reunião.",
-                  "fieldDescription": "<p>Essa pode ser a sua virada de chave no mercado imobiliário, não deixe essa oportunidade passar.</p>",
-                  "content": "https://calendly.com/scheduled_events/5ef39980-d615-4692-8f39-878bbf5ec94b/invitees/b281c78b-5b78-4ee3-85b3-dae824e91c19"
-                },
-                "681a4c5666002b101f0b030f": {
-                  "answerId": "68dba21d397b622b92b02edd",
-                  "fieldTitle": "Parabéns você foi aprovado e sua reunião está agendada!",
-                  "fieldDescription": "<p> Para mais informações sobre a consultoria grátis clique no botão abaixo</p>",
                   "content": null
                 }
               }
@@ -1985,6 +2762,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T01:44:38.964Z",
-  "versionId": "cdedb1ec-cd87-489d-92e6-3dd7deb78925"
+  "updatedAt": "2025-11-13T05:12:13.674Z",
+  "versionId": "d7c1ccb7-3eaa-4ebc-862b-cdbb54d9ff42"
 }
