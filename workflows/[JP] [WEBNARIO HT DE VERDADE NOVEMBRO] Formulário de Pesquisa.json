@@ -1,0 +1,252 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Etapas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Etapas": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Central funis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-14T20:54:29.396Z",
+  "id": "iWFszrFTgUXDlqSr",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [WEBNARIO HT DE VERDADE NOVEMBRO] Formulário de Pesquisa",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "47f2aa64-d7d2-4097-ad5a-5fe50815815c",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit?gid=1459873049#gid=1459873049",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 712322231,
+          "mode": "list",
+          "cachedResultName": "HT DE VERDADE NOVEMBRO PESQUISA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=712322231"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $json.whatsapp }}",
+            "chave": "={{ $json.whatsapp.slice(-7) }}",
+            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+            "cenário": "={{ $json.cenario }}",
+            "faturamento": "={{ $json.faturamento }}",
+            "negocio": "={{ $json.negocio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cenário",
+              "displayName": "cenário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "negocio",
+              "displayName": "negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "793c7774-0481-499b-9af8-65ed8853e01b",
+      "name": "Dados Planilha |Central funis",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        -16,
+        144
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pegando a entrada\nconst inputData = $input.item.json;\n\n// Mapas de conversão\nconst negocioMap = {\n  \"1\": \"Mentor, expert ou infoprodutor\",\n  \"2\": \"Agência digital ou Coprodutor\",\n  \"3\": \"Gestor de tráfego ou outro prestador de serviço no digital\",\n  \"4\": \"Profissional liberal/Prestador de serviço\",\n  \"5\": \"Afiliados e PLR\",\n  \"6\": \"Incorporador (a)\",\n  \"7\": \"Nenhuma das opções\"\n};\n\nconst faturamentoMap = {\n  \"1\": \"Até R$ 10.000,00\",\n  \"2\": \"R$ 10.000,00 a R$ 20.000,00\",\n  \"3\": \"R$ 20.000,00 a R$ 50.000,00\",\n  \"4\": \"R$ 50.000,00 a R$ 100.000,00\",\n  \"5\": \"R$ 100.000,00 a R$ 250.000,00\",\n  \"6\": \"R$ 250.000,00 a R$ 500.000,00\",\n  \"7\": \"Acima de R$ 500.000,00\"\n};\n\nconst cenarioMap = {\n  \"1\": \"Tenho um curso online e quero lançar minha mentoria\",\n  \"2\": \"Já tenho mentorados e quero escalar as vendas\",\n  \"3\": \"Sou prestador de serviço e quero lançar minha mentoria\",\n  \"4\": \"Sou coprodutor e quero aumentar as vendas de infoproduto do(s) meu(s) expert(s)\",\n  \"5\": \"Sou prestador de serviço e quero aumentar as vendas do meu serviço\"\n};\n\n// Resultado\nconst result = {\n  negocio: negocioMap[inputData.negocio] || \"Não informado\",\n  faturamento: faturamentoMap[inputData.faturamento] || \"Não informado\",\n  cenario: cenarioMap[inputData.cenario] || \"Não informado\",\n  whatsapp: inputData.whatsapp\n};\n\n// Retornar resultado\nreturn [\n  {\n    json: result\n  }\n];\n"
+      },
+      "id": "7dca0aa0-35c5-4d3c-a396-931fbed058bf",
+      "name": "Trata Etapas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "06ae3ff2-25a6-48ef-93bf-5357efa45b09",
+        "options": {}
+      },
+      "id": "a8dbdb01-0101-4b8e-86fa-bf7495e17b6d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        144
+      ],
+      "webhookId": "06ae3ff2-25a6-48ef-93bf-5357efa45b09"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "ManyChat",
+            "content-length": "80",
+            "content-type": "application/json; charset=utf-8",
+            "x-forwarded-for": "18.185.70.230",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3b00e11001b6",
+            "x-real-ip": "18.185.70.230",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "negocio": "2",
+            "faturamento": "5",
+            "cenario": "5",
+            "whatsapp": "5581993515055"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/pesquisa-webnario-agenda-lotada27jun",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-14T20:54:29.396Z",
+      "createdAt": "2025-11-14T20:54:29.396Z",
+      "role": "workflow:owner",
+      "workflowId": "iWFszrFTgUXDlqSr",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-14T20:55:04.962Z",
+  "versionId": "090559c4-39ad-4937-987b-c2aa617fee37"
+}
