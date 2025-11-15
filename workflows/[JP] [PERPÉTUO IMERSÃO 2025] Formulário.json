@@ -120,7 +120,13 @@
     },
     "Dados Planilha |Meteórico ": {
       "main": [
-        []
+        [
+          {
+            "node": "Notifica Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Wordpress": {
@@ -128,6 +134,17 @@
         [
           {
             "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica Grupo": {
+      "main": [
+        [
+          {
+            "node": "Notifica Gabi",
             "type": "main",
             "index": 0
           }
@@ -152,8 +169,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -420,
-        220
+        -416,
+        224
       ]
     },
     {
@@ -165,7 +182,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        300,
+        304,
         240
       ]
     },
@@ -261,7 +278,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        700,
+        704,
         240
       ]
     },
@@ -272,7 +289,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        100,
+        112,
         240
       ]
     },
@@ -285,7 +302,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        500,
+        512,
         240
       ]
     },
@@ -450,7 +467,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.3,
       "position": [
-        900,
+        912,
         240
       ],
       "retryOnFail": true,
@@ -475,7 +492,7 @@
       "typeVersion": 2,
       "position": [
         -640,
-        220
+        224
       ],
       "webhookId": "25fa2891-4874-4ac4-b116-7a1ff5219c29"
     },
@@ -512,7 +529,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1140,
+        1152,
         240
       ]
     },
@@ -544,8 +561,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -200,
-        220
+        -208,
+        224
       ],
       "id": "8925488d-8f24-499f-95f5-ef1c07027af0",
       "name": "If"
@@ -557,7 +574,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        100,
+        112,
         0
       ]
     },
@@ -570,7 +587,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        300,
+        304,
         0
       ]
     },
@@ -807,7 +824,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.3,
       "position": [
-        900,
+        912,
         0
       ],
       "retryOnFail": true,
@@ -838,7 +855,7 @@
           "parameters": [
             {
               "name": "message",
-              "value": "=*+1 Lead do perpétuo: Imersão presencial - Mentoria High Ticket®*\n\nNome: {{ $('Campos1').item.json.nome }}\nWhatsapp: {{ $('Campos1').item.json.whatsapp }}\n\nOrigens:\n\nsource: {{ $('Campos1').item.json.utm_source }}\ncampaign: {{ $('Campos1').item.json.utm_campaign }}\nmedium: {{ $('Campos1').item.json.utm_medium }}\ncontent: {{ $('Campos1').item.json.utm_content }}\nterm: {{ $('Campos1').item.json.utm_term }}"
+              "value": "=*+1 Lead do perpétuo: Imersão presencial - Mentoria High Ticket®*\n\nNome: {{ $('Campos1').item.json.nome }}\nWhatsapp: {{ $('Campos1').item.json.whatsapp }}\n\nOrigens:\n\nsource: {{ $('Campos1').item.json.utm_source }}\ncampaign: {{ $('Campos1').item.json.utm_campaign }}\nmedium: {{ $('Campos1').item.json.utm_medium }}\ncontent: {{ $('Campos1').item.json.utm_content }}\nterm: {{ $('Campos1').item.json.utm_term }}\n\nPágina: {{ $item(\"0\").$node[\"Campos1\"].json[\"pagina\"] }}"
             },
             {
               "name": "phone",
@@ -853,7 +870,44 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1140,
+        1152,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=*+1 Lead do perpétuo: Imersão presencial - Mentoria High Ticket®*\n\nNome: {{ $('Campos1').item.json.nome }}\nWhatsapp: {{ $('Campos1').item.json.whatsapp }}\n\nOrigens:\n\nsource: {{ $('Campos1').item.json.utm_source }}\ncampaign: {{ $('Campos1').item.json.utm_campaign }}\nmedium: {{ $('Campos1').item.json.utm_medium }}\ncontent: {{ $('Campos1').item.json.utm_content }}\nterm: {{ $('Campos1').item.json.utm_term }}\n\nPágina: {{ $item(\"0\").$node[\"Campos1\"].json[\"pagina\"] }}"
+            },
+            {
+              "name": "phone",
+              "value": "556181669359"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3972534e-3793-418a-8eda-ff2412b0c6db",
+      "name": "Notifica Gabi",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
         0
       ]
     }
@@ -864,8 +918,8 @@
         "json": {
           "headers": {
             "host": "webhook.josepbijari.com",
-            "user-agent": "WordPress/6.8.2; https://josepbijari.com",
-            "content-length": "238",
+            "user-agent": "WordPress/6.8.3; https://josepbijari.com",
+            "content-length": "230",
             "accept": "*/*",
             "accept-encoding": "deflate, gzip",
             "content-type": "application/x-www-form-urlencoded",
@@ -873,7 +927,7 @@
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "869fd5766395",
+            "x-forwarded-server": "467c905f5c94",
             "x-real-ip": "177.93.107.23"
           },
           "params": {},
@@ -882,14 +936,14 @@
             "Nome": "matheus",
             "Email": "matheuscristhyan.2@gmail.com",
             "Whatsapp": "81993515055",
-            "utm_source": "cg",
-            "utm_campaign": "meteorico",
-            "utm_medium": "ads",
-            "utm_term": "yayforms",
-            "utm_content": "ad",
-            "pagina": "imht-dez25-v2",
-            "form_id": "b113669",
-            "form_name": "IMHT [DEZ25] - Ingresso PREMIUM"
+            "utm_source": "direto",
+            "utm_campaign": "",
+            "utm_medium": "",
+            "utm_term": "",
+            "utm_content": "",
+            "pagina": "imht-dez25-v2-sem-preco",
+            "form_id": "81ac000",
+            "form_name": "IMHT [DEZ25] - Ingresso STARTER"
           },
           "webhookUrl": "https://webhook.josepbijari.com/webhook/25fa2891-4874-4ac4-b116-7a1ff5219c29",
           "executionMode": "production"
@@ -922,6 +976,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-24T21:19:46.159Z",
-  "versionId": "78bd631c-0aff-432e-830d-79fd7141ae94"
+  "updatedAt": "2025-11-14T21:04:26.175Z",
+  "versionId": "bdf5961d-b586-45d1-ac4c-d2b640b8b0a6"
 }
