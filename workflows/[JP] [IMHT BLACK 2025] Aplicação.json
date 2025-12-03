@@ -1,0 +1,679 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Elimina respostas vazias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form Completo": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos": {
+      "main": [
+        []
+      ]
+    },
+    "Aguarde": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Parcial": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers  - Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Elimina respostas vazias": {
+      "main": [
+        [
+          {
+            "node": "Aguarde",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers  - Parcial1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-02T22:09:03.017Z",
+  "id": "bxXC6uf4H7uFM1cg",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [IMHT BLACK 2025] Aplicação",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "fa25ebf0-cff5-44f0-be4e-d38774d5bd70",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        0,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "03f47808-6f5a-44d4-8f9e-47f0858e75fd",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        208,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f1c8fd16-c911-4ec8-9633-151e8b3b6942",
+        "options": {}
+      },
+      "id": "e6e0de9f-0bdb-411c-aabe-6298ad75ecce",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        224
+      ],
+      "webhookId": "f1c8fd16-c911-4ec8-9633-151e8b3b6942"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d8b33155-7ccd-44ae-a90c-97a9ed8090e3",
+              "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b2\"].content[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        224
+      ],
+      "id": "99a9e9fa-27c6-460f-ac54-48a4feb25552",
+      "name": "Form Completo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d554fa62-4b8e-4af6-b219-148849e33eff",
+              "name": "nome",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260aa\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "982c2c3f-8e2e-4e24-8bd4-8250dd00081f",
+              "name": "email",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ad\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7e7a4-8c5c-44ba-a261-2a0feca10f58",
+              "name": "whatsapp",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ab\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "dadf2585-25fc-4a41-85a7-d17010f6a188",
+              "name": "tipo de negocio",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ae\"].content[0] }}",
+              "type": "array"
+            },
+            {
+              "id": "1b162a1b-59b0-40dd-bfd9-f49f51bd8b43",
+              "name": "faturamento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260af\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "d4d70891-a2f2-43e7-86b2-f3cdd36b195e",
+              "name": "ticket medio",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b7\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "b0bf1619-54aa-476e-9235-5deb23bb2d3b",
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "3963442e-4392-45b7-a0f2-2d78e6426796",
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "bb0025ee-7695-4494-9740-e280da33ee3e",
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "1fd75d16-7620-4889-8733-419ad792103f",
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "f45fc219-4e11-476b-aa92-99a5650a21fb",
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "cf093be3-bbb5-4d5d-87ff-98d97b149c36",
+              "name": "investimento",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b2\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "f082db29-99b4-4c1b-9afa-9976a14327d1",
+              "name": "instagram",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"68102aea50d695fe0b0d0d35\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "deba784d-e8ca-4a0f-b88a-2a43c31cf365",
+              "name": "grupo seleto",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"68102bda183b281bfd0eab64\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "163df3e9-de29-4d62-8ce7-c897c537aa7c",
+              "name": "oportunidade",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"68102bcc50faf442020c71f6\"].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        224
+      ],
+      "id": "99fff9c9-df71-4b46-8e6f-adac24bbc6a7",
+      "name": "Campos"
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random()* 6) + 15 }}",
+        "path": "5891e016-4036-4ab1-b9d1-55f63947d49e"
+      },
+      "id": "2597d7e8-7822-497c-8af2-b6583e778524",
+      "name": "Aguarde",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        224
+      ],
+      "webhookId": "5891e016-4036-4ab1-b9d1-55f63947d49e"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        464
+      ],
+      "id": "e189fa6c-b560-4c8f-a813-b4c9c4ac90cf",
+      "name": "Lead Parcial"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação PARCIAL WEBNÁRIO JP:* 🚨\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Ticket Médio*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b7'].content[0] }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "409a8815-a47f-4da1-b212-c64845a443d6",
+      "name": "Report - Agendamentos Closers  - Parcial",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4d51afe1-d038-45ab-a3ef-8af66d6f677e",
+              "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260aa\"].content }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        224
+      ],
+      "id": "56751326-7c0e-4da3-bc84-1ae267482282",
+      "name": "Elimina respostas vazias"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação WEBNÁRIO JP:* ✅🔥\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Ticket Médio*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b7'].content[0] }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d49e7a0c-38ed-47f9-99f2-e0a60438db4d",
+      "name": "Report - Agendamentos Closers  - Parcial1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1744,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/7dff0b37-801c-48df-be15-e8470deea70d",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260aa\"][\"content\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ad\"][\"content\"] }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ab\"][\"content\"] }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102aea50d695fe0b0d0d35\"][\"content\"] }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ae\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260af\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "ticket",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260b7\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "ser_aceito",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102bda183b281bfd0eab64\"][\"content\"] }}"
+            },
+            {
+              "name": "oportunidade",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102bcc50faf442020c71f6\"][\"content\"] }}"
+            },
+            {
+              "name": "investimento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260b2\"][\"content\"][\"0\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        112
+      ],
+      "id": "ed2fb3c4-f93c-4e6b-9e37-edd4c9a44c73",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "4865",
+            "content-type": "application/json",
+            "x-forwarded-for": "142.93.53.80",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3b00e11001b6",
+            "x-real-ip": "142.93.53.80",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "6825fe67d971134e3839ac74",
+              "formId": "680a8f0a75a63ec8840260a8",
+              "ipAddress": "190.89.244.58",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "136.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "utm_source": "cg",
+                "utm_medium": "ads",
+                "utm_campaign": "meteorico",
+                "utm_content": "ad",
+                "utm_term": "yayforms",
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_gcl_au": "1.1.599869318.1744865246",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_ga": "GA1.2.1550280858.1744865246",
+                "_clck": "cymcv9|2|fvo|0|1933",
+                "ttcsid": "1746554627484::ejNt8HjYm6-Xqeo5c9Ih.5.1746554627484",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1746554627483::5yIf-P3I_oDNK_Uo_5RI.5.1746554627692",
+                "_ga_QMHGX1WZCF": "GS2.1.s1746554623$o5$g1$t1746554674$j9$l0$h647153102"
+              },
+              "timeToComplete": 27.269,
+              "startedAt": "2025-05-15T14:47:05.604000Z",
+              "submittedAt": "2025-05-15T14:47:32.873000Z",
+              "createdAt": "2025-05-15T14:47:03.831000Z",
+              "updatedAt": "2025-05-15T14:47:36.706000Z",
+              "answers": {
+                "680a9441fce7dfb6ef094aa3": {
+                  "answerId": "6825fe68bcb2d1fbcfe8af88",
+                  "fieldTitle": "Aplicação para a Mentoria High Ticket",
+                  "fieldDescription": "<p>A sua aplicação através deste questionário NÃO garante que você será aceito na Bijari Mentoria Avançada.</p><p></p><p>Vou avaliar pessoalmente, de forma cautelosa, cada aplicação e selecionar apenas quem realmente pode aproveitar essa oportunidade e agregar ao grupo. Baseado nas suas respostas, você será ou não selecionado para uma entrevista pessoal comigo ou com um especialista do meu time.</p><p></p><p>Só preencha esse questionário se você está realmente comprometido em fazer a diferença para você e para as pessoas em volta.</p>",
+                  "content": null
+                },
+                "680a8f0b75a63ec8840260aa": {
+                  "answerId": "6825fe69bcb2d1fbcfe8afc3",
+                  "fieldTitle": "Qual seu nome completo?",
+                  "fieldDescription": null,
+                  "content": "Matheus"
+                },
+                "680a8f0b75a63ec8840260ab": {
+                  "answerId": "6825fe6bbcb2d1fbcfe8b0e4",
+                  "fieldTitle": "WhatsApp com DDD",
+                  "fieldDescription": null,
+                  "content": "+5581993515055"
+                },
+                "68102aea50d695fe0b0d0d35": {
+                  "answerId": "6825fe6ebcb2d1fbcfe8b2ad",
+                  "fieldTitle": "Seu @ no Instagram?",
+                  "fieldDescription": null,
+                  "content": "teste insta"
+                },
+                "680a8f0b75a63ec8840260ad": {
+                  "answerId": "6825fe71bcb2d1fbcfe8b49a",
+                  "fieldTitle": "Qual o seu e-mail principal?",
+                  "fieldDescription": null,
+                  "content": "matheusteste15@gmail.com"
+                },
+                "680a8f0b75a63ec8840260ae": {
+                  "answerId": "6825fe7abcb2d1fbcfe8bbed",
+                  "fieldTitle": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Agência digital ou Coprodutor"
+                  ]
+                },
+                "680a8f0b75a63ec8840260b7": {
+                  "answerId": "6825fe7cbcb2d1fbcfe8bd42",
+                  "fieldTitle": "Qual é o seu ticket médio atual?",
+                  "fieldDescription": "<p></p>",
+                  "content": [
+                    "Entre R$ 3.001 e R$ 10.000"
+                  ]
+                },
+                "680a8f0b75a63ec8840260af": {
+                  "answerId": "6825fe7ebcb2d1fbcfe8bf32",
+                  "fieldTitle": "Qual seu faturamento médio mensal TOTAL (considerando investimento/sociedades/outros negócios);",
+                  "fieldDescription": null,
+                  "content": [
+                    "R$ 50.000,00 a R$ 100.000,00"
+                  ]
+                },
+                "68102bcc50faf442020c71f6": {
+                  "answerId": "6825fe80bcb2d1fbcfe8bffd",
+                  "fieldTitle": "Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?",
+                  "fieldDescription": "<p>Exemplo: eu poderia me afastar da operação, escalar sem depender de lançamentos, etc.</p>",
+                  "content": "teste"
+                },
+                "68102bda183b281bfd0eab64": {
+                  "answerId": "6825fe82bcb2d1fbcfe8c257",
+                  "fieldTitle": "Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?",
+                  "fieldDescription": "<p></p>",
+                  "content": "teste"
+                },
+                "680a8f0b75a63ec8840260b2": {
+                  "answerId": "6825fe83bcb2d1fbcfe8c3f6",
+                  "fieldTitle": "O investimento para a participação na Bijari Mentoria Avançada é de até 12x de R$ 6.000,00 no cartão de crédito ou R$ 60.000,00 à vista.&nbsp;",
+                  "fieldDescription": "<p>Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?</p>",
+                  "content": [
+                    "Sim, quero fazer o investimento à vista."
+                  ]
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/0ce2a12d-e6b7-407c-8fba-840b42802f27",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-02T22:09:03.017Z",
+      "createdAt": "2025-12-02T22:09:03.017Z",
+      "role": "workflow:owner",
+      "workflowId": "bxXC6uf4H7uFM1cg",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-02T22:28:27.145Z",
+  "versionId": "2bf1ad7f-05c2-48ca-819c-d728b6726b9e"
+}
