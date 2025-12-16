@@ -79,7 +79,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        200,
+        208,
         0
       ]
     },
@@ -105,7 +105,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead BMAinc*\n\n*Nome do lead*: {{ $json.nome }}\n\n*E-mail*: {{ $json.email }}\n\n*Whatsapp*: {{ $json.telefone }}\n\n*Profissão:* {{ $json.tempo[0] }}\n\n*Tempo que tem interesse em adquirir o terreno:* {{ $json.tempo[0] }}\n\n*Disponível pra investir:* {{ $json.investimento[0] }}"
+              "value": "=*Novo lead BMAinc*\n\n*Nome do lead*: {{ $json.nome }}\n\n*E-mail*: {{ $json.email }}\n\n*Whatsapp*: {{ $json.telefone }}\n\n*Profissão:* {{ $json.tempo[0] }}\n\n*Tempo que tem interesse em adquirir o terreno:* {{ $json.tempo }}\n\n*renda:* {{ $json.renda }}\n\n*Canal de preferência para contato:* {{ $json.canal }}\n\n*Horário de preferência para contato:* {{ $json.horario }}\n\n*Disponível pra investir:* {{ $json.investimento }}"
             }
           ]
         },
@@ -143,22 +143,46 @@
               "type": "string"
             },
             {
+              "id": "dba47fef-89db-4bfe-b6cb-e933c6d2780f",
+              "name": "interesse",
+              "value": "={{ $json.response.answers[\"69405019323896b15205aa5b\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "5fe17506-61a3-40a0-a994-99b8b2303f7c",
+              "name": "tempo",
+              "value": "={{ $json.response.answers[\"6940503ddaedcac447058363\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "fa2e4260-928f-4d1c-8eb8-901866efc370",
+              "name": "investimento",
+              "value": "={{ $json.response.answers[\"69405055182edd7c680ca6e8\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "469d6d3d-e506-40a7-9531-1d65c03a042f",
+              "name": "renda",
+              "value": "={{ $json.response.answers[\"6940507205bff2e95e0fdab6\"].content[0] }}",
+              "type": "string"
+            },
+            {
               "id": "395da50d-2217-4a57-8428-6c3bf7c89471",
               "name": "profissao",
               "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb2a\"].content[0] }}",
               "type": "string"
             },
             {
-              "id": "dba47fef-89db-4bfe-b6cb-e933c6d2780f",
-              "name": "tempo",
-              "value": "={{ $json.response.answers[\"68f775e39d5ba80f830e165d\"].content }}",
-              "type": "array"
+              "id": "c405a42b-903d-42bf-842f-03ffa2a42cfb",
+              "name": "canal",
+              "value": "={{ $json.response.answers[\"694050a2323896b15205aa64\"].content[0] }}",
+              "type": "string"
             },
             {
-              "id": "5fe17506-61a3-40a0-a994-99b8b2303f7c",
-              "name": "investimento",
-              "value": "={{ $json.response.answers[\"68f775e99d5ba80f830e165e\"].content }}",
-              "type": "array"
+              "id": "ee4d8338-1fa5-47ce-ae44-0a492c446f52",
+              "name": "horario",
+              "value": "={{ $json.response.answers[\"694050c8323896b15205aa70\"].content[0] }}",
+              "type": "string"
             }
           ]
         },
@@ -183,10 +207,10 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": "gid=0",
+          "value": 998971742,
           "mode": "list",
-          "cachedResultName": "leads",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1m8WGH58WpMi8c4XqxCCbdIq6CaPH0GglJJVutureQto/edit#gid=0"
+          "cachedResultName": "leads dezembro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1m8WGH58WpMi8c4XqxCCbdIq6CaPH0GglJJVutureQto/edit#gid=998971742"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -196,8 +220,11 @@
             "email": "={{ $('campos').item.json.email }}",
             "telefone": "={{ $('campos').item.json.telefone }}",
             "profissao": "={{ $('campos').item.json.profissao }}",
-            "tempo": "={{ $('campos').item.json.tempo[0] }}",
-            "investimento": "={{ $('campos').item.json.investimento[0] }}"
+            "investimento": "={{ $('campos').item.json.investimento }}",
+            "quanto tempo pretende comprar": "={{ $('campos').item.json.tempo }}",
+            "renda": "={{ $('campos').item.json.renda }}",
+            "canal de preferencia": "={{ $('campos').item.json.canal }}",
+            "horario para contato": "={{ $('campos').item.json.horario }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -248,8 +275,8 @@
               "removed": false
             },
             {
-              "id": "tempo",
-              "displayName": "tempo",
+              "id": "quanto tempo pretende comprar",
+              "displayName": "quanto tempo pretende comprar",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -266,6 +293,46 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "renda",
+              "displayName": "renda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "canal de preferencia",
+              "displayName": "canal de preferencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "horario para contato",
+              "displayName": "horario para contato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -276,7 +343,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        860,
+        864,
         0
       ],
       "id": "05e4e9c8-6b82-4a94-ae62-576ef95b9380",
@@ -296,28 +363,28 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "3155",
+            "content-length": "3953",
             "content-type": "application/json",
-            "x-forwarded-for": "68.183.123.93",
+            "x-forwarded-for": "157.230.186.30",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "869fd5766395",
-            "x-real-ip": "68.183.123.93",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "157.230.186.30",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "6903741cd313de6e08119ce2",
+              "id": "694052f94aca57e77cb89119",
               "formId": "68f774e9c726520d6a0afb25",
-              "ipAddress": "190.89.246.152",
+              "ipAddress": "2804:6ba0:8064:f01:214e:5d42:c2d0:b92",
               "operatingSystem": "OS X",
               "operatingSystemVersion": "10_15_7",
-              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
               "browser": "Chrome",
-              "browserVersion": "141.0.0.0",
+              "browserVersion": "143.0.0.0",
               "referrerUrl": null,
               "deviceType": "desktop",
               "geolocation": {
@@ -342,7 +409,6 @@
                 "_tt_enable_cookie": "1",
                 "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
                 "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
-                "_gcl_au": "1.1.1598151795.1754967679",
                 "hotid": "eyJjaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIiwiYmlkIjoiMTc1MTMxMzQ4ODM5MTc5NzI0MDE4Mjk2Nzk0MzgwMCIsInNpZCI6ImNmOTFiZTg2YTRjNzQ1OGNhYmEwNWI5MDhhOTQyM2NmIn0=",
                 "_ltusession": "1759376967413__1",
                 "_ltuid": "19DU0z",
@@ -352,58 +418,91 @@
                 "_ga_BJR0JVV5FR": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
                 "_ga_PEGMJDK06R": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
                 "_fbc": "fb.1.1761053239943.fbclid",
-                "_clck": "cymcv9^2^g0c^0^1933",
+                "_gcl_au": "1.1.1754743123.1763009515",
+                "_clck": "cymcv9^2^g0z^0^1933",
                 "_ga": "GA1.1.1550280858.1744865246",
-                "ttcsid": "1761053240321::ZWoVQS_pFH2rYwh3CVN9.13.1761053584780.0",
-                "ttcsid_C5URFDOVMNUPJ15SHS00": "1761053240320::Yj1D0jw09kyMRNQQwFr5.12.1761053584780.0",
-                "_ga_QMHGX1WZCF": "GS2.1.s1761053240$o11$g1$t1761053650$j60$l0$h1168345197"
+                "ttcsid": "1763009515558::CbKUMNdaP4fcZ2enf5P2.14.1763009622690.0",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1763009515557::bSh386I6gpZJiC8VwDPV.13.1763009622690.0",
+                "_ga_QMHGX1WZCF": "GS2.1.s1763009515$o12$g1$t1763010170$j60$l0$h1746857264"
               },
-              "timeToComplete": 11.905,
-              "startedAt": "2025-10-30T14:20:17.635000Z",
-              "submittedAt": "2025-10-30T14:20:29.540000Z",
-              "createdAt": "2025-10-30T14:20:12.654000Z",
-              "updatedAt": "2025-10-30T14:20:30.341000Z",
+              "timeToComplete": 19.23,
+              "startedAt": "2025-12-15T18:27:13.796000Z",
+              "submittedAt": "2025-12-15T18:27:33.026000Z",
+              "createdAt": "2025-12-15T18:27:05.471000Z",
+              "updatedAt": "2025-12-15T18:27:40.025000Z",
               "answers": {
                 "68f774eac726520d6a0afb27": {
-                  "answerId": "6903741c397b622b92ffc344",
+                  "answerId": "694052f9397b622b9273b26c",
                   "fieldTitle": "Qual seu nome completo?",
                   "fieldDescription": null,
                   "content": "Matheus"
                 },
                 "68f774eac726520d6a0afb29": {
-                  "answerId": "69037420397b622b92ffc350",
+                  "answerId": "69405300397b622b9273b287",
                   "fieldTitle": "Digite seu melhor e-mail",
                   "fieldDescription": null,
                   "content": "matheus@gmail.com"
                 },
                 "68f774eac726520d6a0afb28": {
-                  "answerId": "69037425397b622b92ffc35c",
+                  "answerId": "69405304397b622b9273b299",
                   "fieldTitle": "Número de WhatsApp com DDD",
                   "fieldDescription": null,
                   "content": "+558191013614"
                 },
+                "69405019323896b15205aa5b": {
+                  "answerId": "69405307397b622b9273b2a5",
+                  "fieldTitle": "Você te interesse em comprar um terreno em condomínio fechado?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Sim, quero comprar em breve"
+                  ]
+                },
+                "6940503ddaedcac447058363": {
+                  "answerId": "69405309397b622b9273b2b0",
+                  "fieldTitle": "E quanto tempo pretende comprar?",
+                  "fieldDescription": null,
+                  "content": [
+                    "De 3 a 6 meses"
+                  ]
+                },
+                "69405055182edd7c680ca6e8": {
+                  "answerId": "6940530a397b622b9273b2b6",
+                  "fieldTitle": "Qual é a média de investimento que você está disposto (a) a fazer em um terreno?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Até R$300.000,00"
+                  ]
+                },
+                "6940507205bff2e95e0fdab6": {
+                  "answerId": "6940530b397b622b9273b2bc",
+                  "fieldTitle": "Qual é sua faixa de renda mensal?",
+                  "fieldDescription": null,
+                  "content": [
+                    "De R$ 10.000,00 a R$ 15.000,00"
+                  ]
+                },
                 "68f774eac726520d6a0afb2a": {
-                  "answerId": "69037428397b622b92ffc366",
+                  "answerId": "6940530c397b622b9273b2c0",
                   "fieldTitle": "Qual sua profissão atual?",
                   "fieldDescription": null,
                   "content": [
-                    "Empresário (a)"
+                    "Advogado (a)"
                   ]
                 },
-                "68f775e39d5ba80f830e165d": {
-                  "answerId": "6903742a397b622b92ffc36b",
-                  "fieldTitle": "Você tem interesse em adquirir um terreno quando?&nbsp;",
+                "694050a2323896b15205aa64": {
+                  "answerId": "69405312397b622b9273b2d8",
+                  "fieldTitle": "Por qual canal prefere receber as informações?",
                   "fieldDescription": null,
                   "content": [
-                    "Até 6 meses"
+                    "WhatsApp"
                   ]
                 },
-                "68f775e99d5ba80f830e165e": {
-                  "answerId": "6903742c397b622b92ffc36d",
-                  "fieldTitle": "Quanto você está disposto a investir?&nbsp;",
+                "694050c8323896b15205aa70": {
+                  "answerId": "69405313397b622b9273b2db",
+                  "fieldTitle": "Qual melhor horário para contato?",
                   "fieldDescription": null,
                   "content": [
-                    "A partir de R$ 550 mil"
+                    "Manhã"
                   ]
                 }
               }
@@ -430,6 +529,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T16:48:37.645Z",
-  "versionId": "758cbbc8-c5b0-4909-85e2-66621be4d769"
+  "updatedAt": "2025-12-15T19:26:30.927Z",
+  "versionId": "0508d67e-5b90-488d-80cc-bd5a06870b74"
 }
