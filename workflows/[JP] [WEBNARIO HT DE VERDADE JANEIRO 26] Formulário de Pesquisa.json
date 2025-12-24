@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Trata Webhook": {
       "main": [
@@ -66,20 +66,21 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": 712322231,
+          "value": 2092825379,
           "mode": "list",
-          "cachedResultName": "HT DE VERDADE NOVEMBRO PESQUISA",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=712322231"
+          "cachedResultName": "PESQUISA WEBNARIO JANEIRO 2026",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=2092825379"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
             "telefone": "={{ $json.whatsapp }}",
             "chave": "={{ $json.whatsapp.slice(-7) }}",
-            "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
-            "cenário": "={{ $json.cenario }}",
             "faturamento": "={{ $json.faturamento }}",
-            "negocio": "={{ $json.negocio }}"
+            "negocio": "={{ $json.negocio }}",
+            "setor": "={{ $json.setor }}",
+            "momento": "={{ $json.momento }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -111,8 +112,8 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "cenário",
-              "displayName": "cenário",
+              "id": "negocio",
+              "displayName": "negocio",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -129,8 +130,18 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "negocio",
-              "displayName": "negocio",
+              "id": "setor",
+              "displayName": "setor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "momento",
+              "displayName": "momento",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -148,7 +159,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.3,
       "position": [
-        -16,
+        48,
         144
       ],
       "retryOnFail": true,
@@ -163,7 +174,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Pegando a entrada\nconst inputData = $input.item.json;\n\n// Mapas de conversão\nconst negocioMap = {\n  \"1\": \"Mentor, expert ou infoprodutor\",\n  \"2\": \"Agência digital ou Coprodutor\",\n  \"3\": \"Gestor de tráfego ou outro prestador de serviço no digital\",\n  \"4\": \"Profissional liberal/Prestador de serviço\",\n  \"5\": \"Afiliados e PLR\",\n  \"6\": \"Nenhuma das opções\"\n};\n\nconst faturamentoMap = {\n  \"1\": \"Até R$ 10.000,00\",\n  \"2\": \"R$ 10.000,00 a R$ 20.000,00\",\n  \"3\": \"R$ 20.000,00 a R$ 50.000,00\",\n  \"4\": \"R$ 50.000,00 a R$ 100.000,00\",\n  \"5\": \"R$ 100.000,00 a R$ 250.000,00\",\n  \"6\": \"R$ 250.000,00 a R$ 500.000,00\",\n  \"7\": \"Acima de R$ 500.000,00\"\n};\n\nconst cenarioMap = {\n  \"1\": \"Tenho um curso online e quero lançar minha mentoria\",\n  \"2\": \"Já tenho mentorados e quero escalar as vendas\",\n  \"3\": \"Sou prestador de serviço e quero lançar minha mentoria\",\n  \"4\": \"Sou coprodutor e quero aumentar as vendas de infoproduto do(s) meu(s) expert(s)\",\n  \"5\": \"Sou prestador de serviço e quero aumentar as vendas do meu serviço\"\n};\n\n// Resultado\nconst result = {\n  negocio: negocioMap[inputData.negocio] || \"Não informado\",\n  faturamento: faturamentoMap[inputData.faturamento] || \"Não informado\",\n  cenario: cenarioMap[inputData.cenario] || \"Não informado\",\n  whatsapp: inputData.whatsapp\n};\n\n// Retornar resultado\nreturn [\n  {\n    json: result\n  }\n];\n"
+        "jsCode": "// Pegando a entrada\nconst inputData = $input.item.json;\n\n// Mapas de conversão\nconst negocioMap = {\n  \"1\": \"Mentor, expert ou infoprodutor\",\n  \"2\": \"Agência digital ou Coprodutor\",\n  \"3\": \"Gestor de tráfego ou outro prestador de serviço no digital\",\n  \"4\": \"Empresário/Empreendedor\",\n  \"5\": \"Profissional liberal/Prestador de serviço\",\n  \"6\": \"Afiliados e PLR\",\n  \"7\": \"Nenhuma das opções\"\n};\n\nconst faturamentoMap = {\n  \"1\": \"Até R$ 10.000,00\",\n  \"2\": \"R$ 10.000,00 a R$ 20.000,00\",\n  \"3\": \"R$ 20.000,00 a R$ 50.000,00\",\n  \"4\": \"R$ 50.000,00 a R$ 100.000,00\",\n  \"5\": \"R$ 100.000,00 a R$ 250.000,00\",\n  \"6\": \"R$ 250.000,00 a R$ 500.000,00\",\n  \"7\": \"Acima de R$ 500.000,00\"\n};\n\nconst momentoMap = {\n  \"1\": \"Tenho um curso online e quero lançar minha mentoria\",\n  \"2\": \"Já tenho mentorados e quero escalar as vendas\",\n  \"3\": \"Sou empresário e quero lançar minha mentoria\",\n  \"4\": \"Sou prestador de serviço e quero lançar minha mentoria\",\n  \"5\": \"Sou coprodutor e quero aumentar as vendas de infoproduto do(s) meu(s) expert(s)\",\n  \"6\": \"Sou prestador de serviço e quero aumentar as vendas do meu serviço\"\n};\n\nconst setorMap = {\n  \"1\": \"Educação\",\n  \"2\": \"Saúde\",\n  \"3\": \"Marketing digital\",\n  \"4\": \"Tecnologia\",\n  \"5\": \"Negócios\",\n  \"6\": \"Finanças\",\n  \"7\": \"Jurídico\",\n  \"8\": \"Imobiliário\",\n  \"9\": \"Outros\"\n};\n\n// Resultado\nconst result = {\n  negocio: negocioMap[inputData.negocio] || inputData.negocio,\n  faturamento: faturamentoMap[inputData.faturamento] || inputData.faturamento,\n  momento: momentoMap[inputData.momento] || inputData.momento,\n  setor: setorMap[inputData.setor] || inputData.setor,\n  whatsapp: inputData.whatsapp\n};\n\n// Retornar resultado\nreturn [\n  {\n    json: result\n  }\n];"
       },
       "id": "1e01d494-fd54-4794-bf76-c69ac706cf5c",
       "name": "Trata Etapas",
@@ -198,25 +209,26 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "ManyChat",
-            "content-length": "80",
+            "content-length": "93",
             "content-type": "application/json; charset=utf-8",
-            "x-forwarded-for": "18.185.70.230",
+            "x-forwarded-for": "63.180.1.106",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "3b00e11001b6",
-            "x-real-ip": "18.185.70.230",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "63.180.1.106",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "negocio": "2",
-            "faturamento": "5",
-            "cenario": "5",
-            "whatsapp": "5581993515055"
+            "faturamento": "4",
+            "momento": "3",
+            "setor": "4",
+            "whatsapp": "5581991013614"
           },
-          "webhookUrl": "https://webhook.josepbijari.com/webhook/pesquisa-webnario-agenda-lotada27jun",
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/b9954827-5a0f-4020-b126-80358ac655fb",
           "executionMode": "production"
         }
       }
@@ -247,6 +259,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-19T18:42:32.576Z",
-  "versionId": "491a19ea-bd21-43a7-ac8b-59cf1aa265a4"
+  "updatedAt": "2025-12-24T04:48:12.210Z",
+  "versionId": "c3ae60e4-47ea-42ea-86ef-7309f242bc25"
 }
