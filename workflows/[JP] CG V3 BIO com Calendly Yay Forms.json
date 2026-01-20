@@ -124,6 +124,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Call Agendada8",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1086,6 +1093,110 @@
           }
         ]
       ]
+    },
+    "Call Agendada8": {
+      "main": [
+        [
+          {
+            "node": "Date & Time13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time13": {
+      "main": [
+        [
+          {
+            "node": "formata data reunião8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "formata data reunião8": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Gabriel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Clint Gabriel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VIDEO JP PRE-CALL9": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 50",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 50": {
+      "main": [
+        [
+          {
+            "node": "Wait37",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait37": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 51",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 51": {
+      "main": [
+        [
+          {
+            "node": "Wait38",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait38": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 52",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo | Gabriel": {
+      "main": [
+        [
+          {
+            "node": "Notifica pv Gabriel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-24T04:11:19.939Z",
@@ -1462,6 +1573,31 @@
               },
               "renameOutput": true,
               "outputKey": "Karllos"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "d8a44070-2643-4513-a434-3806d95dbdfb",
+                    "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                    "rightValue": "Gabriel Fernandes",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Gabriel Fernandes"
             }
           ]
         },
@@ -4826,6 +4962,402 @@
         3664,
         1840
       ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "outputFieldName": "callAgendada",
+        "options": {
+          "timezone": false
+        }
+      },
+      "id": "4080b72c-d977-457e-ab74-edbd7956b4df",
+      "name": "Call Agendada8",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2112,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "180e2f60-942c-494d-bc5c-53ed35546e53",
+      "name": "Date & Time13",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+        "format": "custom",
+        "customFormat": "dd/MM/yyyy HH:mm",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "c802b251-79ca-400c-9bfe-286f88abae90",
+      "name": "formata data reunião8",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        3184,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-video",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67f0b04658c5b6e203042d95\"].content }}"
+            },
+            {
+              "name": "video",
+              "value": "=https://raw.githubusercontent.com/libertas-cris/arquivos-pra-envio/main/Pre%CC%81%20call%20agosto%20-%20editado%20(1).mp4"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5850a28d-d4db-4ef8-b9c9-1c17c284bb5f",
+      "name": "VIDEO JP PRE-CALL9",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3904,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Bora que depois dessa sua consultoria, você vai ter mapeado certinho o que precisa fazer para escalar suas vendas. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c020bc78-cb38-4a80-9c93-2bf200b2f54e",
+      "name": "MSG PRE-CALL 50",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4144,
+        2304
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4400,
+        2304
+      ],
+      "id": "b6270ddb-4f63-4212-b68b-661f7ef74183",
+      "name": "Wait37",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=E pode ficar tranquilo, essa não é uma reunião como 90% que o objetivo é só fazer um pitch de vendas, realmente temos uma formação na metodologia do Bijari e entregamos um plano de ação de alto valor, por isso as vagas são bem disputadas"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cec83ebd-3c0b-41cf-a918-58925e720588",
+      "name": "MSG PRE-CALL 51",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4624,
+        2304
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4848,
+        2304
+      ],
+      "id": "5d8e9cb7-d2dd-4f12-9aaf-7b3b6e91660a",
+      "name": "Wait38",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "64b66985-c3ae-4cc9-a47d-ab950c1db7e0",
+      "name": "MSG PRE-CALL 52",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5072,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d94\"][\"content\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d97\"][\"content\"] }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d96\"][\"content\"] }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d98\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d99\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "objetivo",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d9b\"][\"content\"] }}"
+            },
+            {
+              "name": "cenario",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d9a\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "calendly",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67f0b04758c5b6e203042d9d\"].content || $('Trata Webhook').item.json.response.answers[\"67f0b04758c5b6e203042d9e\"].content || $('Trata Webhook').item.json.response.answers[\"67f0b04758c5b6e203042d9f\"].content }}"
+            },
+            {
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}"
+            },
+            {
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}"
+            },
+            {
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}"
+            },
+            {
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}"
+            },
+            {
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+            },
+            {
+              "name": "Data Aplicação",
+              "value": "={{ $('Date & Time13').item.json.formattedDate }}"
+            },
+            {
+              "name": "Data Call Agendada",
+              "value": "={{ $json[\"formattedDate\"] }}"
+            },
+            {
+              "name": "formulario",
+              "value": "Mentoria High Ticket® - CG Escala V3 - Bio"
+            },
+            {
+              "name": "dono",
+              "value": "gabrielfernandes.bma@gmail.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3408,
+        2128
+      ],
+      "id": "63355f0c-dba7-4890-a7f4-aa58dd88b7b5",
+      "name": "Clint Gabriel"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado JP 🚨*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Gabriel Fernandes\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d94'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d97'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d95'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d99'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d98'].content[0] }}\n\n*Origens:*\nFormulário: BIO (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas na Clint*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8d159bb8-592a-4177-ac2d-6426325032e6",
+      "name": "Notifica grupo | Gabriel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3408,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=554591088542"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Gabriel Fernandes\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d94'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d97'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d95'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d99'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d98'].content[0] }}\n\n*Origens:*\nFormulário: v3 calendly (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas na Clint*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c02777ad-fc78-4324-8506-0ec386afc548",
+      "name": "Notifica pv Gabriel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3664,
+        2304
+      ]
     }
   ],
   "pinData": {
@@ -4999,6 +5531,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-10T16:10:46.196Z",
-  "versionId": "cadd5822-62de-457e-bd9c-c671a81d8ed7"
+  "updatedAt": "2026-01-19T18:39:34.217Z",
+  "versionId": "fec9580f-0bb9-4176-8d4d-b410f50dd8a6"
 }
