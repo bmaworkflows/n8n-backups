@@ -131,6 +131,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Call Agendada9",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1197,6 +1204,110 @@
           }
         ]
       ]
+    },
+    "Call Agendada9": {
+      "main": [
+        [
+          {
+            "node": "Date & Time14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time14": {
+      "main": [
+        [
+          {
+            "node": "formata data reunião9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "formata data reunião9": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Guilherme Luiz",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Clint Guilherme Luiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VIDEO JP PRE-CALL10": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 53",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 53": {
+      "main": [
+        [
+          {
+            "node": "Wait39",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait39": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 54",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG PRE-CALL 54": {
+      "main": [
+        [
+          {
+            "node": "Wait40",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait40": {
+      "main": [
+        [
+          {
+            "node": "MSG PRE-CALL 55",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo | Guilherme Luiz": {
+      "main": [
+        [
+          {
+            "node": "Notifica pv Guilherme Luiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-24T04:11:19.939Z",
@@ -1598,6 +1709,31 @@
               },
               "renameOutput": true,
               "outputKey": "Gabriel Fernandes"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "da2a4de2-6222-482c-9ef0-0fbd98df8059",
+                    "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                    "rightValue": "Guilherme Luiz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Guilherme Luiz"
             }
           ]
         },
@@ -5358,6 +5494,402 @@
         3664,
         2304
       ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "outputFieldName": "callAgendada",
+        "options": {
+          "timezone": false
+        }
+      },
+      "id": "c2d1020a-04a5-4e74-af06-76c019ddc6d6",
+      "name": "Call Agendada9",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2112,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Trata Webhook').item.json.response.submittedAt }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:mm:ss",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "ef203116-bda7-4f55-a812-64d77842d4ac",
+      "name": "Date & Time14",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+        "format": "custom",
+        "customFormat": "dd/MM/yyyy HH:mm",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "ba97264c-b93f-488a-90ca-7c004ea91f3a",
+      "name": "formata data reunião9",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        3184,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-video",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67f0b04658c5b6e203042d95\"].content }}"
+            },
+            {
+              "name": "video",
+              "value": "=https://raw.githubusercontent.com/libertas-cris/arquivos-pra-envio/main/Pre%CC%81%20call%20agosto%20-%20editado%20(1).mp4"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "21b27acd-69ec-4b5f-8017-fa07de45f0f2",
+      "name": "VIDEO JP PRE-CALL10",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3904,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Bora que depois dessa sua consultoria, você vai ter mapeado certinho o que precisa fazer para escalar suas vendas. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2003d141-a504-4540-bd13-75ff5e06bd0b",
+      "name": "MSG PRE-CALL 53",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4144,
+        2784
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4400,
+        2784
+      ],
+      "id": "67826253-efd4-4389-a540-1fa883dec25c",
+      "name": "Wait39",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=E pode ficar tranquilo, essa não é uma reunião como 90% que o objetivo é só fazer um pitch de vendas, realmente temos uma formação na metodologia do Bijari e entregamos um plano de ação de alto valor, por isso as vagas são bem disputadas"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d56fa3e-cdda-4c29-839f-5fd712892692",
+      "name": "MSG PRE-CALL 54",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4624,
+        2784
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4848,
+        2784
+      ],
+      "id": "d93fdf37-2a50-4593-993e-227059fd9b4e",
+      "name": "Wait40",
+      "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E3F36E4610C91875DD88258D1F0342D/token/9DD6B5828E972473481638B5/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c3ab251c-5fad-48f7-8c24-dd978a1c3ea7",
+      "name": "MSG PRE-CALL 55",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5072,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d94\"][\"content\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d97\"][\"content\"] }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d96\"][\"content\"] }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d98\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d99\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "objetivo",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d9b\"][\"content\"] }}"
+            },
+            {
+              "name": "cenario",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04758c5b6e203042d9a\"][\"content\"][\"0\"] }}"
+            },
+            {
+              "name": "calendly",
+              "value": "={{ $('Trata Webhook').item.json.response.answers[\"67f0b04758c5b6e203042d9d\"].content || $('Trata Webhook').item.json.response.answers[\"67f0b04758c5b6e203042d9e\"].content || $('Trata Webhook').item.json.response.answers[\"67f0b04758c5b6e203042d9f\"].content }}"
+            },
+            {
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}"
+            },
+            {
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}"
+            },
+            {
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}"
+            },
+            {
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}"
+            },
+            {
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+            },
+            {
+              "name": "Data Aplicação",
+              "value": "={{ $('Date & Time14').item.json.formattedDate }}"
+            },
+            {
+              "name": "Data Call Agendada",
+              "value": "={{ $json[\"formattedDate\"] }}"
+            },
+            {
+              "name": "formulario",
+              "value": "Mentoria High Ticket® - CG Escala V3 - Bio"
+            },
+            {
+              "name": "dono",
+              "value": "guilhermeluiz.bma@gmail.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3408,
+        2608
+      ],
+      "id": "b2116839-1cc6-4e4a-9776-acb491a53c52",
+      "name": "Clint Guilherme Luiz"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado JP 🚨*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d94'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d97'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d95'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d99'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d98'].content[0] }}\n\n*Origens:*\nFormulário: BIO (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas na Clint*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9114a0fe-b0c7-48f1-ac2c-980fe81331c1",
+      "name": "Notifica grupo | Guilherme Luiz",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3408,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=553192265968"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d94'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d97'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['67f0b04658c5b6e203042d95'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d99'].content[0] }}\n\n*Modelo de Negócio*: {{ $('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d98'].content[0] }}\n\n*Origens:*\nFormulário: v3 calendly (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}\n\n*Informações completas na Clint*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "88a249d8-ba04-4e67-9f24-3faebcc849fc",
+      "name": "Notifica pv Guilherme Luiz",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3664,
+        2784
+      ]
     }
   ],
   "pinData": {
@@ -5531,6 +6063,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-19T18:39:34.217Z",
-  "versionId": "fec9580f-0bb9-4176-8d4d-b410f50dd8a6"
+  "updatedAt": "2026-02-26T19:25:43.927Z",
+  "versionId": "02e4a2ac-c806-428f-bf64-02707ed5f280"
 }
