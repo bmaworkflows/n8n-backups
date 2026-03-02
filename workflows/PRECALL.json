@@ -1,0 +1,238 @@
+{
+  "active": false,
+  "connections": {
+    "recebe agendamento": {
+      "main": [
+        [
+          {
+            "node": "Trata campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-02T08:43:39.160Z",
+  "id": "s82MNZSHJPKFP2Ua",
+  "isArchived": false,
+  "meta": null,
+  "name": "PRECALL",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6b6bb3dd-9407-401f-baa7-ca280a7a9848",
+      "name": "recebe agendamento"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrair start_time do payload do Calendly\nconst startTime = new Date($input.first().json.collection[0].start_time);\nconst now = new Date();\n\n// Manhã do dia da reunião = 08:00 BRT (11:00 UTC)\nconst morningOfDay = new Date(startTime);\nmorningOfDay.setUTCHours(11, 0, 0, 0);\n\n// Se a reunião é antes das 8h BRT, ajustar para não ficar depois do start_time\nif (morningOfDay >= startTime) {\n  morningOfDay.setUTCHours(8, 0, 0, 0); // fallback 05:00 UTC = 02:00 BRT... \n  // Na verdade se a reunião é de manhã cedo, a msg da manhã vira o próprio horário\n  morningOfDay.setTime(Math.min(morningOfDay.getTime(), startTime.getTime() - 60 * 60 * 1000));\n}\n\nconst h = 60 * 60 * 1000;   // 1 hora em ms\nconst d = 24 * h;            // 1 dia em ms\n\n// Alvos de envio de cada mensagem\nconst targets = {\n  delay_msg1: now,                                          // Imediata\n  delay_msg2: new Date(startTime.getTime() - 12 * h),      // 12h antes\n  delay_msg3: morningOfDay,                                 // Manhã do dia\n  delay_msg4: new Date(startTime.getTime() + 6 * h),       // 6h depois\n  delay_msg5: new Date(startTime.getTime() + 24 * h),      // 24h depois\n  delay_msg6: new Date(startTime.getTime() + 36 * h),      // 36h depois\n  delay_msg7: new Date(startTime.getTime() + 3 * d),       // 3 dias depois\n  delay_msg8: new Date(startTime.getTime() + 5 * d),       // 5 dias depois\n};\n\nconst result = {\n  start_time: startTime.toISOString(),\n  now_brt: new Date(now.getTime() - 3 * h).toISOString(),\n};\n\nfor (const [key, target] of Object.entries(targets)) {\n  const diffMinutes = Math.round((target.getTime() - now.getTime()) / 60000);\n  result[key] = Math.max(0, diffMinutes);\n}\n\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2e1016a5-6a43-4d86-9997-f5af8dbdb3b8",
+      "name": "Trata campos"
+    }
+  ],
+  "pinData": {
+    "recebe agendamento": [
+      {
+        "json": {
+          "collection": [
+            {
+              "calendar_event": {
+                "external_id": "dkq98ulno94l7qucm06kicdbt4",
+                "kind": "google"
+              },
+              "created_at": "2026-03-01T23:37:23.437043Z",
+              "end_time": "2026-03-03T14:30:00.000000Z",
+              "event_guests": [],
+              "event_memberships": [
+                {
+                  "buffered_end_time": "2026-03-03T14:30:00.000000Z",
+                  "buffered_start_time": "2026-03-03T13:00:00.000000Z",
+                  "user": "https://api.calendly.com/users/fcdaae8e-2694-4bc1-b64f-44c56722e708",
+                  "user_email": "tiagogregorio@mentoriahighticket.com.br",
+                  "user_name": "Tiago Gregório"
+                }
+              ],
+              "event_type": "https://api.calendly.com/event_types/6638a26d-a1c7-4dae-9899-f594dd200b06",
+              "invitees_counter": {
+                "active": 1,
+                "limit": 1,
+                "total": 1
+              },
+              "location": {
+                "data": {
+                  "id": 95429415910,
+                  "settings": {
+                    "global_dial_in_numbers": [
+                      {
+                        "country_name": "US",
+                        "number": "+1 309 205 3325",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "city": "Chicago",
+                        "number": "+1 312 626 6799",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 646 931 3860",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "city": "New York",
+                        "number": "+1 929 205 6099",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "city": "Washington DC",
+                        "number": "+1 301 715 8592",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 305 224 1968",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 669 444 9171",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "city": "San Jose",
+                        "number": "+1 669 900 6833",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 689 278 1000",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 719 359 4580",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 253 205 0468",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "city": "Tacoma",
+                        "number": "+1 253 215 8782",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "city": "Houston",
+                        "number": "+1 346 248 7799",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 360 209 5623",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 386 347 5053",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 507 473 4847",
+                        "type": "toll",
+                        "country": "US"
+                      },
+                      {
+                        "country_name": "US",
+                        "number": "+1 564 217 2000",
+                        "type": "toll",
+                        "country": "US"
+                      }
+                    ]
+                  },
+                  "extra": {
+                    "intl_numbers_url": null
+                  },
+                  "password": "722717"
+                },
+                "join_url": "https://zoom.us/j/95429415910?pwd=xaCaP4AyjfaeWyPBuFAuAgpingqYE0.1",
+                "status": "pushed",
+                "type": "zoom"
+              },
+              "meeting_notes_html": null,
+              "meeting_notes_plain": null,
+              "name": "CG10- Consultoria Grátis",
+              "start_time": "2026-03-03T13:00:00.000000Z",
+              "status": "active",
+              "updated_at": "2026-03-01T23:37:26.495875Z",
+              "uri": "https://api.calendly.com/scheduled_events/a6b079b9-2630-4b74-8e96-9d2e6f0a60b3"
+            }
+          ],
+          "pagination": {
+            "count": 1,
+            "next_page": null,
+            "next_page_token": null,
+            "previous_page": null,
+            "previous_page_token": null
+          }
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-02T08:43:39.160Z",
+      "createdAt": "2026-03-02T08:43:39.160Z",
+      "role": "workflow:owner",
+      "workflowId": "s82MNZSHJPKFP2Ua",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-02T09:06:18.818Z",
+  "versionId": "266e88dd-7e1e-4d4e-adec-38f806c2fb19"
+}
