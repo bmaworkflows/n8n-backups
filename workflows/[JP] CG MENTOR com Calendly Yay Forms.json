@@ -60,18 +60,17 @@
       "main": [
         [
           {
-            "node": "ACIONA FLUXO DE PRECALL",
+            "node": "Trata campos",
             "type": "main",
             "index": 0
-          }
-        ],
-        [
+          },
           {
             "node": "Switch",
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     },
     "Switch": {
@@ -1202,6 +1201,17 @@
       "main": [
         []
       ]
+    },
+    "Trata campos": {
+      "main": [
+        [
+          {
+            "node": "ACIONA FLUXO DE PRECALL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-06-26T14:20:49.844Z",
@@ -1263,7 +1273,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1008,
+        960,
         128
       ],
       "onError": "continueErrorOutput"
@@ -5351,11 +5361,58 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1168,
-        -128
+        1312,
+        -160
       ],
       "id": "212d23c8-1de9-4c7a-b6bf-3c01828e099b",
       "name": "ACIONA FLUXO DE PRECALL"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aff0548b-d0f8-4579-84b3-dc842a268ab4",
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "f971f35f-acd5-487a-91b4-988abae74c68",
+              "name": "agendamento",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "02668b73-93cf-47d0-b78a-3b6655fd0a47",
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "72903080-7b31-49f0-a0e8-619d64b6dba7",
+              "name": "segmento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d402c58ad4238f4082362\"][\"content\"][\"0\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "2ea07efa-2bf2-4f17-a9c0-5e16ce18030c",
+              "name": "infoproduto",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d407a97e30a0017089369\"][\"content\"][\"0\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1136,
+        -160
+      ],
+      "id": "d63b076f-9bac-436a-97da-99d9eff704ad",
+      "name": "Trata campos"
     }
   ],
   "pinData": {
@@ -5365,7 +5422,7 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "5251",
+            "content-length": "5234",
             "content-type": "application/json",
             "x-forwarded-for": "159.223.107.139",
             "x-forwarded-host": "webhook.josepbijari.com",
@@ -5379,12 +5436,12 @@
           "query": {},
           "body": {
             "response": {
-              "id": "69a4ccabfabdab8fa2c285bf",
+              "id": "69a58bbae0f97eb3332286b8",
               "formId": "685d4019b13a7bb2320f94d6",
-              "ipAddress": "170.84.216.45",
+              "ipAddress": "2804:18:161:6254:25cb:7ae6:a690:515a",
               "operatingSystem": "iOS",
-              "operatingSystemVersion": "18_7",
-              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23D127 Instagram 418.2.0.34.75 (iPhone14,7; iOS 26_3; pt_BR; pt; scale=3.00; 1170x2532; IABMV/1; 893787717) Safari/604.1",
+              "operatingSystemVersion": "18_5",
+              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22F76 Instagram 408.0.0.32.70 (iPhone14,3; iOS 18_5; pt_BR; pt; scale=3.00; 1284x2778; IABMV/1; 830715757) Safari/604.1",
               "browser": "Safari",
               "browserVersion": "604.1",
               "referrerUrl": null,
@@ -5394,13 +5451,13 @@
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "region": "MS",
-                "state": "Mato Grosso do Sul",
-                "city": "Naviraí",
-                "zipcode": "79950",
-                "latitude": -23.1074,
-                "longitude": -54.0311,
-                "timezone": "America/Campo_Grande",
+                "region": "SP",
+                "state": "São Paulo",
+                "city": "Campinas",
+                "zipcode": "13000",
+                "latitude": -22.8951,
+                "longitude": -47.0439,
+                "timezone": "America/Sao_Paulo",
                 "currency": "BRL"
               },
               "aiFeedback": null,
@@ -5417,41 +5474,41 @@
                 "utm_campaign": "CADASTRO_LEADS_CG-AGENDAMENTO_QUENTE+YAY-",
                 "utm_content": "AD16- 10MESES-VIDEO",
                 "utm_term": "Instagram_Feed",
-                "_fbc": "fb.1.1772407979236.PAZXh0bgNhZW0BMABhZGlkAassI39qJA5zcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAafUyAQj3NTRba4YQ-QbXCT-pku3jXMI08Mo0Yce9NI47VV9UC63oMNRdAuM6w_aem_Vp0JfxH7l5fHaZpHQnGrHg",
-                "_fbp": "fb.1.1772407979369.718474969646690415"
+                "_fbc": "fb.1.1772456890845.PAZXh0bgNhZW0BMABhZGlkAassI39qJA5zcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAaffLCzHgYuWSMJMugKNjfUyjQ3U_noGSVoEKW-v6AzXoDD30Dl93i9YzEy0ng_aem_mo03XbrpEGPt9KWuEprBow",
+                "_fbp": "fb.1.1772456890849.908672752844140476"
               },
-              "timeToComplete": 251.918,
-              "startedAt": "2026-03-01T23:33:12.649000Z",
-              "submittedAt": "2026-03-01T23:37:24.567000Z",
-              "createdAt": "2026-03-01T23:32:59.269000Z",
-              "updatedAt": "2026-03-01T23:37:30.064000Z",
+              "timeToComplete": 213.542,
+              "startedAt": "2026-03-02T13:08:20.037000Z",
+              "submittedAt": "2026-03-02T13:11:53.579000Z",
+              "createdAt": "2026-03-02T13:08:10.676000Z",
+              "updatedAt": "2026-03-02T13:11:55.567000Z",
               "answers": {
                 "685d40e60c7815d8080d5084": {
-                  "answerId": "69a4ccab36ae2bdc9b553723",
+                  "answerId": "69a58bba36ae2bdc9b56e27e",
                   "fieldTitle": "Qual o seu nome e sobrenome?",
                   "fieldDescription": null,
-                  "content": "Marcos "
+                  "content": "Pedro Antônio monteiro"
                 },
                 "685d40f2f8f9e3904c0b0eb4": {
-                  "answerId": "69a4ccb736ae2bdc9b553753",
+                  "answerId": "69a58bc336ae2bdc9b56e2a8",
                   "fieldTitle": "Qual o seu WhatsApp?",
                   "fieldDescription": null,
-                  "content": "+5567998026938"
+                  "content": "+5519999751661"
                 },
                 "685d40fd0c7815d8080d5085": {
-                  "answerId": "69a4ccbf36ae2bdc9b553768",
+                  "answerId": "69a58bc736ae2bdc9b56e2b9",
                   "fieldTitle": "Qual o seu Instagram?",
                   "fieldDescription": null,
-                  "content": "@santellimarcos"
+                  "content": "@pedroo_monteiroo"
                 },
                 "685d43c035bd886b580246b4": {
-                  "answerId": "69a4ccca36ae2bdc9b553788",
+                  "answerId": "69a58bd236ae2bdc9b56e2f3",
                   "fieldTitle": "Qual o seu e-mail?",
                   "fieldDescription": null,
-                  "content": "msdigital@msdigitalcontabilidade.com.br"
+                  "content": "pedro-amonteiro@hotmail.com"
                 },
                 "685d40a0b13a7bb2320f94dd": {
-                  "answerId": "69a4cccc36ae2bdc9b553793",
+                  "answerId": "69a58bd636ae2bdc9b56e30b",
                   "fieldTitle": "Qual seu faturamento médio mensal? (Somando a venda de mentoria e outras fontes de renda)",
                   "fieldDescription": null,
                   "content": [
@@ -5459,7 +5516,7 @@
                   ]
                 },
                 "685d402c58ad4238f4082362": {
-                  "answerId": "69a4ccd236ae2bdc9b5537ae",
+                  "answerId": "69a58be036ae2bdc9b56e345",
                   "fieldTitle": "Qual das opções abaixo melhor te representa:",
                   "fieldDescription": null,
                   "content": [
@@ -5467,7 +5524,7 @@
                   ]
                 },
                 "685d404b97e30a0017089364": {
-                  "answerId": "69a4cce236ae2bdc9b5537f3",
+                  "answerId": "69a58be636ae2bdc9b56e36b",
                   "fieldTitle": "Qual o ticket da sua mentoria?",
                   "fieldDescription": null,
                   "content": [
@@ -5475,7 +5532,7 @@
                   ]
                 },
                 "685d407a97e30a0017089369": {
-                  "answerId": "69a4cce936ae2bdc9b553811",
+                  "answerId": "69a58bec36ae2bdc9b56e38e",
                   "fieldTitle": "Além da mentoria, você tem algum curso ou infoproduto?",
                   "fieldDescription": null,
                   "content": [
@@ -5483,37 +5540,37 @@
                   ]
                 },
                 "685d40b0b13a7bb2320f94df": {
-                  "answerId": "69a4ccee36ae2bdc9b553826",
+                  "answerId": "69a58bf436ae2bdc9b56e3b9",
                   "fieldTitle": "&nbsp;Em qual nicho você mentora (ou quer mentorar)?",
                   "fieldDescription": null,
-                  "content": "Consultoria contábil fiscal financeira "
+                  "content": "Área educacional"
                 },
                 "685d40cb0c7815d8080d5082": {
-                  "answerId": "69a4cd0c36ae2bdc9b55388f",
+                  "answerId": "69a58bfb36ae2bdc9b56e3e0",
                   "fieldTitle": "Qual seu objetivo de faturamento para os próximos 12 meses com vendas de mentoria?",
                   "fieldDescription": null,
-                  "content": "500.000,00"
+                  "content": "500000"
                 },
                 "685d40d66128d7c13205cfa8": {
-                  "answerId": "69a4cd2036ae2bdc9b5538c9",
+                  "answerId": "69a58c0836ae2bdc9b56e421",
                   "fieldTitle": "Qual a principal dificuldade que você enfrenta HOJE, para alcançar esse objetivo?",
                   "fieldDescription": null,
-                  "content": "Criar a mentoria , os processos e vender"
+                  "content": "Vender a mentoria"
                 },
                 "68712c954b2c93e188055a47": {
-                  "answerId": "69a4cd3d36ae2bdc9b55390c",
+                  "answerId": "69a58c2c36ae2bdc9b56e4e0",
                   "fieldTitle": "Porque você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?*",
                   "fieldDescription": null,
-                  "content": "Pode transformar empresa a evoluir e se organizar "
+                  "content": "Alcançar meu objetivo"
                 },
                 "68712c9e11c21c36a3063c64": {
-                  "answerId": "69a4cd5d36ae2bdc9b553964",
+                  "answerId": "69a58c3d36ae2bdc9b56e522",
                   "fieldTitle": "Caso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que deveríamos aceitar sua aplicação dentre os demais interessados?*",
                   "fieldDescription": null,
-                  "content": "Sim "
+                  "content": "Porque eu tenho foco e resiliência "
                 },
                 "685d411a574c9086b60d27f9": {
-                  "answerId": "69a4cd7f36ae2bdc9b5539b1",
+                  "answerId": "69a58c6136ae2bdc9b56e5b9",
                   "fieldTitle": "Você foi pré-aprovado para uma das vagas da nossa Consultoria.Importante: se você não confirmar com o nosso time via WhatsApp dentro do prazo, sua vaga será automaticamente transferida para outro interessado.Você confirma que está ciente e comprometido?",
                   "fieldDescription": null,
                   "content": [
@@ -5521,10 +5578,10 @@
                   ]
                 },
                 "697405f9a45bc7b4d505e18e": {
-                  "answerId": "69a4cd8a36ae2bdc9b5539c5",
+                  "answerId": "69a58c6c36ae2bdc9b56e5e4",
                   "fieldTitle": "Sua consultoria está quase agendada...",
                   "fieldDescription": "<p>Escolha um horário abaixo e clique<strong> \"CONTINUE\" </strong>para confirmar seu agendamento e receber um plano de ação personalizado, seguindo a metodologia que gerou <strong>+R$ 900 MILHÕES</strong> em vendas de <strong>ofertas High Tickets</strong>!</p>",
-                  "content": "https://calendly.com/scheduled_events/a6b079b9-2630-4b74-8e96-9d2e6f0a60b3/invitees/07c337b1-c412-4776-9fcf-93f8493cb5e3"
+                  "content": "https://calendly.com/scheduled_events/b301dd60-9b55-4cf5-9e68-cec50a49a6f1/invitees/8adbde1b-34b2-4298-85ea-c02f204b89f5"
                 }
               }
             }
@@ -5560,6 +5617,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-02T08:47:23.500Z",
-  "versionId": "ae7b52d4-4061-4f15-8ad0-956397ebd2c4"
+  "updatedAt": "2026-03-03T03:31:49.908Z",
+  "versionId": "31a81133-fb07-4f3a-87be-e9eb192a1b2e"
 }
