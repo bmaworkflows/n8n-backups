@@ -60,7 +60,7 @@
       "main": [
         [
           {
-            "node": "Trata campos",
+            "node": "INFOPRODUTOR",
             "type": "main",
             "index": 0
           },
@@ -1212,6 +1212,64 @@
           }
         ]
       ]
+    },
+    "INFOPRODUTOR": {
+      "main": [
+        [
+          {
+            "node": "Trata campos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MENTOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MENTOR": {
+      "main": [
+        [
+          {
+            "node": "Trata campos1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Trata campos2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata campos1": {
+      "main": [
+        [
+          {
+            "node": "ACIONA FLUXO DE PRECALL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata campos2": {
+      "main": [
+        [
+          {
+            "node": "ACIONA FLUXO DE PRECALL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-06-26T14:20:49.844Z",
@@ -1273,8 +1331,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        960,
-        128
+        976,
+        208
       ],
       "onError": "continueErrorOutput"
     },
@@ -5361,8 +5419,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1312,
-        -160
+        1408,
+        -352
       ],
       "id": "212d23c8-1de9-4c7a-b6bf-3c01828e099b",
       "name": "ACIONA FLUXO DE PRECALL"
@@ -5400,6 +5458,12 @@
               "name": "infoproduto",
               "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d407a97e30a0017089369\"][\"content\"][\"0\"] }}",
               "type": "string"
+            },
+            {
+              "id": "78240874-72d5-4972-a9d2-df4eed91174d",
+              "name": "fluxo",
+              "value": "content20260302083045_197215",
+              "type": "string"
             }
           ]
         },
@@ -5408,11 +5472,195 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1136,
-        -160
+        1232,
+        -352
       ],
       "id": "d63b076f-9bac-436a-97da-99d9eff704ad",
       "name": "Trata campos"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "37187ee9-336d-4e46-a57f-96ae336f8af0",
+              "leftValue": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d407a97e30a0017089369\"][\"content\"][\"0\"] }}",
+              "rightValue": "=Sim, com mais de 1.000 alunos",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "8a73f147-328d-4401-8c8d-bf87f4aa184f",
+              "leftValue": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d407a97e30a0017089369\"][\"content\"][\"0\"] }}",
+              "rightValue": "Sim, com até 1.000 alunos",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        -336
+      ],
+      "id": "4a079968-87cf-41f8-acaf-d195aaeb7f4f",
+      "name": "INFOPRODUTOR"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "37187ee9-336d-4e46-a57f-96ae336f8af0",
+              "leftValue": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d402c58ad4238f4082362\"][\"content\"][\"0\"] }}",
+              "rightValue": "=Já sou mentor!",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        -128
+      ],
+      "id": "74b032fd-cff8-4a19-b124-2cece2370a4e",
+      "name": "MENTOR"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aff0548b-d0f8-4579-84b3-dc842a268ab4",
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "f971f35f-acd5-487a-91b4-988abae74c68",
+              "name": "agendamento",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "02668b73-93cf-47d0-b78a-3b6655fd0a47",
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "72903080-7b31-49f0-a0e8-619d64b6dba7",
+              "name": "segmento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d402c58ad4238f4082362\"][\"content\"][\"0\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "2ea07efa-2bf2-4f17-a9c0-5e16ce18030c",
+              "name": "infoproduto",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d407a97e30a0017089369\"][\"content\"][\"0\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "78240874-72d5-4972-a9d2-df4eed91174d",
+              "name": "fluxo",
+              "value": "content20260303032237_212233",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1232,
+        -144
+      ],
+      "id": "ed5397fa-bb3e-42a7-8175-1238d62aa66e",
+      "name": "Trata campos1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aff0548b-d0f8-4579-84b3-dc842a268ab4",
+              "name": "telefone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "f971f35f-acd5-487a-91b4-988abae74c68",
+              "name": "agendamento",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "02668b73-93cf-47d0-b78a-3b6655fd0a47",
+              "name": "nome",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "72903080-7b31-49f0-a0e8-619d64b6dba7",
+              "name": "segmento",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d402c58ad4238f4082362\"][\"content\"][\"0\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "2ea07efa-2bf2-4f17-a9c0-5e16ce18030c",
+              "name": "infoproduto",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d407a97e30a0017089369\"][\"content\"][\"0\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "78240874-72d5-4972-a9d2-df4eed91174d",
+              "name": "fluxo",
+              "value": "content20260303032435_584904",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1232,
+        32
+      ],
+      "id": "34891f3c-2fdb-4a93-a7e1-e72b925f7ac1",
+      "name": "Trata campos2"
     }
   ],
   "pinData": {
@@ -5422,7 +5670,7 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "5234",
+            "content-length": "5408",
             "content-type": "application/json",
             "x-forwarded-for": "159.223.107.139",
             "x-forwarded-host": "webhook.josepbijari.com",
@@ -5436,15 +5684,15 @@
           "query": {},
           "body": {
             "response": {
-              "id": "69a58bbae0f97eb3332286b8",
+              "id": "69a6c9363eda937604ab96b2",
               "formId": "685d4019b13a7bb2320f94d6",
-              "ipAddress": "2804:18:161:6254:25cb:7ae6:a690:515a",
+              "ipAddress": "2804:14c:192:803b:7001:2f04:ba55:b7ba",
               "operatingSystem": "iOS",
-              "operatingSystemVersion": "18_5",
-              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22F76 Instagram 408.0.0.32.70 (iPhone14,3; iOS 18_5; pt_BR; pt; scale=3.00; 1284x2778; IABMV/1; 830715757) Safari/604.1",
+              "operatingSystemVersion": "18_7",
+              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23D127 Instagram 418.2.0.34.75 (iPhone18,2; iOS 26_3; pt_BR; pt; scale=3.00; 1320x2868; IABMV/1; 893787717) Safari/604.1",
               "browser": "Safari",
               "browserVersion": "604.1",
-              "referrerUrl": null,
+              "referrerUrl": "http://instagram.com/",
               "deviceType": "mobile",
               "geolocation": {
                 "continent": "South America",
@@ -5453,10 +5701,10 @@
                 "country_name": "Brazil",
                 "region": "SP",
                 "state": "São Paulo",
-                "city": "Campinas",
-                "zipcode": "13000",
-                "latitude": -22.8951,
-                "longitude": -47.0439,
+                "city": "São Paulo",
+                "zipcode": "01000",
+                "latitude": -23.6293,
+                "longitude": -46.6351,
                 "timezone": "America/Sao_Paulo",
                 "currency": "BRL"
               },
@@ -5471,68 +5719,70 @@
               "tracking": {
                 "utm_source": "metaads",
                 "utm_medium": "00-QUENTE",
-                "utm_campaign": "CADASTRO_LEADS_CG-AGENDAMENTO_QUENTE+YAY-",
+                "utm_campaign": "CADASTRO_LEADS_CG-AGENDAMENTO_SEGUIDOR+YAY",
                 "utm_content": "AD16- 10MESES-VIDEO",
-                "utm_term": "Instagram_Feed",
-                "_fbc": "fb.1.1772456890845.PAZXh0bgNhZW0BMABhZGlkAassI39qJA5zcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAaffLCzHgYuWSMJMugKNjfUyjQ3U_noGSVoEKW-v6AzXoDD30Dl93i9YzEy0ng_aem_mo03XbrpEGPt9KWuEprBow",
-                "_fbp": "fb.1.1772456890849.908672752844140476"
+                "utm_term": "Instagram_Stories",
+                "_fbc": "fb.1.1772538165696.PAZXh0bgNhZW0BMABhZGlkAassI3_LL85zcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAacP9hJCYPMHlTi745NBD3IIEZTCRjOVS5Fp-ILROaa53fc9Ktc7VMgukwZdrg_aem_4JmcI2WzBTtu5alDjIyvsA",
+                "_fbp": "fb.1.1772538166313.102438306907267753",
+                "_ga": "GA1.1.1278255964.1754218617",
+                "_ga_FHRQJESNYQ": "GS2.1.s1754218617$o1$g1$t1754218697$j53$l0$h662884238"
               },
-              "timeToComplete": 213.542,
-              "startedAt": "2026-03-02T13:08:20.037000Z",
-              "submittedAt": "2026-03-02T13:11:53.579000Z",
-              "createdAt": "2026-03-02T13:08:10.676000Z",
-              "updatedAt": "2026-03-02T13:11:55.567000Z",
+              "timeToComplete": 169.677,
+              "startedAt": "2026-03-03T11:42:56.239000Z",
+              "submittedAt": "2026-03-03T11:45:45.916000Z",
+              "createdAt": "2026-03-03T11:42:46.230000Z",
+              "updatedAt": "2026-03-03T11:45:47.552000Z",
               "answers": {
                 "685d40e60c7815d8080d5084": {
-                  "answerId": "69a58bba36ae2bdc9b56e27e",
+                  "answerId": "69a6c93636ae2bdc9b5cb4a9",
                   "fieldTitle": "Qual o seu nome e sobrenome?",
                   "fieldDescription": null,
-                  "content": "Pedro Antônio monteiro"
+                  "content": "Luiz Binato"
                 },
                 "685d40f2f8f9e3904c0b0eb4": {
-                  "answerId": "69a58bc336ae2bdc9b56e2a8",
+                  "answerId": "69a6c93f36ae2bdc9b5cb4d8",
                   "fieldTitle": "Qual o seu WhatsApp?",
                   "fieldDescription": null,
-                  "content": "+5519999751661"
+                  "content": "+5511986590299"
                 },
                 "685d40fd0c7815d8080d5085": {
-                  "answerId": "69a58bc736ae2bdc9b56e2b9",
+                  "answerId": "69a6c94536ae2bdc9b5cb4f1",
                   "fieldTitle": "Qual o seu Instagram?",
                   "fieldDescription": null,
-                  "content": "@pedroo_monteiroo"
+                  "content": "@luizbinato"
                 },
                 "685d43c035bd886b580246b4": {
-                  "answerId": "69a58bd236ae2bdc9b56e2f3",
+                  "answerId": "69a6c94d36ae2bdc9b5cb519",
                   "fieldTitle": "Qual o seu e-mail?",
                   "fieldDescription": null,
-                  "content": "pedro-amonteiro@hotmail.com"
+                  "content": "lcbinato@instiad.com.br"
                 },
                 "685d40a0b13a7bb2320f94dd": {
-                  "answerId": "69a58bd636ae2bdc9b56e30b",
+                  "answerId": "69a6c95536ae2bdc9b5cb544",
                   "fieldTitle": "Qual seu faturamento médio mensal? (Somando a venda de mentoria e outras fontes de renda)",
                   "fieldDescription": null,
                   "content": [
-                    "R$ 20.000,00 a R$ 50.000,00"
+                    "R$ 50.000,00 a R$ 100.000,00"
                   ]
                 },
                 "685d402c58ad4238f4082362": {
-                  "answerId": "69a58be036ae2bdc9b56e345",
+                  "answerId": "69a6c95936ae2bdc9b5cb552",
                   "fieldTitle": "Qual das opções abaixo melhor te representa:",
                   "fieldDescription": null,
                   "content": [
-                    "Ainda não sou mentor, mas quero me tornar."
+                    "Já sou mentor!"
                   ]
                 },
                 "685d404b97e30a0017089364": {
-                  "answerId": "69a58be636ae2bdc9b56e36b",
+                  "answerId": "69a6c95e36ae2bdc9b5cb56b",
                   "fieldTitle": "Qual o ticket da sua mentoria?",
                   "fieldDescription": null,
                   "content": [
-                    "Ainda não criei&nbsp;"
+                    "Entre 21k e 50k"
                   ]
                 },
                 "685d407a97e30a0017089369": {
-                  "answerId": "69a58bec36ae2bdc9b56e38e",
+                  "answerId": "69a6c96236ae2bdc9b5cb57b",
                   "fieldTitle": "Além da mentoria, você tem algum curso ou infoproduto?",
                   "fieldDescription": null,
                   "content": [
@@ -5540,48 +5790,48 @@
                   ]
                 },
                 "685d40b0b13a7bb2320f94df": {
-                  "answerId": "69a58bf436ae2bdc9b56e3b9",
+                  "answerId": "69a6c96936ae2bdc9b5cb58b",
                   "fieldTitle": "&nbsp;Em qual nicho você mentora (ou quer mentorar)?",
                   "fieldDescription": null,
-                  "content": "Área educacional"
+                  "content": "Liderança executiva "
                 },
                 "685d40cb0c7815d8080d5082": {
-                  "answerId": "69a58bfb36ae2bdc9b56e3e0",
+                  "answerId": "69a6c97436ae2bdc9b5cb5b7",
                   "fieldTitle": "Qual seu objetivo de faturamento para os próximos 12 meses com vendas de mentoria?",
                   "fieldDescription": null,
-                  "content": "500000"
+                  "content": "R$ 150.000 / mês "
                 },
                 "685d40d66128d7c13205cfa8": {
-                  "answerId": "69a58c0836ae2bdc9b56e421",
+                  "answerId": "69a6c98036ae2bdc9b5cb5e6",
                   "fieldTitle": "Qual a principal dificuldade que você enfrenta HOJE, para alcançar esse objetivo?",
                   "fieldDescription": null,
-                  "content": "Vender a mentoria"
+                  "content": "Posicionamento, oferta, funil, processo de receita previsível "
                 },
                 "68712c954b2c93e188055a47": {
-                  "answerId": "69a58c2c36ae2bdc9b56e4e0",
+                  "answerId": "69a6c9a036ae2bdc9b5cb68d",
                   "fieldTitle": "Porque você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?*",
                   "fieldDescription": null,
-                  "content": "Alcançar meu objetivo"
+                  "content": "Ainda não tenho dados pra isso "
                 },
                 "68712c9e11c21c36a3063c64": {
-                  "answerId": "69a58c3d36ae2bdc9b56e522",
+                  "answerId": "69a6c9af36ae2bdc9b5cb6e3",
                   "fieldTitle": "Caso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que deveríamos aceitar sua aplicação dentre os demais interessados?*",
                   "fieldDescription": null,
-                  "content": "Porque eu tenho foco e resiliência "
+                  "content": "Por serem experientes vocês saberão avaliar "
                 },
                 "685d411a574c9086b60d27f9": {
-                  "answerId": "69a58c6136ae2bdc9b56e5b9",
+                  "answerId": "69a6c9be36ae2bdc9b5cb741",
                   "fieldTitle": "Você foi pré-aprovado para uma das vagas da nossa Consultoria.Importante: se você não confirmar com o nosso time via WhatsApp dentro do prazo, sua vaga será automaticamente transferida para outro interessado.Você confirma que está ciente e comprometido?",
                   "fieldDescription": null,
                   "content": [
                     "SIM"
                   ]
                 },
-                "697405f9a45bc7b4d505e18e": {
-                  "answerId": "69a58c6c36ae2bdc9b56e5e4",
+                "685d438435bd886b580246b2": {
+                  "answerId": "69a6c9c936ae2bdc9b5cb78b",
                   "fieldTitle": "Sua consultoria está quase agendada...",
                   "fieldDescription": "<p>Escolha um horário abaixo e clique<strong> \"CONTINUE\" </strong>para confirmar seu agendamento e receber um plano de ação personalizado, seguindo a metodologia que gerou <strong>+R$ 900 MILHÕES</strong> em vendas de <strong>ofertas High Tickets</strong>!</p>",
-                  "content": "https://calendly.com/scheduled_events/b301dd60-9b55-4cf5-9e68-cec50a49a6f1/invitees/8adbde1b-34b2-4298-85ea-c02f204b89f5"
+                  "content": "https://calendly.com/scheduled_events/d61cef55-e468-47c8-8573-235dbc349ea9/invitees/81517f54-bb83-4352-834d-8fd0aa6b080e"
                 }
               }
             }
@@ -5617,6 +5867,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-03T03:31:49.908Z",
-  "versionId": "31a81133-fb07-4f3a-87be-e9eb192a1b2e"
+  "updatedAt": "2026-03-03T21:38:13.705Z",
+  "versionId": "010a6871-cb2f-4e4a-a15c-6e8bbb5fd2c4"
 }
