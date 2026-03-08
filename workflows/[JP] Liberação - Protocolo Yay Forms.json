@@ -43,7 +43,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "preencheu telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Notifica Grupo3": {
@@ -53,13 +59,7 @@
     },
     "Leva pra clint via webhook - heitor": {
       "main": [
-        [
-          {
-            "node": "Notifica Privado - Heitor",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Notifica Privado - Heitor": {
@@ -67,17 +67,6 @@
         [
           {
             "node": "Notifica Grupo3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Heitor": {
-      "main": [
-        [
-          {
-            "node": "Leva pra clint via webhook - heitor",
             "type": "main",
             "index": 0
           }
@@ -94,6 +83,28 @@
         [
           {
             "node": "Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mais de 5k": {
+      "main": [
+        [
+          {
+            "node": "FUNIL SDR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FUNIL SDR": {
+      "main": [
+        [
+          {
+            "node": "Leva pra clint via webhook - heitor",
             "type": "main",
             "index": 0
           }
@@ -298,8 +309,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -208,
-        -160
+        -304,
+        32
       ],
       "id": "9c543415-6e8a-416d-bb4b-12a768788b3c",
       "name": "Notifica Grupo3"
@@ -307,44 +318,24 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/e53bacae-3315-4ae2-8911-71a8bd62eda5",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/754d899e-b07d-4aca-ad77-592a64eb1800",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
             {
-              "name": "nome_contato",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}"
+              "name": "nome",
+              "value": "=[ISCA PROTOCOLO] {{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}"
             },
             {
-              "name": "nome_negocio",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}"
-            },
-            {
-              "name": "email_contato",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"email\"] }}"
-            },
-            {
-              "name": "email_negocio",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"email\"] }}"
-            },
-            {
-              "name": "telefone_contato",
+              "name": "telefone",
               "value": "={{ $item(\"0\").$node[\"campos\"].json[\"whatsapp\"] }}"
             },
             {
-              "name": "telefone_negocio",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"whatsapp\"] }}"
-            },
-            {
-              "name": "instagram_contato",
+              "name": "instagram",
               "value": "={{ $item(\"0\").$node[\"campos\"].json[\"instagram\"] }}"
             },
             {
-              "name": "instagram_negocio",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"instagram\"] }}"
-            },
-            {
-              "name": "negocio",
+              "name": "e_mentor",
               "value": "={{ $item(\"0\").$node[\"campos\"].json[\"negocio\"] }}"
             },
             {
@@ -352,32 +343,12 @@
               "value": "={{ $item(\"0\").$node[\"campos\"].json[\"faturamento\"] }}"
             },
             {
-              "name": "lucro",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"lucro_liquido\"] }}"
+              "name": "nicho_mentoria",
+              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"nicho\"] }}"
             },
             {
-              "name": "possui_socio",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"possui_conjuge_ou_socio\"] }}"
-            },
-            {
-              "name": "objetivo_dificuldade",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"objetivos_e_dificuldades\"] }}"
-            },
-            {
-              "name": "dificuldades",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"dificuldades\"] }}"
-            },
-            {
-              "name": "motivacao",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"motivacao\"] }}"
-            },
-            {
-              "name": "diferencial",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"diferencial\"] }}"
-            },
-            {
-              "name": "pergunta_leo",
-              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"pergunta_ao_leo\"] }}"
+              "name": "curso_ou_infoproduto",
+              "value": "={{ $item(\"0\").$node[\"campos\"].json[\"curso_ou_infoproduto\"] }}"
             },
             {
               "name": "utm_source",
@@ -398,14 +369,6 @@
             {
               "name": "utm_term",
               "value": "={{ $('campos').item.json.utm_term }}"
-            },
-            {
-              "name": "origem",
-              "value": "=SOCIAL SELLING"
-            },
-            {
-              "name": "responsavel",
-              "value": "=heitordoranti@gmail.com"
             }
           ]
         },
@@ -414,8 +377,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -656,
-        -160
+        -752,
+        32
       ],
       "id": "89ef7221-6560-46ff-a4cc-2ae0a4aa9e3a",
       "name": "Leva pra clint via webhook - heitor"
@@ -451,22 +414,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -432,
-        -160
+        -528,
+        32
       ],
       "id": "d14a1bc1-2e6b-4f0b-9f41-8577ffda50e0",
       "name": "Notifica Privado - Heitor"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        -864,
-        -160
-      ],
-      "id": "204ea3e0-ad52-4be5-9719-4735f90d8939",
-      "name": "Heitor"
     },
     {
       "parameters": {},
@@ -545,6 +497,17 @@
       ],
       "id": "d911d0e6-f449-4370-b731-72d0ad0d3e41",
       "name": "Mais de 5k"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        32
+      ],
+      "id": "204ea3e0-ad52-4be5-9719-4735f90d8939",
+      "name": "FUNIL SDR"
     }
   ],
   "pinData": {
@@ -554,42 +517,42 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "4398",
+            "content-length": "3605",
             "content-type": "application/json",
-            "x-forwarded-for": "159.223.174.147",
+            "x-forwarded-for": "157.230.186.30",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "9143be050a6b",
-            "x-real-ip": "159.223.174.147",
+            "x-real-ip": "157.230.186.30",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "69acf012409a4feb8287532d",
+              "id": "69ab307234d0b71b3e58f946",
               "formId": "69a9957ead3c65b598047315",
-              "ipAddress": "2804:6ba0:8064:f01:75df:4cdc:22bc:8558",
-              "operatingSystem": "OS X",
-              "operatingSystemVersion": "10_15_7",
-              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
-              "browser": "Chrome",
-              "browserVersion": "146.0.0.0",
+              "ipAddress": "2804:4ba0:f1c0:14d0:a4ab:fc16:b860:e81e",
+              "operatingSystem": "iOS",
+              "operatingSystemVersion": "18_3_2",
+              "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D82 Instagram 419.0.0.27.74 (iPhone12,1; iOS 18_3_2; pt_BR; pt; scale=2.00; 828x1792; IABMV/1; 895010607) Safari/604.1",
+              "browser": "Safari",
+              "browserVersion": "604.1",
               "referrerUrl": null,
-              "deviceType": "desktop",
+              "deviceType": "mobile",
               "geolocation": {
                 "continent": "South America",
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "region": "PE",
-                "state": "Pernambuco",
-                "city": "Caruaru",
-                "zipcode": "55000",
-                "latitude": -8.1792,
-                "longitude": -36.0279,
-                "timezone": "America/Recife",
+                "region": "BA",
+                "state": "Bahia",
+                "city": "Salvador",
+                "zipcode": "40000-000",
+                "latitude": -12.9777,
+                "longitude": -38.5016,
+                "timezone": "America/Bahia",
                 "currency": "BRL"
               },
               "aiFeedback": null,
@@ -599,65 +562,49 @@
                 "quali": true
               },
               "tracking": {
-                "_fbp": "fb.1.1742270412627.451017520152784457",
-                "_tt_enable_cookie": "1",
-                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
-                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
-                "hotid": "eyJjaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIiwiYmlkIjoiMTc1MTMxMzQ4ODM5MTc5NzI0MDE4Mjk2Nzk0MzgwMCIsInNpZCI6ImNmOTFiZTg2YTRjNzQ1OGNhYmEwNWI5MDhhOTQyM2NmIn0=",
-                "_ltusession": "1759376967413__1",
-                "_ltuid": "19DU0z",
-                "ttcsid_CEDLAVJC77UDF9713HP0": "1759376967555::pp0K8Hdh_e4bBJKUV_tv.1.1759376967760.0",
-                "_ga_324806166": "GS2.1.s1759376966$o1$g0$t1759376969$j57$l0$h0",
-                "_ga_5GVPZDVNW9": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h1138898967",
-                "_ga_BJR0JVV5FR": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
-                "_ga_PEGMJDK06R": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
-                "_fbc": "fb.1.1761053239943.fbclid",
-                "_clck": "cymcv9^2^g0z^0^1933",
-                "_ga": "GA1.1.1550280858.1744865246",
-                "ttcsid": "1763009515558::CbKUMNdaP4fcZ2enf5P2.14.1763009622690.0",
-                "ttcsid_C5URFDOVMNUPJ15SHS00": "1763009515557::bSh386I6gpZJiC8VwDPV.13.1763009622690.0",
-                "_ga_QMHGX1WZCF": "GS2.1.s1763009515$o12$g1$t1763010170$j60$l0$h1746857264"
+                "_fbc": "fb.1.1770840601095.PAZXh0bgNhZW0BMABhZGlkAasmBVGjUp5zcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAad7eC5wRwyotL7j-K-A78C6YdImz84KOdfYq08VcmD5d8vRtxuacPq0p0RDtQ_aem_07waHYksfivoWoYE2E5UFQ",
+                "_fbp": "fb.1.1770840601360.122292288249017878"
               },
-              "timeToComplete": 21.826,
-              "startedAt": "2026-03-08T03:42:14.047000Z",
-              "submittedAt": "2026-03-08T03:42:35.873000Z",
-              "createdAt": "2026-03-08T03:42:10.453000Z",
-              "updatedAt": "2026-03-08T03:42:38.238000Z",
+              "timeToComplete": 40.418,
+              "startedAt": "2026-03-06T19:52:28.569000Z",
+              "submittedAt": "2026-03-06T19:53:08.987000Z",
+              "createdAt": "2026-03-06T19:52:18.069000Z",
+              "updatedAt": "2026-03-06T19:53:11.530000Z",
               "answers": {
                 "69a995d3a22d5089340c2e24": {
-                  "answerId": "69acf01236ae2bdc9b6d4068",
+                  "answerId": "69ab307236ae2bdc9b697139",
                   "fieldTitle": "ACESSO GRATUITO AO PROTOCOLO PARA LOTAR SUA AGENDA!",
                   "fieldDescription": "<p style=\"text-align: center;\"><strong>Responda esse formulário que leva 2 minutos e no final você terá a oportunidade de acessar um conteúdo exclusivo que revela todos os pilares que fazem a BMA lotar a agenda dos seus closers todos os dias.</strong></p><p style=\"text-align: center;\"><strong>(disponível por tempo limitado)</strong></p>",
                   "content": ""
                 },
                 "69a9957ead3c65b59804731e": {
-                  "answerId": "69acf01536ae2bdc9b6d406e",
+                  "answerId": "69ab307b36ae2bdc9b69714d",
                   "fieldTitle": "Qual o seu nome e sobrenome?",
                   "fieldDescription": null,
-                  "content": "Matheus Cristhyan"
+                  "content": "Gabriel Souza "
                 },
                 "69a9957ead3c65b59804731f": {
-                  "answerId": "69acf01b36ae2bdc9b6d407d",
+                  "answerId": "69ab308036ae2bdc9b697154",
                   "fieldTitle": "Qual o seu WhatsApp?",
                   "fieldDescription": null,
-                  "content": "+558191013614"
+                  "content": "+5571992738061"
                 },
                 "69a9957ead3c65b598047320": {
-                  "answerId": "69acf01e36ae2bdc9b6d4083",
+                  "answerId": "69ab308636ae2bdc9b697163",
                   "fieldTitle": "Qual o seu Instagram?",
                   "fieldDescription": null,
-                  "content": "matheus"
+                  "content": "@ogabrielssouza"
                 },
                 "69a9957ead3c65b59804731a": {
-                  "answerId": "69acf02136ae2bdc9b6d4087",
+                  "answerId": "69ab308b36ae2bdc9b69716f",
                   "fieldTitle": "Qual seu faturamento médio mensal? (Somando a venda de mentoria e outras fontes de renda)",
                   "fieldDescription": null,
                   "content": [
-                    "R$ 20.000,00 a R$ 50.000,00"
+                    "R$ 5.000,00 a R$ 15.000,00"
                   ]
                 },
                 "69a9957ead3c65b598047317": {
-                  "answerId": "69acf02336ae2bdc9b6d408d",
+                  "answerId": "69ab308e36ae2bdc9b697175",
                   "fieldTitle": "Qual das opções abaixo melhor te representa:",
                   "fieldDescription": null,
                   "content": [
@@ -665,21 +612,21 @@
                   ]
                 },
                 "69a9957ead3c65b598047319": {
-                  "answerId": "69acf02536ae2bdc9b6d4092",
+                  "answerId": "69ab309036ae2bdc9b69717b",
                   "fieldTitle": "Além da mentoria, você tem algum curso ou infoproduto?",
                   "fieldDescription": null,
                   "content": [
-                    "Sim, com mais de 1.000 alunos"
+                    "Sim, com até 1.000 alunos"
                   ]
                 },
                 "69a9957ead3c65b59804731b": {
-                  "answerId": "69acf02736ae2bdc9b6d4096",
+                  "answerId": "69ab309436ae2bdc9b697188",
                   "fieldTitle": "&nbsp;Em qual nicho você mentora (ou quer mentorar)?",
                   "fieldDescription": null,
-                  "content": "teste"
+                  "content": "Vendas de consultorias e mentorias"
                 },
                 "69a9957ead3c65b598047321": {
-                  "answerId": "69acf02936ae2bdc9b6d409a",
+                  "answerId": "69ab309c36ae2bdc9b69719f",
                   "fieldTitle": "Você foi pré-aprovado para uma das vagas da nossa Consultoria.Importante: se você não confirmar com o nosso time via WhatsApp dentro do prazo, sua vaga será automaticamente transferida para outro interessado.Você confirma que está ciente e comprometido?",
                   "fieldDescription": null,
                   "content": [
@@ -720,6 +667,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-08T03:49:39.097Z",
-  "versionId": "128531f7-e05f-4aa0-b1a9-ccd564291a01"
+  "updatedAt": "2026-03-08T03:59:54.702Z",
+  "versionId": "e31a3f22-2ca7-45f4-aacd-3a7f27bd799c"
 }
