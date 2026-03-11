@@ -1,0 +1,392 @@
+{
+  "active": true,
+  "connections": {
+    "Trata webhook": {
+      "main": [
+        [
+          {
+            "node": "aprovada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aprovada": {
+      "main": [
+        [
+          {
+            "node": "Constrói utms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formata Telefone1": {
+      "main": [
+        []
+      ]
+    },
+    "Constrói utms": {
+      "main": [
+        [
+          {
+            "node": "campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos": {
+      "main": [
+        [
+          {
+            "node": "Formata Telefone1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-10T16:54:51.390Z",
+  "id": "tv6rLRkKOQmSVoKj",
+  "isArchived": false,
+  "meta": null,
+  "name": "FRONT JP 2026",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7af30353-a7dd-417b-aeba-a3ac5790f90e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        -16
+      ],
+      "id": "8a820c2e-af7d-47b8-b355-caa8f2460cfb",
+      "name": "Webhook",
+      "webhookId": "7af30353-a7dd-417b-aeba-a3ac5790f90e"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "07a080bd-3f3e-4bb2-995d-3f45beb85674",
+      "name": "Trata webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "34ebb34a-a8d8-4405-a445-78e2b6207df3",
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "PURCHASE_APPROVED",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        -16
+      ],
+      "id": "0bdc609a-95a9-42a2-8bdb-2000fe2c1913",
+      "name": "aprovada"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\");\n    let ddi = \"55\";\n    let ddd, telefone;\n\n    if (number.length === 13) {\n        ddi = number.substring(0, 2);\n        ddd = number.substring(2, 4);\n        telefone = number.substring(4);\n    } else if (number.length === 12) {\n        if (number.startsWith(\"55\")) {\n            ddd = number.substring(2, 4);\n            telefone = number.substring(4);\n        } else if (number.startsWith(\"0\")) {\n            return formataTelefone(number.substring(1));\n        } else {\n            return { comNonoDigito: number, semNonoDigito: number };\n        }\n    } else if (number.length === 11) {\n        ddd = number.substring(0, 2);\n        telefone = number.substring(2);\n    } else if (number.length === 10) {\n        ddd = number.substring(0, 2);\n        telefone = \"9\" + number.substring(2);\n    } else {\n        return { comNonoDigito: number, semNonoDigito: number };\n    }\n\n    let telefoneComNono = telefone.length === 8 ? \"9\" + telefone : telefone;\n    let telefoneSemNono = telefoneComNono.startsWith(\"9\") ? telefoneComNono.substring(1) : telefoneComNono;\n\n    return {\n        comNonoDigito: ddi + ddd + telefoneComNono,\n        semNonoDigito: ddi + ddd + telefoneSemNono\n    };\n}\n\nlet numerosFormatados = formataTelefone($input.first().json.telefone);\n\n$input.all()[0].json[\"numerosFormatados\"] = numerosFormatados\nreturn $input.all();\n"
+      },
+      "id": "9334f0e1-a789-4455-a741-27266b706fb1",
+      "name": "Formata Telefone1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Lê data.purchase.origin.sck e gera os campos UTM no item de saída\n\nconst UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];\n\nreturn items.map(({ json, binary }) => {\n  // Pega o sck (garante string) e faz URL-decode\n  const rawSck = (json?.data?.purchase?.origin?.sck ?? '') + '';\n  const decoded = decodeURIComponent(rawSck).trim();\n\n  // Se vier algo no formato \"...?x=1&sck=foo|bar\", tenta extrair \"sck=\" da query também\n  let sckValue = decoded;\n  if (decoded.includes('sck=')) {\n    try {\n      const q = decoded.split('?')[1] || decoded;\n      const pairs = q.split('&');\n      const found = pairs.find(p => p.startsWith('sck='));\n      if (found) sckValue = decodeURIComponent(found.split('=')[1] || '');\n    } catch (_) {}\n  }\n\n  // Quebra pelos pipes e normaliza\n  const parts = sckValue.split('|').map(s => s?.trim() ?? '');\n\n  // Monta objeto UTM respeitando a ordem pedida\n  const utms = {};\n  UTM_KEYS.forEach((key, idx) => {\n    utms[key] = parts[idx] ?? '';\n  });\n\n  // Retorna o item com os campos adicionados\n  return {\n    json: {\n      ...json,\n      // adiciona também como campos \"flat\" para facilitar mapeamentos\n      ...utms,\n      // e um bloco agrupado\n      utms,\n      // ecoa o sck lido (útil para debug)\n      _sck_raw: rawSck,\n      _sck_decoded: sckValue,\n    },\n    binary,\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -32
+      ],
+      "id": "f5215350-186d-48ba-881f-1b653c0c2298",
+      "name": "Constrói utms"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "21951545-0d03-438a-9cda-9b9a91fecea1",
+              "name": "nome",
+              "value": "={{ $json.data.buyer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "7230ffb4-707b-4e21-bc49-99b734ea8bfd",
+              "name": "telefone",
+              "value": "={{ $json.data.buyer.checkout_phone }}",
+              "type": "string"
+            },
+            {
+              "id": "79be138b-4b03-443f-87af-d93f0a5054fe",
+              "name": "email",
+              "value": "={{ $json.data.buyer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "3d126e47-86e3-4d2d-b7e3-1b5b7711b4a5",
+              "name": "oferta",
+              "value": "={{ $json.data.purchase.full_price.value }}",
+              "type": "number"
+            },
+            {
+              "id": "52c21a64-5418-4d45-821b-ef05787ac97e",
+              "name": "utm_source",
+              "value": "={{ $json.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "4f2d3969-7e5d-4ecb-8200-24ce160d10ad",
+              "name": "utm_medium",
+              "value": "={{ $json.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "3c9b16b5-8424-425f-b98e-baf44925670c",
+              "name": "utm_campaign",
+              "value": "={{ $json.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "4d33d8c6-b1df-4a32-a25f-8e911a19fd1f",
+              "name": "utm_term",
+              "value": "={{ $json.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "4a4fd00c-0273-4b7c-8e02-b7954dca2dcd",
+              "name": "utm_content",
+              "value": "={{ $json.utm_content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1168,
+        -32
+      ],
+      "id": "2e84d6fc-78bb-4765-8d5c-1284c6b3fd20",
+      "name": "campos"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "compradores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.nome }}",
+            "telefone": "={{ $json.telefone }}",
+            "email": "={{ $json.email }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "oferta": "={{ $item(\"0\").$node[\"Webhook\"].json[\"body\"][\"data\"][\"purchase\"][\"full_price\"][\"value\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "oferta",
+              "displayName": "oferta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1392,
+        -832
+      ],
+      "id": "a132ad53-edfd-48fa-a9b9-529a38f541ad",
+      "name": "adiciona comprador",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-10T16:54:51.390Z",
+      "createdAt": "2026-03-10T16:54:51.390Z",
+      "role": "workflow:owner",
+      "workflowId": "tv6rLRkKOQmSVoKj",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-03-11T03:33:40.298Z",
+  "versionId": "7459a784-70c1-47af-86dc-acad1f1e7c0f"
+}
