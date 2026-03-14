@@ -830,7 +830,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const subscriber_id = $item(0).$node[\"busca contato\"].json[\"data\"][0][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\n// Se o valor for numérico, envia como número; senão, mantém string\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) }\n    ]\n  }\n}];"
+        "jsCode": "const subscriber_id = $item(0).$node[\"busca contato\"].json[\"data\"][0][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\n// Converte start_time para BRT (UTC-3)\nconst startUtc = new Date(campos.start_time);\nconst startBrt = new Date(startUtc.getTime() - 3 * 60 * 60 * 1000);\n\nconst dia  = String(startBrt.getUTCDate()).padStart(2, \"0\");\nconst mes  = String(startBrt.getUTCMonth() + 1).padStart(2, \"0\");\nconst ano  = startBrt.getUTCFullYear();\nconst hora = String(startBrt.getUTCHours()).padStart(2, \"0\");\nconst min  = String(startBrt.getUTCMinutes()).padStart(2, \"0\");\n\nconst dataBrt = `${dia}/${mes}/${ano}`;\nconst horaBrt = `${hora}:${min}`;\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) },\n      { field_id: 14316473, field_value: dataBrt },\n      { field_id: 14316474, field_value: horaBrt }\n    ]\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -843,7 +843,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const subscriber_id = $node[\"Cria contato\"].json[\"data\"][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\n// Se o valor for numérico, envia como número; senão, mantém string\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) }\n    ]\n  }\n}];"
+        "jsCode": "const subscriber_id = $node[\"Cria contato\"].json[\"data\"][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\n// Converte start_time para BRT (UTC-3)\nconst startUtc = new Date(campos.start_time);\nconst startBrt = new Date(startUtc.getTime() - 3 * 60 * 60 * 1000);\n\nconst dia  = String(startBrt.getUTCDate()).padStart(2, \"0\");\nconst mes  = String(startBrt.getUTCMonth() + 1).padStart(2, \"0\");\nconst ano  = startBrt.getUTCFullYear();\nconst hora = String(startBrt.getUTCHours()).padStart(2, \"0\");\nconst min  = String(startBrt.getUTCMinutes()).padStart(2, \"0\");\n\nconst dataBrt = `${dia}/${mes}/${ano}`;\nconst horaBrt = `${hora}:${min}`;\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) },\n      { field_id: 14316473, field_value: dataBrt },\n      { field_id: 14316474, field_value: horaBrt }\n    ]\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -856,7 +856,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const subscriber_id = $item(0).$node[\"busca contato1\"].json[\"data\"][0][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\n// Se o valor for numérico, envia como número; senão, mantém string\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) }\n    ]\n  }\n}];"
+        "jsCode": "const subscriber_id = $item(0).$node[\"busca contato1\"].json[\"data\"][0][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\n// Converte start_time para BRT (UTC-3)\nconst startUtc = new Date(campos.start_time);\nconst startBrt = new Date(startUtc.getTime() - 3 * 60 * 60 * 1000);\n\nconst dia  = String(startBrt.getUTCDate()).padStart(2, \"0\");\nconst mes  = String(startBrt.getUTCMonth() + 1).padStart(2, \"0\");\nconst ano  = startBrt.getUTCFullYear();\nconst hora = String(startBrt.getUTCHours()).padStart(2, \"0\");\nconst min  = String(startBrt.getUTCMinutes()).padStart(2, \"0\");\n\nconst dataBrt = `${dia}/${mes}/${ano}`;\nconst horaBrt = `${hora}:${min}`;\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) },\n      { field_id: 14316473, field_value: dataBrt },\n      { field_id: 14316474, field_value: horaBrt }\n    ]\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -872,163 +872,43 @@
     "recebe agendamento": [
       {
         "json": {
-          "telefone": "+5562994325064",
+          "telefone": "+5511987037155",
           "agendamento": {
             "collection": [
               {
                 "calendar_event": {
-                  "external_id": "3i6mifh3esv3advm1hqti0kttc",
+                  "external_id": "4r15q1ruovdpgdmm5u6fcufcnc",
                   "kind": "google"
                 },
-                "created_at": "2026-03-14T01:12:57.281517Z",
-                "end_time": "2026-03-16T18:30:00.000000Z",
+                "created_at": "2026-03-14T01:53:18.097533Z",
+                "end_time": "2026-03-16T23:30:00.000000Z",
                 "event_guests": [],
                 "event_memberships": [
                   {
-                    "buffered_end_time": "2026-03-16T18:30:00.000000Z",
-                    "buffered_start_time": "2026-03-16T17:00:00.000000Z",
-                    "user": "https://api.calendly.com/users/fcdaae8e-2694-4bc1-b64f-44c56722e708",
-                    "user_email": "tiagogregorio@mentoriahighticket.com.br",
-                    "user_name": "Tiago Gregório"
+                    "buffered_end_time": "2026-03-16T23:30:00.000000Z",
+                    "buffered_start_time": "2026-03-16T22:00:00.000000Z",
+                    "user": "https://api.calendly.com/users/7edfbbdc-0e22-4d8f-ac2b-ee2d7f361586",
+                    "user_email": "karllos.bma@gmail.com",
+                    "user_name": "Karllos"
                   }
                 ],
-                "event_type": "https://api.calendly.com/event_types/6638a26d-a1c7-4dae-9899-f594dd200b06",
+                "event_type": "https://api.calendly.com/event_types/fbb13ec9-33f4-4041-863b-70d9c42b888e",
                 "invitees_counter": {
                   "active": 1,
                   "limit": 1,
                   "total": 1
                 },
                 "location": {
-                  "data": {
-                    "id": 97308922664,
-                    "settings": {
-                      "global_dial_in_numbers": [
-                        {
-                          "country_name": "US",
-                          "number": "+1 646 931 3860",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "city": "New York",
-                          "number": "+1 929 205 6099",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "city": "Washington DC",
-                          "number": "+1 301 715 8592",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 305 224 1968",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 309 205 3325",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "city": "Chicago",
-                          "number": "+1 312 626 6799",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 360 209 5623",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 386 347 5053",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 507 473 4847",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 564 217 2000",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 669 444 9171",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "city": "San Jose",
-                          "number": "+1 669 900 6833",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 689 278 1000",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 719 359 4580",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 253 205 0468",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "city": "Tacoma",
-                          "number": "+1 253 215 8782",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "city": "Houston",
-                          "number": "+1 346 248 7799",
-                          "type": "toll",
-                          "country": "US"
-                        }
-                      ]
-                    },
-                    "extra": {
-                      "intl_numbers_url": null
-                    },
-                    "password": "790143"
-                  },
-                  "join_url": "https://zoom.us/j/97308922664?pwd=1mb8T0MP03bV50aHAqhTVPNTU0A0ig.1",
-                  "status": "pushed",
-                  "type": "zoom"
+                  "location": null,
+                  "type": "custom"
                 },
                 "meeting_notes_html": null,
                 "meeting_notes_plain": null,
-                "name": "CG10- Consultoria Grátis",
-                "start_time": "2026-03-16T17:00:00.000000Z",
+                "name": "CG5- Consultoria Grátis 2026",
+                "start_time": "2026-03-16T22:00:00.000000Z",
                 "status": "active",
-                "updated_at": "2026-03-14T01:13:14.437143Z",
-                "uri": "https://api.calendly.com/scheduled_events/846d4a1c-1654-429b-af34-1225605ae930"
+                "updated_at": "2026-03-14T01:53:20.400254Z",
+                "uri": "https://api.calendly.com/scheduled_events/259af067-b9b0-463b-9009-0701aee90e6e"
               }
             ],
             "pagination": {
@@ -1039,7 +919,7 @@
               "previous_page_token": null
             }
           },
-          "nome": "wanderson josé ",
+          "nome": "Juliana Pinheiro ",
           "segmento": "Ainda não sou mentor, mas quero me tornar.",
           "infoproduto": "Não tenho.",
           "fluxo": "content20260303032435_584904"
@@ -1062,6 +942,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-14T01:54:32.226Z",
-  "versionId": "f63df4e1-17f2-41a0-95b8-5f53cc78a199"
+  "updatedAt": "2026-03-14T04:40:46.151Z",
+  "versionId": "5d1a9a0a-078d-40b4-9dff-325d8e7519a2"
 }
