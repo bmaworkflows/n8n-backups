@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "att contact",
+            "node": "Trata payload1",
             "type": "main",
             "index": 0
           }
@@ -100,7 +100,7 @@
       "main": [
         [
           {
-            "node": "att contact2",
+            "node": "Trata payload2",
             "type": "main",
             "index": 0
           }
@@ -212,6 +212,28 @@
           }
         ]
       ]
+    },
+    "Trata payload1": {
+      "main": [
+        [
+          {
+            "node": "att contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata payload2": {
+      "main": [
+        [
+          {
+            "node": "att contact2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-03-02T08:43:39.160Z",
@@ -228,7 +250,7 @@
       "typeVersion": 1.1,
       "position": [
         -4112,
-        -208
+        -224
       ],
       "id": "6b6bb3dd-9407-401f-baa7-ca280a7a9848",
       "name": "recebe agendamento"
@@ -241,7 +263,7 @@
       "typeVersion": 2,
       "position": [
         -3888,
-        -208
+        -224
       ],
       "id": "2e1016a5-6a43-4d86-9997-f5af8dbdb3b8",
       "name": "Trata campos"
@@ -252,7 +274,7 @@
       "typeVersion": 1,
       "position": [
         -2992,
-        -16
+        -32
       ],
       "id": "d038ca5e-738d-43a0-b3de-22d564f8f66c",
       "name": "novo"
@@ -285,7 +307,7 @@
       "typeVersion": 4.2,
       "position": [
         -3440,
-        -208
+        -224
       ],
       "retryOnFail": false,
       "onError": "continueRegularOutput"
@@ -293,7 +315,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomFields",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -309,7 +331,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"subscriber_id\": \"{{ $node[\"Cria contato\"].json[\"data\"][\"id\"] }}\",\n  \"fields\": [\n    {\n      \"field_id\": 13000729,\n      \"field_value\": \"{{ $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"] }}\"\n    },\n    {\n      \"field_id\": 14333282,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg1\"] }}\"\n    },\n    {\n      \"field_id\": 14322130,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg2\"] }}\"\n    },\n    {\n      \"field_id\": 14333283,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg3\"] }}\"\n    },\n    {\n      \"field_id\": 14333305,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg4\"] }}\"\n    },\n    {\n      \"field_id\": 14333306,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg5\"] }}\"\n    },\n    {\n      \"field_id\": 14333307,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg6\"] }}\"\n    },\n    {\n      \"field_id\": 14333309,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg7\"] }}\"\n    },\n    {\n      \"field_id\": 14333311,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg8\"] }}\"\n    }\n  ]\n}",
+        "jsonBody": "={{ $json }}",
         "options": {}
       },
       "id": "ee902802-553d-4f02-96a0-4e47d2d7f661",
@@ -317,8 +339,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2768,
-        -16
+        -2544,
+        -32
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -329,14 +351,14 @@
       "typeVersion": 1,
       "position": [
         -2992,
-        -304
+        -320
       ],
       "id": "0f65a7d0-2b95-4db3-98bf-60ff4ac3271f",
       "name": "existe"
     },
     {
       "parameters": {
-        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=13000729&field_value={{ $('Formata Telefone1').item.json.numerosFormatados.comNonoDigito }}",
+        "url": "=https://api.manychat.com/fb/subscriber/findByCustomField?field_id=13000729&field_value={{ $item(\"0\").$node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"] }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -358,7 +380,7 @@
       "typeVersion": 4.2,
       "position": [
         -2768,
-        -304
+        -320
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -392,7 +414,7 @@
       "typeVersion": 2.1,
       "position": [
         -3216,
-        -208
+        -224
       ]
     },
     {
@@ -405,7 +427,7 @@
       "typeVersion": 1,
       "position": [
         -3664,
-        -208
+        -224
       ]
     },
     {
@@ -414,7 +436,7 @@
       "typeVersion": 1,
       "position": [
         -2320,
-        -400
+        -416
       ],
       "id": "e99659a2-7a41-4622-ac75-cabe885bc09d",
       "name": "sem nono digito"
@@ -443,7 +465,7 @@
       "typeVersion": 4.2,
       "position": [
         -2096,
-        -400
+        -416
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -479,7 +501,7 @@
       "typeVersion": 2.1,
       "position": [
         -2544,
-        -304
+        -320
       ]
     },
     {
@@ -520,7 +542,7 @@
       "typeVersion": 4.2,
       "position": [
         -1872,
-        -208
+        -224
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -562,8 +584,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1648,
-        -400
+        -1424,
+        -416
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -605,8 +627,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2544,
-        -16
+        -2320,
+        -32
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -648,8 +670,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1424,
-        -400
+        -1200,
+        -416
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -692,7 +714,7 @@
       "typeVersion": 4.2,
       "position": [
         -1648,
-        -208
+        -224
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -734,8 +756,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2320,
-        -16
+        -2096,
+        -32
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -768,7 +790,7 @@
       "typeVersion": 4.2,
       "position": [
         -2096,
-        -208
+        -224
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -776,7 +798,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomFields",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -792,7 +814,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"subscriber_id\": \"{{ $node[\"busca contato1\"].json[\"data\"][\"id\"] }}\",\n  \"fields\": [\n    {\n      \"field_id\": 13000729,\n      \"field_value\": \"{{ $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"] }}\"\n    },\n    {\n      \"field_id\": 14333282,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg1\"] }}\"\n    },\n    {\n      \"field_id\": 14322130,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg2\"] }}\"\n    },\n    {\n      \"field_id\": 14333283,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg3\"] }}\"\n    },\n    {\n      \"field_id\": 14333305,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg4\"] }}\"\n    },\n    {\n      \"field_id\": 14333306,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg5\"] }}\"\n    },\n    {\n      \"field_id\": 14333307,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg6\"] }}\"\n    },\n    {\n      \"field_id\": 14333309,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg7\"] }}\"\n    },\n    {\n      \"field_id\": 14333311,\n      \"field_value\": \"{{ $item(\"0\").$node[\"Trata campos\"].json[\"delay_msg8\"] }}\"\n    }\n  ]\n}",
+        "jsonBody": "={{ $json }}",
         "options": {}
       },
       "id": "2e04dbbf-177e-422f-a537-40b792bb8d85",
@@ -800,8 +822,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1872,
-        -400
+        -1648,
+        -416
       ],
       "retryOnFail": false,
       "onError": "continueErrorOutput"
@@ -814,31 +836,57 @@
       "typeVersion": 2,
       "position": [
         -2320,
-        -208
+        -224
       ],
       "id": "5c4922c8-fcb7-4702-8340-44ed131b37fc",
       "name": "Trata payload"
+    },
+    {
+      "parameters": {
+        "jsCode": "const subscriber_id = $node[\"Cria contato\"].json[\"data\"][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"comNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\n// Se o valor for numérico, envia como número; senão, mantém string\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) }\n    ]\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2768,
+        -32
+      ],
+      "id": "f607b90d-4173-4520-9503-b7832540c3e3",
+      "name": "Trata payload1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const subscriber_id = $item(0).$node[\"busca contato1\"].json[\"data\"][0][\"id\"];\nconst tel = $node[\"Formata Telefone1\"].json[\"numerosFormatados\"][\"semNonoDigito\"];\nconst campos = $item(0).$node[\"Trata campos\"].json;\n\n// Se o valor for numérico, envia como número; senão, mantém string\nconst v = (val) => {\n  const n = Number(val);\n  return isNaN(n) ? val : n;\n};\n\nreturn [{\n  json: {\n    subscriber_id: subscriber_id,\n    fields: [\n      { field_id: 13000729, field_value: tel },\n      { field_id: 14333282, field_value: v(campos.delay_msg1) },\n      { field_id: 14322130, field_value: v(campos.delay_msg2) },\n      { field_id: 14333283, field_value: v(campos.delay_msg3) },\n      { field_id: 14333305, field_value: v(campos.delay_msg4) },\n      { field_id: 14333306, field_value: v(campos.delay_msg5) },\n      { field_id: 14333307, field_value: v(campos.delay_msg6) },\n      { field_id: 14333309, field_value: v(campos.delay_msg7) },\n      { field_id: 14333311, field_value: v(campos.delay_msg8) }\n    ]\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1872,
+        -416
+      ],
+      "id": "dce08e3e-0938-4fbd-b12a-d713a3dfdf50",
+      "name": "Trata payload2"
     }
   ],
   "pinData": {
     "recebe agendamento": [
       {
         "json": {
-          "telefone": "+5585988861521",
+          "telefone": "+5562994325064",
           "agendamento": {
             "collection": [
               {
                 "calendar_event": {
-                  "external_id": "aatsubdqjcl4kkm4qjaa6tt14c",
+                  "external_id": "3i6mifh3esv3advm1hqti0kttc",
                   "kind": "google"
                 },
-                "created_at": "2026-03-12T22:38:43.485721Z",
-                "end_time": "2026-03-14T20:30:00.000000Z",
+                "created_at": "2026-03-14T01:12:57.281517Z",
+                "end_time": "2026-03-16T18:30:00.000000Z",
                 "event_guests": [],
                 "event_memberships": [
                   {
-                    "buffered_end_time": "2026-03-14T20:30:00.000000Z",
-                    "buffered_start_time": "2026-03-14T19:00:00.000000Z",
+                    "buffered_end_time": "2026-03-16T18:30:00.000000Z",
+                    "buffered_start_time": "2026-03-16T17:00:00.000000Z",
                     "user": "https://api.calendly.com/users/fcdaae8e-2694-4bc1-b64f-44c56722e708",
                     "user_email": "tiagogregorio@mentoriahighticket.com.br",
                     "user_name": "Tiago Gregório"
@@ -852,7 +900,7 @@
                 },
                 "location": {
                   "data": {
-                    "id": 94619083442,
+                    "id": 97308922664,
                     "settings": {
                       "global_dial_in_numbers": [
                         {
@@ -891,6 +939,30 @@
                           "country_name": "US",
                           "city": "Chicago",
                           "number": "+1 312 626 6799",
+                          "type": "toll",
+                          "country": "US"
+                        },
+                        {
+                          "country_name": "US",
+                          "number": "+1 360 209 5623",
+                          "type": "toll",
+                          "country": "US"
+                        },
+                        {
+                          "country_name": "US",
+                          "number": "+1 386 347 5053",
+                          "type": "toll",
+                          "country": "US"
+                        },
+                        {
+                          "country_name": "US",
+                          "number": "+1 507 473 4847",
+                          "type": "toll",
+                          "country": "US"
+                        },
+                        {
+                          "country_name": "US",
+                          "number": "+1 564 217 2000",
                           "type": "toll",
                           "country": "US"
                         },
@@ -938,49 +1010,25 @@
                           "number": "+1 346 248 7799",
                           "type": "toll",
                           "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 360 209 5623",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 386 347 5053",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 507 473 4847",
-                          "type": "toll",
-                          "country": "US"
-                        },
-                        {
-                          "country_name": "US",
-                          "number": "+1 564 217 2000",
-                          "type": "toll",
-                          "country": "US"
                         }
                       ]
                     },
                     "extra": {
                       "intl_numbers_url": null
                     },
-                    "password": "949890"
+                    "password": "790143"
                   },
-                  "join_url": "https://zoom.us/j/94619083442?pwd=XhmpZhjKNAcR9J09yT6lN6HzPAWN3Z.1",
+                  "join_url": "https://zoom.us/j/97308922664?pwd=1mb8T0MP03bV50aHAqhTVPNTU0A0ig.1",
                   "status": "pushed",
                   "type": "zoom"
                 },
                 "meeting_notes_html": null,
                 "meeting_notes_plain": null,
                 "name": "CG10- Consultoria Grátis",
-                "start_time": "2026-03-14T19:00:00.000000Z",
+                "start_time": "2026-03-16T17:00:00.000000Z",
                 "status": "active",
-                "updated_at": "2026-03-12T22:38:59.465968Z",
-                "uri": "https://api.calendly.com/scheduled_events/9116331b-a8e8-43ec-975c-6ac30f9f7f33"
+                "updated_at": "2026-03-14T01:13:14.437143Z",
+                "uri": "https://api.calendly.com/scheduled_events/846d4a1c-1654-429b-af34-1225605ae930"
               }
             ],
             "pagination": {
@@ -991,10 +1039,10 @@
               "previous_page_token": null
             }
           },
-          "nome": "Francisco Pontes",
-          "segmento": "Já sou mentor!",
+          "nome": "wanderson josé ",
+          "segmento": "Ainda não sou mentor, mas quero me tornar.",
           "infoproduto": "Não tenho.",
-          "fluxo": "content20260303032237_212233"
+          "fluxo": "content20260303032435_584904"
         }
       }
     ]
@@ -1014,6 +1062,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-13T13:30:31.818Z",
-  "versionId": "e98085f5-e6da-43da-94a6-ca17e2f1c256"
+  "updatedAt": "2026-03-14T01:54:32.226Z",
+  "versionId": "f63df4e1-17f2-41a0-95b8-5f53cc78a199"
 }
