@@ -1,0 +1,696 @@
+{
+  "active": true,
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "campos-pag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Planilha |Meteórico 1": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos-pag": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "form nativo": {
+      "main": [
+        [
+          {
+            "node": "campos-nativo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos-nativo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Meteórico 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Dados Planilha |Meteórico ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-27T19:30:22.261Z",
+  "id": "eexuQhDT3DvcmQIO",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [LIVES] - Formulário",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "1dd28c65-41a6-4f62-9ca0-e0ac5bdd7bc4",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1hXqlV3Edgn6RtYZJEebWsYXhgNcGB53iQP5CkVdh8h8/edit?gid=1094649135#gid=1094649135",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hXqlV3Edgn6RtYZJEebWsYXhgNcGB53iQP5CkVdh8h8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.Data_da_conversao }}",
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_term": "={{ $json.utm_term }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "telefone": "={{ $json.whatsapp }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_term",
+              "displayName": "utm_term",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "34761c8f-0118-4a48-add9-d2bf22fa4fb5",
+      "name": "Dados Planilha |Meteórico 1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        512,
+        240
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "852e6813-937d-4de7-bca2-fac88cb957ff",
+        "options": {}
+      },
+      "id": "d232d5fc-3d86-4320-85c6-b30d217b53b1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        224
+      ],
+      "webhookId": "852e6813-937d-4de7-bca2-fac88cb957ff"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2a68488c-f0b4-4406-baf9-b2c4bff1f2fb",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "62ec3931-595f-43f5-9181-73c400ca8c9a",
+              "name": "email",
+              "value": "={{ $json[\"[Digite seu melhor e-mail\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "b7f3a6f5-6974-4aaf-9140-e16dffdddf74",
+              "name": "whatsapp",
+              "value": "={{ $json[\"Digite seu número de WhatsApp\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "bcda957c-484a-41a0-aeea-85ec12bc898e",
+              "name": "pagina",
+              "value": "={{ $json.pagina_captura }}",
+              "type": "string"
+            },
+            {
+              "id": "2a6c5226-c045-4095-b133-00f54d82e245",
+              "name": "utm_source",
+              "value": "={{ $json.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "ae81e3b4-9a73-4b1e-ad38-75bf2fb3682b",
+              "name": "utm_medium",
+              "value": "={{ $json.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "30476025-0543-469c-9d9d-a7fee91cde39",
+              "name": "utm_campaign",
+              "value": "={{ $json.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "6b50b30c-15db-4d2b-a3cc-119a4e209925",
+              "name": "utm_term",
+              "value": "={{ $json.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "0fa84181-01f4-4f7c-85f2-90aafb4906ca",
+              "name": "utm_content",
+              "value": "={{ $json.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "1cad61e4-9a1a-4934-adc4-c7578f4baffa",
+              "name": "Data_da_conversao",
+              "value": "={{ $now.format('dd/MM/yyyy') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d9005df1-2f7e-4ae0-9fce-d3c50b93f7d4",
+      "name": "campos-pag",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -512,
+        576
+      ],
+      "id": "aa40827f-f027-4cca-98d3-5a9a832970e0",
+      "name": "form nativo",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2a68488c-f0b4-4406-baf9-b2c4bff1f2fb",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "62ec3931-595f-43f5-9181-73c400ca8c9a",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "b7f3a6f5-6974-4aaf-9140-e16dffdddf74",
+              "name": "whatsapp",
+              "value": "={{ $json.whatsapp }}",
+              "type": "string"
+            },
+            {
+              "id": "bcda957c-484a-41a0-aeea-85ec12bc898e",
+              "name": "pagina",
+              "value": "=form_nativo",
+              "type": "string"
+            },
+            {
+              "id": "2a6c5226-c045-4095-b133-00f54d82e245",
+              "name": "utm_source",
+              "value": "=form_nativo",
+              "type": "string"
+            },
+            {
+              "id": "ae81e3b4-9a73-4b1e-ad38-75bf2fb3682b",
+              "name": "utm_medium",
+              "value": "={{ $json.publico }}",
+              "type": "string"
+            },
+            {
+              "id": "30476025-0543-469c-9d9d-a7fee91cde39",
+              "name": "utm_campaign",
+              "value": "={{ $json.campanha }}",
+              "type": "string"
+            },
+            {
+              "id": "6b50b30c-15db-4d2b-a3cc-119a4e209925",
+              "name": "utm_term",
+              "value": "=form_nativo",
+              "type": "string"
+            },
+            {
+              "id": "0fa84181-01f4-4f7c-85f2-90aafb4906ca",
+              "name": "utm_content",
+              "value": "={{ $json.anuncio }}",
+              "type": "string"
+            },
+            {
+              "id": "1cad61e4-9a1a-4934-adc4-c7578f4baffa",
+              "name": "Data_da_conversao",
+              "value": "={{ $now.format('dd/MM/yyyy') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c8164183-90cf-407b-bfdf-d695fe4947da",
+      "name": "campos-nativo",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        576
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        272,
+        240
+      ],
+      "id": "12b48769-e2eb-4159-8f21-2a250b59d2a6",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cd63c9d2-293a-463c-a785-1370ef3952a6",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -496,
+        -384
+      ],
+      "id": "6225a46d-dc0d-4823-9ed3-800e374115fe",
+      "name": "Webhook1",
+      "webhookId": "cd63c9d2-293a-463c-a785-1370ef3952a6"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook1\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook1\"].json[\"body\"]) : $node[\"Webhook1\"].json[\"body\"]\n"
+      },
+      "id": "bd5c9546-eb4f-4845-9746-37a7942a9e5b",
+      "name": "Trata Webhook1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1hXqlV3Edgn6RtYZJEebWsYXhgNcGB53iQP5CkVdh8h8/edit?gid=1094649135#gid=1094649135",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1094649135,
+          "mode": "list",
+          "cachedResultName": "pesquisa",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hXqlV3Edgn6RtYZJEebWsYXhgNcGB53iQP5CkVdh8h8/edit#gid=1094649135"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "negocio": "={{ $json.perfil_mercado }}",
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}",
+            "data": "={{ $json.timestamp.toDateTime().format(\"dd/MM/yyyy\") }}",
+            "perfil": "={{ $json.perfil_mercado }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "perfil",
+              "displayName": "perfil",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "negocio",
+              "displayName": "negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "0b0ee16f-ea22-44eb-8793-38a0540a240c",
+      "name": "Dados Planilha |Meteórico ",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        -32,
+        -384
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "WordPress/6.8.5; https://josepbijari.com",
+            "content-length": "274",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "177.93.107.23",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "177.93.107.23"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nome": "Matheus BMA",
+            "[Digite seu melhor e-mail": "bma.matheus2024@gmail.com",
+            "Digite seu número de WhatsApp": "81993515055",
+            "utm_content": "teste",
+            "utm_source": "teste",
+            "utm_medium": "teste",
+            "utm_campaign": "teste",
+            "utm_term": "teste",
+            "pagina_captura": "live",
+            "form_id": "d64c851",
+            "form_name": "agenda-lotada-outubro1"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/852e6813-937d-4de7-bca2-fac88cb957ff",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "form nativo": [
+      {
+        "json": {
+          "nome": "Maura Marques",
+          "email": "mauramarquesfr3@gmail.com",
+          "whatsapp": "+5563992745710",
+          "anuncio": "AD01-2026",
+          "publico": "00-ADV+",
+          "campanha": "CADASTRO_LEADS_WEBINAR2_AUTO-ADV+_08/01-IOS-FORMS"
+        }
+      }
+    ],
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "content-length": "389",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://josepbijari.com",
+            "priority": "u=1, i",
+            "referer": "https://josepbijari.com/",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-forwarded-for": "177.37.149.33",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "177.37.149.33"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "perfil_mercado": "Mentor",
+            "nome": "Matheus BMA",
+            "telefone": "81993515055",
+            "email": "bma.matheus2024@gmail.com",
+            "whatsapp_url": "https://wa.me/5500000000000?text=Olá! Acabei de confirmar minha inscrição para as próximas lives do José Pedro Bijari.%0A%0AMeu perfil no mercado é: Mentor.%0A%0AQuero receber os avisos e o link da live pelo WhatsApp.",
+            "timestamp": "2026-03-27T19:42:13.261Z"
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/cd63c9d2-293a-463c-a785-1370ef3952a6",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-27T19:30:22.261Z",
+      "createdAt": "2026-03-27T19:30:22.261Z",
+      "role": "workflow:owner",
+      "workflowId": "eexuQhDT3DvcmQIO",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2026-03-27T22:56:05.095Z",
+  "versionId": "05816034-4c72-4ca3-8ffe-c59dd1926c54"
+}
