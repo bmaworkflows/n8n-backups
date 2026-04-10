@@ -5,28 +5,7 @@
       "main": [
         [
           {
-            "node": "Renan",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Sara",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "ActiveCampaign12",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Trata Webhook",
+            "node": "Evento",
             "type": "main",
             "index": 0
           }
@@ -750,7 +729,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Trata Webhook",
             "type": "main",
             "index": 0
           }
@@ -863,6 +842,65 @@
           }
         ]
       ]
+    },
+    "Evento": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Renan",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sara",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "campos pre call1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leva para a clint Matheus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leva para a clint Matheus": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Matheus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos pre call1": {
+      "main": [
+        [
+          {
+            "node": "Call 'PRÉ-CALL CLOSERS'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2024-05-14T20:50:55.756Z",
@@ -882,42 +920,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        800,
-        288
-      ]
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 1
-          },
-          "conditions": [
-            {
-              "id": "4b4359e0-d29f-4e27-9485-80524e4359bd",
-              "leftValue": "={{ $json.body.event }}",
-              "rightValue": "invitee.created",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "eac61d6e-12a7-4d0a-8a89-3199766ab279",
-      "name": "If",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [
-        432,
-        304
+        336,
+        848
       ]
     },
     {
@@ -3359,8 +3363,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        160,
-        304
+        112,
+        848
       ],
       "webhookId": "0e94548e-da55-49c9-85b0-cb48997648dc"
     },
@@ -3414,7 +3418,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo Agendamento - Evento disparado pelo Calendly*\n\n*Data da Reunião:* {{ $json.payload\n   .scheduled_event\n   .start_time\n   .toDateTime()                 \n   .setZone('America/Sao_Paulo') \n   .toFormat('dd/MM/yyyy HH:mm') \n}}\nAgenda: {{ $json.payload.scheduled_event.name }}\n\nNome: {{ $json.payload.name }}\nEmail: {{ $json.payload.email }}\nTelefone: {{ $item(\"0\").$node[\"If\"].json[\"body\"][\"payload\"][\"questions_and_answers\"][\"0\"][\"question\"] }}\n\nNome do Closer: {{ $json.payload.scheduled_event.event_memberships[0].user_name }}\n\nPS: Se o nome do closer vier com *sdr*, é agenda reserva."
+              "value": "=*Novo Agendamento - Evento disparado pelo Calendly*\n\n*Data da Reunião:* {{ $json.payload\n   .scheduled_event\n   .start_time\n   .toDateTime()                 \n   .setZone('America/Sao_Paulo') \n   .toFormat('dd/MM/yyyy HH:mm') \n}}\nAgenda: {{ $json.payload.scheduled_event.name }}\n\nNome: {{ $json.payload.name }}\nEmail: {{ $json.payload.email }}\nTelefone: {{ $item(\"0\").$node[\"Evento\"].json[\"body\"][\"payload\"][\"questions_and_answers\"][\"0\"][\"question\"] }}\n\nNome do Closer: {{ $json.payload.scheduled_event.event_memberships[0].user_name }}\n\nPS: Se o nome do closer vier com *sdr*, é agenda reserva."
             }
           ]
         },
@@ -3425,8 +3429,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1072,
-        144
+        832,
+        720
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -3454,7 +3458,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo Agendamento - Evento disparado pelo Calendly*\n\n*Data da Reunião:* {{ $json.payload\n   .scheduled_event\n   .start_time\n   .toDateTime()                 \n   .setZone('America/Sao_Paulo') \n   .toFormat('dd/MM/yyyy HH:mm') \n}}\nAgenda: {{ $json.payload.scheduled_event.name }}\n\nNome: {{ $json.payload.name }}\nEmail: {{ $json.payload.email }}\nTelefone: {{ $item(\"0\").$node[\"If\"].json[\"body\"][\"payload\"][\"questions_and_answers\"][\"0\"][\"question\"] }}\n\nNome do Closer: {{ $json.payload.scheduled_event.event_memberships[0].user_name }}\n\nPS: Se o nome do closer vier com *sdr*, é agenda reserva."
+              "value": "=*Novo Agendamento - Evento disparado pelo Calendly*\n\n*Data da Reunião:* {{ $json.payload\n   .scheduled_event\n   .start_time\n   .toDateTime()                 \n   .setZone('America/Sao_Paulo') \n   .toFormat('dd/MM/yyyy HH:mm') \n}}\nAgenda: {{ $json.payload.scheduled_event.name }}\n\nNome: {{ $json.payload.name }}\nEmail: {{ $json.payload.email }}\nTelefone: {{ $item(\"0\").$node[\"Evento\"].json[\"body\"][\"payload\"][\"questions_and_answers\"][\"0\"][\"question\"] }}\n\nNome do Closer: {{ $json.payload.scheduled_event.event_memberships[0].user_name }}\n\nPS: Se o nome do closer vier com *sdr*, é agenda reserva."
             }
           ]
         },
@@ -3465,8 +3469,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1072,
-        368
+        832,
+        944
       ],
       "retryOnFail": true,
       "maxTries": 5,
@@ -3825,6 +3829,302 @@
           "name": "JP Bijari"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "4b4359e0-d29f-4e27-9485-80524e4359bd",
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "invitee.created",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eac61d6e-12a7-4d0a-8a89-3199766ab279",
+      "name": "Evento",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        544,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                    "rightValue": "Consultoria Grátis - Exclusivo Matheus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e7d76642-66a1-4c51-beea-4bf4a3e62557"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MATHEUS 15K"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d55175e5-d13d-4ff0-92b0-a4918355634d",
+                    "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                    "rightValue": "Consultoria Grátis - Exclusivo Tiago",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TIAGO 15K"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "06de4561-11ca-4537-bc75-7c2994ef6ffe",
+                    "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                    "rightValue": "Consultoria Grátis - Exclusivo Karllos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "KARLLOS 15K"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "957ba99e-ae5f-4827-8cdc-293860c4c95c",
+                    "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                    "rightValue": "Consultoria Grátis - Exclusivo Guilherme",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "GUILHERME 15K"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        848,
+        320
+      ],
+      "id": "f1b87d28-f395-425e-badf-69ccd2a12da2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/39354e52-81a5-4047-b916-62cb33e9e1b2",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $json.payload.name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.payload.email }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $json.payload.questions_and_answers[0].answer }}"
+            },
+            {
+              "name": "data_call",
+              "value": "={{ $json.payload.scheduled_event.start_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1184,
+        304
+      ],
+      "id": "b87117b1-e08c-4812-a774-b091208ebdcf",
+      "name": "Leva para a clint Matheus"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado Produto 10k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus Schefer\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "77f11cde-7411-442b-b1db-ee6b48e4a1da",
+      "name": "Notifica grupo | Matheus",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1408,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "9Zc4XBrTKcEUb9y5",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/9Zc4XBrTKcEUb9y5",
+          "cachedResultName": "PRÉ-CALL CLOSERS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1408,
+        128
+      ],
+      "id": "37e280e1-d1ac-488d-a8ea-34da9e8ad598",
+      "name": "Call 'PRÉ-CALL CLOSERS'1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
+              "name": "closer",
+              "value": "Matheus Schefer",
+              "type": "string"
+            },
+            {
+              "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
+              "name": "data",
+              "value": "={{ $json.payload.scheduled_event.start_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}",
+              "type": "string"
+            },
+            {
+              "id": "e27b5789-7c5c-4a6f-bf94-3c8769c676ca",
+              "name": "nome",
+              "value": "={{ $json.payload.name }}",
+              "type": "string"
+            },
+            {
+              "id": "ecd21f76-d9bb-4947-916b-2a534618132c",
+              "name": "telefone",
+              "value": "={{ $json.payload.questions_and_answers[0].answer.replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "b0957eb3-f6c6-4655-87d3-8469547621aa",
+              "name": "data_fim",
+              "value": "={{ $json.payload.scheduled_event.end_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        128
+      ],
+      "id": "3faeac66-e7c4-46ca-b4a1-ab55325a6000",
+      "name": "campos pre call1"
     }
   ],
   "pinData": {
@@ -3834,38 +4134,38 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "Calendly",
-            "content-length": "2145",
+            "content-length": "2042",
             "accept": "*/*",
             "accept-encoding": "deflate, gzip, br, zstd",
             "content-type": "application/json",
-            "traceparent": "00-683e0032000000002dbf03cffab15b29-2a1075b664dbedbd-00",
-            "tracestate": "dd=s:-1",
-            "x-datadog-parent-id": "3031051975456976317",
-            "x-datadog-sampling-priority": "-1",
-            "x-datadog-tags": "_dd.p.tid=683e003200000000",
-            "x-datadog-trace-id": "3296357644057533225",
-            "x-forwarded-for": "34.85.188.170",
+            "traceparent": "00-69d8200b000000002e5dae9b0e5b6de1-384576d535b8b47c-00",
+            "tracestate": "dd=p:384576d535b8b47c;s:0",
+            "x-datadog-parent-id": "4054777697618408572",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=69d8200b00000000",
+            "x-datadog-trace-id": "3341018479562812897",
+            "x-forwarded-for": "34.145.255.96",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "3b00e11001b6",
-            "x-real-ip": "34.85.188.170"
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "34.145.255.96"
           },
           "params": {},
           "query": {},
           "body": {
-            "created_at": "2025-06-02T19:49:06.000000Z",
+            "created_at": "2026-04-09T21:54:19.000000Z",
             "created_by": "https://api.calendly.com/users/f90cd979-a1b2-4c75-941e-ffd18c6ae192",
             "event": "invitee.created",
             "payload": {
-              "cancel_url": "https://calendly.com/cancellations/8a123224-3c85-4bc3-b587-6238ae0b9f24",
-              "created_at": "2025-06-02T19:49:05.453347Z",
-              "email": "matheus@gmail.com",
-              "event": "https://api.calendly.com/scheduled_events/8afcc594-41c5-4e4f-ba36-4e584fff98c0",
+              "cancel_url": "https://calendly.com/cancellations/246c2223-4793-43cc-9775-169820667dfe",
+              "created_at": "2026-04-09T21:54:18.691814Z",
+              "email": "matheuscristhyan.2@gmail.com",
+              "event": "https://api.calendly.com/scheduled_events/ed9b733e-0719-45ee-b1a7-b56d262d120d",
               "first_name": null,
-              "invitee_scheduled_by": "https://api.calendly.com/users/f90cd979-a1b2-4c75-941e-ffd18c6ae192",
+              "invitee_scheduled_by": null,
               "last_name": null,
-              "name": "Matheus",
+              "name": "MATHEUS CRISTHYAN SILVA RODRIGUES",
               "new_invitee": null,
               "no_show": null,
               "old_invitee": null,
@@ -3874,30 +4174,25 @@
                 {
                   "answer": "+55 81 99351-5055",
                   "position": 0,
-                  "question": "Qual é o seu WhatsApp?"
-                },
-                {
-                  "answer": "teste",
-                  "position": 1,
-                  "question": "O que mais te trava hoje em escalar sua oferta?"
+                  "question": "Seu WhatsApp"
                 }
               ],
               "reconfirmation": null,
-              "reschedule_url": "https://calendly.com/reschedulings/8a123224-3c85-4bc3-b587-6238ae0b9f24",
+              "reschedule_url": "https://calendly.com/reschedulings/246c2223-4793-43cc-9775-169820667dfe",
               "rescheduled": false,
               "routing_form_submission": null,
               "scheduled_event": {
-                "created_at": "2025-06-02T19:49:05.440787Z",
-                "end_time": "2025-06-04T14:30:00.000000Z",
+                "created_at": "2026-04-09T21:54:18.539455Z",
+                "end_time": "2026-04-10T12:00:00.000000Z",
                 "event_guests": [],
                 "event_memberships": [
                   {
-                    "user": "https://api.calendly.com/users/f90cd979-a1b2-4c75-941e-ffd18c6ae192",
-                    "user_email": "jp@mentoriahighticket.com.br",
-                    "user_name": "José Pedro"
+                    "user": "https://api.calendly.com/users/eea4f979-0257-4175-8368-b43426084b88",
+                    "user_email": "matheusschefer.bma@gmail.com",
+                    "user_name": "Matheus Schefer BMA"
                   }
                 ],
-                "event_type": "https://api.calendly.com/event_types/e6cd4d45-95aa-4ac4-83d9-62fecf288c1d",
+                "event_type": "https://api.calendly.com/event_types/05028656-278b-4435-91ee-7d99a267d624",
                 "invitees_counter": {
                   "total": 1,
                   "active": 1,
@@ -3909,11 +4204,11 @@
                 },
                 "meeting_notes_html": null,
                 "meeting_notes_plain": null,
-                "name": "CG - Personalizado",
-                "start_time": "2025-06-04T13:00:00.000000Z",
+                "name": "Consultoria Grátis - Exclusivo Matheus",
+                "start_time": "2026-04-10T11:00:00.000000Z",
                 "status": "active",
-                "updated_at": "2025-06-02T19:49:05.440787Z",
-                "uri": "https://api.calendly.com/scheduled_events/8afcc594-41c5-4e4f-ba36-4e584fff98c0"
+                "updated_at": "2026-04-09T21:54:18.539455Z",
+                "uri": "https://api.calendly.com/scheduled_events/ed9b733e-0719-45ee-b1a7-b56d262d120d"
               },
               "scheduling_method": null,
               "status": "active",
@@ -3927,8 +4222,8 @@
                 "utm_term": null,
                 "salesforce_uuid": null
               },
-              "updated_at": "2025-06-02T19:49:05.453347Z",
-              "uri": "https://api.calendly.com/scheduled_events/8afcc594-41c5-4e4f-ba36-4e584fff98c0/invitees/8a123224-3c85-4bc3-b587-6238ae0b9f24"
+              "updated_at": "2026-04-09T21:54:18.691814Z",
+              "uri": "https://api.calendly.com/scheduled_events/ed9b733e-0719-45ee-b1a7-b56d262d120d/invitees/246c2223-4793-43cc-9775-169820667dfe"
             }
           },
           "webhookUrl": "https://webhook.josepbijari.com/webhook/0e94548e-da55-49c9-85b0-cb48997648dc",
@@ -3991,6 +4286,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-10T15:23:19.913Z",
-  "versionId": "951f0795-6326-46c2-8f69-4c1a99eea429"
+  "updatedAt": "2026-04-09T22:51:26.629Z",
+  "versionId": "5452a5d2-bc85-44dc-87f6-ea2a2625b134"
 }
