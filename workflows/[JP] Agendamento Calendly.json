@@ -949,6 +949,30 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "campos pre call3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leva para a clint Tiago1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "campos pre call4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leva para a clint Tiago2",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -968,6 +992,50 @@
         [
           {
             "node": "Notifica grupo | Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos pre call3": {
+      "main": [
+        [
+          {
+            "node": "Call 'PRÉ-CALL CLOSERS'3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leva para a clint Tiago1": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Tiago1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "campos pre call4": {
+      "main": [
+        [
+          {
+            "node": "Call 'PRÉ-CALL CLOSERS'4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leva para a clint Tiago2": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Tiago2",
             "type": "main",
             "index": 0
           }
@@ -4235,6 +4303,56 @@
               },
               "renameOutput": true,
               "outputKey": "Tiago Gregório"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f7775150-dc71-4413-b26d-39116c455b75",
+                    "leftValue": "={{ $json.payload.scheduled_event.event_memberships[0].user_name }}",
+                    "rightValue": "Karllos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Karllos"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9a358e7e-6f78-4075-b66b-f3876bce9758",
+                    "leftValue": "={{ $json.payload.scheduled_event.event_memberships[0].user_name }}",
+                    "rightValue": "Guilherme Luiz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Guilherme Luiz"
             }
           ]
         },
@@ -4540,6 +4658,298 @@
         1920,
         912
       ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "9Zc4XBrTKcEUb9y5",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/9Zc4XBrTKcEUb9y5",
+          "cachedResultName": "PRÉ-CALL CLOSERS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1920,
+        1136
+      ],
+      "id": "052bc1b9-f979-444d-8f0a-dd332b2e03ba",
+      "name": "Call 'PRÉ-CALL CLOSERS'3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
+              "name": "closer",
+              "value": "Karllos",
+              "type": "string"
+            },
+            {
+              "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
+              "name": "data",
+              "value": "={{ $json.payload.scheduled_event.start_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}",
+              "type": "string"
+            },
+            {
+              "id": "e27b5789-7c5c-4a6f-bf94-3c8769c676ca",
+              "name": "nome",
+              "value": "={{ $json.payload.name }}",
+              "type": "string"
+            },
+            {
+              "id": "ecd21f76-d9bb-4947-916b-2a534618132c",
+              "name": "telefone",
+              "value": "={{ $json.payload.questions_and_answers[0].answer.replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "b0957eb3-f6c6-4655-87d3-8469547621aa",
+              "name": "data_fim",
+              "value": "={{ $json.payload.scheduled_event.end_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1712,
+        1136
+      ],
+      "id": "b91d14b0-6f2b-4192-8a81-2eb6970098ea",
+      "name": "campos pre call3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/29f508ec-361e-48cb-b1ec-465dcd9afe23",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $json.payload.name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.payload.email }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $json.payload.questions_and_answers[0].answer }}"
+            },
+            {
+              "name": "data_call",
+              "value": "={{ $json.payload.scheduled_event.start_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1712,
+        1312
+      ],
+      "id": "69fa6997-593b-4f85-a62e-8dcbef01ef15",
+      "name": "Leva para a clint Tiago1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado Produto 10k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Karllos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "afa06fd7-2ea8-4154-b67e-9b649e78f253",
+      "name": "Notifica grupo | Tiago1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        1312
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "9Zc4XBrTKcEUb9y5",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/9Zc4XBrTKcEUb9y5",
+          "cachedResultName": "PRÉ-CALL CLOSERS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1920,
+        1536
+      ],
+      "id": "ec2284c3-6d2e-4546-bcba-7d26a6394ddb",
+      "name": "Call 'PRÉ-CALL CLOSERS'4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
+              "name": "closer",
+              "value": "Guilherme Luiz",
+              "type": "string"
+            },
+            {
+              "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
+              "name": "data",
+              "value": "={{ $json.payload.scheduled_event.start_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}",
+              "type": "string"
+            },
+            {
+              "id": "e27b5789-7c5c-4a6f-bf94-3c8769c676ca",
+              "name": "nome",
+              "value": "={{ $json.payload.name }}",
+              "type": "string"
+            },
+            {
+              "id": "ecd21f76-d9bb-4947-916b-2a534618132c",
+              "name": "telefone",
+              "value": "={{ $json.payload.questions_and_answers[0].answer.replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "b0957eb3-f6c6-4655-87d3-8469547621aa",
+              "name": "data_fim",
+              "value": "={{ $json.payload.scheduled_event.end_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1712,
+        1536
+      ],
+      "id": "cb360eef-6bf4-4f4d-8534-e4875075b8ea",
+      "name": "campos pre call4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/3e85ca86-f577-4cf5-b3de-195d045cb50e",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $json.payload.name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.payload.email }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $json.payload.questions_and_answers[0].answer }}"
+            },
+            {
+              "name": "data_call",
+              "value": "={{ $json.payload.scheduled_event.start_time.toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1712,
+        1712
+      ],
+      "id": "6a2dbe8d-706d-49bc-9eba-350637cd14c8",
+      "name": "Leva para a clint Tiago2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead agendado Produto 10k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7bbbd960-116a-47e9-8109-fa00e1c14bed",
+      "name": "Notifica grupo | Tiago2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        1712
+      ]
     }
   ],
   "pinData": {
@@ -4701,6 +5111,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-04-13T00:02:38.129Z",
-  "versionId": "8f684df0-b179-4f6b-afa6-f7babe69da28"
+  "updatedAt": "2026-04-13T23:31:35.803Z",
+  "versionId": "7bbc5e88-3e2c-4667-aaa6-2ff60ad87eba"
 }
