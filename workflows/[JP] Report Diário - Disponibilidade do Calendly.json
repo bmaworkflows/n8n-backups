@@ -880,6 +880,11 @@
             "node": "CG5",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "CG 15K",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -926,6 +931,79 @@
           },
           {
             "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out10": {
+      "main": [
+        [
+          {
+            "node": "If10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Summarize10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code10": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Ademir10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize10": {
+      "main": [
+        [
+          {
+            "node": "Code10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If10": {
+      "main": [
+        [
+          {
+            "node": "CG 5 | Sem horários2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CG 15K": {
+      "main": [
+        [
+          {
+            "node": "Split Out10",
             "type": "main",
             "index": 0
           }
@@ -4074,6 +4152,314 @@
       ],
       "id": "3caf6429-b6d7-4f98-9c8f-faf9dd68faf7",
       "name": "Busca dados da conta1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "collection",
+        "options": {}
+      },
+      "id": "4e9c7a22-2c09-4762-b0c3-a43f22a83838",
+      "name": "Split Out10",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        -880
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.start_time }}",
+        "format": "custom",
+        "customFormat": "dd/MM/yyyy HH:mm",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "0561d28b-8d81-496f-8950-eadc6750804e",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1696,
+        -864
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363403070002479-group"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.whatsappMessage }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1c0bc738-822f-4648-90ef-d0e39033f3d8",
+      "name": "Notifica grupo | Ademir10",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2352,
+        -864
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 15K*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+      },
+      "id": "8f57c99c-7d96-4a41-8144-c6e5bfbf14c6",
+      "name": "Code10",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2128,
+        -864
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "append",
+              "field": "formattedDate"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "42eb2ed2-2c27-48dc-8353-7da61bf924c0",
+      "name": "Summarize10",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        -864
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "152e5633-b37e-4803-9f16-961e6f6dd902",
+      "name": "If10",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1392,
+        -880
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363403070002479-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Report Diário*\n\nCG 15K sem *horários disponíveis*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "90ecd4a4-719a-46c0-90c9-fcc6a0116b87",
+      "name": "CG 5 | Sem horários2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1696,
+        -1040
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=553192265968"
+            },
+            {
+              "name": "message",
+              "value": "={{ $node[\"Code10\"].json[\"whatsappMessage\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c3245118-f161-4ae9-81c6-dbad1555ab29",
+      "name": "Notifica Gui Luiz7",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2576,
+        -864
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=553192265968"
+            },
+            {
+              "name": "message",
+              "value": "=*Report Diário*\n\nCG 5 sem *horários disponíveis*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "50af94fa-8915-4b19-a528-5ab1e77a9a86",
+      "name": "CG 5 | Sem horários | Gui Luiz1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        -1040
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "https://api.calendly.com/event_type_available_times",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "event_type",
+              "value": "https://api.calendly.com/event_types/2d172a74-8782-44b7-9488-4332d19158f5"
+            },
+            {
+              "name": "start_time",
+              "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+            },
+            {
+              "name": "end_time",
+              "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "88706b7b-e031-44b1-aa6a-ae2b77a80faf",
+      "name": "CG 15K",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        -880
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
     }
   ],
   "pinData": {
@@ -4673,6 +5059,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2026-01-25T00:24:45.330Z",
-  "versionId": "c03e13bc-abd6-4f0a-9fb9-47e4b048926a"
+  "updatedAt": "2026-04-23T15:37:26.135Z",
+  "versionId": "444be6ae-87cd-42ad-aae6-9ddfb1d78380"
 }
