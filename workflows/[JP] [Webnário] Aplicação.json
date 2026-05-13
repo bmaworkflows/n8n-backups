@@ -1,0 +1,805 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form Completo": {
+      "main": [
+        [
+          {
+            "node": "leva pra clint completo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos": {
+      "main": [
+        [
+          {
+            "node": "Elimina respostas vazias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Parcial": {
+      "main": [
+        [
+          {
+            "node": "leva pra clint parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Elimina respostas vazias": {
+      "main": [
+        [
+          {
+            "node": "Form Completo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leva pra clint completo": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers  - Completo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leva pra clint parcial": {
+      "main": [
+        [
+          {
+            "node": "Report - Agendamentos Closers  - Parcial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-13T02:37:24.356Z",
+  "id": "ZJLNaS0sPXZiA7rH",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[JP] [Webnário] Aplicação",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7cdaa66e-48a9-4b91-bb1e-aceb0626fd9e",
+        "options": {}
+      },
+      "id": "d2221b96-c90a-49f3-b286-29c0f12c721f",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        224
+      ],
+      "webhookId": "7cdaa66e-48a9-4b91-bb1e-aceb0626fd9e"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "d4cb9402-9783-484e-a30f-a776b28460a2",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        176,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d8b33155-7ccd-44ae-a90c-97a9ed8090e3",
+              "leftValue": "={{ $json.investimento }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        224
+      ],
+      "id": "8ec35765-85d8-4812-8dd0-e4416f34fa71",
+      "name": "Form Completo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d554fa62-4b8e-4af6-b219-148849e33eff",
+              "name": "nome",
+              "value": "={{ $json.response.answers[\"6a037f21b7ca064cc6005374\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7e7a4-8c5c-44ba-a261-2a0feca10f58",
+              "name": "whatsapp",
+              "value": "={{ $json.response.answers[\"6a037f21b7ca064cc6005376\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "a69ada1c-4dac-485a-8d0f-34f973380b7a",
+              "name": "instagram",
+              "value": "={{ $json.response.answers[\"6a037f21b7ca064cc6005378\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "dadf2585-25fc-4a41-85a7-d17010f6a188",
+              "name": "tipo de negocio",
+              "value": "={{ $json.response.answers[\"6a037f21b7ca064cc600537a\"].content[0] }}",
+              "type": "array"
+            },
+            {
+              "id": "1b162a1b-59b0-40dd-bfd9-f49f51bd8b43",
+              "name": "faturamento",
+              "value": "={{ $json.response.answers[\"6a037f22b7ca064cc600537c\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "b0bf1619-54aa-476e-9235-5deb23bb2d3b",
+              "name": "utm_source",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+              "type": "string"
+            },
+            {
+              "id": "3963442e-4392-45b7-a0f2-2d78e6426796",
+              "name": "utm_medium",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+              "type": "string"
+            },
+            {
+              "id": "bb0025ee-7695-4494-9740-e280da33ee3e",
+              "name": "utm_campaign",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+              "type": "string"
+            },
+            {
+              "id": "1fd75d16-7620-4889-8733-419ad792103f",
+              "name": "utm_content",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+              "type": "string"
+            },
+            {
+              "id": "f45fc219-4e11-476b-aa92-99a5650a21fb",
+              "name": "utm_term",
+              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+              "type": "string"
+            },
+            {
+              "id": "cf093be3-bbb5-4d5d-87ff-98d97b149c36",
+              "name": "investimento",
+              "value": "={{ $json.response.answers[\"6a037f22b7ca064cc6005382\"].content[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "deba784d-e8ca-4a0f-b88a-2a43c31cf365",
+              "name": "grupo seleto",
+              "value": "={{ $json.response.answers[\"6a037f22b7ca064cc6005380\"].content }}",
+              "type": "string"
+            },
+            {
+              "id": "163df3e9-de29-4d62-8ce7-c897c537aa7c",
+              "name": "oportunidade",
+              "value": "={{ $json.response.answers[\"6a037f22b7ca064cc600537e\"].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        224
+      ],
+      "id": "b85c8f0a-550d-4d71-ad61-f81f593ad0eb",
+      "name": "Campos"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        432
+      ],
+      "id": "e9bdeeda-610b-4b9d-9f33-251eb79de321",
+      "name": "Lead Parcial"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4d51afe1-d038-45ab-a3ef-8af66d6f677e",
+              "leftValue": "={{ $json.whatsapp }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        224
+      ],
+      "id": "f8f0bfd5-668c-4002-9392-12e12618153d",
+      "name": "Elimina respostas vazias"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/0b3a6625-093c-44dc-9f8a-de6d7a9480e6",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "={{ $json.nome }}"
+            },
+            {
+              "name": "whatsapp",
+              "value": "={{ $json.whatsapp }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $json.instagram }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $json[\"tipo de negocio\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $json.faturamento }}"
+            },
+            {
+              "name": "motivo",
+              "value": "={{ $json.oportunidade }}"
+            },
+            {
+              "name": "investimento",
+              "value": "={{ $json.investimento }}"
+            },
+            {
+              "name": "utm_source",
+              "value": "={{ $json.utm_source }}"
+            },
+            {
+              "name": "utm_campaign",
+              "value": "={{ $json.utm_campaign }}"
+            },
+            {
+              "name": "utm_medium",
+              "value": "={{ $json.utm_medium }}"
+            },
+            {
+              "name": "utm_content",
+              "value": "={{ $json.utm_content }}"
+            },
+            {
+              "name": "utm_term",
+              "value": "={{ $json.utm_term }}"
+            },
+            {
+              "name": "seleto",
+              "value": "={{ $json[\"grupo seleto\"] }}"
+            },
+            {
+              "name": "formulario",
+              "value": "Aplicação Webnário"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1136,
+        208
+      ],
+      "id": "041f08f3-75db-463a-b79d-2b9c6910c78e",
+      "name": "leva pra clint completo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação PARCIAL Webnário:* 🚨\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Instagram*: {{ $('Campos').item.json.instagram }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Tipo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Por que você acredita que participar do nosso programa é ideal para o crescimento do seu negócio?*: {{ $('Campos').item.json.oportunidade }}\n\n*Por que você acha que sua aplicação deve ser aceita?*: {{ $('Campos').item.json['grupo seleto'] }}\n\nInvestimento: {{ $('Campos').item.json.investimento }}\n\n*Origens:*\nAplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5fa8c0f3-a60b-416e-a00e-8d96ce8c603a",
+      "name": "Report - Agendamentos Closers  - Parcial",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363285621576178-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Nova Aplicação Webnário:* ✅🔥\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Instagram*: {{ $('Campos').item.json.instagram }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Tipo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Por que você acredita que participar do nosso programa é ideal para o crescimento do seu negócio?*: {{ $('Campos').item.json.oportunidade }}\n\n*Por que você acha que sua aplicação deve ser aceita?*: {{ $('Campos').item.json['grupo seleto'] }}\n\nInvestimento: {{ $('Campos').item.json.investimento }}\n\n*Origens:*\nAplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a90fcc87-e037-4c63-aaaa-cb18312405bf",
+      "name": "Report - Agendamentos Closers  - Completo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/0b3a6625-093c-44dc-9f8a-de6d7a9480e6",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome",
+              "value": "=[P] {{ $json.nome }}"
+            },
+            {
+              "name": "whatsapp",
+              "value": "={{ $json.whatsapp }}"
+            },
+            {
+              "name": "instagram",
+              "value": "={{ $json.instagram }}"
+            },
+            {
+              "name": "negocio",
+              "value": "={{ $json[\"tipo de negocio\"] }}"
+            },
+            {
+              "name": "faturamento",
+              "value": "={{ $json.faturamento }}"
+            },
+            {
+              "name": "motivo",
+              "value": "={{ $json.oportunidade }}"
+            },
+            {
+              "name": "investimento",
+              "value": "={{ $json.investimento }}"
+            },
+            {
+              "name": "utm_source",
+              "value": "={{ $json.utm_source }}"
+            },
+            {
+              "name": "utm_campaign",
+              "value": "={{ $json.utm_campaign }}"
+            },
+            {
+              "name": "utm_medium",
+              "value": "={{ $json.utm_medium }}"
+            },
+            {
+              "name": "utm_content",
+              "value": "={{ $json.utm_content }}"
+            },
+            {
+              "name": "utm_term",
+              "value": "={{ $json.utm_term }}"
+            },
+            {
+              "name": "seleto",
+              "value": "={{ $json[\"grupo seleto\"] }}"
+            },
+            {
+              "name": "formulario",
+              "value": "Aplicação Webnário"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        432
+      ],
+      "id": "a823e70f-d31e-4e64-baa2-0ce8406c31cd",
+      "name": "leva pra clint parcial"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "5940",
+            "content-type": "application/json",
+            "x-forwarded-for": "198.199.75.142",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "198.199.75.142",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "6a03e425345f4b61e005c373",
+              "formId": "6a037f06db4555f21f08e466",
+              "ipAddress": "2804:6ba0:8043:4201:dd51:2cb5:4cbc:6c95",
+              "operatingSystem": "OS X",
+              "operatingSystemVersion": "10_15_7",
+              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "148.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "region": "PE",
+                "state": "Pernambuco",
+                "city": "Caruaru",
+                "zipcode": "55000",
+                "latitude": -8.1792,
+                "longitude": -36.0279,
+                "timezone": "America/Recife",
+                "currency": "BRL"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0
+              },
+              "tracking": {
+                "utm_source": "teste",
+                "utm_medium": "teste",
+                "utm_campaign": "teste",
+                "utm_content": "teste",
+                "utm_term": "teste",
+                "_fbp": "fb.1.1742270412627.451017520152784457",
+                "_tt_enable_cookie": "1",
+                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
+                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
+                "hotid": "eyJjaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIiwiYmlkIjoiMTc1MTMxMzQ4ODM5MTc5NzI0MDE4Mjk2Nzk0MzgwMCIsInNpZCI6ImNmOTFiZTg2YTRjNzQ1OGNhYmEwNWI5MDhhOTQyM2NmIn0=",
+                "_ltusession": "1759376967413__1",
+                "_ltuid": "19DU0z",
+                "ttcsid_CEDLAVJC77UDF9713HP0": "1759376967555::pp0K8Hdh_e4bBJKUV_tv.1.1759376967760.0",
+                "_ga_324806166": "GS2.1.s1759376966$o1$g0$t1759376969$j57$l0$h0",
+                "_ga_5GVPZDVNW9": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h1138898967",
+                "_ga_BJR0JVV5FR": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
+                "_ga_PEGMJDK06R": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
+                "_fbc": "fb.1.1761053239943.fbclid",
+                "ttcsid": "1763009515558::CbKUMNdaP4fcZ2enf5P2.14.1763009622690.0",
+                "ttcsid_C5URFDOVMNUPJ15SHS00": "1763009515557::bSh386I6gpZJiC8VwDPV.13.1763009622690.0",
+                "_ga_QMHGX1WZCF": "GS2.1.s1763009515$o12$g1$t1763010170$j60$l0$h1746857264",
+                "_ga": "GA1.2.1550280858.1744865246",
+                "_gcl_au": "1.1.807349489.1775674068",
+                "_hjSessionUser_3167995": "eyJpZCI6ImQxMDlkMWQyLTc5MzYtNTAwNi05NjNkLWNmYTJkNTZmNjI1OSIsImNyZWF0ZWQiOjE3NzU2NzQwNjgwNDIsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_hjSessionUser_3111463": "eyJpZCI6IjI4NmFlNTA4LTQ4ODQtNWM4ZS1iNzIzLTJmZTlmM2U5NDg2NCIsImNyZWF0ZWQiOjE3NzU2NzQxMzUzNDMsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_clck": "cymcv9^2^g5n^0^1933"
+              },
+              "timeToComplete": null,
+              "startedAt": "2026-05-13T02:38:34.544000Z",
+              "submittedAt": "2026-05-13T02:38:54.327000Z",
+              "createdAt": "2026-05-13T02:38:29.445000Z",
+              "updatedAt": "2026-05-13T02:39:43.474000Z",
+              "answers": {
+                "6a037f21b7ca064cc6005372": {
+                  "answerId": "6a03e42538b0e375b8b45eb9",
+                  "fieldTitle": "Parabéns por chegar até aqui! Pronto para transformar seu conhecimento em uma oferta de alto valor?",
+                  "fieldDescription": "Estamos animados para saber mais sobre você. Vamos começar!",
+                  "content": null
+                },
+                "6a037f21b7ca064cc6005374": {
+                  "answerId": "6a03e42638b0e375b8b45ec1",
+                  "fieldTitle": "Qual é o seu nome completo?",
+                  "fieldDescription": "Precisamos saber quem está preenchendo o formulário.",
+                  "content": "Matheus"
+                },
+                "6a037f21b7ca064cc6005376": {
+                  "answerId": "6a03e42938b0e375b8b45ed1",
+                  "fieldTitle": "Qual é o seu WhatsApp com DDD?",
+                  "fieldDescription": "Informe seu número para que possamos entrar em contato rapidamente.",
+                  "content": "+5581991013614"
+                },
+                "6a037f21b7ca064cc6005378": {
+                  "answerId": "6a03e42c38b0e375b8b45edf",
+                  "fieldTitle": "Qual é o seu @ do Instagram?",
+                  "fieldDescription": "Queremos conhecer você um pouco melhor através das suas redes sociais.",
+                  "content": "matheus"
+                },
+                "6a037f21b7ca064cc600537a": {
+                  "answerId": "6a03e43038b0e375b8b45eea",
+                  "fieldTitle": "Qual das opções abaixo mais descreve o seu negócio hoje?",
+                  "fieldDescription": "Selecione uma categoria que melhor representa sua atividade atual.",
+                  "content": [
+                    "Agência digital ou Coprodutor"
+                  ]
+                },
+                "6a037f22b7ca064cc600537c": {
+                  "answerId": "6a03e43238b0e375b8b45ef2",
+                  "fieldTitle": "Qual é o seu faturamento médio mensal TOTAL?",
+                  "fieldDescription": "Escolha a faixa que melhor representa seu faturamento.",
+                  "content": "R$ 15.000,00 a R$ 20.000,00"
+                },
+                "6a037f22b7ca064cc600537e": {
+                  "answerId": "6a03e43738b0e375b8b45f02",
+                  "fieldTitle": "Por que você acredita que participar do nosso programa é ideal para o crescimento do seu negócio?",
+                  "fieldDescription": "Conte-nos sobre suas expectativas e objetivos.",
+                  "content": "teste",
+                  "keywords": [
+                    "teste"
+                  ],
+                  "keyphrases": [
+                    "teste"
+                  ],
+                  "sentimentAnalysis": {
+                    "scored_labels": [
+                      {
+                        "label": "NEGATIVE",
+                        "score": 0.9605754017829895
+                      },
+                      {
+                        "label": "POSITIVE",
+                        "score": 0.039424601942300797
+                      }
+                    ],
+                    "sentiment": "negative"
+                  },
+                  "emotionAnalysis": {
+                    "scored_labels": [
+                      {
+                        "label": "fear",
+                        "score": 0.6563015580177307
+                      },
+                      {
+                        "label": "joy",
+                        "score": 0.14473240077495575
+                      },
+                      {
+                        "label": "anger",
+                        "score": 0.12734507024288177
+                      },
+                      {
+                        "label": "sadness",
+                        "score": 0.04052790626883507
+                      },
+                      {
+                        "label": "surprise",
+                        "score": 0.025109266862273216
+                      }
+                    ],
+                    "emotion": "fear"
+                  }
+                },
+                "6a037f22b7ca064cc6005380": {
+                  "answerId": "6a03e43b38b0e375b8b45f0e",
+                  "fieldTitle": "Por que você acha que sua inscrição deve ser aceita neste grupo seletivo?",
+                  "fieldDescription": "Explique por que você se destaca para esta oportunidade exclusiva.",
+                  "content": "teste",
+                  "keywords": [
+                    "teste"
+                  ],
+                  "keyphrases": [
+                    "teste"
+                  ],
+                  "sentimentAnalysis": {
+                    "scored_labels": [
+                      {
+                        "label": "NEGATIVE",
+                        "score": 0.9605754017829895
+                      },
+                      {
+                        "label": "POSITIVE",
+                        "score": 0.039424601942300797
+                      }
+                    ],
+                    "sentiment": "negative"
+                  },
+                  "emotionAnalysis": {
+                    "scored_labels": [
+                      {
+                        "label": "fear",
+                        "score": 0.6563015580177307
+                      },
+                      {
+                        "label": "joy",
+                        "score": 0.14473240077495575
+                      },
+                      {
+                        "label": "anger",
+                        "score": 0.12734507024288177
+                      },
+                      {
+                        "label": "sadness",
+                        "score": 0.04052790626883507
+                      },
+                      {
+                        "label": "surprise",
+                        "score": 0.025109266862273216
+                      }
+                    ],
+                    "emotion": "fear"
+                  }
+                },
+                "6a037f22b7ca064cc6005382": {
+                  "answerId": "6a03e43c38b0e375b8b45f11",
+                  "fieldTitle": "Você tem capacidade de investir no programa Caixa Rápido BMA agora?",
+                  "fieldDescription": "Informe como você prefere fazer este investimento.",
+                  "content": [
+                    "Sim, quero fazer o investimento parcelado."
+                  ]
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/7cdaa66e-48a9-4b91-bb1e-aceb0626fd9e",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-05-13T02:37:24.356Z",
+      "createdAt": "2026-05-13T02:37:24.356Z",
+      "role": "workflow:owner",
+      "workflowId": "ZJLNaS0sPXZiA7rH",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2024-05-15T14:27:40.970Z",
+      "createdAt": "2024-05-15T14:27:40.970Z",
+      "id": "992UXVll2thRwTi3",
+      "name": "jp"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-05-13T02:48:09.192Z",
+  "versionId": "49ab3992-a11a-4409-aa1c-afe3adb3f2fc"
+}
