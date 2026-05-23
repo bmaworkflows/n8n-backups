@@ -1,0 +1,285 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | Matheus3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Adiciona na planilha iscas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-22T10:30:43.519Z",
+  "id": "2tubqGxYDTrfSrKE",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Pagina - Isca Agendamentos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3024d2e4-9a63-455f-bd66-04dd507357f5",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b5243cb6-0159-4102-b318-7b9699880783",
+      "name": "Webhook",
+      "webhookId": "3024d2e4-9a63-455f-bd66-04dd507357f5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "5729b434-5362-4290-9f76-9caab5b86456",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1RY9mS0DOgF6wBXcngvTUGxEI7--g3nEZintAYfKhqQI/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RY9mS0DOgF6wBXcngvTUGxEI7--g3nEZintAYfKhqQI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}",
+            "telefone": "={{ $json.whatsapp }}",
+            "faturamento": "={{ $json.faturamento }}",
+            "tem mentoria": "={{ $json.tem_mentoria }}",
+            "qualificado": "={{ $json.qualificado }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "faturamento",
+              "displayName": "faturamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tem mentoria",
+              "displayName": "tem mentoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "qualificado",
+              "displayName": "qualificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "39b10008-8d06-4a1e-b255-1d5e038b63e7",
+      "name": "Adiciona na planilha iscas",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-document/pdf",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ '55' + $json.whatsapp.replace(/\\D/g, '') }}"
+            },
+            {
+              "name": "document",
+              "value": "=https://josepbijari.com/wp-content/uploads/2026/05/Isca-Trafego_Pago_Mentoria_High_Ticket_BMA.pdf"
+            },
+            {
+              "name": "caption",
+              "value": "Aqui está o seu Seu Mapa de Agendamentos Qualificados:"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "82aa2718-9c61-4589-857e-34251b3b8484",
+      "name": "Notifica grupo | Matheus3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        -208
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+            "content-length": "150",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://josepbijari.com",
+            "priority": "u=1, i",
+            "referer": "https://josepbijari.com/",
+            "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-forwarded-for": "190.89.246.94",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "190.89.246.94"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nome": "Matheus BMA",
+            "email": "bma.matheus2024@gmail.com",
+            "whatsapp": "(81) 991013-614",
+            "faturamento": "5k-10k",
+            "tem_mentoria": "sim",
+            "qualificado": false
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/3024d2e4-9a63-455f-bd66-04dd507357f5",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-05-22T10:30:43.519Z",
+      "createdAt": "2026-05-22T10:30:43.519Z",
+      "role": "workflow:owner",
+      "workflowId": "2tubqGxYDTrfSrKE",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-05-23T03:21:43.428Z",
+  "versionId": "cdde7e62-cce1-4c6a-9fe0-67398fbb0749"
+}
