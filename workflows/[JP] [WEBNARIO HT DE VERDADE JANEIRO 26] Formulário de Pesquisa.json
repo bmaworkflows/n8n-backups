@@ -1,5 +1,210 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "c3ae60e4-47ea-42ea-86ef-7309f242bc25",
+    "workflowId": "RK29A6uynvlGdIKQ",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "cbc7737e-7193-4286-a426-6c882361aa2c",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -416,
+          144
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit?gid=1459873049#gid=1459873049",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 2092825379,
+            "mode": "list",
+            "cachedResultName": "PESQUISA WEBNARIO JANEIRO 2026",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nNv-ax09ll2PYa-LgzGQMVDBsW6GZFEtRZqEDryhHIs/edit#gid=2092825379"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+              "telefone": "={{ $json.whatsapp }}",
+              "chave": "={{ $json.whatsapp.slice(-7) }}",
+              "faturamento": "={{ $json.faturamento }}",
+              "negocio": "={{ $json.negocio }}",
+              "setor": "={{ $json.setor }}",
+              "momento": "={{ $json.momento }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "chave",
+                "displayName": "chave",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "negocio",
+                "displayName": "negocio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "faturamento",
+                "displayName": "faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "setor",
+                "displayName": "setor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "momento",
+                "displayName": "momento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "8de36fee-d29b-4b0c-aa7c-ea2b58a1b099",
+        "name": "Dados Planilha |Central funis",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          48,
+          144
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Pegando a entrada\nconst inputData = $input.item.json;\n\n// Mapas de conversão\nconst negocioMap = {\n  \"1\": \"Mentor, expert ou infoprodutor\",\n  \"2\": \"Agência digital ou Coprodutor\",\n  \"3\": \"Gestor de tráfego ou outro prestador de serviço no digital\",\n  \"4\": \"Empresário/Empreendedor\",\n  \"5\": \"Profissional liberal/Prestador de serviço\",\n  \"6\": \"Afiliados e PLR\",\n  \"7\": \"Nenhuma das opções\"\n};\n\nconst faturamentoMap = {\n  \"1\": \"Até R$ 10.000,00\",\n  \"2\": \"R$ 10.000,00 a R$ 20.000,00\",\n  \"3\": \"R$ 20.000,00 a R$ 50.000,00\",\n  \"4\": \"R$ 50.000,00 a R$ 100.000,00\",\n  \"5\": \"R$ 100.000,00 a R$ 250.000,00\",\n  \"6\": \"R$ 250.000,00 a R$ 500.000,00\",\n  \"7\": \"Acima de R$ 500.000,00\"\n};\n\nconst momentoMap = {\n  \"1\": \"Tenho um curso online e quero lançar minha mentoria\",\n  \"2\": \"Já tenho mentorados e quero escalar as vendas\",\n  \"3\": \"Sou empresário e quero lançar minha mentoria\",\n  \"4\": \"Sou prestador de serviço e quero lançar minha mentoria\",\n  \"5\": \"Sou coprodutor e quero aumentar as vendas de infoproduto do(s) meu(s) expert(s)\",\n  \"6\": \"Sou prestador de serviço e quero aumentar as vendas do meu serviço\"\n};\n\nconst setorMap = {\n  \"1\": \"Educação\",\n  \"2\": \"Saúde\",\n  \"3\": \"Marketing digital\",\n  \"4\": \"Tecnologia\",\n  \"5\": \"Negócios\",\n  \"6\": \"Finanças\",\n  \"7\": \"Jurídico\",\n  \"8\": \"Imobiliário\",\n  \"9\": \"Outros\"\n};\n\n// Resultado\nconst result = {\n  negocio: negocioMap[inputData.negocio] || inputData.negocio,\n  faturamento: faturamentoMap[inputData.faturamento] || inputData.faturamento,\n  momento: momentoMap[inputData.momento] || inputData.momento,\n  setor: setorMap[inputData.setor] || inputData.setor,\n  whatsapp: inputData.whatsapp\n};\n\n// Retornar resultado\nreturn [\n  {\n    json: result\n  }\n];"
+        },
+        "id": "1e01d494-fd54-4794-bf76-c69ac706cf5c",
+        "name": "Trata Etapas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -224,
+          144
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "b9954827-5a0f-4020-b126-80358ac655fb",
+          "options": {}
+        },
+        "id": "cbbee9e4-2d2a-46ec-b0c0-5327d7bb85c7",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -640,
+          144
+        ],
+        "webhookId": "b9954827-5a0f-4020-b126-80358ac655fb"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Etapas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Etapas": {
+        "main": [
+          [
+            {
+              "node": "Dados Planilha |Central funis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "c3ae60e4-47ea-42ea-86ef-7309f242bc25",
   "connections": {
     "Trata Webhook": {
       "main": [
