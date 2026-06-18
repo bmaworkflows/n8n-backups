@@ -1,5 +1,339 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "8e71e837-9a84-4be4-bc91-e7aae5eef30c",
+    "workflowId": "5VNcqC5ckHJJeF7Y",
+    "nodes": [
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "6713820059",
+          "groupId": "novo_grupo92527__1",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "5f289c4f-3cf3-4c82-a5e7-9c3e22d3b66c",
+        "name": "Monday.com",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1340,
+          380
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "a45b666a-fc9d-46dd-a368-e2fbfd83290d",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          680,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n\n----------\nE-mail\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].email }}\n\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].phone_number }}\n\n\n----------\nInstagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nQual seu faturamento médio mensal dos últimos 12 meses ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n\n----------\nPor que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio? \n\n{{ $('Trata Webhook').item.json.form_response.answers[6].text }}\n\n\n----------\nEsse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].text }}\n\n\n----------\nO investimento para a participação no Bootcamp é de até 12x de R$ 2.500,00 no cartão de crédito ou R$ 25.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento ?\n\n{{ $('Trata Webhook').item.json.form_response.answers[8].choice.label }}"
+        },
+        "id": "0cf56f40-22ee-4c26-848b-05ffe03b2458",
+        "name": "Monday.com1",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1540,
+          380
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "6713820059",
+          "itemId": "={{ $('Monday.com').item.json.id }}",
+          "columnValues": "={\"whatsapp__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"whatsapp_link__1\": \"wa.me/{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"data_de_aplica__o__1\":\"{{ $node[\"Date & Time\"].json[\"formattedDate\"] }}\", \"origem__1\":\"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"hidden\"][\"utm_source\"] }}\", \"etapa__1\":\"0\", \"faturamento__1\":\"{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\", \"data_1__1\": \"2025-03-18\", \"valor_do_neg_cio__1\": \"25000\" }"
+        },
+        "id": "18fe5e4c-2d84-4256-9d4f-fc4b63b7c6cf",
+        "name": "Monday.com3",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1740,
+          380
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "4a36fb3b-0f82-4394-9c3a-9efcc21e7523",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1140,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardColumn",
+          "operation": "getAll",
+          "boardId": "6713820059"
+        },
+        "id": "e9c4bfd6-5528-486a-b209-ca208a4f2367",
+        "name": "Monday.com2",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1180,
+          700
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "a8380383-25bb-40b9-8208-09f389a455a3",
+                "leftValue": "={{ $json.title }}",
+                "rightValue": "Valor",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "fc897ba7-7e1c-4cd5-aceb-1e37b300f096",
+        "name": "Filter",
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2,
+        "position": [
+          1400,
+          700
+        ]
+      },
+      {
+        "parameters": {
+          "amount": "={{ Math.floor(Math.random()* 6) + 15 }}"
+        },
+        "id": "04109054-60e7-4765-8e66-a3ffa1e0b2f1",
+        "name": "Wait",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          900,
+          380
+        ],
+        "webhookId": "94de5208-dffb-4f97-bbd2-812adcaee6a2"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "aef3c859-0589-4c09-88da-85bc6a6aa116",
+          "options": {}
+        },
+        "id": "48414a5d-bcc0-4311-a7f9-37e26e167915",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          460,
+          380
+        ],
+        "webhookId": "aef3c859-0589-4c09-88da-85bc6a6aa116"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5511993152305"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo Lead aplicou para o Bootcamp:*\n\n*Nome completo:*\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n----------\n*E-mail*\n{{ $('Trata Webhook').item.json.form_response.answers[1].email }}\n\n----------\n*Whatsapp:*\n{{ $('Trata Webhook').item.json.form_response.answers[2].phone_number }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "30e50ede-b14d-4675-bfd1-997ab21166f5",
+        "name": "CG 20 | Sem horários",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1940,
+          380
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      }
+    ],
+    "connections": {
+      "Monday.com": {
+        "main": [
+          [
+            {
+              "node": "Monday.com1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com1": {
+        "main": [
+          [
+            {
+              "node": "Monday.com3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Monday.com",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com2": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com3": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "8e71e837-9a84-4be4-bc91-e7aae5eef30c",
   "connections": {
     "Monday.com": {
       "main": [
