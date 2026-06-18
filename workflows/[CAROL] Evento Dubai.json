@@ -1,5 +1,555 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "a2a5a41a-f197-434d-85e9-d02479faa593",
+    "workflowId": "sTWbmBRfkqDnkxCd",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "c99ab2de-df12-4290-91a7-e2770f101fdc",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -60,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363365606703751-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead no funil do Evento Dubai:*\n\nNome: {{ $json.nome }}\nEmail: {{ $json.email }}\nTelefone: {{ $json.telefone }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b59d13d1-7f39-489c-bc09-3efb54212439",
+        "name": "Notifica grupo | Deborah2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          520,
+          260
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "evento-dubai",
+          "options": {}
+        },
+        "id": "6d5f0979-bfad-4a73-9ed8-96cfe6ff3f3d",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -280,
+          400
+        ],
+        "webhookId": "7866d3b0-7e8d-4c13-b91c-ed89d57585a4"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=975625893#gid=975625893",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 119872740,
+            "mode": "list",
+            "cachedResultName": "evento dubai",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=119872740"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $json.form_response.answers[0].text }}",
+              "telefone": "={{ $json.form_response.answers[1].number }}",
+              "email": "={{ $json.form_response.answers[2].email }}",
+              "nicho": "={{ $json.form_response.answers[3].choice.label }}",
+              "faturamento": "={{ $json.form_response.answers[4].choice.label }}",
+              "porque quer participar": "={{ $json.form_response.answers[5].text }}",
+              "porque tem que ser aceito": "={{ $json.form_response.answers[6].text }}",
+              "pagamento": "={{ $json.form_response.answers[7].choice.label }}",
+              "utm_campaign": "={{ $json.form_response.hidden.utm_campaign }}",
+              "utm_source": "={{ $json.form_response.hidden.utm_source }}",
+              "utm_medium": "={{ $json.form_response.hidden.utm_medium }}",
+              "utm_content": "={{ $json.form_response.hidden.utm_content }}",
+              "utm_term": "={{ $json.form_response.hidden.utm_term }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nicho",
+                "displayName": "nicho",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "faturamento",
+                "displayName": "faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "porque quer participar",
+                "displayName": "porque quer participar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "porque tem que ser aceito",
+                "displayName": "porque tem que ser aceito",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "pagamento",
+                "displayName": "pagamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ip_usuário",
+                "displayName": "ip_usuário",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3461b7c3-15ef-4d3f-9710-41de1dc64c7b",
+        "name": "Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          240,
+          260
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=5562992271506"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead no funil do Evento Dubai:*\n\nNome: {{ $json.nome }}\nEmail: {{ $json.email }}\nTelefone: {{ $json.telefone }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e9d9eca3-e13b-44c7-8733-7d8888f91d66",
+        "name": "Notifica grupo | Deborah",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          520,
+          480
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1-H4BnGo0rmmSGMCnXsFcQ4_5UUrtPxraiBVD3bZ6Mts/edit?gid=119872740#gid=119872740",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 119872740,
+            "mode": "list",
+            "cachedResultName": "evento dubai",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-H4BnGo0rmmSGMCnXsFcQ4_5UUrtPxraiBVD3bZ6Mts/edit#gid=119872740"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $json.form_response.answers[0].text }}",
+              "telefone": "={{ $json.form_response.answers[1].number }}",
+              "email": "={{ $json.form_response.answers[2].email }}",
+              "nicho": "={{ $json.form_response.answers[3].choice.label }}",
+              "faturamento": "={{ $json.form_response.answers[4].choice.label }}",
+              "porque quer participar": "={{ $json.form_response.answers[5].text }}",
+              "porque tem que ser aceito": "={{ $json.form_response.answers[6].text }}",
+              "pagamento": "={{ $json.form_response.answers[7].choice.label }}",
+              "utm_campaign": "={{ $json.form_response.hidden.utm_campaign }}",
+              "utm_content": "={{ $json.form_response.hidden.utm_content }}",
+              "utm_medium": "={{ $json.form_response.hidden.utm_medium }}",
+              "utm_source": "={{ $json.form_response.hidden.utm_source }}",
+              "utm_term": "={{ $json.form_response.hidden.utm_term }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nicho",
+                "displayName": "nicho",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "faturamento",
+                "displayName": "faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "porque quer participar",
+                "displayName": "porque quer participar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "porque tem que ser aceito",
+                "displayName": "porque tem que ser aceito",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "pagamento",
+                "displayName": "pagamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ip_usuário",
+                "displayName": "ip_usuário",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b560a845-5658-4726-bb71-29bcfba603e4",
+        "name": "Google Sheets1",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          240,
+          480
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Google Sheets",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Google Sheets1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Sheets": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Sheets1": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "a2a5a41a-f197-434d-85e9-d02479faa593",
   "connections": {
     "Webhook": {
       "main": [
