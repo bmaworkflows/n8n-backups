@@ -1,5 +1,226 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "fe737ef6-74c1-4675-8832-0c0b4f1f71c9",
+    "workflowId": "MO08mtRMlV9H0SaM",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "bedee5ba-1d91-43b5-ad67-f2b28f8960d7",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -416,
+          144
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1effA1DDrdWjlUi7WgA1JybSniCDfb6FkLJ0MUeIYx90/edit?gid=264234145#gid=264234145",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 264234145,
+            "mode": "list",
+            "cachedResultName": "PESQUISA",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1effA1DDrdWjlUi7WgA1JybSniCDfb6FkLJ0MUeIYx90/edit#gid=264234145"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+              "numero": "={{ $json.telefone }}",
+              "atua na area": "={{ $json.atua }}",
+              "possui clinica": "={{ $json.clinica }}",
+              "tempo disponivel": "={{ $json.tempo }}",
+              "possui mentoria": "={{ $json.mentoria }}",
+              "o que impede de criar mentoria": "={{ $json.impede }}",
+              "o que busca na aula": "={{ $json.buscaaula }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "atua na area",
+                "displayName": "atua na area",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "possui clinica",
+                "displayName": "possui clinica",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "tempo disponivel",
+                "displayName": "tempo disponivel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "possui mentoria",
+                "displayName": "possui mentoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "o que impede de criar mentoria",
+                "displayName": "o que impede de criar mentoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "o que busca na aula",
+                "displayName": "o que busca na aula",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "95069f18-bae4-400e-8b56-52dbf33fb3c2",
+        "name": "Dados Planilha |Central funis",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          -16,
+          144
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Pegando a entrada\nconst inputData = $input.item.json;\n\n// Mapas de conversão\nconst atuaMap = {\n  \"1\": \"Sim, sou médico\",\n  \"2\": \"Sim, sou dentista\",\n  \"3\": \"Sim, sou nutricionista\",\n  \"4\": \"Sim, sou outro profissional de saúde\",\n  \"5\": \"Não atuo na área da saúde\"\n};\n\nconst clinicaMap = {\n  \"1\": \"Sim, fatura acima de R$50k/mês\",\n  \"2\": \"Sim, fatura acima de R$100k/mês\",\n  \"3\": \"Sim, fatura acima de R$200k/mês\",\n  \"4\": \"Não possuo consultório ou clínica\"\n};\n\nconst tempoMap = {\n  \"1\": \"Menos de 2 horas\",\n  \"2\": \"Entre 2 e 5 horas\",\n  \"3\": \"Entre 5 e 10 horas\",\n  \"4\": \"Mais de 10 horas\"\n};\n\nconst mentoriaMap = {\n  \"1\": \"Sim, já tenho e está funcionando\",\n  \"2\": \"Sim, mas ainda não está estruturado\",\n  \"3\": \"Estou começando agora\",\n  \"4\": \"Não tenho nenhum programa ainda\"\n};\n\nconst impedeMap = {\n  \"1\": \"Não sei como estruturar e precificar o programa\",\n  \"2\": \"Não sei como encontrar e abordar os primeiros clientes\",\n  \"3\": \"Acredito que não tenho autoridade ou audiência suficiente\",\n  \"4\": \"Não tenho tempo para montar e entregar isso\",\n  \"5\": \"Tenho medo de não conseguir gerar resultado para o mentorado\"\n};\n\nconst buscaaulaMap = {\n  \"1\": \"Entender se mentoria faz sentido para o meu perfil\",\n  \"2\": \"Estruturar meu primeiro programa educacional\",\n  \"3\": \"Aprender a vender e precificar melhor\",\n  \"4\": \"Escalar uma mentoria que já existe\"\n};\n\n// Resultado\nconst result = {\n  telefone: inputData.telefone,\n  atua: atuaMap[inputData.atua] || inputData.atua,\n  clinica: clinicaMap[inputData.clinica] || inputData.clinica,\n  tempo: tempoMap[inputData.tempo] || inputData.tempo,\n  mentoria: mentoriaMap[inputData.mentoria] || inputData.mentoria,\n  impede: impedeMap[inputData.impede] || inputData.impede,\n  buscaaula: buscaaulaMap[inputData.buscaaula] || inputData.buscaaula\n};\n\n// Retornar resultado\nreturn [\n  {\n    json: result\n  }\n];"
+        },
+        "id": "6cae33e4-814f-4f83-a591-823eca68219f",
+        "name": "Trata Etapas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -224,
+          144
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "13a21d25-1ae0-4e5c-ae3e-ed36e65f16a4",
+          "options": {}
+        },
+        "id": "e5ba5d48-d905-417b-9810-489d91664e97",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -640,
+          144
+        ],
+        "webhookId": "13a21d25-1ae0-4e5c-ae3e-ed36e65f16a4"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Etapas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Etapas": {
+        "main": [
+          [
+            {
+              "node": "Dados Planilha |Central funis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "fe737ef6-74c1-4675-8832-0c0b4f1f71c9",
   "connections": {
     "Trata Webhook": {
       "main": [
