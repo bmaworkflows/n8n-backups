@@ -1,5 +1,289 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "ebc012bb-2722-467a-a980-17255e5e160e",
+    "workflowId": "C8kPzbQtHSBgvFcr",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "224ab3df-c5a3-4a41-b0d0-651d4c3ed40a",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"Telefone_WhatsApp_DDD\"] = formataTelefone($input.all()[0].json[\"Telefone_WhatsApp_DDD\"]) \n\nreturn $input.all();"
+        },
+        "id": "73591ed9-1a17-40fe-b3ce-cfd751f64fab",
+        "name": "Formata Telefone",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          1260,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "89213680-9c0e-43da-ab2c-dbc661b35c32",
+          "options": {}
+        },
+        "id": "07c29707-f400-462c-b328-b61171d7128d",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          820,
+          380
+        ],
+        "webhookId": "89213680-9c0e-43da-ab2c-dbc661b35c32"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit?gid=1972020112#gid=1972020112",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1972020112,
+            "mode": "list",
+            "cachedResultName": "diamond ip - formulario",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xfqyQOrK-DOw1iReK_SpGfRBBPj0JUuisEuksiu5wAQ/edit#gid=1972020112"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "nome": "={{ $json.Seu_nome }}",
+              "email": "={{ $json.Seu_melhor_e_mail }}",
+              "telefone": "={{ $json.Telefone_WhatsApp_DDD }}",
+              "pagina": "={{ $json.pagina }}",
+              "ingresso": "diamond",
+              "utm_source": "={{ $json.utm_source }}",
+              "utm_campaign": "={{ $json.utm_campaign }}",
+              "utm_medium": "={{ $json.utm_medium }}",
+              "utm_term": "={{ $json.utm_term }}",
+              "utm_content": "={{ $json.utm_content }}",
+              "data": "={{ $json.Data_da_conversao.toDateTime().format(\"dd/MM/yyyy\") }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "pagina",
+                "displayName": "pagina",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ingresso",
+                "displayName": "ingresso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "662b54bb-56e9-467f-8d2e-7b7abf541ef3",
+        "name": "Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          1520,
+          260
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "message",
+                "value": "=Novo Lead no Checkout Blindado *Diamond* 🎫\n\nNome: {{ $json.Seu_nome }}\n\nEmail: {{ $json.Seu_melhor_e_mail }}\n\nTelefone: {{ $json.Telefone_WhatsApp_DDD }}\n\nOrigens:\n\nPágina: {{ $json.pagina }}\nutm_source: {{ $json.utm_source }}\nutm_campaign: {{ $json.utm_campaign }}\nutm_medium: {{ $json.utm_medium }}\nutm_content: {{ $json.utm_content }}\nutm_term: {{ $json.utm_term }}"
+              },
+              {
+                "name": "phone",
+                "value": "120363365606703751-group"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f1aa099d-395e-4675-a4c0-afc99d5db7c1",
+        "name": "Notifica Grupo1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1520,
+          460
+        ]
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Formata Telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formata Telefone": {
+        "main": [
+          [
+            {
+              "node": "Google Sheets",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Notifica Grupo1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "ebc012bb-2722-467a-a980-17255e5e160e",
   "connections": {
     "Trata Webhook": {
       "main": [
