@@ -1,5 +1,166 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "09839949-df0b-4e2d-8fed-43aa762f96cd",
+    "workflowId": "QPVyZr7J25MTLASj",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "aefd144c-7205-4324-b8e9-42c4b00fe620",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          560,
+          360
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\n\n\n----------\nEmail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\n\n----------\n@ do instagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n\n----------\nVocê já possui um infoproduto?\n\n{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\n\n----------\nPor que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria EXPERIÊNCIA HT é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].text }}\n\n\n----------\nEssa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Trata Webhook').item.json.form_response.answers[8].text }}\n\n\n----------\nO investimento para adquirir o Ingresso Experiência HT é de até 12x de R$2.000,67 no cartão de crédito ou R$20.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $('Trata Webhook').item.json.form_response.answers[9].choice.label }}"
+        },
+        "id": "7d6d7e22-7e03-4879-9036-a2a6851dae6c",
+        "name": "Monday.com1",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1020,
+          360
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5671139092",
+          "itemId": "={{ $('Monday.com').item.json.id }}",
+          "columnValues": "={\"n_meros\":\"8000\", \"data\":\"{{ new DateTime($node[\"Trata Webhook\"].json[\"form_response\"][\"submitted_at\"]).format(\"yyyy-MM-dd\") }}\", \"texto\":\"{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\" }"
+        },
+        "id": "2d74f760-02f9-4876-bee1-91ba5233a93a",
+        "name": "Monday.com3",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1240,
+          360
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5671139092",
+          "groupId": "topics",
+          "name": "={{ \"[IMERSÃO/EXP HT] \" + $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "bdd4e915-d92d-4dee-8b65-7cfd37980d83",
+        "name": "Monday.com",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          780,
+          360
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "42eb9e0a-5274-4b65-855d-8a71ce1d9390",
+          "options": {}
+        },
+        "id": "f937c083-b8f3-4b36-974d-0ca4f7ca4e61",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          340,
+          360
+        ],
+        "webhookId": "42eb9e0a-5274-4b65-855d-8a71ce1d9390"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Monday.com",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com": {
+        "main": [
+          [
+            {
+              "node": "Monday.com1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com1": {
+        "main": [
+          [
+            {
+              "node": "Monday.com3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "09839949-df0b-4e2d-8fed-43aa762f96cd",
   "connections": {
     "Trata Webhook": {
       "main": [
