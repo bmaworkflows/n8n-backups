@@ -1,5 +1,166 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "f6ba2b6a-19f8-4951-aecf-7e7205fa2632",
+    "workflowId": "jszh7xSItmQ89inR",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "7c31f213-b9ac-41d9-888d-5d45d316a4db",
+          "options": {}
+        },
+        "id": "5f1bb565-5f3d-4306-8aef-902262c21fa1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          340,
+          360
+        ],
+        "webhookId": "7c31f213-b9ac-41d9-888d-5d45d316a4db"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "3a9daa6f-872a-4e47-aeef-e0568193250a",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          560,
+          360
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\n\n----------\nWhatsapp:\n\n{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\n\n\n----------\nEmail:\n\n{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\n\n----------\n@ do instagram:\n\n{{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\n\n----------\nConsiderando seus projetos digitais e demais fontes de renda/faturamento. Qual o faturamento mensal médio, somando estas fontes?\n\n{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\n\n----------\nVocê já possui um infoproduto?\n\n{{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\n\n----------\nPor que você acredita que participar do IIMERSÃO MENTORIA HIGH TICKET® na categoria PREMIUM é a oportunidade ideal para você e para o crescimento do seu negócio?\n\n{{ $('Trata Webhook').item.json.form_response.answers[7].text }}\n\n\n----------\nEssa é uma experiência com acessos exclusivos, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?\n\n{{ $('Trata Webhook').item.json.form_response.answers[8].text }}\n\n\n----------\nO investimento para adquirir o Ingresso Premium é de até 12x de R$800,27 no cartão de crédito ou R$8.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?\n\n{{ $('Trata Webhook').item.json.form_response.answers[9].choice.label }}"
+        },
+        "id": "717e1ea6-c069-4ef0-a20a-40461d153007",
+        "name": "Monday.com1",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1020,
+          360
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5671139092",
+          "itemId": "={{ $('Monday.com').item.json.id }}",
+          "columnValues": "={\"n_meros\":\"8000\", \"data\":\"{{ new DateTime($node[\"Trata Webhook\"].json[\"form_response\"][\"submitted_at\"]).format(\"yyyy-MM-dd\") }}\", \"texto\":\"{{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\", \"texto3\":\"{{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"texto7\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\" }"
+        },
+        "id": "8449f315-1e99-4559-835a-be672c13dbca",
+        "name": "Monday.com3",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1240,
+          360
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5671139092",
+          "groupId": "topics",
+          "name": "={{ \"[IMERSÃO/PREMIUM] \" + $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "60c9c168-88b3-4ced-ae5b-ae5e02a3c07b",
+        "name": "Monday.com",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          780,
+          360
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Monday.com",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com": {
+        "main": [
+          [
+            {
+              "node": "Monday.com1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com1": {
+        "main": [
+          [
+            {
+              "node": "Monday.com3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "f6ba2b6a-19f8-4951-aecf-7e7205fa2632",
   "connections": {
     "Webhook": {
       "main": [
