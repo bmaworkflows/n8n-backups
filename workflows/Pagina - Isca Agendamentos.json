@@ -1,5 +1,342 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "3fd904d3-f4d7-43c7-9670-587ef9cbb918",
+    "workflowId": "2tubqGxYDTrfSrKE",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "3024d2e4-9a63-455f-bd66-04dd507357f5",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "b5243cb6-0159-4102-b318-7b9699880783",
+        "name": "Webhook",
+        "webhookId": "3024d2e4-9a63-455f-bd66-04dd507357f5"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "5729b434-5362-4290-9f76-9caab5b86456",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          240,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1RY9mS0DOgF6wBXcngvTUGxEI7--g3nEZintAYfKhqQI/edit?usp=sharing",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "leads",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RY9mS0DOgF6wBXcngvTUGxEI7--g3nEZintAYfKhqQI/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $json.nome }}",
+              "email": "={{ $json.email }}",
+              "telefone": "={{ $json.whatsapp }}",
+              "faturamento": "={{ $json.faturamento }}",
+              "tem mentoria": "={{ $json.tem_mentoria }}",
+              "qualificado": "={{ $json.qualificado }}",
+              "utm_source": "={{ $json.utm_source }}",
+              "utm_campaign": "={{ $json.utm_campaign }}",
+              "utm_medium": "={{ $json.utm_medium }}",
+              "utm_content": "={{ $json.utm_content }}",
+              "utm_term": "={{ $json.utm_term }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "faturamento",
+                "displayName": "faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tem mentoria",
+                "displayName": "tem mentoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "qualificado",
+                "displayName": "qualificado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          448,
+          0
+        ],
+        "id": "39b10008-8d06-4a1e-b255-1d5e038b63e7",
+        "name": "Adiciona na planilha iscas",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-document/pdf",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ '55' + $json.whatsapp.replace(/\\D/g, '') }}"
+              },
+              {
+                "name": "document",
+                "value": "=https://josepbijari.com/wp-content/uploads/2026/05/Trafego_Pago_Mentoria_High_Ticket_BMA.pdf"
+              },
+              {
+                "name": "caption",
+                "value": "=Oi! Parabéns por solicitar o Mapa Gratuito de Agendamentos Qualificados!\n\nMais um presente para você: se você quiser analisar seu cenário de uma forma mais profunda e ter um diagnóstico e um plano de ação para gerar mais agendamentos qualificados para sua mentoria, você pode tentar uma vaga para uma consultoria grátis com meu time.\n\nAqui está o link para ver se temos horários disponíveis agora:\n\nhttps://calendly.com/closers-jp/cg10-consultoria-gratis-clone-2?utm_source=msgisca\n\nTe mando uma mensagem em breve. Aproveita! \nPS: É uma consultoria grátis com um especialista formado na minha metodologia, não uma call rápida de 20 minutos pra tentar te vender algo. Se eu achar que posso te ajudar, no final podemos falar sobre isso. Simples assim.\n"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "82aa2718-9c61-4589-857e-34251b3b8484",
+        "name": "Notifica grupo | Matheus3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          -208
+        ]
+      },
+      {
+        "parameters": {
+          "email": "={{ $json.email }}",
+          "updateIfExists": true,
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          448,
+          -368
+        ],
+        "id": "028695c5-fec7-4558-8077-f499c8d9dc4a",
+        "name": "Create a contact",
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "UB9gpytDjdRyLmed",
+            "name": "Active JP"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contactTag",
+          "tagId": "50",
+          "contactId": "={{ $json.id }}"
+        },
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          656,
+          -368
+        ],
+        "id": "ffa02eb8-8a04-49a1-88d0-288d13d6e415",
+        "name": "Add a contact tag",
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "UB9gpytDjdRyLmed",
+            "name": "Active JP"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Create a contact",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Notifica grupo | Matheus3",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Adiciona na planilha iscas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a contact": {
+        "main": [
+          [
+            {
+              "node": "Add a contact tag",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "3fd904d3-f4d7-43c7-9670-587ef9cbb918",
   "connections": {
     "Webhook": {
       "main": [
