@@ -1,5 +1,684 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "164cd838-84cd-4a9c-bc76-0d83c0767df7",
+    "workflowId": "Ut1QOAIsQlknn7wG",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "471bd715-e679-4e8d-9d0b-7f3a5d6cd854",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "6c8fb78c-dd1b-417c-9036-3b4cb9bd5284",
+        "name": "Webhook",
+        "webhookId": "471bd715-e679-4e8d-9d0b-7f3a5d6cd854"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "760f9f64-6d1f-4e06-80f8-7a2bf49aca58",
+        "name": "Trata webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json['whatsapp'] = formataTelefone($input.first().json.whatsapp)\n\nreturn $input.all();"
+        },
+        "id": "db8982e9-5dea-4e1f-a9a4-991da103e6a6",
+        "name": "Formata Telefone",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          420,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1121061241,
+            "mode": "list",
+            "cachedResultName": "lead",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=1121061241"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $json.nome }}",
+              "email": "={{ $json.email }}",
+              "telefone": "={{ $json.whatsapp }}",
+              "utm_source": "={{ $json.utm_source }}",
+              "utm_campaign": "={{ $json.utm_campaign }}",
+              "utm_medium": "={{ $json.utm_medium }}",
+              "utm_content": "={{ $json.utm_content }}",
+              "utm_term": "={{ $json.utm_term }}",
+              "pagina": "={{ $json.pagina }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "pagina",
+                "displayName": "pagina",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          640,
+          0
+        ],
+        "id": "b086c894-9feb-47f8-86e8-5e714d21b37d",
+        "name": "Google Sheets",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*+1 LEAD IP EXPERIENCE ONLINE*\n\nnome: {{ $('Formata Telefone').item.json.nome }}\nemail: {{ $('Formata Telefone').item.json.email }}\ntelefone: {{ $('Formata Telefone').item.json.whatsapp }}\n\nutm_source: {{ $('Formata Telefone').item.json.utm_source }}\nutm_campaign: {{ $('Formata Telefone').item.json.utm_campaign }}\nutm_medium: {{ $('Formata Telefone').item.json.utm_medium }}\nutm_content: {{ $('Formata Telefone').item.json.utm_content }}\nutm_term: {{ $('Formata Telefone').item.json.utm_term }}\n\npagina: {{ $('Formata Telefone').item.json.pagina }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ce40968c-af5a-4ef1-af45-50e3a7cc1e06",
+        "name": "Notifica grupo | Agendamento carol",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          880,
+          0
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "amount": 15,
+          "unit": "minutes"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          0
+        ],
+        "id": "31d41852-2aaa-47c5-b571-74aea1902639",
+        "name": "Wait",
+        "webhookId": "3cb9df9e-9eea-439a-9934-0486131d169d"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "compradores",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=0"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "email",
+                "lookupValue": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"email\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          1320,
+          0
+        ],
+        "id": "72d900c0-a372-45f2-9285-aa4377ed8cd3",
+        "name": "Busca comprador",
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "88b4c0f8-a176-4984-b2a4-4785697a9508",
+                "leftValue": "={{ $json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1540,
+          0
+        ],
+        "id": "fac8f75b-f98e-4d74-a432-b211805f8f52",
+        "name": "comprou?"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1800,
+          -140
+        ],
+        "id": "fff1f33e-23b7-4455-893d-331c69d8e3b5",
+        "name": "não comprou"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1800,
+          80
+        ],
+        "id": "81029f71-31a9-480b-82cc-e524999198e3",
+        "name": "comprou"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit?gid=1121061241#gid=1121061241",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 609726885,
+            "mode": "list",
+            "cachedResultName": "recuperação",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fpHFTaQK5bZ2NZ6cq2ee1vi4lEKS0r-XtSTO_QVMkbw/edit#gid=609726885"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"nome\"] }}",
+              "email": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"email\"] }}",
+              "telefone": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"whatsapp\"] }}",
+              "utm_source": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_source\"] }}",
+              "utm_campaign": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_campaign\"] }}",
+              "utm_medium": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_medium\"] }}",
+              "utm_content": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_content\"] }}",
+              "utm_term": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"utm_term\"] }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "oferta",
+                "displayName": "oferta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "comprou",
+                "displayName": "comprou",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          2040,
+          -140
+        ],
+        "id": "6037f7f9-4c51-4481-8b05-0e1e963fb0ac",
+        "name": "adiciona comprador",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "email": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"email\"] }}",
+          "updateIfExists": true,
+          "additionalFields": {
+            "firstName": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"nome\"] }}",
+            "phone": "={{ $item(\"0\").$node[\"Formata Telefone\"].json[\"whatsapp\"] }}"
+          }
+        },
+        "id": "1c14be8a-5764-4cda-a7eb-0f966f8d6991",
+        "name": "ID Usuário",
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          2280,
+          -140
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "4ygJeCXAzG5KRUPW",
+            "name": "Active Carol"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contactList",
+          "listId": 240,
+          "contactId": "={{ $('ID Usuário').item.json.id }}"
+        },
+        "id": "f1584283-56b3-4e3e-968b-563bdf11dd8b",
+        "name": "Adiciona na Lista",
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          2520,
+          -140
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "4ygJeCXAzG5KRUPW",
+            "name": "Active Carol"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Trata webhook": {
+        "main": [
+          [
+            {
+              "node": "Formata Telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formata Telefone": {
+        "main": [
+          [
+            {
+              "node": "Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Sheets": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Agendamento carol",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Agendamento carol": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Busca comprador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Busca comprador": {
+        "main": [
+          [
+            {
+              "node": "comprou?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "comprou?": {
+        "main": [
+          [
+            {
+              "node": "não comprou",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "comprou",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "adiciona comprador": {
+        "main": [
+          [
+            {
+              "node": "ID Usuário",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ID Usuário": {
+        "main": [
+          [
+            {
+              "node": "Adiciona na Lista",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "não comprou": {
+        "main": [
+          [
+            {
+              "node": "adiciona comprador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "164cd838-84cd-4a9c-bc76-0d83c0767df7",
   "connections": {
     "Trata webhook": {
       "main": [
