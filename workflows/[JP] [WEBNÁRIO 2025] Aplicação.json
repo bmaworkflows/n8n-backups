@@ -1,5 +1,604 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "c8fe65f0-7363-4fb6-8f55-4fc5ba370740",
+    "workflowId": "2PDJs0YhY5gQOIWY",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "dcb12447-f979-4ade-a222-25df39bb3937",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          0,
+          220
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.response.submittedAt }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "fdb558a6-48ec-4bc2-bf0e-f22850709a19",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          200,
+          220
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "0ce2a12d-e6b7-407c-8fba-840b42802f27",
+          "options": {}
+        },
+        "id": "32bf5183-7124-4ad8-a32e-e768511e7747",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -220,
+          220
+        ],
+        "webhookId": "0ce2a12d-e6b7-407c-8fba-840b42802f27"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "d8b33155-7ccd-44ae-a90c-97a9ed8090e3",
+                "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b2\"].content[0] }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1020,
+          220
+        ],
+        "id": "fbf956c3-4e30-441b-88c2-a0d6f6827ede",
+        "name": "Form Completo"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d554fa62-4b8e-4af6-b219-148849e33eff",
+                "name": "nome",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260aa\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "982c2c3f-8e2e-4e24-8bd4-8250dd00081f",
+                "name": "email",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ad\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "21f7e7a4-8c5c-44ba-a261-2a0feca10f58",
+                "name": "whatsapp",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ab\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "dadf2585-25fc-4a41-85a7-d17010f6a188",
+                "name": "tipo de negocio",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260ae\"].content[0] }}",
+                "type": "array"
+              },
+              {
+                "id": "1b162a1b-59b0-40dd-bfd9-f49f51bd8b43",
+                "name": "faturamento",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260af\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "d4d70891-a2f2-43e7-86b2-f3cdd36b195e",
+                "name": "ticket medio",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b7\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "b0bf1619-54aa-476e-9235-5deb23bb2d3b",
+                "name": "utm_source",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+                "type": "string"
+              },
+              {
+                "id": "3963442e-4392-45b7-a0f2-2d78e6426796",
+                "name": "utm_medium",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+                "type": "string"
+              },
+              {
+                "id": "bb0025ee-7695-4494-9740-e280da33ee3e",
+                "name": "utm_campaign",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+                "type": "string"
+              },
+              {
+                "id": "1fd75d16-7620-4889-8733-419ad792103f",
+                "name": "utm_content",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+                "type": "string"
+              },
+              {
+                "id": "f45fc219-4e11-476b-aa92-99a5650a21fb",
+                "name": "utm_term",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+                "type": "string"
+              },
+              {
+                "id": "cf093be3-bbb5-4d5d-87ff-98d97b149c36",
+                "name": "investimento",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260b2\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "f082db29-99b4-4c1b-9afa-9976a14327d1",
+                "name": "instagram",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"68102aea50d695fe0b0d0d35\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "deba784d-e8ca-4a0f-b88a-2a43c31cf365",
+                "name": "grupo seleto",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"68102bda183b281bfd0eab64\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "163df3e9-de29-4d62-8ce7-c897c537aa7c",
+                "name": "oportunidade",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"68102bcc50faf442020c71f6\"].content }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {
+            "ignoreConversionErrors": true
+          }
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          780,
+          220
+        ],
+        "id": "232a0b52-f758-4256-a6a2-c16e7f6c9f71",
+        "name": "Campos"
+      },
+      {
+        "parameters": {
+          "amount": "={{ Math.floor(Math.random()* 6) + 15 }}"
+        },
+        "id": "7155505d-b441-49b0-83c0-a94f45f6c6d9",
+        "name": "Aguarde",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          600,
+          220
+        ],
+        "webhookId": "dcfb2b76-20f9-4df4-a734-31086583161a"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1300,
+          460
+        ],
+        "id": "b7243e49-a81f-4d64-88f9-e43d01a19fec",
+        "name": "Lead Parcial"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação PARCIAL WEBNÁRIO JP:* 🚨\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Ticket Médio*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b7'].content[0] }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c04c1338-5a3d-4f6b-a413-be67febe37a6",
+        "name": "Report - Agendamentos Closers  - Parcial",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1480,
+          460
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "4d51afe1-d038-45ab-a3ef-8af66d6f677e",
+                "leftValue": "={{ $('Trata Webhook').item.json.response.answers[\"680a8f0b75a63ec8840260aa\"].content }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          400,
+          220
+        ],
+        "id": "71d7a7d7-9f1f-4aff-b893-f6d311738c03",
+        "name": "Elimina respostas vazias"
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "6628730688",
+          "groupId": "topics",
+          "name": "={{ $json.nome }}",
+          "additionalFields": {}
+        },
+        "id": "f933235e-e4bd-4c09-8b9c-2c26fe2456ff",
+        "name": "Monday.com",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          -180
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "6628730688",
+          "itemId": "={{ $('Monday.com').item.json.id }}",
+          "columnValues": "={\"data_14__1\": \"{{ $node[\"Date & Time\"].json[\"formattedDate\"] }}\", \"texto0__1\": \"{{ $node[\"Campos\"].json[\"faturamento\"] }}\", \"telefone__1\": \"{{ $('Campos').item.json.whatsapp }}\", \"texto1__1\": \"{{ $('Campos').item.json.utm_source }}\", \"data__1\":\"2025-05-15\"}    "
+        },
+        "id": "eddb8863-79f4-4bbb-9921-553543352d84",
+        "name": "Monday.com13",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1720,
+          -180
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=<b>Nome completo:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.nome }}</span>\n\n\n----------\n<b>Whatsapp:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.whatsapp }}</span>\n\n\n----------\n<b>Email:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.email }}</span>\n\n\n----------\n\n<b>Instagram:</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.instagram }}</span>\n\n\n----------\n<b>Qual das opções abaixo mais condiz com seu negócio hoje?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['tipo de negocio'] }}</span>\n\n\n----------\n<b>Qual é o seu ticket médio atual?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['ticket medio'] }}</span>\n\n\n----------\n<b>Quanto você fatura, em média, por mês?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.faturamento }}</span>\n\n\n----------\n\n<b>Por que você acredita que participar do nosso programa de acompanhamento é a oportunidade ideal para você e para o crescimento do seu negócio?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.oportunidade }}</span>\n\n\n----------\n\n<b>Esse é um grupo seleto e restrito, e o número de vagas é bastante limitado. Por que você acha que sua aplicação deve ser aceita?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json['grupo seleto'] }}</span>\n\n\n----------\n\n<b>O investimento para a participação na Bijari Mentoria Avançada é de até 12x de R$ 6.000,00 no cartão de crédito ou R$ 60.000,00 à vista. Você tem capacidade de investir agora esse valor em você e no seu negócio? E se sim, qual a forma de pagamento?</b>\n\n<span style=\"font-size:16px;color:#4d4d4d\">{{ $('Campos').item.json.investimento }}</span>\n\n\n----------\n\n"
+        },
+        "id": "3644ec7f-cf9e-4458-94ed-4dbbb65d21a6",
+        "name": "Monday.com19",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1500,
+          -180
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação WEBNÁRIO JP:* ✅🔥\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260aa'].content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ad'].content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260ab'].content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260af'].content[0] }}\n\n*Ticket Médio*: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b7'].content[0] }}\n\nInvestimento: {{ $('Trata Webhook').item.json.response.answers['680a8f0b75a63ec8840260b2'].content[0] }}\n\n*Origens:*\nMentoria High Ticket® - Aplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d445d8d8-e80f-4d63-aed3-1e1a613d7e3e",
+        "name": "Report - Agendamentos Closers  - Parcial1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1740,
+          100
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/7dff0b37-801c-48df-be15-e8470deea70d",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260aa\"][\"content\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ad\"][\"content\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ab\"][\"content\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102aea50d695fe0b0d0d35\"][\"content\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260ae\"][\"content\"][\"0\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260af\"][\"content\"][\"0\"] }}"
+              },
+              {
+                "name": "ticket",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260b7\"][\"content\"][\"0\"] }}"
+              },
+              {
+                "name": "ser_aceito",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102bda183b281bfd0eab64\"][\"content\"] }}"
+              },
+              {
+                "name": "oportunidade",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"68102bcc50faf442020c71f6\"][\"content\"] }}"
+              },
+              {
+                "name": "investimento",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"680a8f0b75a63ec8840260b2\"][\"content\"][\"0\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1360,
+          100
+        ],
+        "id": "aed5c1cc-9a24-470c-85d1-26576e410479",
+        "name": "HTTP Request"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Elimina respostas vazias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Form Completo": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Lead Parcial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos": {
+        "main": [
+          [
+            {
+              "node": "Form Completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aguarde": {
+        "main": [
+          [
+            {
+              "node": "Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Lead Parcial": {
+        "main": [
+          [
+            {
+              "node": "Report - Agendamentos Closers  - Parcial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Elimina respostas vazias": {
+        "main": [
+          [
+            {
+              "node": "Aguarde",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com": {
+        "main": [
+          [
+            {
+              "node": "Monday.com19",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com19": {
+        "main": [
+          [
+            {
+              "node": "Monday.com13",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com13": {
+        "main": [
+          []
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Report - Agendamentos Closers  - Parcial1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "c8fe65f0-7363-4fb6-8f55-4fc5ba370740",
   "connections": {
     "Trata Webhook": {
       "main": [
