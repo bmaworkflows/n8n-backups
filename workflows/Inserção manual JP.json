@@ -1,5 +1,126 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "7d7b2b93-192b-4df6-b14b-730d995897dc",
+    "workflowId": "gDXLsw6ojifNFgdj",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "11d8808a-7115-4ec7-8c12-87ba4cd1c142",
+          "options": {}
+        },
+        "id": "76dca5e3-d9d9-48a8-87e1-bad22469e540",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          380,
+          280
+        ],
+        "webhookId": "11d8808a-7115-4ec7-8c12-87ba4cd1c142"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "99d52145-0c70-4e81-8a17-261019b2930f",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          600,
+          280
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5671139092",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[1].text }}",
+          "additionalFields": {}
+        },
+        "id": "ee4376f6-7ceb-4a0a-8058-f9d5f6ad8fc5",
+        "name": "Monday.com13",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          780,
+          280
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"phone_number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"email\"] }}\n\n\n----------\n@ do Instagram:\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nPara qual Closer ele deve ser redirecionado?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][5][\"choice\"][\"label\"] }}\n\n\n----------\nQual o seu faturamento MENSAL médio em 2025:\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][6][\"choice\"][\"label\"] }}\n\n\n----------\nQual a Origem do Lead\n\n{{ $('Trata Webhook').item.json[\"form_response\"][\"answers\"][7][\"choice\"][\"label\"] }}\n\n\n----------\nAlguma observação sobre este lead?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"text\"] }}\n\n----------\nQual o seu nome? Sim, você que está preenchendo =)\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}"
+        },
+        "id": "dbafb898-b6e8-4373-8d0f-adf8d40c988c",
+        "name": "Monday.com1",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          960,
+          280
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com13": {
+        "main": [
+          [
+            {
+              "node": "Monday.com1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Monday.com13",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "7d7b2b93-192b-4df6-b14b-730d995897dc",
   "connections": {
     "Webhook": {
       "main": [
