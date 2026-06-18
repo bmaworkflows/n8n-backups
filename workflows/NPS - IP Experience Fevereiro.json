@@ -1,5 +1,340 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "5435a8b0-3f73-4f77-b48b-dc77329f18e7",
+    "workflowId": "YvEyqfNzvwQFOF32",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "d4930471-98cb-4090-b836-5236d8f0facd",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          1020,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "4a7b7fbe-6a6f-42a2-b73f-8c86a1259ba9",
+          "options": {}
+        },
+        "id": "f6854149-150f-4294-bc36-29bcb140db71",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          820,
+          380
+        ],
+        "webhookId": "4a7b7fbe-6a6f-42a2-b73f-8c86a1259ba9"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "175fe66f-f800-43c6-9a55-166bea8902ad",
+                "name": "nome",
+                "value": "={{ $json.form_response.answers[0].text }}",
+                "type": "string"
+              },
+              {
+                "id": "4dd0ec54-1092-4fc6-956b-bb64a6545538",
+                "name": "sobrenome",
+                "value": "={{ $json.form_response.answers[1].text }}",
+                "type": "string"
+              },
+              {
+                "id": "8d59bbef-bc5e-443d-a195-36a214c6025d",
+                "name": "whatsapp",
+                "value": "={{ $json.form_response.answers[2].phone_number }}",
+                "type": "string"
+              },
+              {
+                "id": "8ee722b9-8e81-49b9-a51e-ed3a6a7e2470",
+                "name": "email",
+                "value": "={{ $json.form_response.answers[3].email }}",
+                "type": "string"
+              },
+              {
+                "id": "61fa68d9-d15e-48f5-9e3c-917e7568fce3",
+                "name": "experiencia no evento",
+                "value": "={{ $json.form_response.answers[4].number }}",
+                "type": "number"
+              },
+              {
+                "id": "376d2ae0-3e2b-4eb2-adfc-a35e4dd6c675",
+                "name": "o que mais gostou no evento",
+                "value": "={{ $json.form_response.answers[5].choices.labels.length === 1 ? $json.form_response.answers[5].choices.labels : $json.form_response.answers[5].choices.labels.join(\", \")}}",
+                "type": "string"
+              },
+              {
+                "id": "a9211876-46f3-49a0-aea7-2c3539c687b6",
+                "name": "motivos de escolher o que mais gostou",
+                "value": "={{ $json.form_response.answers[6].text }}",
+                "type": "string"
+              },
+              {
+                "id": "4cb864c9-2219-4f44-8ea4-5846f68bcb6d",
+                "name": "o que menos  gostou no evento",
+                "value": "={{ $json.form_response.answers[7].choices.labels.length === 1 ? $json.form_response.answers[7].choices.labels : $json.form_response.answers[7].choices.labels.join(\", \")  }}",
+                "type": "string"
+              },
+              {
+                "id": "4c2322a3-05b7-4c3e-8f5d-430bc0bdad50",
+                "name": "motivos de escolher o que menos gostou",
+                "value": "={{ $json.form_response.answers[8].text }}",
+                "type": "string"
+              },
+              {
+                "id": "18b25c0e-dcf2-4a1f-8488-cda153467048",
+                "name": "o que poderia melhorar no evento",
+                "value": "={{ $json.form_response.answers[9].text }}",
+                "type": "string"
+              },
+              {
+                "id": "e15b8aec-216b-4c0d-940f-dc25b4fe3ec8",
+                "name": "probabilidade de você recomendar o IP Experience a um amigo/parente?",
+                "value": "={{ $json.form_response.answers[10].number }}",
+                "type": "number"
+              },
+              {
+                "id": "281e4b07-ad08-4a22-9a35-cf83ef4d180e",
+                "name": "animação para a próxima Edição do IP Experience?",
+                "value": "={{ $json.form_response.answers[11].number }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "21f394fd-5e47-409d-86cc-c351e2dfdbd9",
+        "name": "campos",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1240,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1QxWgsh7NxzEyx7FZxUhqLOS94g5T4mSCPD2GLR4Bnxc/edit?usp=sharing",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "respostas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QxWgsh7NxzEyx7FZxUhqLOS94g5T4mSCPD2GLR4Bnxc/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data da resposta": "={{ $('Trata Webhook').item.json.form_response.submitted_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $json.nome }}",
+              "sobrenome": "={{ $json.sobrenome }}",
+              "email": "={{ $json.email }}",
+              "telefone": "={{ $json.whatsapp }}",
+              "experiencia no evento": "={{ $json['experiencia no evento'] }}",
+              "o que mais gostou no evento": "={{ $json['o que mais gostou no evento'] }}",
+              "motivos de escolher o que mais gostou": "={{ $json['motivos de escolher o que mais gostou'] }}",
+              "o que menos gostou no evento": "={{ $json['o que menos  gostou no evento'] }}",
+              "motivos de escolher o que menos gostou": "={{ $json['motivos de escolher o que menos gostou'] }}",
+              "o que poderia melhorar no evento": "={{ $json['o que poderia melhorar no evento'] }}",
+              "probabilidade de você recomendar o IP Experience a um amigo/parente?": "={{ $json['probabilidade de você recomendar o IP Experience a um amigo/parente?'] }}",
+              "animação para a próxima Edição do IP Experience?": "={{ $json['animação para a próxima Edição do IP Experience?'] }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data da resposta",
+                "displayName": "data da resposta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sobrenome",
+                "displayName": "sobrenome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "experiencia no evento",
+                "displayName": "experiencia no evento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "o que mais gostou no evento",
+                "displayName": "o que mais gostou no evento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "motivos de escolher o que mais gostou",
+                "displayName": "motivos de escolher o que mais gostou",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "o que menos gostou no evento",
+                "displayName": "o que menos gostou no evento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "motivos de escolher o que menos gostou",
+                "displayName": "motivos de escolher o que menos gostou",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "o que poderia melhorar no evento",
+                "displayName": "o que poderia melhorar no evento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "probabilidade de você recomendar o IP Experience a um amigo/parente?",
+                "displayName": "probabilidade de você recomendar o IP Experience a um amigo/parente?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "animação para a próxima Edição do IP Experience?",
+                "displayName": "animação para a próxima Edição do IP Experience?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "9027d189-c00d-41d7-a73a-77b807a6fd79",
+        "name": "Adiciona na Planilha",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          1460,
+          380
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "campos": {
+        "main": [
+          [
+            {
+              "node": "Adiciona na Planilha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "5435a8b0-3f73-4f77-b48b-dc77329f18e7",
   "connections": {
     "Webhook": {
       "main": [
