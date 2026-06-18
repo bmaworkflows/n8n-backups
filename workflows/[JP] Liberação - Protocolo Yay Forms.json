@@ -1,5 +1,518 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "e31a3f22-2ca7-45f4-aacd-3a7f27bd799c",
+    "workflowId": "gkCa8F0grkji5jqo",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "b06c0cbd-4329-4974-9253-3f2e31c166e8",
+          "options": {}
+        },
+        "id": "ee2c1672-aae1-45e2-a0f1-4eecf3e84565",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -2000,
+          48
+        ],
+        "webhookId": "b06c0cbd-4329-4974-9253-3f2e31c166e8"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "0c4564d6-fe1a-41d3-86c5-52d8a22294b1",
+        "name": "Trata webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -1792,
+          48
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "3645094d-45e9-4110-b96d-f96b054f136f",
+                "name": "nome",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b59804731e\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "c6183c68-2139-45cb-9785-dec051a7f96a",
+                "name": "whatsapp",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b59804731f\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "fad26725-8d4d-4e32-b9ce-9ffbe53c1ee4",
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b598047320\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "bb67ebd4-f24e-41ac-9db8-24df8a36a5e7",
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b598047317\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "ed74c9bb-ea80-4c65-a99b-341d4fc5e4e9",
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b59804731a\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "608c677f-3075-4c62-b12b-fe0e68f28725",
+                "name": "curso_ou_infoproduto",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b598047319\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "801e48c7-22c3-46db-8de8-fa3ac8acffce",
+                "name": "nicho",
+                "value": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"69a9957ead3c65b59804731b\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "7c81e7e9-3ba6-433c-8254-fcd2e0f26daf",
+                "name": "utm_source",
+                "value": "={{ $json.response.tracking.utm_source }}",
+                "type": "string"
+              },
+              {
+                "id": "d357702e-bc62-471f-b4fc-8d5c9745ad18",
+                "name": "utm_medium",
+                "value": "={{ $json.response.tracking.utm_medium }}",
+                "type": "string"
+              },
+              {
+                "id": "2ef3e1ac-807f-44a9-b620-da143603d211",
+                "name": "utm_campaign",
+                "value": "={{ $json.response.tracking.utm_campaign }}",
+                "type": "string"
+              },
+              {
+                "id": "4bd69bf6-8aba-4213-9ce4-36f531749935",
+                "name": "utm_content",
+                "value": "={{ $json.response.tracking.utm_content }}",
+                "type": "string"
+              },
+              {
+                "id": "7fd5baf1-0845-444e-b6c1-918e4c647e7f",
+                "name": "utm_term",
+                "value": "={{ $json.response.tracking.utm_term }}",
+                "type": "string"
+              },
+              {
+                "id": "2b11fe57-cacc-4d7c-a633-269f33e0ca20",
+                "name": "tag",
+                "value": "ISCA",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1584,
+          48
+        ],
+        "id": "4953f2a2-26ab-4672-918e-0d1c1c245bf4",
+        "name": "campos"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "85c5df3b-7509-4730-9cfe-8ff317fb81c2",
+                "leftValue": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"submittedAt\"] }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -1392,
+          48
+        ],
+        "id": "3bde0514-69ac-4cdf-879c-953ac845829a",
+        "name": "preencheu completo"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E0818763F7C1060F2F5A622FD8B21DA/token/8BE8825C2FBAFB888E826030/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "F61cd44a5a57f421586a05e941e99893aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "120363420331944744-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo Lead no Formulário YAY FORMS - SOCIAL SELLING* 🔥\n\nResponsável: Heitor\n\n*Nome:* {{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}\n\n*E-mail:* {{ $item(\"0\").$node[\"campos\"].json[\"email\"] }}\n\n*WhatsApp:* {{ $item(\"0\").$node[\"campos\"].json[\"whatsapp\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"campos\"].json[\"instagram\"] }}\n\n*Faturamento:* {{ $item(\"0\").$node[\"campos\"].json[\"faturamento\"] }}\n\n*Lucro:* {{ $item(\"0\").$node[\"campos\"].json[\"lucro_liquido\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -304,
+          32
+        ],
+        "id": "9c543415-6e8a-416d-bb4b-12a768788b3c",
+        "name": "Notifica Grupo3"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/754d899e-b07d-4aca-ad77-592a64eb1800",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[ISCA PROTOCOLO] {{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"campos\"].json[\"instagram\"] }}"
+              },
+              {
+                "name": "e_mentor",
+                "value": "={{ $item(\"0\").$node[\"campos\"].json[\"negocio\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "nicho_mentoria",
+                "value": "={{ $item(\"0\").$node[\"campos\"].json[\"nicho\"] }}"
+              },
+              {
+                "name": "curso_ou_infoproduto",
+                "value": "={{ $item(\"0\").$node[\"campos\"].json[\"curso_ou_infoproduto\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $('campos').item.json.utm_source }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $('campos').item.json.utm_campaign }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $('campos').item.json.utm_medium }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $('campos').item.json.utm_content }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $('campos').item.json.utm_term }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -752,
+          32
+        ],
+        "id": "89ef7221-6560-46ff-a4cc-2ae0a4aa9e3a",
+        "name": "Leva pra clint via webhook - heitor"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E0818763F7C1060F2F5A622FD8B21DA/token/8BE8825C2FBAFB888E826030/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "F61cd44a5a57f421586a05e941e99893aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5512996324803"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo Lead no Formulário YAY FORMS - SOCIAL SELLING* 🔥\n\n*_Disponível na Clint_*\n\n*Nome:* {{ $item(\"0\").$node[\"campos\"].json[\"nome\"] }}\n\n*E-mail:* {{ $item(\"0\").$node[\"campos\"].json[\"email\"] }}\n\n*WhatsApp:* {{ $item(\"0\").$node[\"campos\"].json[\"whatsapp\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"campos\"].json[\"instagram\"] }}\n\n*Faturamento:* {{ $item(\"0\").$node[\"campos\"].json[\"faturamento\"] }}\n\n*Lucro:* {{ $item(\"0\").$node[\"campos\"].json[\"lucro_liquido\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -528,
+          32
+        ],
+        "id": "d14a1bc1-2e6b-4f0b-9f41-8577ffda50e0",
+        "name": "Notifica Privado - Heitor"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -864,
+          480
+        ],
+        "id": "5f1f417f-f4d5-4ff6-b0c1-7084df73971d",
+        "name": "Parcial"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "456a8c9f-9791-492c-903f-04f82a6f5cbc",
+                "leftValue": "={{ $item(\"0\").$node[\"Trata webhook\"].json[\"response\"][\"answers\"][\"687c3e79c3c9ea5f8609af00\"][\"content\"] }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          -1056,
+          480
+        ],
+        "id": "2a2fc58b-3b32-48bf-8858-67594351e875",
+        "name": "preencheu telefone"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "e804ea13-ec7a-4882-b6c1-3b7a5d76a7df",
+                "leftValue": "={{ $json.faturamento }}",
+                "rightValue": "Até R$ 5.000,00",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          -1152,
+          32
+        ],
+        "id": "d911d0e6-f449-4370-b731-72d0ad0d3e41",
+        "name": "Mais de 5k"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -960,
+          32
+        ],
+        "id": "204ea3e0-ad52-4be5-9719-4735f90d8939",
+        "name": "FUNIL SDR"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata webhook": {
+        "main": [
+          [
+            {
+              "node": "campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "campos": {
+        "main": [
+          [
+            {
+              "node": "preencheu completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "preencheu completo": {
+        "main": [
+          [
+            {
+              "node": "Mais de 5k",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "preencheu telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica Grupo3": {
+        "main": [
+          []
+        ]
+      },
+      "Leva pra clint via webhook - heitor": {
+        "main": [
+          []
+        ]
+      },
+      "Notifica Privado - Heitor": {
+        "main": [
+          [
+            {
+              "node": "Notifica Grupo3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parcial": {
+        "main": [
+          []
+        ]
+      },
+      "preencheu telefone": {
+        "main": [
+          [
+            {
+              "node": "Parcial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mais de 5k": {
+        "main": [
+          [
+            {
+              "node": "FUNIL SDR",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FUNIL SDR": {
+        "main": [
+          [
+            {
+              "node": "Leva pra clint via webhook - heitor",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "e31a3f22-2ca7-45f4-aacd-3a7f27bd799c",
   "connections": {
     "Webhook": {
       "main": [
