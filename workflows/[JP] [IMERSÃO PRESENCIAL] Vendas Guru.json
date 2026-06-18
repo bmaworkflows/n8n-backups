@@ -1,5 +1,592 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "b8669244-3cd8-4532-a6c6-4d8ec3b7fc9f",
+    "workflowId": "G8mK4SvsvnsTJs65",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "eb5a575e-6036-44c6-8bde-5f4b130b6936",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          820,
+          260
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JbA5sRocyQqiZwXZNMZinewpOOiN5QB8g4c5ETElhM8/edit?usp=sharing",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 315736848,
+            "mode": "list",
+            "cachedResultName": "vendas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V9wxKT_fRDOXKv12DnuTNLVobETwy571jcodv1kYtbw/edit#gid=315736848"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "nome": "={{ $json.payload.contact.name }}",
+              "email": "={{ $json.payload.contact.email }}",
+              "telefone": "={{ $json.payload.contact.phone_number }}",
+              "data": "={{ $json.payload.dates.created_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+              "oferta": "={{ $json.payload.items[0].offer.name }}",
+              "preço": "={{ $json.payload.items[0].total_value }}",
+              "utm_source": "={{ $json.payload.source.utm_source }}",
+              "utm_campaign": "={{ $json.payload.source.utm_campaign }}",
+              "utm_medium": "={{ $json.payload.source.utm_medium }}",
+              "utm_content": "={{ $json.payload.source.utm_content }}",
+              "utm_term": "={{ $json.payload.source.utm_term }}",
+              "documento": "={{ $json.payload.contact.doc }}",
+              "cidade": "={{ $json.payload.infrastructure.city }}",
+              "estado": "={{ $json.payload.infrastructure.region }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "checklist",
+                "displayName": "checklist",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "documento",
+                "displayName": "documento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "oferta",
+                "displayName": "oferta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "preço",
+                "displayName": "preço",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cidade",
+                "displayName": "cidade",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "estado",
+                "displayName": "estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "deca2c7c-26fb-48e9-aad0-fa9c441d3c83",
+        "name": "Dados planilha",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1580,
+          240
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "9b432ce1-343a-491f-95f9-7551ac7eb698",
+                "leftValue": "={{ $json.dates.confirmed_at }}",
+                "rightValue": "={{null}}",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "1adaabca-1ae5-4b20-9d74-42aa6cff01e4",
+        "name": "Filter",
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2,
+        "position": [
+          960,
+          540
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "7b3089d5-0668-4d1d-bad1-b0d440e8f073",
+          "options": {}
+        },
+        "id": "1eea3fa0-f6dd-489d-9e6d-c43aa186294d",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          600,
+          260
+        ],
+        "webhookId": "7b3089d5-0668-4d1d-bad1-b0d440e8f073"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "324533b7-38ca-4dfc-8e0b-69539232ae18",
+                "leftValue": "={{ $json.payload.dates.confirmed_at }}",
+                "rightValue": "={{null}}",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "3d621076-5f6b-4cbf-bbf8-151cf3892e03",
+        "name": "If",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.1,
+        "position": [
+          1080,
+          260
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "324533b7-38ca-4dfc-8e0b-69539232ae18",
+                "leftValue": "={{ $json.dates.confirmed_at }}",
+                "rightValue": "={{null}}",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "c8b330f8-a50c-41d9-8cda-4f6c08d4255f",
+        "name": "If1",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.1,
+        "position": [
+          1280,
+          460
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JbA5sRocyQqiZwXZNMZinewpOOiN5QB8g4c5ETElhM8/edit?usp=sharing",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 315736848,
+            "mode": "list",
+            "cachedResultName": "vendas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V9wxKT_fRDOXKv12DnuTNLVobETwy571jcodv1kYtbw/edit#gid=315736848"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "nome": "={{ $json.contact.name }}",
+              "email": "={{ $json.contact.email }}",
+              "telefone": "={{ $json.contact.phone_number }}",
+              "data": "={{ $json.dates.created_at.toDateTime().format(\"dd/MM/yyyy\") }}",
+              "oferta": "={{ $json.items[0].offer.name }}",
+              "preço": "={{ $json.items[0].total_value }}",
+              "utm_source": "={{ $json.source.utm_source }}",
+              "utm_campaign": "={{ $json.source.utm_campaign }}",
+              "utm_medium": "={{ $json.source.utm_medium }}",
+              "utm_content": "={{ $json.source.utm_content }}",
+              "utm_term": "={{ $json.source.utm_term }}",
+              "documento": "={{ $json.contact.doc }}",
+              "cidade": "={{ $json.infrastructure.city }}",
+              "estado": "={{ $json.infrastructure.region }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "checklist",
+                "displayName": "checklist",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "documento",
+                "displayName": "documento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "oferta",
+                "displayName": "oferta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "preço",
+                "displayName": "preço",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cidade",
+                "displayName": "cidade",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "estado",
+                "displayName": "estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_content",
+                "displayName": "utm_content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm_term",
+                "displayName": "utm_term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "41b1e448-607b-4f3b-b9c6-396d1098471b",
+        "name": "Dados planilha1",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1580,
+          440
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          []
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Dados planilha",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Dados planilha1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b8669244-3cd8-4532-a6c6-4d8ec3b7fc9f",
   "connections": {
     "Trata Webhook": {
       "main": [
