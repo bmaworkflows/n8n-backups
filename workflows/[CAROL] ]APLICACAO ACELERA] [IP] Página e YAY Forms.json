@@ -1,5 +1,1380 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "09462673-cccf-427b-8f74-b14a4f075971",
+    "workflowId": "Z1lE5NieAj2puX8O",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "61e33099-19e6-46fd-94f4-2faaed0c01c5",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -6580,
+          -400
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.response.submittedAt }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "b7a7e07d-4084-40f3-9853-63f11c1be3dd",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          -6360,
+          -400
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "838761c1-f47a-460c-8c3c-edfdf10a36f3",
+        "name": "Date & Time4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          -6140,
+          -400
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "065c5653-43b4-4bd5-b6d0-4338e5d1e1eb",
+          "options": {}
+        },
+        "id": "749670ee-83d6-467b-8196-3465e93dec45",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -6800,
+          -400
+        ],
+        "webhookId": "065c5653-43b4-4bd5-b6d0-4338e5d1e1eb"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "2e6502b5-87b7-471a-b380-b19f9a3f97f6",
+                "name": "nome",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43a\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "149210d9-9f6b-4851-9284-98de9b788a81",
+                "name": "email",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43b\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "4fb9b988-1edc-46fc-815a-5af8db220607",
+                "name": "whatsapp",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43c\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "3e6ed3b6-94d2-46d1-abe7-9c1c440e8de2",
+                "name": "atuacao",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43f\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "3cfee21f-b1ec-4390-af75-3e31fc9eac39",
+                "name": "faturamento",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43e\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "0bce8ae9-c543-46fc-b923-a3dec62bfda9",
+                "name": "oportunidade",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b440\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "45f2c6ac-f807-47fd-8717-abf51913814b",
+                "name": "investimento",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43d\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "ff208309-fee9-45b0-bdab-96eb0c0e9c3d",
+                "name": "data da aplicacao",
+                "value": "={{ $('data da aplicacao').item.json.formattedDate }}",
+                "type": "string"
+              },
+              {
+                "id": "291a1ed8-cf3a-4a4f-a71a-2c8dbf3e7171",
+                "name": "utm_source",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+                "type": "string"
+              },
+              {
+                "id": "403a84f8-2f90-4504-9f03-0a9cef7d3164",
+                "name": "utm_campaign",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+                "type": "string"
+              },
+              {
+                "id": "aba98cf8-8622-44c0-95c5-bb01dcd38312",
+                "name": "utm_medium",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+                "type": "string"
+              },
+              {
+                "id": "f0388b2d-0935-48d1-8da0-dcf2c45daee2",
+                "name": "utm_term",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+                "type": "string"
+              },
+              {
+                "id": "1ecafbd5-f383-4938-ae30-b495b78fb086",
+                "name": "utm_content",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+                "type": "string"
+              },
+              {
+                "id": "9248cdf2-4149-4626-ba6e-beee79f7d38c",
+                "name": "data_reuniao",
+                "value": "={{ $json.collection[0].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy') }}",
+                "type": "string"
+              },
+              {
+                "id": "d000487c-b784-495c-b544-e0a891a50de7",
+                "name": "hora_reuniao",
+                "value": "={{ $json.collection[0].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat('HH:mm') }}",
+                "type": "string"
+              },
+              {
+                "id": "11937d40-a6b4-4c0d-9781-7532375bca10",
+                "name": "closer",
+                "value": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                "type": "string"
+              },
+              {
+                "id": "42da7b0d-d667-4c05-932f-64345a2b103e",
+                "name": "plano",
+                "value": "={{ $('Trata Webhook').item.json.response.answers[\"6904e925166562f6430e4797\"].content[0] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -5440,
+          -420
+        ],
+        "id": "3f803c37-dc73-4c5d-b720-27b05f222671",
+        "name": "Campos"
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $node[\"Trata Webhook\"].json[\"response\"][\"submittedAt\"] }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "695da7d1-87d0-4949-97c4-4ac8b0271bf2",
+        "name": "data da aplicacao",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          -5940,
+          -400
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação ACELERA:* 💰\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação no Mercado*: {{ $('Campos').item.json[\"atuacao\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\nPorque quer fazer parte do ACELERA?\n{{ $('Campos').item.json.oportunidade }}\n\n*Origens:*\nFormulário: Aplicação - Acelera - Página\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ea90f2de-609c-4671-80bf-c1e8154215a2",
+        "name": "Report - Agendamentos Closers1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1220,
+          -40
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "85c5df3b-7509-4730-9cfe-8ff317fb81c2",
+                "leftValue": "={{ $('Trata Webhook').item.json.response.submittedAt }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -5200,
+          -420
+        ],
+        "id": "c867858e-e879-4f7b-a781-07d6d2299342",
+        "name": "preencheu completo"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação ACELERA:* 🔴\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação no Mercado*: {{ $('Campos').item.json[\"atuacao\"] }}\n\nInvestimento:\n{{ $('Campos').item.json.investimento }}\n\nPorque quer fazer parte do ACELERA?\n{{ $('Campos').item.json.oportunidade }}\n\n*Origens:*\nFormulário: Aplicação - Acelera - Página\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c5221851-6683-4ef6-8a28-a33ce7628486",
+        "name": "Report - Agendamentos Closers",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1220,
+          180
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/aedc4591-aae8-486d-9435-8007788aa1c2",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "investimento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"investimento\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Acelera - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1000,
+          -40
+        ],
+        "id": "72ff5c0a-82cd-4a65-945f-f5da50c946a0",
+        "name": "Preencheu completo"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/aedc4591-aae8-486d-9435-8007788aa1c2",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[PARCIAL] - {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "investimento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"investimento\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Acelera - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1000,
+          180
+        ],
+        "id": "ca082376-15b1-4e65-9f0c-afe1b6d93c65",
+        "name": "Preencheu parcial"
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events?organization=\thttps://api.calendly.com/organizations/85e6ccb1-b72c-49b9-abde-9608c02a1d01&invitee_email={{ $('Trata Webhook').item.json.response.answers[\"6878e5e913f6fa2a1c06b43b\"].content }}&min_start_time={{ $('Date & Time4').item.json.currentDate }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "60acce2c-1ce2-4969-9590-b6af92bc22d1",
+        "name": "Busca Invite",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -5720,
+          -400
+        ],
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "1a83651b-1df7-4574-b72c-c4bcda28d763",
+                      "leftValue": "={{ $('Busca Invite').item.json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Thais BMA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Thais BMA"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "28dd7602-cc58-41a6-a5e2-c16d77c395aa",
+                      "leftValue": "={{ $('Busca Invite').item.json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Gabriel Fernandes",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Gabriel Fernandes"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "8ef7ebfe-eaf3-4f6d-ae5d-3ef9dc9f72b8",
+                      "leftValue": "={{ $('Busca Invite').item.json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Matheus Schefer BMA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Matheus Schefer BMA"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "646e71e8-27c5-49b8-8564-3ef06ed710e8",
+        "name": "Switch",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          -4860,
+          -440
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo agendamento ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Closer Responsável:* Matheus\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c8df3021-5319-4278-a84f-c62273a0494f",
+        "name": "Notifica grupo | Deborah7",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4200,
+          260
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5545991195467"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo agendamento ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "26c0ca69-bef9-49f5-b135-a47bb544e833",
+        "name": "Notifica grupo | Deborah8",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -3980,
+          260
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo agendamento ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Closer Responsável:* Thaís\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0b1870b3-841e-4363-86d9-bc444a7d1eb1",
+        "name": "Notifica grupo | Thaís2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4220,
+          -1020
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=5541984193720"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo agendamento ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "babe97d3-3831-491c-8a58-9deab2bcd883",
+        "name": "Notifica grupo | Thaís3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4020,
+          -1020
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/39a1b8b1-dcd0-4559-838f-a3af3425121c",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[ACELERA] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"instagram\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+              },
+              {
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"o que impede de alcançar seu objetivo\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+              },
+              {
+                "name": "produto",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"produto que já desenvolveu\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "dono",
+                "value": "matheusschefer.bma@gmail.com"
+              },
+              {
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"plano\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Acelera - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4460,
+          260
+        ],
+        "id": "04b60231-3e17-4a9d-94ff-3c9fcb1b0e36",
+        "name": "Matheus CLINT"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/42d8a0e4-eec6-4397-9247-1dcafa57285f",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[ACELERA] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "dono",
+                "value": "gabrielfernandes.bma@gmail.com"
+              },
+              {
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"plano\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Acelera - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4460,
+          -440
+        ],
+        "id": "c8391bf3-1e2c-4342-aa58-5a8b1c63f012",
+        "name": "Gabriel CLINT"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo agendamento ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Closer Responsável:* Gabriel\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "223c10c5-4eb1-4179-965f-2dfed6a9e60a",
+        "name": "Notifica grupo | Deborah15",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4220,
+          -440
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "554591088542"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo agendamento ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c3598149-c86d-4a6d-9df2-ba232867dd87",
+        "name": "Notifica grupo | Deborah16",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4000,
+          -440
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/e9ec218d-6092-41ca-8241-ca74ae954151",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[ACELERA] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "dono",
+                "value": "bma.thaiscloser@gmail.com"
+              },
+              {
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"plano\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Acelera - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4460,
+          -1020
+        ],
+        "id": "b418a568-5211-447c-b767-b421b285966c",
+        "name": "Thais CLINT"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead parcial ACELERA*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao}} {{ $('Campos').item.json.hora_reuniao}}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Atuação*: {{ $('Campos').item.json.atuacao}}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "62f3d2b6-9b24-4ab2-b5c5-b659f5726c85",
+        "name": "Notifica grupo | Deborah",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4200,
+          800
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/aedc4591-aae8-486d-9435-8007788aa1c2",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[ACELERA] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"instagram\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+              },
+              {
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"o que impede de alcançar seu objetivo\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+              },
+              {
+                "name": "produto",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"produto que já desenvolveu\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Acelera - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -4460,
+          800
+        ],
+        "id": "5c441785-4edf-4b66-abda-fa3e7df01e03",
+        "name": "Matheus CLINT1"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Date & Time4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time4": {
+        "main": [
+          [
+            {
+              "node": "data da aplicacao",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos": {
+        "main": [
+          [
+            {
+              "node": "preencheu completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "data da aplicacao": {
+        "main": [
+          [
+            {
+              "node": "Busca Invite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "preencheu completo": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Matheus CLINT1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preencheu completo": {
+        "main": [
+          [
+            {
+              "node": "Report - Agendamentos Closers1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preencheu parcial": {
+        "main": [
+          [
+            {
+              "node": "Report - Agendamentos Closers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Thais CLINT",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Gabriel CLINT",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Matheus CLINT",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah7": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah8": {
+        "main": [
+          []
+        ]
+      },
+      "Notifica grupo | Thaís2": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Thaís3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Thaís3": {
+        "main": [
+          []
+        ]
+      },
+      "Matheus CLINT": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gabriel CLINT": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah15",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah15": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah16",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah16": {
+        "main": [
+          []
+        ]
+      },
+      "Thais CLINT": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Thaís2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Busca Invite": {
+        "main": [
+          [
+            {
+              "node": "Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah": {
+        "main": [
+          []
+        ]
+      },
+      "Matheus CLINT1": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "09462673-cccf-427b-8f74-b14a4f075971",
   "connections": {
     "Trata Webhook": {
       "main": [
