@@ -1,5 +1,1229 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "28cd9887-7db2-4836-bacc-89d15fc1d347",
+    "workflowId": "k6N3Fj2ErklGLwvP",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "5d87f0eb-c702-4a03-a08a-aec66669d772",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -100,
+          120
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.response.submittedAt }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "c9f3f3be-d1eb-4d5d-b47f-cf035cfc5550",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          120,
+          120
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "09c1bd78-c139-4443-914c-81f2bdfb4f0f",
+        "name": "Date & Time4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          340,
+          120
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "609301d1-e0c2-4c96-a1b8-e0a60d99cf23",
+          "options": {}
+        },
+        "id": "c5f50d55-47b7-44db-896d-ddca1943560b",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -320,
+          120
+        ],
+        "webhookId": "609301d1-e0c2-4c96-a1b8-e0a60d99cf23"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "2e6502b5-87b7-471a-b380-b19f9a3f97f6",
+                "name": "nome",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e60f03a0dea25f0b9729\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "149210d9-9f6b-4851-9284-98de9b788a81",
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e60f03a0dea25f0b972a\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "4fb9b988-1edc-46fc-815a-5af8db220607",
+                "name": "whatsapp",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b972b\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "3cfee21f-b1ec-4390-af75-3e31fc9eac39",
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b972d\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "0bce8ae9-c543-46fc-b923-a3dec62bfda9",
+                "name": "oportunidade",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b9735\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "45f2c6ac-f807-47fd-8717-abf51913814b",
+                "name": "investimento",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b9732\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "ff208309-fee9-45b0-bdab-96eb0c0e9c3d",
+                "name": "data da aplicacao",
+                "value": "={{ $item(\"0\").$node[\"data da aplicacao\"].json[\"formattedDate\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "291a1ed8-cf3a-4a4f-a71a-2c8dbf3e7171",
+                "name": "utm_source",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+                "type": "string"
+              },
+              {
+                "id": "403a84f8-2f90-4504-9f03-0a9cef7d3164",
+                "name": "utm_campaign",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+                "type": "string"
+              },
+              {
+                "id": "aba98cf8-8622-44c0-95c5-bb01dcd38312",
+                "name": "utm_medium",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+                "type": "string"
+              },
+              {
+                "id": "f0388b2d-0935-48d1-8da0-dcf2c45daee2",
+                "name": "utm_term",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+                "type": "string"
+              },
+              {
+                "id": "1ecafbd5-f383-4938-ae30-b495b78fb086",
+                "name": "utm_content",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+                "type": "string"
+              },
+              {
+                "id": "9248cdf2-4149-4626-ba6e-beee79f7d38c",
+                "name": "data_reuniao",
+                "value": "={{ $json.collection[0].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy') }}",
+                "type": "string"
+              },
+              {
+                "id": "d000487c-b784-495c-b544-e0a891a50de7",
+                "name": "hora_reuniao",
+                "value": "={{ $json.collection[0].start_time.toDateTime().setZone('America/Sao_Paulo').toFormat('HH:mm') }}",
+                "type": "string"
+              },
+              {
+                "id": "11937d40-a6b4-4c0d-9781-7532375bca10",
+                "name": "closer",
+                "value": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                "type": "string"
+              },
+              {
+                "id": "fb4532b9-9c9a-46a3-a372-3b4f24f48f83",
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b972c\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "c19bc61f-c3e7-4471-a75a-83162e953313",
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b9731\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "9230f491-0e1c-4281-9543-b8c4e370f155",
+                "name": "quantos_desenvolvimentos",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b972e\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "260d368f-1c3c-4820-878d-35f886be899e",
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b9734\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "37b1ac16-6257-4d13-9841-83544a41e5b5",
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e61003a0dea25f0b972f\"][\"content\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "1a94518f-4a36-4264-852d-28d7ee5085d7",
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6904e8d7166562f6430e4781\"][\"content\"][\"0\"] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1140,
+          100
+        ],
+        "id": "5f109123-6414-4b3a-a250-f5c6e74e22e2",
+        "name": "Campos"
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $node[\"Trata Webhook\"].json[\"response\"][\"submittedAt\"] }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "8d1562ce-995a-4e25-b798-bcf9c43f5860",
+        "name": "data da aplicacao",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          540,
+          120
+        ]
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events?organization=\thttps://api.calendly.com/organizations/85e6ccb1-b72c-49b9-abde-9608c02a1d01&invitee_email={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"6878e60f03a0dea25f0b972a\"][\"content\"] }}&min_start_time={{ $item(\"0\").$node[\"Date & Time4\"].json[\"currentDate\"] }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "4676d6f9-9483-4447-95cd-da896b0eee69",
+        "name": "Busca Invite",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          820,
+          120
+        ],
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "1a83651b-1df7-4574-b72c-c4bcda28d763",
+                      "leftValue": "={{ $('Busca Invite').item.json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Thais BMA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Thais BMA"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "28dd7602-cc58-41a6-a5e2-c16d77c395aa",
+                      "leftValue": "={{ $('Busca Invite').item.json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Gabriel Fernandes",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Gabriel Fernandes"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "8ef7ebfe-eaf3-4f6d-ae5d-3ef9dc9f72b8",
+                      "leftValue": "={{ $('Busca Invite').item.json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Matheus Schefer BMA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Matheus Schefer BMA"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b656be90-ecce-40d9-859b-96e891533267",
+        "name": "Switch",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          1720,
+          80
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*NOVO agendamento bootcamp*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao }} {{ $('Campos').item.json.hora_reuniao }}\n\n*Closer Responsável:* Matheus\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['negocio'] }}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\nFormulario: Aplicação Bootcamp - Página\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "65d0e9e4-de81-4e2a-b924-cb2d122cf7f7",
+        "name": "Notifica grupo | Deborah7",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2480,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5545991195467"
+              },
+              {
+                "name": "message",
+                "value": "=*NOVO agendamento bootcamp*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao }} {{ $('Campos').item.json.hora_reuniao }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['negocio'] }}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\nFormulario: Aplicação Bootcamp - Página\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "89c6ce6a-dc6a-4d6a-8f2d-768566615f4b",
+        "name": "Notifica grupo | Deborah8",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2680,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*NOVO agendamento bootcamp*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao }} {{ $('Campos').item.json.hora_reuniao }}\n\n*Closer Responsável:* Thaís\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['negocio'] }}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\nFormulario: Aplicação Bootcamp - Página\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "93342f3e-47c2-4b36-af89-fa77af018d06",
+        "name": "Notifica grupo | Thaís2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2460,
+          -120
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=554599203611"
+              },
+              {
+                "name": "message",
+                "value": "=*NOVO agendamento bootcamp*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao }} {{ $('Campos').item.json.hora_reuniao }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['negocio'] }}\n\nFormulario: Aplicação Bootcamp - Página\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8ad086b4-6b5a-4cf9-928e-9cf1a74641c6",
+        "name": "Notifica grupo | Thaís3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2680,
+          -120
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/39a1b8b1-dcd0-4559-838f-a3af3425121c",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[BOOTCAMP] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"negocio\"] }}"
+              },
+              {
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+              },
+              {
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"dificuldade\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"utm_term\"] }}"
+              },
+              {
+                "name": "dono",
+                "value": "matheusschefer.bma@gmail.com"
+              },
+              {
+                "name": "data_ap",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"data da aplicacao\"] }}"
+              },
+              {
+                "name": "data_call",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"data_reuniao\"] }}"
+              },
+              {
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"plano\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Bootcamp - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2220,
+          300
+        ],
+        "id": "83fc4ddf-7a11-4eee-84dc-0b05262b983d",
+        "name": "Matheus CLINT"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/42d8a0e4-eec6-4397-9247-1dcafa57285f",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[BOOTCAMP] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"instagram\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+              },
+              {
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"o que impede de alcançar seu objetivo\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+              },
+              {
+                "name": "produto",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"produto que já desenvolveu\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "dono",
+                "value": "gabrielfernandes.bma@gmail.com"
+              },
+              {
+                "name": "data_call",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"data_reuniao\"] }}"
+              },
+              {
+                "name": "data_ap",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"data da aplicacao\"] }}"
+              },
+              {
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"plano\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Bootcamp - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2220,
+          80
+        ],
+        "id": "db94c1f5-419e-4f90-bc80-93e59cfbf694",
+        "name": "Gabriel CLINT"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*NOVO agendamento bootcamp*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao }} {{ $('Campos').item.json.hora_reuniao }}\n\n*Closer Responsável:* Gabriel Fernandes\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['negocio'] }}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\nFormulario: Aplicação Bootcamp - Página\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "16e86dde-edbe-4590-9bd1-0a3b55e7f36e",
+        "name": "Notifica grupo | Deborah15",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2460,
+          80
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "554591088542"
+              },
+              {
+                "name": "message",
+                "value": "=*NOVO agendamento bootcamp*\n\n*Data e hora da Reunião*: {{ $('Campos').item.json.data_reuniao }} {{ $('Campos').item.json.hora_reuniao }}\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['negocio'] }}\n\n*Plano:* {{ $('Campos').item.json.plano}}\n\nFormulario: Aplicação Bootcamp - Página\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8860977b-4062-4b1d-862e-1d667583ff64",
+        "name": "Notifica grupo | Deborah16",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2680,
+          80
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/e9ec218d-6092-41ca-8241-ca74ae954151",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[BOOTCAMP] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"instagram\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+              },
+              {
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"o que impede de alcançar seu objetivo\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+              },
+              {
+                "name": "produto",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"produto que já desenvolveu\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "dono",
+                "value": "bma.thaiscloser@gmail.com"
+              },
+              {
+                "name": "data_call",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"data_reuniao\"] }}"
+              },
+              {
+                "name": "data_ap",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"data da aplicacao\"] }}"
+              },
+              {
+                "name": "plano",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"plano\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Bootcamp - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2220,
+          -120
+        ],
+        "id": "b3071ad5-f44d-4b2d-8ed3-3cacdbfb593c",
+        "name": "Thais CLINT"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "85c5df3b-7509-4730-9cfe-8ff317fb81c2",
+                "leftValue": "={{ $('Trata Webhook').item.json.response.submittedAt }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1400,
+          100
+        ],
+        "id": "e4fa3a55-9593-49e8-aeca-daaa68864e04",
+        "name": "preencheu completo"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363421884512548-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Lead parcial bootcamp*\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Modelo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Informações completas na Clint*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "be47eeea-9c58-4d47-b3d7-ab6faf087536",
+        "name": "Notifica grupo | Deborah",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2480,
+          700
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/aedc4591-aae8-486d-9435-8007788aa1c2",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[BOOTCAMP] {{ $item(\"0\").$node[\"Campos\"].json[\"nome\"] }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"email\"] }}"
+              },
+              {
+                "name": "telefone",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"whatsapp\"] }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"instagram\"] }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "cenario",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"cenario\"] }}"
+              },
+              {
+                "name": "dificuldade",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"o que impede de alcançar seu objetivo\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"faturamento\"] }}"
+              },
+              {
+                "name": "objetivo",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"objetivo\"] }}"
+              },
+              {
+                "name": "produto",
+                "value": "={{ $item(\"0\").$node[\"Campos\"].json[\"produto que já desenvolveu\"] }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_source\"] }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_campaign\"] }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_medium\"] }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_content\"] }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"tracking\"][\"utm_term\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação - Bootcamp - Página"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2220,
+          700
+        ],
+        "id": "9fae5075-c976-4de5-8917-91536d8c3857",
+        "name": "SDR"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Date & Time4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time4": {
+        "main": [
+          [
+            {
+              "node": "data da aplicacao",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos": {
+        "main": [
+          [
+            {
+              "node": "preencheu completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "data da aplicacao": {
+        "main": [
+          [
+            {
+              "node": "Busca Invite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Busca Invite": {
+        "main": [
+          [
+            {
+              "node": "Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Thais CLINT",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Gabriel CLINT",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Matheus CLINT",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah7": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Thaís2": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Thaís3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Matheus CLINT": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gabriel CLINT": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah15",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah15": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah16",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Thais CLINT": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Thaís2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "preencheu completo": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "SDR",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo | Deborah": {
+        "main": [
+          []
+        ]
+      },
+      "SDR": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "28cd9887-7db2-4836-bacc-89d15fc1d347",
   "connections": {
     "Trata Webhook": {
       "main": [
