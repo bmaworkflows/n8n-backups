@@ -1,5 +1,328 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "4d19820d-3710-4c74-bb7b-f1d05f2e9cba",
+    "workflowId": "RM9g0iERj5poQSg4",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "8cad0434-9219-4100-b658-3e28e91edc81",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -100,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"fields[telefone][value]\"] = formataTelefone($input.all()[0].json[\"fields[telefone][value]\"])\n\nreturn $input.all();"
+        },
+        "id": "4d71d259-c0ee-4b7e-9b28-f257c26b318d",
+        "name": "Formata Telefone",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          300,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "2a68488c-f0b4-4406-baf9-b2c4bff1f2fb",
+                "name": "nome",
+                "value": "={{ $('Formata Telefone').item.json[\"fields[name][value]\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "62ec3931-595f-43f5-9181-73c400ca8c9a",
+                "name": "email",
+                "value": "={{ $('Formata Telefone').item.json[\"fields[email][value]\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "b7f3a6f5-6974-4aaf-9140-e16dffdddf74",
+                "name": "whatsapp",
+                "value": "={{ $('Formata Telefone').item.json[\"fields[telefone][value]\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "1cad61e4-9a1a-4934-adc4-c7578f4baffa",
+                "name": "Data_da_conversao",
+                "value": "={{ $now.format('dd/MM/yyyy') }}",
+                "type": "string"
+              },
+              {
+                "id": "6e1f9e10-b3e6-4033-90d9-d7d5fffa1ab7",
+                "name": "pagina",
+                "value": "={{ $('Formata Telefone').item.json[\"meta[page_url][value]\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "762e8950-0e93-4e90-bc24-700fc4b03b47",
+                "name": "profissao",
+                "value": "={{ $('Formata Telefone').item.json[\"fields[field_7e406a4][raw_value]\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "98a5885a-90db-492a-b596-403c7d3b057c",
+                "name": "tempo",
+                "value": "={{ $('Formata Telefone').item.json[\"fields[field_d43406d][raw_value]\"] }}",
+                "type": "string"
+              },
+              {
+                "id": "16bfa0e3-2bb7-411e-8f52-eb76784fb719",
+                "name": "investimento",
+                "value": "={{ $('Formata Telefone').item.json[\"fields[field_7838490][raw_value]\"] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "32b25d2d-993e-4f32-bd58-d432ad8d827d",
+        "name": "Campos",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          700,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function getPathFromURL(url) {\n    try {\n        // Usa regex para extrair o caminho da URL\n        const match = url.match(/^https?:\\/\\/[^/]+(\\/[^?#]*)/);\n        if (match) {\n            return match[1]; // Retorna o path\n        } else {\n            return \"Invalid URL\";\n        }\n    } catch (error) {\n        console.error(\"Erro ao processar a URL:\", error.message);\n        return \"Invalid URL\";\n    }\n}\n\n// Exemplo de uso\nconst url = $input.all()[0].json['URL']\nconst pathname = (getPathFromURL(url)); // Retorna \"/ip-ano-novo-v3\"\n\nreturn {pathname}"
+        },
+        "id": "33e1972e-ca55-4577-bf8d-50060d1846d8",
+        "name": "Extrai Path",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          500,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1CrbzY5WsO0lA7uj3Nz1ds-U_GeyLPVb268t57_-uPgY/edit?usp=sharing",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "leads",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CrbzY5WsO0lA7uj3Nz1ds-U_GeyLPVb268t57_-uPgY/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $json.Data_da_conversao }}",
+              "nome": "={{ $json.nome }}",
+              "email": "={{ $json.email }}",
+              "pagina": "={{ $json.pagina }}",
+              "telefone": "={{ $json.whatsapp }}",
+              "profissao": "={{ $json.profissao }}",
+              "tempo": "={{ $json.tempo }}",
+              "investimento": "={{ $json.investimento }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "pagina",
+                "displayName": "pagina",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "profissao",
+                "displayName": "profissao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "tempo",
+                "displayName": "tempo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "investimento",
+                "displayName": "investimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "027b4b1c-e62d-4f16-8b3e-b8534e8f7161",
+        "name": "Dados Planilha |Meteórico 1",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          920,
+          240
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "a0732afb-0a32-42f3-bb14-79f71bbeb639",
+          "options": {}
+        },
+        "id": "0ae4e1e1-093e-4cd2-86e5-ec5b94a71381",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -340,
+          240
+        ],
+        "webhookId": "a0732afb-0a32-42f3-bb14-79f71bbeb639"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Formata Telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrai Path": {
+        "main": [
+          [
+            {
+              "node": "Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formata Telefone": {
+        "main": [
+          [
+            {
+              "node": "Extrai Path",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos": {
+        "main": [
+          [
+            {
+              "node": "Dados Planilha |Meteórico 1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Dados Planilha |Meteórico 1": {
+        "main": [
+          []
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "4d19820d-3710-4c74-bb7b-f1d05f2e9cba",
   "connections": {
     "Trata Webhook": {
       "main": [
