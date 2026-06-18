@@ -1,5 +1,601 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "7de14a13-5964-466b-938a-07c7e7bbf404",
+    "workflowId": "ZJLNaS0sPXZiA7rH",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "7cdaa66e-48a9-4b91-bb1e-aceb0626fd9e",
+          "options": {}
+        },
+        "id": "d2221b96-c90a-49f3-b286-29c0f12c721f",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -32,
+          224
+        ],
+        "webhookId": "7cdaa66e-48a9-4b91-bb1e-aceb0626fd9e"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "d4cb9402-9783-484e-a30f-a776b28460a2",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          176,
+          224
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "d8b33155-7ccd-44ae-a90c-97a9ed8090e3",
+                "leftValue": "={{ $json.investimento }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          816,
+          224
+        ],
+        "id": "8ec35765-85d8-4812-8dd0-e4416f34fa71",
+        "name": "Form Completo"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d554fa62-4b8e-4af6-b219-148849e33eff",
+                "name": "nome",
+                "value": "={{ $json.response.answers[\"6a037f21b7ca064cc6005374\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "21f7e7a4-8c5c-44ba-a261-2a0feca10f58",
+                "name": "whatsapp",
+                "value": "={{ $json.response.answers[\"6a037f21b7ca064cc6005376\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "a69ada1c-4dac-485a-8d0f-34f973380b7a",
+                "name": "instagram",
+                "value": "={{ $json.response.answers[\"6a037f21b7ca064cc6005378\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "dadf2585-25fc-4a41-85a7-d17010f6a188",
+                "name": "tipo de negocio",
+                "value": "={{ $json.response.answers[\"6a037f21b7ca064cc600537a\"].content[0] }}",
+                "type": "array"
+              },
+              {
+                "id": "1b162a1b-59b0-40dd-bfd9-f49f51bd8b43",
+                "name": "faturamento",
+                "value": "={{ $json.response.answers[\"6a04e902133673aaaf0940f6\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "b0bf1619-54aa-476e-9235-5deb23bb2d3b",
+                "name": "utm_source",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}",
+                "type": "string"
+              },
+              {
+                "id": "3963442e-4392-45b7-a0f2-2d78e6426796",
+                "name": "utm_medium",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}",
+                "type": "string"
+              },
+              {
+                "id": "bb0025ee-7695-4494-9740-e280da33ee3e",
+                "name": "utm_campaign",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}",
+                "type": "string"
+              },
+              {
+                "id": "1fd75d16-7620-4889-8733-419ad792103f",
+                "name": "utm_content",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}",
+                "type": "string"
+              },
+              {
+                "id": "f45fc219-4e11-476b-aa92-99a5650a21fb",
+                "name": "utm_term",
+                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}",
+                "type": "string"
+              },
+              {
+                "id": "cf093be3-bbb5-4d5d-87ff-98d97b149c36",
+                "name": "investimento",
+                "value": "={{ $json.response.answers[\"6a037f22b7ca064cc6005382\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "deba784d-e8ca-4a0f-b88a-2a43c31cf365",
+                "name": "grupo seleto",
+                "value": "={{ $json.response.answers[\"6a037f22b7ca064cc6005380\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "163df3e9-de29-4d62-8ce7-c897c537aa7c",
+                "name": "oportunidade",
+                "value": "={{ $json.response.answers[\"6a037f22b7ca064cc600537e\"].content }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {
+            "ignoreConversionErrors": true
+          }
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          400,
+          224
+        ],
+        "id": "b85c8f0a-550d-4d71-ad61-f81f593ad0eb",
+        "name": "Campos"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1136,
+          432
+        ],
+        "id": "e9bdeeda-610b-4b9d-9f33-251eb79de321",
+        "name": "Lead Parcial"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "4d51afe1-d038-45ab-a3ef-8af66d6f677e",
+                "leftValue": "={{ $json.whatsapp }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          608,
+          224
+        ],
+        "id": "f8f0bfd5-668c-4002-9392-12e12618153d",
+        "name": "Elimina respostas vazias"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/0b3a6625-093c-44dc-9f8a-de6d7a9480e6",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "={{ $json.nome }}"
+              },
+              {
+                "name": "whatsapp",
+                "value": "={{ $json.whatsapp }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $json.instagram }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $json.faturamento }}"
+              },
+              {
+                "name": "motivo",
+                "value": "={{ $json.oportunidade }}"
+              },
+              {
+                "name": "investimento",
+                "value": "={{ $json.investimento }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $json.utm_source }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $json.utm_campaign }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $json.utm_medium }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $json.utm_content }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $json.utm_term }}"
+              },
+              {
+                "name": "seleto",
+                "value": "={{ $json[\"grupo seleto\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação Webnário"
+              },
+              {
+                "name": "dono",
+                "value": "alanassis.bma@gmail.com"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1136,
+          208
+        ],
+        "id": "041f08f3-75db-463a-b79d-2b9c6910c78e",
+        "name": "leva pra clint completo"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação Webnário:* ✅🔥\n\nResponsável: Allan\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Instagram*: {{ $('Campos').item.json.instagram }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Tipo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Por que você acredita que participar do nosso programa é ideal para o crescimento do seu negócio?*: {{ $('Campos').item.json.oportunidade }}\n\n*Por que você acha que sua aplicação deve ser aceita?*: {{ $('Campos').item.json['grupo seleto'] }}\n\nInvestimento: {{ $('Campos').item.json.investimento }}\n\n*Origens:*\nAplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "a90fcc87-e037-4c63-aaaa-cb18312405bf",
+        "name": "Report - Agendamentos Closers  - Completo",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1360,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/0b3a6625-093c-44dc-9f8a-de6d7a9480e6",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "nome",
+                "value": "=[P] {{ $json.nome }}"
+              },
+              {
+                "name": "whatsapp",
+                "value": "={{ $json.whatsapp }}"
+              },
+              {
+                "name": "instagram",
+                "value": "={{ $json.instagram }}"
+              },
+              {
+                "name": "negocio",
+                "value": "={{ $json[\"tipo de negocio\"] }}"
+              },
+              {
+                "name": "faturamento",
+                "value": "={{ $json.faturamento }}"
+              },
+              {
+                "name": "motivo",
+                "value": "={{ $json.oportunidade }}"
+              },
+              {
+                "name": "investimento",
+                "value": "={{ $json.investimento }}"
+              },
+              {
+                "name": "utm_source",
+                "value": "={{ $json.utm_source }}"
+              },
+              {
+                "name": "utm_campaign",
+                "value": "={{ $json.utm_campaign }}"
+              },
+              {
+                "name": "utm_medium",
+                "value": "={{ $json.utm_medium }}"
+              },
+              {
+                "name": "utm_content",
+                "value": "={{ $json.utm_content }}"
+              },
+              {
+                "name": "utm_term",
+                "value": "={{ $json.utm_term }}"
+              },
+              {
+                "name": "seleto",
+                "value": "={{ $json[\"grupo seleto\"] }}"
+              },
+              {
+                "name": "formulario",
+                "value": "Aplicação Webnário"
+              },
+              {
+                "name": "dono",
+                "value": "alanassis.bma@gmail.com"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1360,
+          432
+        ],
+        "id": "a823e70f-d31e-4e64-baa2-0ce8406c31cd",
+        "name": "leva pra clint parcial"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=5521965485215"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação Webnário:* ✅🔥\n\nResponsável: Allan\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Instagram*: {{ $('Campos').item.json.instagram }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Tipo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Por que você acredita que participar do nosso programa é ideal para o crescimento do seu negócio?*: {{ $('Campos').item.json.oportunidade }}\n\n*Por que você acha que sua aplicação deve ser aceita?*: {{ $('Campos').item.json['grupo seleto'] }}\n\nInvestimento: {{ $('Campos').item.json.investimento }}\n\n*Origens:*\nAplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "046c576d-1aee-44b0-ad60-702246415393",
+        "name": "Report - Allan completo",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1600,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=5521965485215"
+              },
+              {
+                "name": "message",
+                "value": "=*Nova Aplicação PARCIAL Webnário:* 🚨\n\nResponsável: Allan\n\n*Nome do lead*: {{ $('Campos').item.json.nome }}\n\n*E-mail*: {{ $('Campos').item.json.email }}\n\n*Whatsapp*: {{ $('Campos').item.json.whatsapp }}\n\n*Instagram*: {{ $('Campos').item.json.instagram }}\n\n*Faturamento*: {{ $('Campos').item.json.faturamento }}\n\n*Tipo de Negócio*: {{ $('Campos').item.json['tipo de negocio'] }}\n\n*Por que você acredita que participar do nosso programa é ideal para o crescimento do seu negócio?*: {{ $('Campos').item.json.oportunidade }}\n\n*Por que você acha que sua aplicação deve ser aceita?*: {{ $('Campos').item.json['grupo seleto'] }}\n\nInvestimento: {{ $('Campos').item.json.investimento }}\n\n*Origens:*\nAplicação Webnário\n\n*_utm_source:_* {{ $('Campos').item.json.utm_source }}\n*_utm_campaign:_* {{ $('Campos').item.json.utm_campaign }}\n*_utm_medium:_* {{ $('Campos').item.json.utm_medium }}\n*_utm_content:_* {{ $('Campos').item.json.utm_content }}\n*_utm_term:_* {{ $('Campos').item.json.utm_term }}\n\n*Informações completas na Clint*:"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5fa8c0f3-a60b-416e-a00e-8d96ce8c603a",
+        "name": "Report - Allan parcial",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1600,
+          432
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Form Completo": {
+        "main": [
+          [
+            {
+              "node": "leva pra clint completo",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Lead Parcial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos": {
+        "main": [
+          [
+            {
+              "node": "Elimina respostas vazias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Lead Parcial": {
+        "main": [
+          [
+            {
+              "node": "leva pra clint parcial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Elimina respostas vazias": {
+        "main": [
+          [
+            {
+              "node": "Form Completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leva pra clint completo": {
+        "main": [
+          [
+            {
+              "node": "Report - Agendamentos Closers  - Completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leva pra clint parcial": {
+        "main": [
+          [
+            {
+              "node": "Report - Allan parcial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Report - Agendamentos Closers  - Completo": {
+        "main": [
+          [
+            {
+              "node": "Report - Allan completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "7de14a13-5964-466b-938a-07c7e7bbf404",
   "connections": {
     "Webhook": {
       "main": [
