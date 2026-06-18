@@ -1,5 +1,364 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "085609cf-08d2-4532-bcd2-5f721ee3bbfe",
+    "workflowId": "grkd7da6L2vSsDkw",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "2c3613dc-7c4a-40af-819c-961a5852725f",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "7bd2995e-c63b-4144-a39d-8b6415b91cd0",
+        "name": "Webhook",
+        "webhookId": "2c3613dc-7c4a-40af-819c-961a5852725f"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "e76923d1-83e7-4f75-9a2f-dd38b9d6e563",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=5541991749469"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead BMAinc*\n\n*Nome do lead*: {{ $json.nome }}\n\n*E-mail*: {{ $json.email }}\n\n*Whatsapp*: {{ $json.telefone }}\n\n*Profissão:* {{ $json.tempo[0] }}\n\n*Tempo que tem interesse em adquirir o terreno:* {{ $json.tempo }}\n\n*renda:* {{ $json.renda }}\n\n*Canal de preferência para contato:* {{ $json.canal }}\n\n*Horário de preferência para contato:* {{ $json.horario }}\n\n*Disponível pra investir:* {{ $json.investimento }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3708c05b-24eb-49c7-9196-e81f67e7cc25",
+        "name": "Report",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          640,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "1f61b421-dc70-45ea-b7ca-01c030e47a6d",
+                "name": "nome",
+                "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb27\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "29179bfe-a39d-4a61-a450-f7f7b4be1cce",
+                "name": "email",
+                "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb29\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "9e414a14-1ecd-492e-9f9f-5af40c795f70",
+                "name": "telefone",
+                "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb28\"].content }}",
+                "type": "string"
+              },
+              {
+                "id": "dba47fef-89db-4bfe-b6cb-e933c6d2780f",
+                "name": "interesse",
+                "value": "={{ $json.response.answers[\"69405019323896b15205aa5b\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "5fe17506-61a3-40a0-a994-99b8b2303f7c",
+                "name": "tempo",
+                "value": "={{ $json.response.answers[\"6940503ddaedcac447058363\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "fa2e4260-928f-4d1c-8eb8-901866efc370",
+                "name": "investimento",
+                "value": "={{ $json.response.answers[\"69405055182edd7c680ca6e8\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "469d6d3d-e506-40a7-9531-1d65c03a042f",
+                "name": "renda",
+                "value": "={{ $json.response.answers[\"6940507205bff2e95e0fdab6\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "395da50d-2217-4a57-8428-6c3bf7c89471",
+                "name": "profissao",
+                "value": "={{ $json.response.answers[\"68f774eac726520d6a0afb2a\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "c405a42b-903d-42bf-842f-03ffa2a42cfb",
+                "name": "canal",
+                "value": "={{ $json.response.answers[\"694050a2323896b15205aa64\"].content[0] }}",
+                "type": "string"
+              },
+              {
+                "id": "ee4d8338-1fa5-47ce-ae44-0a492c446f52",
+                "name": "horario",
+                "value": "={{ $json.response.answers[\"694050c8323896b15205aa70\"].content[0] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          400,
+          0
+        ],
+        "id": "14d54764-f976-410b-9c1a-5c00e08f6963",
+        "name": "campos"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1m8WGH58WpMi8c4XqxCCbdIq6CaPH0GglJJVutureQto/edit?gid=0#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 998971742,
+            "mode": "list",
+            "cachedResultName": "leads dezembro",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1m8WGH58WpMi8c4XqxCCbdIq6CaPH0GglJJVutureQto/edit#gid=998971742"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $now.format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $('campos').item.json.nome }}",
+              "email": "={{ $('campos').item.json.email }}",
+              "telefone": "={{ $('campos').item.json.telefone }}",
+              "profissao": "={{ $('campos').item.json.profissao }}",
+              "investimento": "={{ $('campos').item.json.investimento }}",
+              "quanto tempo pretende comprar": "={{ $('campos').item.json.tempo }}",
+              "renda": "={{ $('campos').item.json.renda }}",
+              "canal de preferencia": "={{ $('campos').item.json.canal }}",
+              "horario para contato": "={{ $('campos').item.json.horario }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "profissao",
+                "displayName": "profissao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "quanto tempo pretende comprar",
+                "displayName": "quanto tempo pretende comprar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "investimento",
+                "displayName": "investimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "renda",
+                "displayName": "renda",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "canal de preferencia",
+                "displayName": "canal de preferencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "horario para contato",
+                "displayName": "horario para contato",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          864,
+          0
+        ],
+        "id": "05e4e9c8-6b82-4a94-ae62-576ef95b9380",
+        "name": "Google Sheets",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "campos": {
+        "main": [
+          [
+            {
+              "node": "Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Report": {
+        "main": [
+          [
+            {
+              "node": "Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "085609cf-08d2-4532-bcd2-5f721ee3bbfe",
   "connections": {
     "Webhook": {
       "main": [
