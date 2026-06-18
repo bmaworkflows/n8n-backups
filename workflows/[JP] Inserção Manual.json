@@ -1,5 +1,160 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "bd1ea9c8-55f0-4e22-97a7-c853e9da72ad",
+    "workflowId": "ugPUw0ZzL2o5P9mM",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "285c5dbe-6e19-49c5-b7ea-079db4c138bf",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          820,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "443bd9fd-55ba-472e-8a2b-0d6b9c94a453",
+        "name": "Cria lead v21",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1020,
+          400
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome: {{ $('Trata Webhook').item.json.form_response.answers[0].text }}\n\nEmail: {{ $('Trata Webhook').item.json.form_response.answers[2].email }}\n\nTelefone: {{ $('Trata Webhook').item.json.form_response.answers[1].phone_number }}\n\nInstagram: {{ $('Trata Webhook').item.json.form_response.answers[3].text }}\n\nCloser responsável: {{ $('Trata Webhook').item.json.form_response.answers[4].choice.label }}\n\nTipo de negócio: {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\n\nFaturamento: {{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\n\nOrigem: {{ $('Trata Webhook').item.json.form_response.answers[7].text }}\n\nObservação: {{ $('Trata Webhook').item.json.form_response.answers[8].text }}\n\nNome do quem preencheu a inserção:  {{ $('Trata Webhook').item.json.form_response.answers[9].text }}"
+        },
+        "id": "df831190-4c2a-48be-a5fa-2662c4ae604a",
+        "name": "atualiza informações v21",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1240,
+          400
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5671139092",
+          "itemId": "={{ $('Cria lead v21').item.json.id }}",
+          "columnValues": "={\n\"texto__1\": \"{{ $('formulário pro whatsapp da vendedora').item.json.pagina }}\"\n}"
+        },
+        "id": "7ae1c775-4a5f-40f5-b55e-7e62819aad48",
+        "name": "define campos personalizados v21",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2220,
+          660
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "fkqFP3ydsR7WQhmr",
+            "name": "JP Bijari"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "97b60433-db7a-4ac4-b75b-3a3ba230356f",
+          "options": {}
+        },
+        "id": "559e52a1-dede-4051-9b37-2988e7d16442",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          580,
+          400
+        ],
+        "webhookId": "97b60433-db7a-4ac4-b75b-3a3ba230364a"
+      }
+    ],
+    "connections": {
+      "Cria lead v21": {
+        "main": [
+          [
+            {
+              "node": "atualiza informações v21",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "atualiza informações v21": {
+        "main": [
+          []
+        ]
+      },
+      "define campos personalizados v21": {
+        "main": [
+          []
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Cria lead v21",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "bd1ea9c8-55f0-4e22-97a7-c853e9da72ad",
   "connections": {
     "Cria lead v21": {
       "main": [
