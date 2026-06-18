@@ -1,5 +1,132 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "b1e994d8-b2d9-46e0-a6db-4c32abe30787",
+    "workflowId": "X9RKl1kuIKHsDVqm",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "1f051610-4876-4b22-9f77-a8419a285990",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "782606a5-fcdf-4303-b5a6-a3771f9f9731",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          20,
+          0
+        ],
+        "id": "0f2e3a5a-8e5d-493c-9111-f33fd647a234",
+        "name": "Webhook",
+        "webhookId": "782606a5-fcdf-4303-b5a6-a3771f9f9731"
+      },
+      {
+        "parameters": {
+          "email": "={{ $json[\"E-mail\"] }}",
+          "updateIfExists": true,
+          "additionalFields": {
+            "firstName": "={{ $json[\"Nome Completo\"] }}",
+            "phone": "={{ $json[\"Telefone (WhatsApp)\"] }}"
+          }
+        },
+        "id": "c1dcd067-8edd-4e73-b5c6-c1ae7570f459",
+        "name": "ID Usuário",
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          420,
+          0
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "4ygJeCXAzG5KRUPW",
+            "name": "Active Carol"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contactTag",
+          "tagId": "=1470",
+          "contactId": "={{ $json.id }}"
+        },
+        "id": "07f3c808-956e-4a3a-895f-7e4c7542ac2c",
+        "name": "Adiciona Tag",
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          640,
+          0
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "4ygJeCXAzG5KRUPW",
+            "name": "Active Carol"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ID Usuário": {
+        "main": [
+          [
+            {
+              "node": "Adiciona Tag",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "ID Usuário",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b1e994d8-b2d9-46e0-a6db-4c32abe30787",
   "connections": {
     "Webhook": {
       "main": [
