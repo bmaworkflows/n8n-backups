@@ -1,5 +1,4470 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "444be6ae-87cd-42ad-aae6-9ddfb1d78380",
+    "workflowId": "O79Em3p6J2cnPbJP",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 9
+              }
+            ]
+          }
+        },
+        "id": "c8bee560-254a-4794-b5ef-38b7816b4bad",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -384,
+          240
+        ]
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "d4f7fd45-bf90-4c0d-a552-ec04390a225b",
+        "name": "Split Out",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          0
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "aa68acd5-e6ff-49dc-9f2d-8ea6b46e67fc",
+        "name": "Date & Time2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          32
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8437d09d-4fe2-45e4-a89a-67cc2d2617d8",
+        "name": "Notifica grupo | Ademir",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          32
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 10*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "7d0cce1c-3fc6-4e73-91d8-d2b88b36771f",
+        "name": "Code",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          32
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "87dc91a4-c67a-481d-8618-27a96c80cbe3",
+        "name": "Summarize",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          32
+        ]
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "b324458d-1c04-4516-8a94-e4497174c3a2",
+        "name": "Split Out1",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          -384
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "dec88152-f86b-43b6-9c9a-d76636f62383",
+        "name": "Date & Time3",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          -368
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0f318fb5-a0c8-409c-821b-09b12c1d45d9",
+        "name": "Notifica grupo | Ademir1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          -368
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 5*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "d84e5717-4b6b-48ef-b2bc-242596942ef2",
+        "name": "Code1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          -368
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "7bbe2d28-0881-4834-a167-c5a9fd45b05c",
+        "name": "Summarize1",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          -368
+        ]
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/fbb13ec9-33f4-4041-863b-70d9c42b888e"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5bb5c8be-1173-40a5-8fec-14b0822419f1",
+        "name": "CG5",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          -384
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/6638a26d-a1c7-4dae-9899-f594dd200b06"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e0f51168-8091-4a8c-8263-ffe2dac0bc7e",
+        "name": "CG10",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "bbbdc536-0d87-423f-a87c-ecb651d828fc",
+        "name": "Split Out2",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          400
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "ee63e6e1-365d-4e1b-a3d8-0cea5b838824",
+        "name": "Date & Time4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          432
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0ff6b0cb-0083-48b4-a246-674b1844e72b",
+        "name": "Summarize2",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          432
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 20*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "3d646eee-17df-4dab-a521-7c3a1e655426",
+        "name": "Code2",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          432
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "9d7753c1-7bf0-42a2-ad67-dcc702feab3d",
+        "name": "Notifica grupo | Ademir2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          432
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/2821f206-73da-4225-aa39-98f50573e0be"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "700863c0-b443-43af-bc26-54f5fdc010c7",
+        "name": "CG20",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          400
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "7b3e1c4a-7a37-48bb-86ea-0b9b5378dbbd",
+        "name": "If1",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          -384
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "0af462be-fc9b-4b97-99b3-adef7b9c7045",
+        "name": "If2",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "abfcf5b1-b0b4-4286-8bda-275a58ddef69",
+        "name": "If3",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 5 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "4f61809c-c5cb-40ce-8f09-fd8fce70d874",
+        "name": "CG 5 | Sem horários",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          -544
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 10 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "4c0a7d07-dd3c-48eb-8069-fc60076b12dc",
+        "name": "CG 10 | Sem horários",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          -160
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b0317e7a-0487-4f6b-af79-c8e56c8b537f",
+        "name": "CG 20 | Sem horários",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          240
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code1\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "a43c0585-86a9-4f59-a48b-d48188786f11",
+        "name": "Notifica Gui Luiz",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          -368
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "df1c6059-8aa2-4bb9-9fa2-6d8f73c719ae",
+        "name": "Notifica Gui Luiz1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          32
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code2\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f1d7aebf-6fd1-4a0a-9e9c-d440fe0348a3",
+        "name": "Notifica Gui Luiz2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          432
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 5 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ed32c8ff-85d0-4633-8166-5504fe5478e1",
+        "name": "CG 5 | Sem horários | Gui Luiz",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          -544
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 10 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e87213cb-7dc8-4f21-9823-ee17621c4be6",
+        "name": "CG 10 | Sem horários | Gui Luiz",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          -160
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "4379a600-431a-420f-bae6-f4703fe74737",
+        "name": "CG 20 | Sem horários | Gui Luiz",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          240
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 15
+              }
+            ]
+          }
+        },
+        "id": "239f4b1f-bcfc-487d-aa6b-0fa052e21b29",
+        "name": "Schedule Trigger1",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -384,
+          544
+        ]
+      },
+      {
+        "parameters": {},
+        "id": "11f87fcf-c553-41b6-b447-73d66f3f0b13",
+        "name": "When clicking ‘Test workflow’",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -560,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 21
+              }
+            ]
+          }
+        },
+        "id": "50734d4e-9403-49d8-b8e4-60e7a0f4ed57",
+        "name": "Schedule Trigger2",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -384,
+          32
+        ]
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -400,
+          2800
+        ],
+        "id": "84186bcf-dff1-4546-9e91-5bfbdd469f75",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "25b99aa6-869b-4b35-a596-d361fd1ce654",
+        "name": "Split Out3",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          2384
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "2b496231-fc3d-452a-997f-2a60f6836139",
+        "name": "Date & Time5",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          2400
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "606415ed-c62d-4774-8d42-c03d997579d3",
+        "name": "Notifica grupo | Ademir3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          2400
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 10*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "5599e862-7b55-4dcb-9970-4da89e7c9c02",
+        "name": "Code3",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          2400
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5ea48c0c-f227-4c37-84ff-c0eafdaa46de",
+        "name": "Summarize3",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          2400
+        ]
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "bd524fbc-8e13-41a0-aff3-802564cf5826",
+        "name": "Split Out4",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          2000
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "a792010f-7074-469d-9e48-2ca948f4ef8c",
+        "name": "Date & Time6",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          2032
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "66ae9515-d6c0-4418-b59a-36ede90e1c51",
+        "name": "Notifica grupo | Ademir4",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          2032
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 5*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "1fc488d0-201f-49d4-bf0a-118aa5b863c2",
+        "name": "Code4",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          2032
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3485be01-9e20-48d7-857a-1ff223bee63f",
+        "name": "Summarize4",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          2032
+        ]
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/737c765f-6680-4df8-9ef0-f6d2eff6b6fe"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia1').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias1').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d5530669-24b5-4afd-bb79-67058f755595",
+        "name": "CG",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          2000
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/6638a26d-a1c7-4dae-9899-f594dd200b06"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia1').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias1').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "bbf5427b-062d-4ade-81cf-e2dec484938a",
+        "name": "CG11",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          2384
+        ]
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "e73ac3f9-e3fd-4aa7-8146-9feeb0f9919a",
+        "name": "Split Out5",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          2784
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "ac04a53e-3ec4-4648-a019-429938ef9d99",
+        "name": "Date & Time7",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          2800
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "fac8f3ac-b0c6-457e-b559-a4a066257f28",
+        "name": "Summarize5",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          2800
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 20*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "56582cc1-d1a7-44d0-bb24-400b280c74e7",
+        "name": "Code5",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          2800
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "71f35a06-1323-4e6b-9108-c26a9d19d212",
+        "name": "Notifica grupo | Ademir5",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          2800
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/2821f206-73da-4225-aa39-98f50573e0be"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia1').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias1').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e9abb2c0-b560-4c24-88bb-4f6df9207100",
+        "name": "CG21",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          2784
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "387d1d83-dbdc-4d95-82a6-bedacef6ebed",
+        "name": "If",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          2000
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "d9bd1a05-2719-462e-80c6-635546848f54",
+        "name": "If4",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          2384
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "c6d80f49-d73e-4d11-8aed-62c40b1dfe14",
+        "name": "If5",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          2784
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 5 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f7192c62-38cd-47dc-9b13-0acb451dce34",
+        "name": "CG 5 | Sem horários1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          1840
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 10 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "9f3a2b03-d657-449a-b97d-282acb614a34",
+        "name": "CG 10 | Sem horários1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          2224
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "893168c9-2367-409b-abaf-2035ee8bd738",
+        "name": "CG 20 | Sem horários1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          2624
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          752,
+          2000
+        ],
+        "id": "77f6498d-b509-462a-8282-f5ef3bc5c8a3",
+        "name": "Wait",
+        "webhookId": "e4702f83-4f5d-478f-97f7-70b5424e08fc"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          768,
+          2384
+        ],
+        "id": "2d643eda-fb27-42aa-9db5-5c7a1ef77caa",
+        "name": "Wait1",
+        "webhookId": "e4702f83-4f5d-478f-97f7-70b5424e08fc"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          768,
+          2784
+        ],
+        "id": "da6b5f66-428b-49b9-a646-a5e3f3ec7e08",
+        "name": "Wait2",
+        "webhookId": "e4702f83-4f5d-478f-97f7-70b5424e08fc"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "72bd5b8d-6064-4930-b8e3-a26e0863e039",
+        "name": "Split Out6",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          928
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "d9ef62d8-4b68-4642-b1fe-a375a132e14f",
+        "name": "Date & Time8",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          944
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "83af2da4-6932-46a1-8388-5c266b7a0e52",
+        "name": "Summarize6",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          944
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para a *Agenda Reserva 15k+*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "f15a593b-075a-4f5c-9d66-5d66db160d9b",
+        "name": "Code6",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          944
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ed8d2d9c-c3b6-4762-8c15-9b910bc2fa64",
+        "name": "Notifica grupo | Ademir6",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          944
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "165ae90e-1fc0-4d31-a51b-c22d13c480af",
+        "name": "If6",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          928
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nAgenda Reserva 15k+ sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "210fc60a-ac16-4de2-9a27-c6baf05c3b45",
+        "name": "CG 20 | Sem horários2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          768
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code6\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "77a06896-56d4-4bc6-8d79-60a3398d19c7",
+        "name": "Notifica Gui Luiz3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          944
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "28965540-896b-4865-a211-c7b47de1be77",
+        "name": "CG 20 | Sem horários | Gui Luiz1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          768
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/4faa6323-c1eb-4363-a119-4323b219a362"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "a46a95f2-00ad-4ed0-9f2a-412f5acdac2e",
+        "name": "Reserva 15k+",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          928
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "ae1933c6-a8d0-450e-bd49-36bad7210ccc",
+        "name": "Split Out7",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          1424
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "13b1db6e-449b-47c9-89c3-e9d729a72a9d",
+        "name": "Date & Time9",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          1440
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "7d5fb11e-6032-45ad-8c3d-eb4c25ad86c1",
+        "name": "Summarize7",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          1440
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para a *Agenda Reserva 15k-*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "a1a08051-53aa-4b1e-b405-8a65cce3c200",
+        "name": "Code7",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          1440
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "2e6ebf21-0172-40fa-b0c1-b246b99527d7",
+        "name": "Notifica grupo | Ademir7",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          1440
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "c975dd48-e586-46a1-b4e1-6f3448fe486a",
+        "name": "If7",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          1424
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nAgenda Reserva 15k- sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "1c3103ae-01c7-4ba6-8aa3-7323e859db8b",
+        "name": "CG 20 | Sem horários3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          1264
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code7\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8ea70513-41bb-499c-a8c2-0a24348c0def",
+        "name": "Notifica Gui Luiz4",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          1440
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "69aad6cf-b2be-49ad-bfec-3f81fda662bc",
+        "name": "CG 20 | Sem horários | Gui Luiz2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          1264
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/c25e687b-4357-446a-bce1-2a4c7b58fdfe"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "be2a184f-44f3-4c95-a503-8747ab7817a5",
+        "name": "Reserva 15k-",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          1424
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "2c7bf7e4-cdc3-4295-9452-dcd00329c1c7",
+        "name": "Split Out8",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          3200
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "9b2fb625-1023-4698-b123-c5e15b488c55",
+        "name": "Date & Time10",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          3232
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3a207a63-3d39-4d66-afcc-5da5aed6dee1",
+        "name": "Summarize8",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          3232
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para a *Agenda Reserva 15k+*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "ab4962ca-12a9-47e1-bb12-f98a5ebce35b",
+        "name": "Code8",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          3232
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "dff506e5-3faa-4a8e-a123-70f46e7fb89d",
+        "name": "Notifica grupo | Ademir8",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          3232
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "94ca50a3-9e79-421b-9fe9-6775cf5a5643",
+        "name": "If8",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          3200
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nAgenda Reserva 15k+ sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "390e386e-33df-4c59-a0dd-312978d14c8b",
+        "name": "CG 20 | Sem horários4",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          3040
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code8\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3b72a70e-af41-4b8a-a2b1-6696c657c3de",
+        "name": "Notifica Gui Luiz5",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          3232
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "a1f32434-d52f-424b-814b-8e291a0c89cb",
+        "name": "CG 20 | Sem horários | Gui Luiz3",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          3040
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/4faa6323-c1eb-4363-a119-4323b219a362"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia1').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias1').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "97a7486b-8599-4cfb-ace8-a1a46c340714",
+        "name": "Reserva 15k+1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          3200
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "8e55e685-5384-4766-b68d-4c0617faa3c0",
+        "name": "Split Out9",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          3712
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "361db47b-3a0b-4bcc-bbcf-b59801df6086",
+        "name": "Date & Time11",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          3728
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3ef2e763-4f43-408e-ae6d-91d17b02a6cb",
+        "name": "Summarize9",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          3728
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para a *Agenda Reserva 15k-*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "41fbc8d0-7f0e-493c-8828-6c92fafa8e8b",
+        "name": "Code9",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          3728
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "2c974bdc-b502-4c6c-97a2-393508ed4dd6",
+        "name": "Notifica grupo | Ademir9",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          3728
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "faacf198-cd71-40e6-8de1-8592b4d95f31",
+        "name": "If9",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          3712
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $node[\"When Executed by Another Workflow\"].json[\"phone\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nAgenda Reserva 15k- sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "cffb65ec-adf0-458a-8116-baac79737bb6",
+        "name": "CG 20 | Sem horários5",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          3552
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code9\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "02eb8f23-7a67-4c7c-be35-649d23fd7930",
+        "name": "Notifica Gui Luiz6",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2608,
+          3728
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 20 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0d96d581-d240-4c1b-986f-d9709345680c",
+        "name": "CG 20 | Sem horários | Gui Luiz4",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1952,
+          3552
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/c25e687b-4357-446a-bce1-2a4c7b58fdfe"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia1').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias1').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8ed05a0f-e62a-413e-b0f4-046368c9e508",
+        "name": "Reserva 15k-1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          3712
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          768,
+          3200
+        ],
+        "id": "4bccfe08-3c2e-4b58-8a21-efb3d73827f5",
+        "name": "Wait3",
+        "webhookId": "e4702f83-4f5d-478f-97f7-70b5424e08fc"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          768,
+          3712
+        ],
+        "id": "fa565ffb-0acc-4de5-851a-84a14b1dc7ba",
+        "name": "Wait4",
+        "webhookId": "e4702f83-4f5d-478f-97f7-70b5424e08fc"
+      },
+      {
+        "parameters": {
+          "options": {
+            "timezone": "America/Sao_Paulo"
+          }
+        },
+        "id": "1782e2b8-baa5-4915-86e1-ba884fac4d4f",
+        "name": "Data Atual",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          -80,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "addToDate",
+          "magnitude": "={{ $json.currentDate }}",
+          "duration": 5,
+          "outputFieldName": "currentDate",
+          "options": {}
+        },
+        "id": "bbf51dc3-85cc-41f5-9614-88487b2468a8",
+        "name": "adiciona 10 dias",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          688,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "addToDate",
+          "magnitude": "={{ $json.currentDate }}",
+          "timeUnit": "minutes",
+          "duration": 5,
+          "outputFieldName": "currentDate",
+          "options": {}
+        },
+        "id": "da4bf264-4421-4b3e-b63b-917f857e330e",
+        "name": "adiciona 1 dia",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          272,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "options": {
+            "timezone": "America/Sao_Paulo"
+          }
+        },
+        "id": "1c88849c-b192-496a-a6c4-a22c132f47e2",
+        "name": "Data Atual1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          -208,
+          2800
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "addToDate",
+          "magnitude": "={{ $json.currentDate }}",
+          "duration": 5,
+          "outputFieldName": "currentDate",
+          "options": {}
+        },
+        "id": "b127679b-a178-414f-aa32-20765113f18f",
+        "name": "adiciona 10 dias1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          384,
+          2800
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "addToDate",
+          "magnitude": "={{ $json.currentDate }}",
+          "timeUnit": "minutes",
+          "duration": 5,
+          "outputFieldName": "currentDate",
+          "options": {}
+        },
+        "id": "98207073-4f5d-461f-88be-3dbff595dc8f",
+        "name": "adiciona 1 dia1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          80,
+          2800
+        ]
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/users/me",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          96,
+          576
+        ],
+        "id": "29824bd8-7321-4d08-bbdc-4f93cfab33e6",
+        "name": "Busca dados da conta"
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_types",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "organization",
+                "value": "https://api.calendly.com/organizations/4b1236a1-2b78-48a2-94c4-87a8afb6297d"
+              },
+              {
+                "name": "count",
+                "value": "100"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          96,
+          768
+        ],
+        "id": "3caf6429-b6d7-4f98-9c8f-faf9dd68faf7",
+        "name": "Busca dados da conta1"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "4e9c7a22-2c09-4762-b0c3-a43f22a83838",
+        "name": "Split Out10",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1168,
+          -880
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "0561d28b-8d81-496f-8950-eadc6750804e",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1696,
+          -864
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "1c0bc738-822f-4648-90ef-d0e39033f3d8",
+        "name": "Notifica grupo | Ademir10",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2352,
+          -864
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 15K*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "8f57c99c-7d96-4a41-8144-c6e5bfbf14c6",
+        "name": "Code10",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2128,
+          -864
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "42eb2ed2-2c27-48dc-8353-7da61bf924c0",
+        "name": "Summarize10",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1920,
+          -864
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "152e5633-b37e-4803-9f16-961e6f6dd902",
+        "name": "If10",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1392,
+          -880
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 15K sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "90ecd4a4-719a-46c0-90c9-fcc6a0116b87",
+        "name": "CG 5 | Sem horários2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1696,
+          -1040
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "={{ $node[\"Code10\"].json[\"whatsappMessage\"] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c3245118-f161-4ae9-81c6-dbad1555ab29",
+        "name": "Notifica Gui Luiz7",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2576,
+          -864
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=553192265968"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 5 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "50af94fa-8915-4b19-a528-5ab1e77a9a86",
+        "name": "CG 5 | Sem horários | Gui Luiz1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1920,
+          -1040
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/2d172a74-8782-44b7-9488-4332d19158f5"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "88706b7b-e031-44b1-aa6a-ae2b77a80faf",
+        "name": "CG 15K",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          960,
+          -880
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Data Atual",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize1": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG5": {
+        "main": [
+          [
+            {
+              "node": "Split Out1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG10": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize2": {
+        "main": [
+          [
+            {
+              "node": "Code2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG20": {
+        "main": [
+          [
+            {
+              "node": "Split Out2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time3": {
+        "main": [
+          [
+            {
+              "node": "Summarize1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time2": {
+        "main": [
+          [
+            {
+              "node": "Summarize",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time4": {
+        "main": [
+          [
+            {
+              "node": "Summarize2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code2": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out2": {
+        "main": [
+          [
+            {
+              "node": "If3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "CG 5 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "CG 10 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If3": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out1": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger1": {
+        "main": [
+          [
+            {
+              "node": "Data Atual",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Test workflow’": {
+        "main": [
+          [
+            {
+              "node": "Data Atual",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger2": {
+        "main": [
+          [
+            {
+              "node": "Data Atual",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out3": {
+        "main": [
+          [
+            {
+              "node": "If4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time5": {
+        "main": [
+          [
+            {
+              "node": "Summarize3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code3": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize3": {
+        "main": [
+          [
+            {
+              "node": "Code3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out4": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time6": {
+        "main": [
+          [
+            {
+              "node": "Summarize4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code4": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize4": {
+        "main": [
+          [
+            {
+              "node": "Code4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG": {
+        "main": [
+          [
+            {
+              "node": "Split Out4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG11": {
+        "main": [
+          [
+            {
+              "node": "Split Out3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out5": {
+        "main": [
+          [
+            {
+              "node": "If5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time7": {
+        "main": [
+          [
+            {
+              "node": "Summarize5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize5": {
+        "main": [
+          [
+            {
+              "node": "Code5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code5": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG21": {
+        "main": [
+          [
+            {
+              "node": "Split Out5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "CG 5 | Sem horários1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If4": {
+        "main": [
+          [
+            {
+              "node": "CG 10 | Sem horários1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If5": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Data Atual1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "CG",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "CG11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait2": {
+        "main": [
+          [
+            {
+              "node": "CG21",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out6": {
+        "main": [
+          [
+            {
+              "node": "If6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time8": {
+        "main": [
+          [
+            {
+              "node": "Summarize6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize6": {
+        "main": [
+          [
+            {
+              "node": "Code6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code6": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If6": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reserva 15k+": {
+        "main": [
+          [
+            {
+              "node": "Split Out6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out7": {
+        "main": [
+          [
+            {
+              "node": "If7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time9": {
+        "main": [
+          [
+            {
+              "node": "Summarize7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize7": {
+        "main": [
+          [
+            {
+              "node": "Code7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code7": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If7": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários3",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reserva 15k-": {
+        "main": [
+          [
+            {
+              "node": "Split Out7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out8": {
+        "main": [
+          [
+            {
+              "node": "If8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time10": {
+        "main": [
+          [
+            {
+              "node": "Summarize8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize8": {
+        "main": [
+          [
+            {
+              "node": "Code8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code8": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If8": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários4",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reserva 15k+1": {
+        "main": [
+          [
+            {
+              "node": "Split Out8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out9": {
+        "main": [
+          [
+            {
+              "node": "If9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time11": {
+        "main": [
+          [
+            {
+              "node": "Summarize9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize9": {
+        "main": [
+          [
+            {
+              "node": "Code9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code9": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If9": {
+        "main": [
+          [
+            {
+              "node": "CG 20 | Sem horários5",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reserva 15k-1": {
+        "main": [
+          [
+            {
+              "node": "Split Out9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait3": {
+        "main": [
+          [
+            {
+              "node": "Reserva 15k+1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait4": {
+        "main": [
+          [
+            {
+              "node": "Reserva 15k-1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Atual": {
+        "main": [
+          [
+            {
+              "node": "adiciona 1 dia",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "adiciona 1 dia": {
+        "main": [
+          [
+            {
+              "node": "adiciona 10 dias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "adiciona 10 dias": {
+        "main": [
+          [
+            {
+              "node": "CG20",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "CG10",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "CG5",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "CG 15K",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Atual1": {
+        "main": [
+          [
+            {
+              "node": "adiciona 1 dia1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "adiciona 1 dia1": {
+        "main": [
+          [
+            {
+              "node": "adiciona 10 dias1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "adiciona 10 dias1": {
+        "main": [
+          [
+            {
+              "node": "Wait2",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Wait3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out10": {
+        "main": [
+          [
+            {
+              "node": "If10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Summarize10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code10": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize10": {
+        "main": [
+          [
+            {
+              "node": "Code10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If10": {
+        "main": [
+          [
+            {
+              "node": "CG 5 | Sem horários2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG 15K": {
+        "main": [
+          [
+            {
+              "node": "Split Out10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "444be6ae-87cd-42ad-aae6-9ddfb1d78380",
   "connections": {
     "Schedule Trigger": {
       "main": [
