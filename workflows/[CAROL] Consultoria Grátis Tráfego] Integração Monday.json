@@ -1,5 +1,2246 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "728a1848-385d-4e13-8b29-baaf73355efd",
+    "workflowId": "yp3dWRcibN2eOvBh",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "39952744-5d8a-40d8-9042-27c70a563c7e",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -760,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "b4391e59-4c8b-4bc0-9718-d5afefb5d25f",
+        "name": "Date & Time1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1640,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "0de6efcf-a00e-4cbf-82d9-714826cb2032",
+        "name": "Monday.com5",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2000,
+          200
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "02ecf082-ed4a-4ef3-9360-64b6765b71dd",
+        "name": "Monday.com8",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1820,
+          200
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com8').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time1').item.json.formattedDate }}\", \"pessoas__1\": \"joseedison.bma@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada1\"].json[\"callAgendada\"] }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"person\":\"{{ $node[\"rodizio de sdr\"].json[\"email_sdr\"] }}\" }       "
+        },
+        "id": "fa51eb9f-4352-4c46-8b42-67a33d6fe238",
+        "name": "Monday.com9",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2180,
+          200
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "8dd2bff5-c037-4427-adc9-88554890d536",
+        "name": "formata data reunião1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2340,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "19b60a4f-b97d-4e42-96be-83557cfdbad1",
+        "name": "Call Agendada1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1440,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "244e8685-de06-41ff-bbfb-7c6d09e37ca4",
+        "name": "Date & Time3",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1740,
+          1420
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "6c18a6da-f4cd-4cc6-8e73-a4a8ef54c48d",
+        "name": "Monday.com",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2100,
+          1420
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "b815d387-83bd-47a8-a791-eee34ef45161",
+        "name": "Monday.com13",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1920,
+          1420
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.resource.start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "952cdefb-3b41-4b85-aa8d-fcca8d0310f8",
+        "name": "Call Agendada3",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1560,
+          1420
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com13').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \" {{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time3').item.json.formattedDate }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\" }    "
+        },
+        "id": "4346ab5c-2309-422b-8253-35a9c3543a6b",
+        "name": "Monday.com14",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2280,
+          1420
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events/{{ $json.primeiroUUID }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3768bf15-3777-4f3f-a36d-78cb58b7736f",
+        "name": "Busca Closer",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          100,
+          1200
+        ],
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
+        },
+        "id": "8809a6fe-af4d-4694-8e5a-fc47a681ae87",
+        "name": "Formata Telefone",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -540,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "598a17bb-cba2-431c-9bdb-d8e71843fe29",
+        "name": "Date & Time4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          340,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function extrairPrimeiroUUID(url) {\n    // Expressão regular para encontrar UUIDs\n    const regexUUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;\n    \n    // Executa a expressão regular na URL\n    const match = url.match(regexUUID);\n    \n    // Verifica se encontrou um UUID e retorna, senão retorna nulo\n    return match ? match[0] : null;\n}\n\nconst url = $input.all()[0].json[\"form_response\"][\"answers\"][\"15\"][\"url\"];\nconst primeiroUUID = extrairPrimeiroUUID(url);\n\nreturn {primeiroUUID}\n"
+        },
+        "id": "3c202525-7199-4803-aab9-0c81dde0e70e",
+        "name": "Extrai UUID",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -180,
+          1160
+        ]
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events?organization=\thttps://api.calendly.com/organizations/85e6ccb1-b72c-49b9-abde-9608c02a1d01&invitee_email={{ $('Formata Telefone').item.json.form_response.answers[2].email }}&min_start_time={{ $json.currentDate }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d55d79ea-5472-479a-a8d6-4e3a65dd9bc1",
+        "name": "Busca Invite",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          560,
+          320
+        ],
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "216b0c18-ffa6-4c76-a711-0f8392d3e866",
+        "name": "Date & Time5",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1620,
+          -240
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "c7fe2140-d7d3-41fa-97cd-09e34d2bfa8b",
+        "name": "Monday.com15",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1980,
+          -240
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "ee00b08e-0597-473e-bb37-a40946e88b61",
+        "name": "Monday.com16",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1800,
+          -240
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com16').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time5').item.json.formattedDate }}\", \"pessoas__1\": \"bma.thaiscloser@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada4\"].json[\"callAgendada\"] }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"person\":\"{{ $node[\"rodizio de sdr\"].json[\"email_sdr\"] }}\"}   "
+        },
+        "id": "4ef41523-e4a5-4411-ab07-d1f239bb7b3f",
+        "name": "Monday.com17",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2160,
+          -240
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "e467cc50-6525-47af-842f-896abb0f733d",
+        "name": "formata data reunião4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2340,
+          -240
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "f5bb1ec5-9130-4850-8afd-1e8371774afd",
+        "name": "Call Agendada4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1440,
+          -240
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Thaís\n\n*SDR Responsável*: {{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com16').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "05e91c61-8e5c-49d2-a031-85f7472f4ded",
+        "name": "Notifica grupo | Thaís",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2560,
+          -240
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1gFO5wzJHL_Wq_qLICka-mrHMZ-p2mZb5YIIpT2Nit6w/edit?gid=0#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "[AUTO]",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gFO5wzJHL_Wq_qLICka-mrHMZ-p2mZb5YIIpT2Nit6w/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Data de Criação": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+              "Nome": "={{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}",
+              "Closer": "=",
+              "Status": "=",
+              "Etapa": "=Agendado",
+              "Comparecimento": "=",
+              "Data da Call": "={{ $('Call Agendada3').item.json.callAgendada }}",
+              "Valor do negócio": "=",
+              "Data da Venda": "=",
+              "Produto": "=",
+              "Faturamento": "={{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}",
+              "Origem": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Email": "={{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}",
+              "ID": "={{ $('Monday.com13').item.json.id }}",
+              "Publico": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "Anuncio": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "Posicionamento": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ID",
+                "displayName": "ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data de Criação",
+                "displayName": "Data de Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Data da Call",
+                "displayName": "Data da Call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Comparecimento",
+                "displayName": "Comparecimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Valor do negócio",
+                "displayName": "Valor do negócio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Etapa",
+                "displayName": "Etapa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Faturamento",
+                "displayName": "Faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Produto",
+                "displayName": "Produto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data da Venda",
+                "displayName": "Data da Venda",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Origem",
+                "displayName": "Origem",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Agendou?",
+                "displayName": "Agendou?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Publico",
+                "displayName": "Publico",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Anuncio",
+                "displayName": "Anuncio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Posicionamento",
+                "displayName": "Posicionamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {
+            "cellFormat": "USER_ENTERED"
+          }
+        },
+        "id": "f3542680-1382-45ab-8793-793560e021d2",
+        "name": "dashboard2",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          2560,
+          1420
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "resource": "boardColumn",
+          "operation": "getAll",
+          "boardId": "5689478999"
+        },
+        "id": "58960165-f3e1-4d16-bbae-cb0c34cab8c4",
+        "name": "Monday.com1",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          600,
+          1220
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "73fffe66-de87-4ab7-8459-7215df8c3cfb",
+        "name": "Date & Time6",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1620,
+          -20
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "3b9b4307-665a-465d-8609-c68bf7b00ac8",
+        "name": "Monday.com18",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1980,
+          -20
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "24ec81f7-1ec0-4ec4-95a9-35125173e9a9",
+        "name": "Monday.com19",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1800,
+          -20
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com19').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time6').item.json.formattedDate }}\", \"pessoas__1\": \"tiagogregorio@mentoriahighticket.com.br\", \"data0\": \"{{ $node[\"Call Agendada5\"].json[\"callAgendada\"] }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"person\":\"{{ $node[\"rodizio de sdr\"].json[\"email_sdr\"] }}\" }    "
+        },
+        "id": "f9616b6a-2615-45c2-8e37-9e19818ef4da",
+        "name": "Monday.com20",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2160,
+          -20
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "ff7702e4-d40d-4968-9d2f-33b2e2791273",
+        "name": "formata data reunião5",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2340,
+          -20
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "ad741be4-9169-480d-8462-7015bde253a3",
+        "name": "Call Agendada5",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1440,
+          -20
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: José\n\n*SDR Responsável*: {{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com8').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6d5f49c1-21e9-45a8-aabc-3699d45a5038",
+        "name": "Notifica grupo | José",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2560,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Tiago Gregório\n\n*SDR Responsável*: {{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com19').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "08a385ac-5a27-4f09-aeb3-d2c362993222",
+        "name": "Notifica grupo | Tiago Gregório",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2560,
+          -20
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "ce0ff356-c2ad-4c9a-9c7e-8b0787ee34c4",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1640,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "9ef6d101-595c-4284-b7dd-3723117d3e30",
+        "name": "Monday.com6",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2000,
+          420
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "c6d88a17-519c-42ea-96db-a2271791e6d8",
+        "name": "Monday.com10",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1820,
+          420
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com10').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time').item.json.formattedDate }}\", \"pessoas__1\": \"deborahmarques.bma@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada\"].json[\"callAgendada\"] }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"person\":\"{{ $node[\"rodizio de sdr\"].json[\"email_sdr\"] }}\" }       "
+        },
+        "id": "7746ab63-1774-4e26-b53a-cfe2a54c9828",
+        "name": "Monday.com11",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2180,
+          420
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "c63cdf67-31a1-4a48-85ae-0258b915caae",
+        "name": "formata data reunião",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2360,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "34b6da3a-9657-409a-973b-8eb5fa67d027",
+        "name": "Call Agendada",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1440,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Déborah\n\n*SDR Responsável*: {{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com10').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d6f1f1eb-2558-4706-8820-03dfbc47af88",
+        "name": "Notifica grupo | Deborah",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2560,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "id": "68da9dd3-8def-463b-a39f-79c265c5f608",
+        "name": "Wait",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          20,
+          460
+        ],
+        "webhookId": "5b76fee9-b071-4ecd-95bd-acb882bf9537"
+      },
+      {
+        "parameters": {
+          "workflowId": "uGdmG7D5KUjXN2OK",
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        },
+        "id": "94dd49b7-76f2-4f7b-b38f-1f2a84f5a4c8",
+        "name": "rodizio de sdr",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1,
+        "position": [
+          -280,
+          320
+        ],
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "eaab67d5-dd6d-4c3e-9752-912660baf8f0",
+          "options": {}
+        },
+        "id": "3d3c164b-0837-44dc-bc04-7f17ea6413a2",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -980,
+          320
+        ],
+        "webhookId": "eaab67d5-dd6d-4c3e-9752-912660baf8f0"
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "d7aa57bf-28c1-4603-8712-f3edd67b8ddb",
+        "name": "Date & Time2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1640,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "83526b04-5352-4b8f-842c-a81dcd9768b0",
+        "name": "Monday.com7",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2000,
+          640
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "9dde2adc-20dd-4613-a718-b77f6a7eae39",
+        "name": "Monday.com12",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1820,
+          640
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com12').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time2').item.json.formattedDate }}\", \"pessoas__1\": \"bma.ricardoleonardi@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada2\"].json[\"callAgendada\"] }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"person\":\"{{ $node[\"rodizio de sdr\"].json[\"email_sdr\"] }}\" }       "
+        },
+        "id": "a4c19086-645b-4cde-a90a-6ddcf7f3d35d",
+        "name": "Monday.com21",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2180,
+          640
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "76f86552-e06d-4d6a-a6cc-ec62e020491f",
+        "name": "formata data reunião2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2360,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "923c84ac-062a-4189-9096-90fcf4572de2",
+        "name": "Call Agendada2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1440,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Ricardo\n\n*SDR Responsável*: {{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com12').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d4872eb5-ca38-415b-93dd-7831df6863ff",
+        "name": "Notifica grupo | Deborah1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2560,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "1a83651b-1df7-4574-b72c-c4bcda28d763",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Thais BMA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Thais BMA"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "7b158d6e-f99e-455e-95a2-46d5a0fe9a7c",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Tiago Gregório",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Tiago Gregório"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "5c3d0f41-5a1e-4c20-99f3-d3cf2c1066f8",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "José Edison Junior Simões",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "José Edison Junior Simões"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "16b57734-5b3e-4a91-ac2e-5098ee9a84e1",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Deborah Marques",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Deborah Marques"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "dc07b49f-08fd-402f-abd9-1aac98888da0",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Ricardo Leonardi - BMA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Ricardo Leonardi - BMA"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "433b4839-4283-4114-aef1-84d4ed77f533",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Luciana Gomes",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Luciana Gomes"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "55fad168-d882-462d-8224-014b84866735",
+        "name": "Switch",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          960,
+          280
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "ef74efb1-4f69-4fd5-ae17-279e4a6988c9",
+        "name": "Date & Time7",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1640,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do Instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento médio mensal, considerando sua atuação no mercado imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\n\nConsiderando todas as suas fontes de renda/faturamento (no ramo imobiliário e fora). Qual o faturamento médio, somando essas fontes?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"16\"][\"choice\"][\"label\"] }}\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[17].url }}"
+        },
+        "id": "4aaf39cc-431e-40b9-8059-3268e54601b7",
+        "name": "Monday.com22",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2000,
+          880
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "0823a638-1d9f-4255-8a24-b7356dc3270b",
+        "name": "Monday.com23",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1820,
+          880
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com23').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \"{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time7').item.json.formattedDate }}\", \"pessoas__1\": \"lucianagomes.bma@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada6\"].json[\"callAgendada\"] }}\", \"texto2__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}\", \"texto32__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}\", \"texto1__1\":\"{{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}\", \"status_1__1\": \"4\", \"person\":\"{{ $node[\"rodizio de sdr\"].json[\"email_sdr\"] }}\" }       "
+        },
+        "id": "6e78eac6-0fea-420b-b795-c8b6361e0bab",
+        "name": "Monday.com24",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          2180,
+          880
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "c08de5c3-911c-45ec-bb3f-4d8c29b940a8",
+        "name": "formata data reunião3",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2360,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "814baea0-f821-4452-af38-4e41c5a57b06",
+        "name": "Call Agendada6",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1440,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Luciana\n\n*SDR Responsável*: {{ $node[\"rodizio de sdr\"].json[\"nome_sdr\"] }}\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com23').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "72cd75fa-f2d0-4e50-a2a0-c760728bb297",
+        "name": "Notifica grupo | Deborah2",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2560,
+          880
+        ]
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Formata Telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time1": {
+        "main": [
+          [
+            {
+              "node": "Monday.com8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com5": {
+        "main": [
+          [
+            {
+              "node": "Monday.com9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com8": {
+        "main": [
+          [
+            {
+              "node": "Monday.com5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com9": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada1": {
+        "main": [
+          [
+            {
+              "node": "Date & Time1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time3": {
+        "main": [
+          [
+            {
+              "node": "Monday.com13",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com": {
+        "main": [
+          [
+            {
+              "node": "Monday.com14",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com13": {
+        "main": [
+          [
+            {
+              "node": "Monday.com",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada3": {
+        "main": [
+          [
+            {
+              "node": "Date & Time3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com14": {
+        "main": [
+          [
+            {
+              "node": "dashboard2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formata Telefone": {
+        "main": [
+          [
+            {
+              "node": "rodizio de sdr",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time4": {
+        "main": [
+          [
+            {
+              "node": "Busca Invite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Busca Invite": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time5": {
+        "main": [
+          [
+            {
+              "node": "Monday.com16",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com15": {
+        "main": [
+          [
+            {
+              "node": "Monday.com17",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com16": {
+        "main": [
+          [
+            {
+              "node": "Monday.com15",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com17": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada4": {
+        "main": [
+          [
+            {
+              "node": "Date & Time5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião1": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | José",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião4": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Thaís",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time6": {
+        "main": [
+          [
+            {
+              "node": "Monday.com19",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com18": {
+        "main": [
+          [
+            {
+              "node": "Monday.com20",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com19": {
+        "main": [
+          [
+            {
+              "node": "Monday.com18",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com20": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião5": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Tiago Gregório",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada5": {
+        "main": [
+          [
+            {
+              "node": "Date & Time6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Monday.com10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com6": {
+        "main": [
+          [
+            {
+              "node": "Monday.com11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com10": {
+        "main": [
+          [
+            {
+              "node": "Monday.com6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com11": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada": {
+        "main": [
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "rodizio de sdr",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "rodizio de sdr": {
+        "main": [
+          [
+            {
+              "node": "Date & Time4",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time2": {
+        "main": [
+          [
+            {
+              "node": "Monday.com12",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com7": {
+        "main": [
+          [
+            {
+              "node": "Monday.com21",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com12": {
+        "main": [
+          [
+            {
+              "node": "Monday.com7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com21": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião2": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada2": {
+        "main": [
+          [
+            {
+              "node": "Date & Time2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Call Agendada4",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada5",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time7": {
+        "main": [
+          [
+            {
+              "node": "Monday.com23",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com22": {
+        "main": [
+          [
+            {
+              "node": "Monday.com24",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com23": {
+        "main": [
+          [
+            {
+              "node": "Monday.com22",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com24": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião3": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Deborah2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada6": {
+        "main": [
+          [
+            {
+              "node": "Date & Time7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "728a1848-385d-4e13-8b29-baaf73355efd",
   "connections": {
     "Trata Webhook": {
       "main": [
