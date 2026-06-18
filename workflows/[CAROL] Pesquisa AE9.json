@@ -1,5 +1,232 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "55016cbf-5959-4fc4-885b-3881ae59d0ab",
+    "workflowId": "CzdxWQb6ZItWXmGE",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "38d0a347-7f45-4814-8466-08b9d5d1962d",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          1020,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit?gid=0#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Pesquisa",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_u0WQu7PK4hV48iRd1Py_rfgl2bgOMWis_ToG5TssdY/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+              "nome": "={{ $json.form_response.answers[0].text }}",
+              "whatsapp": "={{ $json.form_response.answers[1].phone_number }}",
+              "email": "={{ $json.form_response.answers[2].email }}",
+              "negocio": "={{ $json.form_response.answers[3].choice.label }}",
+              "faturamento": "={{ $json.form_response.answers[4].choice.label }}",
+              "atual no mercado": "={{ $json.form_response.answers[5].choice.label }}",
+              "dificuldade": "={{ $json.form_response.answers[6].text }}",
+              "oportunidade_reuniao_secreta": "={{ $json.form_response.answers[7].text }}",
+              "meta_smart": "={{ $json.form_response.answers[8].text }}",
+              "dificuldades_para_a_meta": "={{ $json.form_response.answers[9].text }}",
+              "não_pode_faltar_na_reuniao": "={{ $json.form_response.answers[10].text }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "whatsapp",
+                "displayName": "whatsapp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "negocio",
+                "displayName": "negocio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "faturamento",
+                "displayName": "faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atual no mercado",
+                "displayName": "atual no mercado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "dificuldade",
+                "displayName": "dificuldade",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "oportunidade_reuniao_secreta",
+                "displayName": "oportunidade_reuniao_secreta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "meta_smart",
+                "displayName": "meta_smart",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "dificuldades_para_a_meta",
+                "displayName": "dificuldades_para_a_meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "não_pode_faltar_na_reuniao",
+                "displayName": "não_pode_faltar_na_reuniao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {
+            "cellFormat": "USER_ENTERED"
+          }
+        },
+        "id": "43774d79-9abc-4071-a5b4-d8f2a9b98331",
+        "name": "Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1240,
+          380
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "86142cef-ee2d-4f8f-ae80-a1ebe3050ba0",
+          "options": {}
+        },
+        "id": "5b58a1f9-8b95-4212-a1c0-0f1252907672",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          820,
+          380
+        ],
+        "webhookId": "86142cef-ee2d-4f8f-ae80-a1ebe3050ba0"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "55016cbf-5959-4fc4-885b-3881ae59d0ab",
   "connections": {
     "Webhook": {
       "main": [
