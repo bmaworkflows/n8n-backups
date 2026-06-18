@@ -1,5 +1,2990 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-17T20:09:46.948Z",
+    "createdAt": "2026-06-17T20:09:46.948Z",
+    "versionId": "4dff973f-9c6e-4a94-a73c-0bcd2a514d9d",
+    "workflowId": "p65KYQwjEmOIjhLV",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "bd84ed34-307a-451a-a662-39f4453c13fa",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -200,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "52e8b2c2-1ef7-4ccb-a19e-0580739ca977",
+        "name": "Date & Time",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          140
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function formataTelefone(number) {\n    number = number.toString().replace(/[^\\d]/g, \"\")\n    let ddi = '55'\n    let ddd = number.substring(0, 2)\n\n    if (number.length == 13) {\n        let ddi = number.substring(0, 2)\n        let ddd = number.substring(2, 4)\n        return ddi + ddd + (ddd <= 28 ? number.substring(4, 13) : number.substring(5, 13))\n\n    } else if (number.length == 11) {\n        return ddi + ddd + (ddd <= 28 ? number.substring(2, 11) : number.substring(3, 11))\n\n    } else if (number.length == 10) {\n        return ddi + ddd + (ddd <= 28 ? '9' : '') + number.substring(2, 11)\n\n    } else if (number.length == 12) {\n        return number.substring(0, 2) == '55' ? number : (number.substring(0, 1) == '0' ? formataTelefone(number.substring(1, 12)) : number)\n\n    } else {\n        return number\n    }\n}\n\n$input.all()[0].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] = formataTelefone($node['Trata Webhook'].json[\"form_response\"][\"answers\"][\"1\"][\"number\"]) \n\nreturn $input.all();"
+        },
+        "id": "865a7983-9d19-4ba7-a1e9-ad13c499a794",
+        "name": "Formata Telefone",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -20,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2023?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"choice\"][\"label\"] }}\n\n\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[15].url }}"
+        },
+        "id": "5664d45f-3511-4d64-b001-add715991f29",
+        "name": "Monday.com4",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1480,
+          140
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "a7b9875f-9b00-4598-8451-d38894636207",
+        "name": "Monday.com6",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1300,
+          140
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com6').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \" {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time').item.json.formattedDate }}\", \"person\": \"closerbma.nayra@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada2\"].json[\"callAgendada\"] }}\" }    "
+        },
+        "id": "695d2111-ac35-458b-9c3f-1f077ef5c6ee",
+        "name": "Monday.com7",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1660,
+          140
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "[AUTO] Carol",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "utm campaign": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_campaign }}",
+              "utm content": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "utm term": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "utm medium": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}",
+              "utm source": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Nome": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+              "Telefone": "={{ $('Trata Webhook').item.json.form_response.answers[1].number }}",
+              "Email": "={{ $('Trata Webhook').item.json.form_response.answers[2].email }}",
+              "Qual das opções abaixo mais condiz com seu negócio hoje?": "={{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}",
+              "Descreva de forma clara e objetiva o seu modelo de negócios atual:": "={{ $('Trata Webhook').item.json.form_response.answers[4].text }}",
+              "Qual é o seu faturamento MENSAL médio em 2023?": "={{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}",
+              "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?": "={{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}",
+              "Qual cenário mais se adequa ao seu caso?": "={{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}",
+              "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?": "={{ $('Trata Webhook').item.json.form_response.answers[8].text }}",
+              "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?": "={{ $('Trata Webhook').item.json.form_response.answers[9].text }}",
+              "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:": "={{ $('Trata Webhook').item.json.form_response.answers[10].text }}",
+              "Quais dificuldades está enfrentando pra alcançar esse objetivo?": "={{ $('Trata Webhook').item.json.form_response.answers[11].text }}",
+              "Há quanto tempo está enfrentando essas dificuldades?": "={{ $('Trata Webhook').item.json.form_response.answers[12].text }}",
+              "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?": "={{ $('Trata Webhook').item.json.form_response.answers[13].choice.label }}",
+              "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?": "={{ $('Trata Webhook').item.json.form_response.answers[14].choice.label }}",
+              "Closer": "Nayra",
+              "ID Monday": "={{ $('Monday.com6').item.json.id }}",
+              "Data Criação": "={{ $('Date & Time').item.json.formattedDate }}",
+              "Funil": "Consultoria Grátis"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Data Criação",
+                "displayName": "Data Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ID Monday",
+                "displayName": "ID Monday",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Funil",
+                "displayName": "Funil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                "displayName": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Descreva de forma clara e objetiva o seu modelo de negócios atual:",
+                "displayName": "Descreva de forma clara e objetiva o seu modelo de negócios atual:",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Qual é o seu faturamento MENSAL médio em 2023?",
+                "displayName": "Qual é o seu faturamento MENSAL médio em 2023?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?",
+                "displayName": "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Qual cenário mais se adequa ao seu caso?",
+                "displayName": "Qual cenário mais se adequa ao seu caso?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                "displayName": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                "displayName": "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                "displayName": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Quais dificuldades está enfrentando pra alcançar esse objetivo?",
+                "displayName": "Quais dificuldades está enfrentando pra alcançar esse objetivo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Há quanto tempo está enfrentando essas dificuldades?",
+                "displayName": "Há quanto tempo está enfrentando essas dificuldades?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?",
+                "displayName": "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?",
+                "displayName": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm source",
+                "displayName": "utm source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm campaign",
+                "displayName": "utm campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm medium",
+                "displayName": "utm medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm term",
+                "displayName": "utm term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm content",
+                "displayName": "utm content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "118d32a2-ce04-4ea5-9208-132bf053442c",
+        "name": "Dados planilha",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1840,
+          140
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "function extrairPrimeiroUUID(url) {\n    // Expressão regular para encontrar UUIDs\n    const regexUUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;\n    \n    // Executa a expressão regular na URL\n    const match = url.match(regexUUID);\n    \n    // Verifica se encontrou um UUID e retorna, senão retorna nulo\n    return match ? match[0] : null;\n}\n\nconst url = $input.all()[0].json[\"form_response\"][\"answers\"][\"15\"][\"url\"];\nconst primeiroUUID = extrairPrimeiroUUID(url);\n\nreturn {primeiroUUID}\n"
+        },
+        "id": "6960cc83-a894-463d-bd44-020c46bea351",
+        "name": "Extrai UUID",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -20,
+          760
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "3f3d6e58-1224-41de-915f-e9f32894fe6b",
+        "name": "Date & Time1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2023?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"choice\"][\"label\"] }}\n\n\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[15].url }}"
+        },
+        "id": "f360efd7-7fbd-4784-ad2a-cdc4964c7121",
+        "name": "Monday.com5",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1480,
+          320
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "3354f0ee-d490-49a4-b42e-dbb51114b082",
+        "name": "Monday.com8",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1300,
+          320
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com8').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \" {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time1').item.json.formattedDate }}\", \"pessoas__1\": \"closerbma.thiago@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada1\"].json[\"callAgendada\"] }}\" }    "
+        },
+        "id": "1e1d7146-98e1-4f50-83c8-142992d1965a",
+        "name": "Monday.com9",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1660,
+          320
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "[AUTO] Carol",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "utm campaign": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_campaign }}",
+              "utm content": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "utm term": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "utm medium": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}",
+              "utm source": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Nome": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+              "Telefone": "={{ $('Trata Webhook').item.json.form_response.answers[1].number }}",
+              "Email": "={{ $('Trata Webhook').item.json.form_response.answers[2].email }}",
+              "Qual das opções abaixo mais condiz com seu negócio hoje?": "={{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}",
+              "Descreva de forma clara e objetiva o seu modelo de negócios atual:": "={{ $('Trata Webhook').item.json.form_response.answers[4].text }}",
+              "Qual é o seu faturamento MENSAL médio em 2023?": "={{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}",
+              "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?": "={{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}",
+              "Qual cenário mais se adequa ao seu caso?": "={{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}",
+              "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?": "={{ $('Trata Webhook').item.json.form_response.answers[8].text }}",
+              "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?": "={{ $('Trata Webhook').item.json.form_response.answers[9].text }}",
+              "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:": "={{ $('Trata Webhook').item.json.form_response.answers[10].text }}",
+              "Quais dificuldades está enfrentando pra alcançar esse objetivo?": "={{ $('Trata Webhook').item.json.form_response.answers[11].text }}",
+              "Há quanto tempo está enfrentando essas dificuldades?": "={{ $('Trata Webhook').item.json.form_response.answers[12].text }}",
+              "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?": "={{ $('Trata Webhook').item.json.form_response.answers[13].choice.label }}",
+              "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?": "={{ $('Trata Webhook').item.json.form_response.answers[14].choice.label }}",
+              "Data Criação": "={{ $('Date & Time1').item.json.formattedDate }}",
+              "ID Monday": "={{ $('Monday.com8').item.json.id }}",
+              "Closer": "Thiago Barros",
+              "Funil": "Consultoria Grátis"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Data Criação",
+                "displayName": "Data Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ID Monday",
+                "displayName": "ID Monday",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Funil",
+                "displayName": "Funil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                "displayName": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Descreva de forma clara e objetiva o seu modelo de negócios atual:",
+                "displayName": "Descreva de forma clara e objetiva o seu modelo de negócios atual:",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Qual é o seu faturamento MENSAL médio em 2023?",
+                "displayName": "Qual é o seu faturamento MENSAL médio em 2023?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?",
+                "displayName": "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Qual cenário mais se adequa ao seu caso?",
+                "displayName": "Qual cenário mais se adequa ao seu caso?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                "displayName": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                "displayName": "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                "displayName": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Quais dificuldades está enfrentando pra alcançar esse objetivo?",
+                "displayName": "Quais dificuldades está enfrentando pra alcançar esse objetivo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Há quanto tempo está enfrentando essas dificuldades?",
+                "displayName": "Há quanto tempo está enfrentando essas dificuldades?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?",
+                "displayName": "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?",
+                "displayName": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm source",
+                "displayName": "utm source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm campaign",
+                "displayName": "utm campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm medium",
+                "displayName": "utm medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm term",
+                "displayName": "utm term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm content",
+                "displayName": "utm content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "7a1525e1-dead-4240-ac6e-430768a77474",
+        "name": "Dados planilha1",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1840,
+          320
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "1164bed6-c7f7-445b-b039-d01d0f2ce37c",
+        "name": "Date & Time2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          500
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2023?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"choice\"][\"label\"] }}\n\n\n\n\n----------\nCalendly: \n{{ $('Trata Webhook').item.json.form_response.answers[15].url }}"
+        },
+        "id": "543b8a03-d0fc-465f-b986-a2f86a77cf8e",
+        "name": "Monday.com10",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1480,
+          500
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "topics",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "3c6f231a-88bd-463f-b44b-af174a3360d3",
+        "name": "Monday.com11",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1300,
+          500
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com11').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \" {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time2').item.json.formattedDate }}\", \"person\": \"closerbma.ademirbonfa@gmail.com\", \"data0\": \"{{ $node[\"Call Agendada\"].json[\"callAgendada\"] }}\" }    "
+        },
+        "id": "c950e1b0-c120-453a-bf4d-8fbd6ee7544a",
+        "name": "Monday.com12",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1660,
+          500
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "[AUTO] Carol",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "utm campaign": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_campaign }}",
+              "utm content": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "utm term": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "utm medium": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}",
+              "utm source": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Nome": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+              "Telefone": "={{ $('Trata Webhook').item.json.form_response.answers[1].number }}",
+              "Email": "={{ $('Trata Webhook').item.json.form_response.answers[2].email }}",
+              "Qual das opções abaixo mais condiz com seu negócio hoje?": "={{ $('Trata Webhook').item.json.form_response.answers[3].choice.label }}",
+              "Descreva de forma clara e objetiva o seu modelo de negócios atual:": "={{ $('Trata Webhook').item.json.form_response.answers[4].text }}",
+              "Qual é o seu faturamento MENSAL médio em 2023?": "={{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}",
+              "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?": "={{ $('Trata Webhook').item.json.form_response.answers[6].choice.label }}",
+              "Qual cenário mais se adequa ao seu caso?": "={{ $('Trata Webhook').item.json.form_response.answers[7].choice.label }}",
+              "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?": "={{ $('Trata Webhook').item.json.form_response.answers[8].text }}",
+              "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?": "={{ $('Trata Webhook').item.json.form_response.answers[9].text }}",
+              "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:": "={{ $('Trata Webhook').item.json.form_response.answers[10].text }}",
+              "Quais dificuldades está enfrentando pra alcançar esse objetivo?": "={{ $('Trata Webhook').item.json.form_response.answers[11].text }}",
+              "Há quanto tempo está enfrentando essas dificuldades?": "={{ $('Trata Webhook').item.json.form_response.answers[12].text }}",
+              "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?": "={{ $('Trata Webhook').item.json.form_response.answers[13].choice.label }}",
+              "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?": "={{ $('Trata Webhook').item.json.form_response.answers[14].choice.label }}",
+              "Data Criação": "={{ $('Date & Time2').item.json.formattedDate }}",
+              "ID Monday": "={{ $('Monday.com11').item.json.id }}",
+              "Closer": "Ademir Bonfá",
+              "Funil": "Consultoria Grátis"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Data Criação",
+                "displayName": "Data Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ID Monday",
+                "displayName": "ID Monday",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Funil",
+                "displayName": "Funil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                "displayName": "Qual das opções abaixo mais condiz com seu negócio hoje?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Descreva de forma clara e objetiva o seu modelo de negócios atual:",
+                "displayName": "Descreva de forma clara e objetiva o seu modelo de negócios atual:",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Qual é o seu faturamento MENSAL médio em 2023?",
+                "displayName": "Qual é o seu faturamento MENSAL médio em 2023?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?",
+                "displayName": "Você atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Qual cenário mais se adequa ao seu caso?",
+                "displayName": "Qual cenário mais se adequa ao seu caso?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                "displayName": "Por que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                "displayName": "Caso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                "displayName": "O que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Quais dificuldades está enfrentando pra alcançar esse objetivo?",
+                "displayName": "Quais dificuldades está enfrentando pra alcançar esse objetivo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Há quanto tempo está enfrentando essas dificuldades?",
+                "displayName": "Há quanto tempo está enfrentando essas dificuldades?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?",
+                "displayName": "Você está ciente que ao ser *pré-aprovado,* entraremos em contato com você em *até 24h *para confirmar sua consultoria e, caso não confirme dentro desse período, *você perde direito a reunião?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?",
+                "displayName": "Você tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm source",
+                "displayName": "utm source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm campaign",
+                "displayName": "utm campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm medium",
+                "displayName": "utm medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm term",
+                "displayName": "utm term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm content",
+                "displayName": "utm content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f7af8d92-a3a1-4c37-8edc-9f205a50e9e6",
+        "name": "Dados planilha2",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1840,
+          500
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1295922302,
+            "mode": "list",
+            "cachedResultName": "[AUTO] Banco de Dados",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=1295922302"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "utm campaign": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_campaign }}",
+              "utm content": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "utm term": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "utm medium": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}",
+              "utm source": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Nome": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+              "Telefone": "={{ $('Trata Webhook').item.json.form_response.answers[1].number }}",
+              "Email": "={{ $('Trata Webhook').item.json.form_response.answers[2].email }}",
+              "Closer": "Nayra",
+              "ID Monday": "={{ $('Monday.com6').item.json.id }}",
+              "Data Criação": "={{ $('Date & Time').item.json.formattedDate }}",
+              "Data Atualização": "={{ $('Date & Time').item.json.formattedDate }}",
+              "Funil": "Consultoria Grátis"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Data Criação",
+                "displayName": "Data Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data Atualização",
+                "displayName": "Data Atualização",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ID Monday",
+                "displayName": "ID Monday",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Funil",
+                "displayName": "Funil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Etapa",
+                "displayName": "Etapa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Comparecimento",
+                "displayName": "Comparecimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Valor do Negócio",
+                "displayName": "Valor do Negócio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Faturamento",
+                "displayName": "Faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Produto",
+                "displayName": "Produto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm source",
+                "displayName": "utm source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm campaign",
+                "displayName": "utm campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm medium",
+                "displayName": "utm medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm term",
+                "displayName": "utm term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm content",
+                "displayName": "utm content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "65e990f9-79c3-4f99-8eef-70c551f0dad5",
+        "name": "Análise de Dados",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          2020,
+          140
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1295922302,
+            "mode": "list",
+            "cachedResultName": "[AUTO] Banco de Dados",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=1295922302"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "utm campaign": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_campaign }}",
+              "utm content": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "utm term": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "utm medium": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}",
+              "utm source": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Nome": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+              "Telefone": "={{ $('Trata Webhook').item.json.form_response.answers[1].number }}",
+              "Email": "={{ $('Trata Webhook').item.json.form_response.answers[2].email }}",
+              "Data Criação": "={{ $('Date & Time1').item.json.formattedDate }}",
+              "ID Monday": "={{ $('Monday.com8').item.json.id }}",
+              "Closer": "Thiago Barros",
+              "Data Atualização": "={{ $('Date & Time1').item.json.formattedDate }}",
+              "Funil": "Consultoria Grátis"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Data Criação",
+                "displayName": "Data Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data Atualização",
+                "displayName": "Data Atualização",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ID Monday",
+                "displayName": "ID Monday",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Funil",
+                "displayName": "Funil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Etapa",
+                "displayName": "Etapa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Comparecimento",
+                "displayName": "Comparecimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Valor do Negócio",
+                "displayName": "Valor do Negócio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Faturamento",
+                "displayName": "Faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Produto",
+                "displayName": "Produto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm source",
+                "displayName": "utm source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm campaign",
+                "displayName": "utm campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm medium",
+                "displayName": "utm medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm term",
+                "displayName": "utm term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm content",
+                "displayName": "utm content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e345d9f0-29c4-4684-b806-62c2742cd28a",
+        "name": "Análise de Dados1",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          2020,
+          320
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1295922302,
+            "mode": "list",
+            "cachedResultName": "[AUTO] Banco de Dados",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JYDXGyA6osLLM6f78ZpwBDcanIIRQV_fgJ2k3uz5yOc/edit#gid=1295922302"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "utm campaign": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_campaign }}",
+              "utm content": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_content }}",
+              "utm term": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_term }}",
+              "utm medium": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_medium }}",
+              "utm source": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Nome": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+              "Telefone": "={{ $('Trata Webhook').item.json.form_response.answers[1].number }}",
+              "Email": "={{ $('Trata Webhook').item.json.form_response.answers[2].email }}",
+              "Data Criação": "={{ $('Date & Time2').item.json.formattedDate }}",
+              "ID Monday": "={{ $('Monday.com11').item.json.id }}",
+              "Closer": "Ademir Bonfá",
+              "Data Atualização": "={{ $('Date & Time2').item.json.formattedDate }}",
+              "Funil": "Consultoria Grátis"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Data Criação",
+                "displayName": "Data Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data Atualização",
+                "displayName": "Data Atualização",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ID Monday",
+                "displayName": "ID Monday",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Funil",
+                "displayName": "Funil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Etapa",
+                "displayName": "Etapa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Comparecimento",
+                "displayName": "Comparecimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Valor do Negócio",
+                "displayName": "Valor do Negócio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Faturamento",
+                "displayName": "Faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Produto",
+                "displayName": "Produto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "utm source",
+                "displayName": "utm source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm campaign",
+                "displayName": "utm campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm medium",
+                "displayName": "utm medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm term",
+                "displayName": "utm term",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "utm content",
+                "displayName": "utm content",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f26c6db9-8c4d-411f-9d01-804b61f0af22",
+        "name": "Análise de Dados2",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          2020,
+          500
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Ademir\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com11').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8f43a426-608e-4a2d-9700-bd79821a0017",
+        "name": "Notifica grupo | Ademir",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2380,
+          500
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "00521bb1-5f09-4c52-b35a-7ab130ddb62a",
+        "name": "formata data reunião",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          500
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "768d26c2-4f54-4c99-9184-e0bac19fbb12",
+        "name": "formata data reunião1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "d8e7a780-d28c-41a2-98cc-e968c4f600f9",
+        "name": "formata data reunião2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          140
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Thiago\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com8').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "7630065b-f8e9-4a11-a155-1c5821a1f973",
+        "name": "Notifica grupo | Thiago",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2380,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363285621576178-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável*: Nayra\n\n*Nome do lead*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n*E-mail*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n*Whatsapp*: {{ $node[\"Formata Telefone\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n*Faturamento*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}\n\n*Modelo de Negócio*: {{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"choice\"][\"label\"] }}\n\n*Informações completas no Monday*: https://carol-carib.monday.com/boards/5689478999/views/135923185/pulses/{{ $('Monday.com6').item.json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "09443991-b188-4dfc-9d3c-0fbc5fad7604",
+        "name": "Notifica grupo | Nayra",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2380,
+          140
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardColumn",
+          "operation": "getAll",
+          "boardId": "5689478999"
+        },
+        "id": "62b5bb3d-2621-4dfa-a1d0-256a6bce0881",
+        "name": "Monday.com",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          220,
+          820
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.resource.start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "a677dbec-af11-494f-a7d4-0d3ad1e92f16",
+        "name": "Call Agendada",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          940,
+          500
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": false
+          }
+        },
+        "id": "93e99d06-8c7f-4f02-a046-381b77530f39",
+        "name": "Call Agendada1",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          940,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.resource.start_time }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd HH:mm:ss",
+          "outputFieldName": "callAgendada",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "3042734a-cd8b-4457-8c15-811e6f2202bb",
+        "name": "Call Agendada2",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          940,
+          140
+        ]
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events/{{ $json.primeiroUUID }}/invitees/{{ $json.primeiroUUID }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE2NTE3NTkwLCJqdGkiOiI3YzVmYmFkMy03OWE5LTQyYWMtYjU3OS00OTdjZDM3MzEzNzciLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.RSPn53KepZrsBC0MCr-DXUUTfltNmHdSD71CJO3DmtXrMzl-JT_aKummnfK7XXhGDgmYGDscvcvot0D0BQPxMg"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d7c58ff8-9230-4df5-9421-c2ca07873303",
+        "name": "Busca Closer",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          1060
+        ],
+        "alwaysOutputData": false,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $('Trata Webhook').item.json.form_response.submitted_at }}",
+          "format": "custom",
+          "customFormat": "yyyy-MM-dd ",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "5080e797-aacf-4493-b483-3d37681603a6",
+        "name": "Date & Time3",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          740
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "boardId": "5689478999",
+          "groupId": "novo_grupo82923",
+          "name": "={{ $('Trata Webhook').item.json.form_response.answers[0].text }}",
+          "additionalFields": {}
+        },
+        "id": "184d4128-cc09-4adc-9d42-a6c9ad497828",
+        "name": "Monday.com13",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1300,
+          740
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeMultipleColumnValues",
+          "boardId": "5689478999",
+          "itemId": "={{ $('Monday.com13').item.json.id }}",
+          "columnValues": "={\"texto3__1\":\"{{\"wa.me/\" + $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto71__1\": \"{{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}\", \"texto4__1\": \" {{ $('Trata Webhook').item.json.form_response.answers[5].choice.label }}\", \"n_meros\": \" {{ $('Trata Webhook').item.json.form_response.answers[1].number }}\", \"texto9__1\": \"{{ $('Trata Webhook').item.json.form_response.answers[2].email }}\", \"data\": \"{{ $('Date & Time3').item.json.formattedDate }}\" }    "
+        },
+        "id": "baaa4c3f-befc-4c2c-a291-4887695aa869",
+        "name": "Monday.com14",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1660,
+          740
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "addUpdate",
+          "itemId": "={{ $json.id }}",
+          "value": "=Nome completo:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}\n\n\n----------\nNúmero de WhatsApp com DDD:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"1\"][\"number\"] }}\n\n\n----------\nSeu e-mail principal:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}\n\n\n----------\nSeu @ do instagram:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"3\"][\"text\"] }}\n\n\n----------\nQual das opções abaixo mais condiz com seu negócio hoje?:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"4\"][\"choice\"][\"label\"] }}\n\n\n----------\nDescreva de forma clara e objetiva o seu modelo de negócios atual:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"text\"] }}\n\n\n----------\nQual é o seu faturamento MENSAL médio em 2023?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"6\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê atua ou tem interesse em atuar no mercado de desenvolvimento imobiliário?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"7\"][\"choice\"][\"label\"] }}\n\n\n----------\nQual cenário mais se adequa ao seu caso?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"8\"][\"choice\"][\"label\"] }}\n\n\n----------\nPor que você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"9\"][\"text\"] }}\n\n\n----------\nCaso recebamos mais aplicações do que vagas disponíveis para a consultoria grátis, por que eu deveria aceitar sua aplicação dentre os demais interessados?\"\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"10\"][\"text\"] }}\n\n\n----------\nO que você deseja alcançar com sua carreira e faturamento nos próximos 12 meses? Nos conte seu objetivo da forma mais específica (SMART) possível:\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"11\"][\"text\"] }}\n\n\n----------\nQuais dificuldades está enfrentando pra alcançar esse objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"12\"][\"text\"] }}\n\n\n----------\nHá quanto tempo está enfrentando essas dificuldades?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"13\"][\"text\"] }}\n\n\n----------\nVocê está ciente que ao ser pré-aprovado, entraremos em contato com você em até 24h para confirmar sua consultoria e, caso não confirme dentro desse período, você perde direito a reunião?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"14\"][\"choice\"][\"label\"] }}\n\n\n----------\nVocê tem algum sócio ou outra pessoa importante que gostaria de convidar para participar da consultoria com você para que estejam alinhados com o objetivo?\n\n{{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"15\"][\"choice\"][\"label\"] }}\n"
+        },
+        "id": "2ff0a2f2-fd30-4da0-a935-95476a228323",
+        "name": "Monday.com1",
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1480,
+          740
+        ],
+        "credentials": {
+          "mondayComApi": {
+            "id": "ZHdCRr90m7Qp2m7i",
+            "name": "Carol Caribé"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events?organization=\thttps://api.calendly.com/organizations/85e6ccb1-b72c-49b9-abde-9608c02a1d01&invitee_email={{ $('Formata Telefone').item.json.form_response.answers[2].email }}&min_start_time={{ $json.currentDate }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzIwMTgxNzk1LCJqdGkiOiJlZmI4OGIzMi1lZjliLTQwNzctODg2OS05ZDgzM2Q4NzgwNDYiLCJ1c2VyX3V1aWQiOiIzNDhhMzczNy0yM2FlLTQ5OWEtYWE1Yi03NzcxNGUyYTFhMGYifQ.shD1-HqhsYVrda4l-Y4cT7FpKLKMs3wvRgDQ1AksHqAZ1ANHhK3NwCqKNCmsZlqX5n8Of-L5X6diBrUpxOfs3w"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e84822c9-f4c5-4dcb-bf6b-bba01463cb35",
+        "name": "Busca Invite",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          80,
+          -240
+        ],
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "6d882910-d643-40f2-82d1-b7f3cea00a4e",
+        "name": "Date & Time4",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          180,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Nayra",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Nayra"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "35e6ff49-0d9e-4b4f-b5cc-d5ebd9720c63",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Thiago Barros",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Thiago Barros"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "id": "5f5990e5-9532-4f89-b9d7-1fb200f763b1",
+                      "leftValue": "={{ $json.collection[0].event_memberships[0].user_name }}",
+                      "rightValue": "Ademir Bonfá",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Ademir Bonfá"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e96623fc-f2dc-4586-863f-1bf9088b1ab5",
+        "name": "Switch",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          680,
+          320
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "f3bcf0db-6462-4ee2-91c1-82cab1770545",
+                "leftValue": "={{ $json.title }}",
+                "rightValue": "Closer",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "286c97ca-fa6a-4b4a-a2e5-9efcbe8cffcc",
+        "name": "Filter",
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2,
+        "position": [
+          440,
+          820
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1gFO5wzJHL_Wq_qLICka-mrHMZ-p2mZb5YIIpT2Nit6w/edit?gid=0#gid=0",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "[AUTO]",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gFO5wzJHL_Wq_qLICka-mrHMZ-p2mZb5YIIpT2Nit6w/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Data de Criação": "={{ new DateTime($now).format(\"dd/MM/yyyy\") }}",
+              "Nome": "={{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"0\"][\"text\"] }}",
+              "Closer": "=",
+              "Status": "=",
+              "Etapa": "=Agendar",
+              "Comparecimento": "=",
+              "Data da Call": "=",
+              "Valor do negócio": "=",
+              "Data da Venda": "=",
+              "Produto": "=",
+              "Faturamento": "={{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"5\"][\"choice\"][\"label\"] }}",
+              "Origem": "={{ $('Trata Webhook').item.json.form_response.hidden.utm_source }}",
+              "Email": "={{ $node[\"Trata Webhook\"].json[\"form_response\"][\"answers\"][\"2\"][\"email\"] }}",
+              "ID": "={{ $('Monday.com13').item.json.id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ID",
+                "displayName": "ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data de Criação",
+                "displayName": "Data de Criação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Nome",
+                "displayName": "Nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Closer",
+                "displayName": "Closer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Data da Call",
+                "displayName": "Data da Call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Comparecimento",
+                "displayName": "Comparecimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Valor do negócio",
+                "displayName": "Valor do negócio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Etapa",
+                "displayName": "Etapa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Faturamento",
+                "displayName": "Faturamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Produto",
+                "displayName": "Produto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Data da Venda",
+                "displayName": "Data da Venda",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Origem",
+                "displayName": "Origem",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {
+            "cellFormat": "USER_ENTERED"
+          }
+        },
+        "id": "f46bca33-bb19-44c3-b78b-d7d236b5b8e0",
+        "name": "dashboard",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1840,
+          740
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "298d41d9-d7d4-4e1d-b97f-b6f05ee13df1",
+          "options": {}
+        },
+        "id": "22ab4968-2fe0-4ff1-97d5-1ecf17b3f5d7",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -420,
+          320
+        ],
+        "webhookId": "298d41d9-d7d4-4e1d-b97f-b6f05ee13df1"
+      }
+    ],
+    "connections": {
+      "Date & Time": {
+        "main": [
+          [
+            {
+              "node": "Monday.com6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formata Telefone": {
+        "main": [
+          [
+            {
+              "node": "Date & Time4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com4": {
+        "main": [
+          [
+            {
+              "node": "Monday.com7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com6": {
+        "main": [
+          [
+            {
+              "node": "Monday.com4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com7": {
+        "main": [
+          [
+            {
+              "node": "Dados planilha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Formata Telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time1": {
+        "main": [
+          [
+            {
+              "node": "Monday.com8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com5": {
+        "main": [
+          [
+            {
+              "node": "Monday.com9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com8": {
+        "main": [
+          [
+            {
+              "node": "Monday.com5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com9": {
+        "main": [
+          [
+            {
+              "node": "Dados planilha1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time2": {
+        "main": [
+          [
+            {
+              "node": "Monday.com11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com10": {
+        "main": [
+          [
+            {
+              "node": "Monday.com12",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com11": {
+        "main": [
+          [
+            {
+              "node": "Monday.com10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com12": {
+        "main": [
+          [
+            {
+              "node": "Dados planilha2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Dados planilha": {
+        "main": [
+          [
+            {
+              "node": "Análise de Dados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Dados planilha1": {
+        "main": [
+          [
+            {
+              "node": "Análise de Dados1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Dados planilha2": {
+        "main": [
+          [
+            {
+              "node": "Análise de Dados2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Análise de Dados2": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Análise de Dados1": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Análise de Dados": {
+        "main": [
+          [
+            {
+              "node": "formata data reunião2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada": {
+        "main": [
+          [
+            {
+              "node": "Date & Time2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Ademir",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião2": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Nayra",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada2": {
+        "main": [
+          [
+            {
+              "node": "Date & Time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Agendada1": {
+        "main": [
+          [
+            {
+              "node": "Date & Time1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time3": {
+        "main": [
+          [
+            {
+              "node": "Monday.com13",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com13": {
+        "main": [
+          [
+            {
+              "node": "Monday.com1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com14": {
+        "main": [
+          [
+            {
+              "node": "dashboard",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com1": {
+        "main": [
+          [
+            {
+              "node": "Monday.com14",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time4": {
+        "main": [
+          [
+            {
+              "node": "Date & Time3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Call Agendada2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call Agendada",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monday.com": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formata data reunião1": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | Thiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "4dff973f-9c6e-4a94-a73c-0bcd2a514d9d",
   "connections": {
     "Date & Time": {
       "main": [
