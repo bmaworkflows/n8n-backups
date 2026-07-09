@@ -1,28 +1,15 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-07-09T03:20:03.127Z",
-    "createdAt": "2026-07-09T03:20:03.127Z",
-    "versionId": "204091e8-ad59-4bb4-979d-9a674a4d1711",
+    "updatedAt": "2026-07-09T12:48:47.619Z",
+    "createdAt": "2026-07-09T12:48:47.619Z",
+    "versionId": "7e028fc5-1c10-446d-964b-7c8655e14d63",
     "workflowId": "Tx23zlyP3mhINlfZ",
     "nodes": [
       {
         "parameters": {
-          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
-        },
-        "id": "3feb14d8-677f-47d5-924b-5a95b9bb4f18",
-        "name": "Trata Webhook",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 1,
-        "position": [
-          -1776,
-          -2240
-        ]
-      },
-      {
-        "parameters": {
           "operation": "formatDate",
-          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "date": "={{ $('4 · Dados do evento').item.json.collection[0].start_time }}",
           "format": "custom",
           "customFormat": "yyyy-MM-dd HH:mm:ss",
           "outputFieldName": "callAgendada",
@@ -31,7 +18,7 @@
           }
         },
         "id": "c1a2f1da-f337-42c0-be17-b62788ef238b",
-        "name": "Call Agendada2",
+        "name": "Data call · Tiago",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -50,7 +37,7 @@
           }
         },
         "id": "19fb19f3-9609-46bd-b663-adb0a97ad4d7",
-        "name": "Date & Time3",
+        "name": "Data aplicação · Tiago",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -61,7 +48,7 @@
       {
         "parameters": {
           "operation": "formatDate",
-          "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+          "date": "={{ $node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
           "format": "custom",
           "customFormat": "dd/MM/yyyy HH:mm",
           "options": {
@@ -69,7 +56,7 @@
           }
         },
         "id": "c4304d10-8a82-4812-a986-4a3eafdc9c1c",
-        "name": "formata data reunião1",
+        "name": "Data reunião · Tiago",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -106,7 +93,7 @@
           "options": {}
         },
         "id": "9cf01119-333b-4940-8ef4-665ba25cd532",
-        "name": "Notifica grupo | José",
+        "name": "Notifica grupo · Tiago",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -143,29 +130,13 @@
           "options": {}
         },
         "id": "b74f7755-c3c6-4993-9dfc-19d01890158b",
-        "name": "Notifica grupo | José2",
+        "name": "Notifica grupo · não agendou",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
           -656,
           -1760
         ]
-      },
-      {
-        "parameters": {
-          "httpMethod": "POST",
-          "path": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a",
-          "options": {}
-        },
-        "id": "976754af-f486-40c9-af3e-44ef982cfed2",
-        "name": "Webhook",
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2,
-        "position": [
-          -2000,
-          -2240
-        ],
-        "webhookId": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a"
       },
       {
         "parameters": {
@@ -189,14 +160,14 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado*\n\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"formata data reunião1\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+                "value": "=*Novo lead agendado*\n\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Data reunião · Tiago\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
               }
             ]
           },
           "options": {}
         },
         "id": "a5a9068f-8ab1-495d-8234-9961c694ace5",
-        "name": "Notifica grupo | José3",
+        "name": "Notifica grupo 2 · Tiago",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -237,7 +208,7 @@
           -2240
         ],
         "id": "a3e1ce55-743d-4ce2-b805-fbc898863ea7",
-        "name": "If"
+        "name": "Respondeu o form?"
       },
       {
         "parameters": {
@@ -268,7 +239,7 @@
           "options": {}
         },
         "id": "79b3ebf0-8982-4ba6-9fb2-f4c465b6025e",
-        "name": "Notifica grupo | José9",
+        "name": "Notifica grupo · reserva",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -341,7 +312,7 @@
               },
               {
                 "name": "Data Aplicação",
-                "value": "={{ $('Date & Time3').item.json.formattedDate }}"
+                "value": "={{ $('Data aplicação · Tiago').item.json.formattedDate }}"
               },
               {
                 "name": "Data Call Agendada",
@@ -378,7 +349,7 @@
           -2240
         ],
         "id": "6fc1b507-ad36-4759-ba33-92f84f4cb9b6",
-        "name": "Clint Tiago"
+        "name": "Clint · Tiago"
       },
       {
         "parameters": {
@@ -470,7 +441,7 @@
           -2432
         ],
         "id": "07616200-d8fe-4b5d-b245-30870b4657ec",
-        "name": "Clint Reserva2"
+        "name": "Clint · Reserva"
       },
       {
         "parameters": {
@@ -501,7 +472,7 @@
           "options": {}
         },
         "id": "758d1a06-3c19-47e6-a8ac-b46d94555e47",
-        "name": "MSG PRE-CALL 22",
+        "name": "Pré-call msg 1 · Tiago",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -518,7 +489,7 @@
           -2048
         ],
         "id": "d1b3abdb-1d27-4b9c-9023-b641a78d15bc",
-        "name": "Wait16",
+        "name": "Wait 1 · Tiago",
         "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
       },
       {
@@ -550,7 +521,7 @@
           "options": {}
         },
         "id": "ec4f997c-c2b1-4d57-8089-8e8b935f6bdb",
-        "name": "MSG PRE-CALL 23",
+        "name": "Pré-call msg 2 · Tiago",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -567,7 +538,7 @@
           -2048
         ],
         "id": "5433becc-5b06-4b70-8ae7-d5fc823df521",
-        "name": "Wait17",
+        "name": "Wait 2 · Tiago",
         "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
       },
       {
@@ -599,7 +570,7 @@
           "options": {}
         },
         "id": "e9bcb717-e921-499b-ad77-32db6d11f3b5",
-        "name": "MSG PRE-CALL 24",
+        "name": "Pré-call msg 3 · Tiago",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -636,7 +607,7 @@
           "options": {}
         },
         "id": "8cf6e93a-a149-465b-b826-10974dd955dc",
-        "name": "VIDEO JP PRE-CALL",
+        "name": "Vídeo pré-call · Tiago",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -676,7 +647,7 @@
           -2432
         ],
         "id": "b0807d1e-a127-4e93-ba69-98c5fb938584",
-        "name": "preencheu whatsapp"
+        "name": "Preencheu WhatsApp?"
       },
       {
         "parameters": {
@@ -710,12 +681,12 @@
           -1760
         ],
         "id": "03f9b2db-514f-42d6-b297-2e49f80e2f93",
-        "name": "preencheu whatsapp1"
+        "name": "Preencheu WhatsApp? (2)"
       },
       {
         "parameters": {
           "operation": "formatDate",
-          "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+          "date": "={{ $('4 · Dados do evento').item.json.collection[0].start_time }}",
           "format": "custom",
           "customFormat": "yyyy-MM-dd HH:mm:ss",
           "outputFieldName": "callAgendada",
@@ -724,7 +695,7 @@
           }
         },
         "id": "79f2b6a1-d7d0-419e-9228-a15e21a72beb",
-        "name": "Call Agendada7",
+        "name": "Data call · genérico",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -743,7 +714,7 @@
           }
         },
         "id": "26a8c46d-0ca4-430d-a7c2-7b9f8b21e7eb",
-        "name": "Date & Time12",
+        "name": "Data aplicação · genérico",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -754,7 +725,7 @@
       {
         "parameters": {
           "operation": "formatDate",
-          "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+          "date": "={{ $node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
           "format": "custom",
           "customFormat": "dd/MM/yyyy HH:mm",
           "options": {
@@ -762,7 +733,7 @@
           }
         },
         "id": "55e5a75c-1a03-4ea6-9258-df6a70354ed6",
-        "name": "formata data reunião7",
+        "name": "Data reunião · genérico",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -773,7 +744,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "={{ $('Config Closer').item.json.clintUrl }}",
+          "url": "={{ $('5 · Roteia closer (tabela)').item.json.clintUrl }}",
           "sendBody": true,
           "bodyParameters": {
             "parameters": [
@@ -835,7 +806,7 @@
               },
               {
                 "name": "Data Aplicação",
-                "value": "={{ $('Date & Time12').item.json.formattedDate }}"
+                "value": "={{ $('Data aplicação · genérico').item.json.formattedDate }}"
               },
               {
                 "name": "Data Call Agendada",
@@ -859,7 +830,7 @@
               },
               {
                 "name": "dono",
-                "value": "={{ $('Config Closer').item.json.dono }}"
+                "value": "={{ $('5 · Roteia closer (tabela)').item.json.dono }}"
               }
             ]
           },
@@ -872,7 +843,7 @@
           -1856
         ],
         "id": "6626f2ed-6bcb-4500-922b-e5d6cb27b4df",
-        "name": "Clint Karllos"
+        "name": "Clint · closer (dinâmico)"
       },
       {
         "parameters": {
@@ -896,14 +867,14 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado JP ✅*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável:* {{ $('Config Closer').item.json.closerNome }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+                "value": "=*Novo lead agendado JP ✅*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável:* {{ $('5 · Roteia closer (tabela)').item.json.closerNome }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
               }
             ]
           },
           "options": {}
         },
         "id": "8f32aba1-58b4-4d96-8425-4c10de3ff20a",
-        "name": "Notifica grupo | Karllos",
+        "name": "Notifica grupo · genérico",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -929,18 +900,18 @@
             "parameters": [
               {
                 "name": "phone",
-                "value": "={{ $('Config Closer').item.json.pvPhone }}"
+                "value": "={{ $('5 · Roteia closer (tabela)').item.json.pvPhone }}"
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"formata data reunião7\"].json[\"formattedDate\"] }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+                "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Data reunião · genérico\"].json[\"formattedDate\"] }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
               }
             ]
           },
           "options": {}
         },
         "id": "2c6d3ba7-4c5b-42cf-80e1-21ca6542d70b",
-        "name": "Notifica pv karllos",
+        "name": "Notifica PV closer (dinâmico)",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -977,7 +948,7 @@
           "options": {}
         },
         "id": "c435cd28-9977-4e8f-aa79-b215b8e41db9",
-        "name": "MSG PRE-CALL 33",
+        "name": "Pré-call msg 1 · genérico",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -994,7 +965,7 @@
           -1664
         ],
         "id": "151e3f25-dc6e-4b5a-a2c8-9059efa4a35c",
-        "name": "Wait21",
+        "name": "Wait 1 · genérico",
         "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
       },
       {
@@ -1026,7 +997,7 @@
           "options": {}
         },
         "id": "4ba29781-4c12-4171-a7a7-e2b3038f3698",
-        "name": "MSG PRE-CALL 34",
+        "name": "Pré-call msg 2 · genérico",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1043,7 +1014,7 @@
           -1664
         ],
         "id": "72e07a3e-a52a-4d7a-bf5f-4478fd898b75",
-        "name": "Wait24",
+        "name": "Wait 2 · genérico",
         "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
       },
       {
@@ -1068,14 +1039,14 @@
               },
               {
                 "name": "message",
-                "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá?\n\nEm caso de dúvidas, entre em contato com o especialista {{ $('Config Closer').item.json.closerNome }}, que fará a reunião com você: {{ $('Config Closer').item.json.pvDisplay }}"
+                "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá?\n\nEm caso de dúvidas, entre em contato com o especialista {{ $('5 · Roteia closer (tabela)').item.json.closerNome }}, que fará a reunião com você: {{ $('5 · Roteia closer (tabela)').item.json.pvDisplay }}"
               }
             ]
           },
           "options": {}
         },
         "id": "bcc000c1-bf35-43c5-8bd9-82f7e3e14983",
-        "name": "MSG PRE-CALL 35",
+        "name": "Pré-call msg 3 · genérico (dinâmico)",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1112,7 +1083,7 @@
           "options": {}
         },
         "id": "860dc09e-012d-47a8-84e0-36151c58648d",
-        "name": "VIDEO JP PRE-CALL6",
+        "name": "Vídeo pré-call · genérico",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1149,7 +1120,7 @@
           "options": {}
         },
         "id": "0e45f077-0b53-4642-96de-822f6aaa197e",
-        "name": "Notifica Maria",
+        "name": "Notifica Maria · não agendou",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1185,7 +1156,7 @@
           -2624
         ],
         "id": "212d23c8-1de9-4c7a-b6bf-3c01828e099b",
-        "name": "ACIONA FLUXO DE PRECALL"
+        "name": "Sub: PRECALL"
       },
       {
         "parameters": {
@@ -1238,7 +1209,7 @@
           -2720
         ],
         "id": "d63b076f-9bac-436a-97da-99d9eff704ad",
-        "name": "Trata campos"
+        "name": "Campos PRECALL · infoprod"
       },
       {
         "parameters": {
@@ -1282,7 +1253,7 @@
           -2624
         ],
         "id": "4a079968-87cf-41f8-acaf-d195aaeb7f4f",
-        "name": "INFOPRODUTOR"
+        "name": "É infoprodutor?"
       },
       {
         "parameters": {
@@ -1316,7 +1287,7 @@
           -2432
         ],
         "id": "74b032fd-cff8-4a19-b124-2cece2370a4e",
-        "name": "MENTOR"
+        "name": "É mentor?"
       },
       {
         "parameters": {
@@ -1369,7 +1340,7 @@
           -2528
         ],
         "id": "ed5397fa-bb3e-42a7-8175-1238d62aa66e",
-        "name": "Trata campos1"
+        "name": "Campos PRECALL · mentor A"
       },
       {
         "parameters": {
@@ -1422,7 +1393,7 @@
           -2336
         ],
         "id": "34891f3c-2fdb-4a93-a7e1-e72b925f7ac1",
-        "name": "Trata campos2"
+        "name": "Campos PRECALL · mentor B"
       },
       {
         "parameters": {
@@ -1448,7 +1419,7 @@
           -2240
         ],
         "id": "c12d38d8-433d-45bf-a54d-a2e7edde353b",
-        "name": "Call 'PRÉ-CALL CLOSERS'"
+        "name": "Sub: PRÉ-CALL CLOSERS · Tiago"
       },
       {
         "parameters": {
@@ -1463,7 +1434,7 @@
               {
                 "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
                 "name": "data",
-                "value": "={{ $item(\"0\").$node[\"formata data reunião1\"].json[\"formattedDate\"] }}",
+                "value": "={{ $item(\"0\").$node[\"Data reunião · Tiago\"].json[\"formattedDate\"] }}",
                 "type": "string"
               },
               {
@@ -1481,7 +1452,7 @@
               {
                 "id": "9ffaac47-4850-4238-890d-f9d6bb2f979b",
                 "name": "data_fim",
-                "value": "={{ $item(\"0\").$node[\"formata data reunião\"].json[\"formattedDate\"] }}",
+                "value": "={{ $item(\"0\").$node[\"Data reunião A · Tiago\"].json[\"formattedDate\"] }}",
                 "type": "string"
               }
             ]
@@ -1495,7 +1466,7 @@
           -2240
         ],
         "id": "eaffd2d4-21ef-408e-8311-6f671b193e42",
-        "name": "campos pre call"
+        "name": "Campos pré-call · Tiago"
       },
       {
         "parameters": {
@@ -1521,7 +1492,7 @@
           -1856
         ],
         "id": "cee5e3de-3dec-4b8d-8971-dc214bb2e484",
-        "name": "Call 'PRÉ-CALL CLOSERS'2"
+        "name": "Sub: PRÉ-CALL CLOSERS · genérico"
       },
       {
         "parameters": {
@@ -1530,13 +1501,13 @@
               {
                 "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
                 "name": "closer",
-                "value": "={{ $('Config Closer').item.json.closerNome }}",
+                "value": "={{ $('5 · Roteia closer (tabela)').item.json.closerNome }}",
                 "type": "string"
               },
               {
                 "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
                 "name": "data",
-                "value": "={{ $item(\"0\").$node[\"formata data reunião7\"].json[\"formattedDate\"] }}",
+                "value": "={{ $item(\"0\").$node[\"Data reunião · genérico\"].json[\"formattedDate\"] }}",
                 "type": "string"
               },
               {
@@ -1554,7 +1525,7 @@
               {
                 "id": "d183f99e-8fd6-4bf4-8f12-244eafb33468",
                 "name": "data_fim",
-                "value": "={{ $item(\"0\").$node[\"formata data reunião9\"].json[\"formattedDate\"] }}",
+                "value": "={{ $item(\"0\").$node[\"Data fim reunião · genérico\"].json[\"formattedDate\"] }}",
                 "type": "string"
               }
             ]
@@ -1568,12 +1539,12 @@
           -1856
         ],
         "id": "6cac1cba-1aec-4067-a194-0ae78554acc3",
-        "name": "campos pre call2"
+        "name": "Campos pré-call · genérico"
       },
       {
         "parameters": {
           "operation": "formatDate",
-          "date": "={{ $item(\"0\").$node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
+          "date": "={{ $item(\"0\").$node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
           "format": "custom",
           "customFormat": "dd/MM/yyyy HH:mm",
           "options": {
@@ -1581,7 +1552,7 @@
           }
         },
         "id": "af1c7501-f582-465e-be7f-ec78e5d445b7",
-        "name": "formata data reunião",
+        "name": "Data reunião A · Tiago",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
@@ -1592,7 +1563,7 @@
       {
         "parameters": {
           "operation": "formatDate",
-          "date": "={{ $item(\"0\").$node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
+          "date": "={{ $item(\"0\").$node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
           "format": "custom",
           "customFormat": "dd/MM/yyyy HH:mm",
           "options": {
@@ -1600,86 +1571,13 @@
           }
         },
         "id": "68ad6a48-85b6-40a3-950a-088a75467e07",
-        "name": "formata data reunião9",
+        "name": "Data fim reunião · genérico",
         "type": "n8n-nodes-base.dateTime",
         "typeVersion": 2,
         "position": [
           464,
           -1760
         ]
-      },
-      {
-        "parameters": {
-          "workflowId": {
-            "__rl": true,
-            "value": "9Zc4XBrTKcEUb9y5",
-            "mode": "list",
-            "cachedResultUrl": "/workflow/9Zc4XBrTKcEUb9y5",
-            "cachedResultName": "PRÉ-CALL CLOSERS"
-          },
-          "workflowInputs": {
-            "mappingMode": "defineBelow",
-            "value": {}
-          },
-          "options": {
-            "waitForSubWorkflow": false
-          }
-        },
-        "type": "n8n-nodes-base.executeWorkflow",
-        "typeVersion": 1.3,
-        "position": [
-          -1776,
-          -1440
-        ],
-        "id": "b2f5dd91-5553-457d-ad24-b2ab33c7a3aa",
-        "name": "Call 'PRÉ-CALL CLOSERS'4"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
-                "name": "closer",
-                "value": "Guilherme Luiz",
-                "type": "string"
-              },
-              {
-                "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
-                "name": "data",
-                "value": "={{ $item(\"0\").$node[\"formata data reunião11\"].json[\"formattedDate\"] }}",
-                "type": "string"
-              },
-              {
-                "id": "e27b5789-7c5c-4a6f-bf94-3c8769c676ca",
-                "name": "nome",
-                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}",
-                "type": "string"
-              },
-              {
-                "id": "8399a4f4-6b2e-4467-ad68-0cf38e5dfdee",
-                "name": "telefone",
-                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}",
-                "type": "string"
-              },
-              {
-                "id": "1e3f9160-256b-4d99-8eb3-a57211665a05",
-                "name": "data_fim",
-                "value": "={{ $item(\"0\").$node[\"formata data reunião12\"].json[\"formattedDate\"] }}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          -2000,
-          -1440
-        ],
-        "id": "fad41d53-b92d-46b0-ba27-23e1b13c7e3d",
-        "name": "campos pre call4"
       },
       {
         "parameters": {
@@ -1713,7 +1611,7 @@
           -2144
         ],
         "id": "799210c3-8941-4a89-80ac-0c180eb67f23",
-        "name": "fluxo 15k-"
+        "name": "Tiago · é 15k-?"
       },
       {
         "parameters": {
@@ -1744,7 +1642,7 @@
           "options": {}
         },
         "id": "5f718188-e3cc-4874-acab-23549a4942b4",
-        "name": "Notifica grupo | José1",
+        "name": "Notifica grupo · 15k- (1)",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1774,14 +1672,14 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead 15k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"formata data reunião1\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Instagram:* {{ $('Trata Webhook').item.json.response.answers['685d40fd0c7815d8080d5085'].content }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+                "value": "=*Novo lead 15k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Data reunião · Tiago\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Instagram:* {{ $('Trata Webhook').item.json.response.answers['685d40fd0c7815d8080d5085'].content }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
               }
             ]
           },
           "options": {}
         },
         "id": "ac3ba07d-27ed-42bf-8e0d-3b0fb0a587ad",
-        "name": "Notifica grupo | José4",
+        "name": "Notifica grupo · 15k- (2)",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1793,7 +1691,7 @@
         "parameters": {
           "jsCode": "// Coalesce dos 4 campos do form onde o link do Calendly pode chegar\nconst ans = $('Trata Webhook').item.json.response.answers;\nconst fields = ['685d43796f718f411f0407b8','697405f9a45bc7b4d505e18e','685d438435bd886b580246b2','69d685c0cdb5083665088085'];\nlet link = null;\nfor (const f of fields) {\n  const c = ans[f] && ans[f].content;\n  if (c && typeof c === 'string' && c.includes('calendly.com')) { link = c.trim(); break; }\n}\nlet eventUuid = null;\nif (link) {\n  const m = link.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (m) eventUuid = m[1];\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, calendlyLink: link, eventUuid } }];"
         },
-        "name": "Detecta Agendamento",
+        "name": "1 · Detecta link Calendly",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
@@ -1804,7 +1702,7 @@
       },
       {
         "parameters": {
-          "url": "=https://api.calendly.com/scheduled_events/{{ $('Detecta Agendamento').item.json.eventUuid }}",
+          "url": "=https://api.calendly.com/scheduled_events/{{ $('1 · Detecta link Calendly').item.json.eventUuid }}",
           "sendHeaders": true,
           "headerParameters": {
             "parameters": [
@@ -1816,7 +1714,7 @@
           },
           "options": {}
         },
-        "name": "GET Evento",
+        "name": "3 · Busca evento (por link)",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -1849,7 +1747,7 @@
           },
           "options": {}
         },
-        "name": "Agendou?",
+        "name": "2 · Agendou?",
         "type": "n8n-nodes-base.if",
         "typeVersion": 2,
         "position": [
@@ -1860,9 +1758,9 @@
       },
       {
         "parameters": {
-          "jsCode": "// Reembala a resposta do GET singular no mesmo formato do endpoint antigo\n// (mantém todas as referências a collection[0] intactas)\nreturn [{ json: { collection: [ $('GET Evento').item.json.resource ] } }];"
+          "jsCode": "// Reembala a resposta do GET singular no mesmo formato do endpoint antigo\n// (mantém todas as referências a collection[0] intactas)\nreturn [{ json: { collection: [ $('3 · Busca evento (por link)').item.json.resource ] } }];"
         },
-        "name": "Busca Invite",
+        "name": "4 · Dados do evento",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
@@ -1873,9 +1771,9 @@
       },
       {
         "parameters": {
-          "jsCode": "const map = {\n  'Tiago Gregório':      { closerNome: 'Tiago Gregório', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe', dono: 'tiagogregorio@mentoriahighticket.com.br', pvPhone: '5534984133437', pvDisplay: '+55 34 8413-3437' },\n  'Karllos':             { closerNome: 'Karllos',        clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a', dono: 'karllos.bma@gmail.com', pvPhone: '5561998546456', pvDisplay: '5561998546456' },\n  'Matheus Schefer BMA': { closerNome: 'Matheus Schefer', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113', dono: 'matheusschefer.bma@gmail.com', pvPhone: '5545991195467', pvDisplay: '+55 45 9955-3235' },\n  'Guilherme Luiz':      { closerNome: 'Guilherme Luiz', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821', dono: 'guilhermeluiz.bma@gmail.com', pvPhone: '553192265968', pvDisplay: '+55 31 9226-5968' },\n  'Júnior Bonfá BMA':    { closerNome: 'Júnior Bonfá',   clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/ed2c585d-b8de-4fd8-8ff8-38a9327ef7ba', dono: 'juniorbonfabma@gmail.com', pvPhone: '558382296382', pvDisplay: '+55 83 8229-6382' },\n};\nconst user = $('Busca Invite').item.json.collection[0].event_memberships[0].user_name;\nconst cfg = map[user] || { closerNome: user, clintUrl: '', dono: '', pvPhone: '', pvDisplay: '' };\nreturn [{ json: { ...$json, ...cfg, _closerUserName: user } }];"
+          "jsCode": "const map = {\n  'Tiago Gregório':      { closerNome: 'Tiago Gregório', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe', dono: 'tiagogregorio@mentoriahighticket.com.br', pvPhone: '5534984133437', pvDisplay: '+55 34 8413-3437' },\n  'Karllos':             { closerNome: 'Karllos',        clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a', dono: 'karllos.bma@gmail.com', pvPhone: '5561998546456', pvDisplay: '5561998546456' },\n  'Matheus Schefer BMA': { closerNome: 'Matheus Schefer', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113', dono: 'matheusschefer.bma@gmail.com', pvPhone: '5545991195467', pvDisplay: '+55 45 9955-3235' },\n  'Guilherme Luiz':      { closerNome: 'Guilherme Luiz', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821', dono: 'guilhermeluiz.bma@gmail.com', pvPhone: '553192265968', pvDisplay: '+55 31 9226-5968' },\n  'Júnior Bonfá BMA':    { closerNome: 'Júnior Bonfá',   clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/ed2c585d-b8de-4fd8-8ff8-38a9327ef7ba', dono: 'juniorbonfabma@gmail.com', pvPhone: '558382296382', pvDisplay: '+55 83 8229-6382' },\n};\nconst user = $('4 · Dados do evento').item.json.collection[0].event_memberships[0].user_name;\nconst cfg = map[user] || { closerNome: user, clintUrl: '', dono: '', pvPhone: '', pvDisplay: '' };\nreturn [{ json: { ...$json, ...cfg, _closerUserName: user } }];"
         },
-        "name": "Config Closer",
+        "name": "5 · Roteia closer (tabela)",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
@@ -1889,13 +1787,14 @@
           "conditions": {
             "options": {
               "caseSensitive": true,
-              "typeValidation": "loose",
-              "version": 2
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 1
             },
             "conditions": [
               {
                 "id": "t1",
-                "leftValue": "={{ $('Config Closer').item.json.closerNome }}",
+                "leftValue": "={{ $('5 · Roteia closer (tabela)').item.json.closerNome }}",
                 "rightValue": "Tiago Gregório",
                 "operator": {
                   "type": "string",
@@ -1907,7 +1806,7 @@
           },
           "options": {}
         },
-        "name": "é Tiago?",
+        "name": "6 · É Tiago?",
         "type": "n8n-nodes-base.if",
         "typeVersion": 2,
         "position": [
@@ -1915,47 +1814,672 @@
           -1952
         ],
         "id": "827e0b3d-8c98-4ff8-a3f7-31129488030c"
+      },
+      {
+        "parameters": {
+          "content": "## 🔗 Busca do evento por LINK\nO link do Calendly já chega no payload do Yay (em 1 de 4 campos).\n**1** faz coalesce + extrai o UUID → **3** busca o evento exato → **4** entrega os dados.\nAntes: busca por e-mail (frágil).",
+          "height": 240,
+          "width": 900,
+          "color": 4
+        },
+        "name": "nota-busca",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -1408,
+          -2624
+        ],
+        "id": "1dc49f4b-d253-453c-8b02-a31f4d3961d3"
+      },
+      {
+        "parameters": {
+          "content": "## 🧭 Roteamento por closer — AQUI\nQuem escolhe o closer é o **Calendly** (round-robin). O n8n só lê `event_memberships[0].user_name`.\n**5 · Roteia closer** tem a TABELA com os 5 closers (Clint, dono, PV, telefone) e injeta os dados do closer certo.\n**6 · É Tiago?** é o único IF: Tiago tem fluxo próprio; **os outros 4 (Karllos, Matheus, Guilherme, Júnior) compartilham 1 ramo genérico** — os dados vêm da tabela.",
+          "height": 320,
+          "width": 640,
+          "color": 3
+        },
+        "name": "nota-roteamento",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -528,
+          -2320
+        ],
+        "id": "0664f33d-48f6-4e93-bb75-d8c1dea68f60"
+      },
+      {
+        "parameters": {
+          "content": "## ⭐ Ramo do TIAGO (especial)\nÚnico com `é 15k-?` e notificações próprias.",
+          "height": 170,
+          "width": 900,
+          "color": 5
+        },
+        "name": "nota-tiago",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          -2448
+        ],
+        "id": "051496c6-fea9-4de5-b8fe-7a6abbf3a464"
+      },
+      {
+        "parameters": {
+          "content": "## 👥 Ramo GENÉRICO — Karllos · Matheus · Guilherme · Júnior\nUM único ramo p/ os 4. Clint, PV, nome e telefone vêm de **5 · Roteia closer**.\nMSG 3 usa o nome/telefone do closer (corrige o bug antigo do Júnior).",
+          "height": 200,
+          "width": 2620,
+          "color": 6
+        },
+        "name": "nota-generico",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          -1984
+        ],
+        "id": "92840536-5f65-4d19-8665-b33d433c913d"
+      },
+      {
+        "parameters": {
+          "content": "## 🚫 Não agendou\nSem link Calendly → reserva no Clint + avisa o time.",
+          "width": 500,
+          "color": 7
+        },
+        "name": "nota-naoagendou",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -1408,
+          -2256
+        ],
+        "id": "daf282ee-c84e-4a8b-83a3-e09ef68d107d"
+      },
+      {
+        "parameters": {
+          "content": "## 📞 INFOPRODUTOR / MENTOR → Sub: PRECALL\nRoda em paralelo, independe do closer. Intacto.",
+          "width": 800,
+          "color": 2
+        },
+        "name": "nota-precall",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -528,
+          -2816
+        ],
+        "id": "15dbcc2b-a928-44b6-8dfe-aab13c2f7c9b"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a",
+          "options": {}
+        },
+        "id": "976754af-f486-40c9-af3e-44ef982cfed2",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -2000,
+          -2240
+        ],
+        "webhookId": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "id": "3feb14d8-677f-47d5-924b-5a95b9bb4f18",
+        "name": "Trata Webhook",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          -1776,
+          -2240
+        ]
       }
     ],
     "connections": {
-      "Call Agendada2": {
+      "Data call · Tiago": {
         "main": [
           [
             {
-              "node": "Date & Time3",
+              "node": "Data aplicação · Tiago",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Date & Time3": {
+      "Data aplicação · Tiago": {
         "main": [
           [
             {
-              "node": "formata data reunião",
+              "node": "Data reunião A · Tiago",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Trata Webhook": {
+      "Notifica grupo · não agendou": {
         "main": [
           [
             {
-              "node": "If",
+              "node": "Notifica Maria · não agendou",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Notifica grupo | José2": {
+      "Data reunião · Tiago": {
         "main": [
           [
             {
-              "node": "Notifica Maria",
+              "node": "Tiago · é 15k-?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo 2 · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo 2 · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Vídeo pré-call · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Respondeu o form?": {
+        "main": [
+          [
+            {
+              "node": "1 · Detecta link Calendly",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Preencheu WhatsApp?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo · reserva": {
+        "main": [
+          []
+        ]
+      },
+      "Clint · Reserva": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · reserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pré-call msg 1 · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Wait 1 · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 1 · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Pré-call msg 2 · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pré-call msg 2 · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Wait 2 · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 2 · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Pré-call msg 3 · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preencheu WhatsApp?": {
+        "main": [
+          [
+            {
+              "node": "Clint · Reserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preencheu WhatsApp? (2)": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · não agendou",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Vídeo pré-call · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Pré-call msg 1 · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data call · genérico": {
+        "main": [
+          [
+            {
+              "node": "Data aplicação · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data aplicação · genérico": {
+        "main": [
+          [
+            {
+              "node": "Data fim reunião · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data reunião · genérico": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · genérico",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Clint · closer (dinâmico)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo · genérico": {
+        "main": [
+          [
+            {
+              "node": "Notifica PV closer (dinâmico)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pré-call msg 1 · genérico": {
+        "main": [
+          [
+            {
+              "node": "Wait 1 · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 1 · genérico": {
+        "main": [
+          [
+            {
+              "node": "Pré-call msg 2 · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pré-call msg 2 · genérico": {
+        "main": [
+          [
+            {
+              "node": "Wait 2 · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 2 · genérico": {
+        "main": [
+          [
+            {
+              "node": "Pré-call msg 3 · genérico (dinâmico)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Vídeo pré-call · genérico": {
+        "main": [
+          [
+            {
+              "node": "Pré-call msg 1 · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica PV closer (dinâmico)": {
+        "main": [
+          [
+            {
+              "node": "Vídeo pré-call · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos PRECALL · infoprod": {
+        "main": [
+          [
+            {
+              "node": "Sub: PRECALL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "É infoprodutor?": {
+        "main": [
+          [
+            {
+              "node": "Campos PRECALL · infoprod",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "É mentor?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "É mentor?": {
+        "main": [
+          [
+            {
+              "node": "Campos PRECALL · mentor A",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Campos PRECALL · mentor B",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos PRECALL · mentor A": {
+        "main": [
+          [
+            {
+              "node": "Sub: PRECALL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos PRECALL · mentor B": {
+        "main": [
+          [
+            {
+              "node": "Sub: PRECALL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clint · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Campos pré-call · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos pré-call · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Sub: PRÉ-CALL CLOSERS · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos pré-call · genérico": {
+        "main": [
+          [
+            {
+              "node": "Sub: PRÉ-CALL CLOSERS · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clint · closer (dinâmico)": {
+        "main": [
+          [
+            {
+              "node": "Campos pré-call · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data reunião A · Tiago": {
+        "main": [
+          [
+            {
+              "node": "Data reunião · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data fim reunião · genérico": {
+        "main": [
+          [
+            {
+              "node": "Data reunião · genérico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tiago · é 15k-?": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · 15k- (1)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Clint · Tiago",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Notifica grupo · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica grupo · 15k- (1)": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · 15k- (2)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1 · Detecta link Calendly": {
+        "main": [
+          [
+            {
+              "node": "2 · Agendou?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "2 · Agendou?": {
+        "main": [
+          [
+            {
+              "node": "3 · Busca evento (por link)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Preencheu WhatsApp? (2)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "3 · Busca evento (por link)": {
+        "main": [
+          [
+            {
+              "node": "4 · Dados do evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "4 · Dados do evento": {
+        "main": [
+          [
+            {
+              "node": "É infoprodutor?",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "5 · Roteia closer (tabela)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "5 · Roteia closer (tabela)": {
+        "main": [
+          [
+            {
+              "node": "6 · É Tiago?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "6 · É Tiago?": {
+        "main": [
+          [
+            {
+              "node": "Data call · Tiago",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Data call · genérico",
               "type": "main",
               "index": 0
             }
@@ -1973,524 +2497,11 @@
           ]
         ]
       },
-      "formata data reunião1": {
+      "Trata Webhook": {
         "main": [
           [
             {
-              "node": "fluxo 15k-",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica grupo | José": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo | José3",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica grupo | José3": {
-        "main": [
-          [
-            {
-              "node": "VIDEO JP PRE-CALL",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "Detecta Agendamento",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "preencheu whatsapp",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica grupo | José9": {
-        "main": [
-          []
-        ]
-      },
-      "Clint Reserva2": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo | José9",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "MSG PRE-CALL 22": {
-        "main": [
-          [
-            {
-              "node": "Wait16",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wait16": {
-        "main": [
-          [
-            {
-              "node": "MSG PRE-CALL 23",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "MSG PRE-CALL 23": {
-        "main": [
-          [
-            {
-              "node": "Wait17",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wait17": {
-        "main": [
-          [
-            {
-              "node": "MSG PRE-CALL 24",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "preencheu whatsapp": {
-        "main": [
-          [
-            {
-              "node": "Clint Reserva2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "preencheu whatsapp1": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo | José2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "VIDEO JP PRE-CALL": {
-        "main": [
-          [
-            {
-              "node": "MSG PRE-CALL 22",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Call Agendada7": {
-        "main": [
-          [
-            {
-              "node": "Date & Time12",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Date & Time12": {
-        "main": [
-          [
-            {
-              "node": "formata data reunião9",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "formata data reunião7": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo | Karllos",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Clint Karllos",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica grupo | Karllos": {
-        "main": [
-          [
-            {
-              "node": "Notifica pv karllos",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "MSG PRE-CALL 33": {
-        "main": [
-          [
-            {
-              "node": "Wait21",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wait21": {
-        "main": [
-          [
-            {
-              "node": "MSG PRE-CALL 34",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "MSG PRE-CALL 34": {
-        "main": [
-          [
-            {
-              "node": "Wait24",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wait24": {
-        "main": [
-          [
-            {
-              "node": "MSG PRE-CALL 35",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "VIDEO JP PRE-CALL6": {
-        "main": [
-          [
-            {
-              "node": "MSG PRE-CALL 33",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica pv karllos": {
-        "main": [
-          [
-            {
-              "node": "VIDEO JP PRE-CALL6",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Trata campos": {
-        "main": [
-          [
-            {
-              "node": "ACIONA FLUXO DE PRECALL",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "INFOPRODUTOR": {
-        "main": [
-          [
-            {
-              "node": "Trata campos",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "MENTOR",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "MENTOR": {
-        "main": [
-          [
-            {
-              "node": "Trata campos1",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Trata campos2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Trata campos1": {
-        "main": [
-          [
-            {
-              "node": "ACIONA FLUXO DE PRECALL",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Trata campos2": {
-        "main": [
-          [
-            {
-              "node": "ACIONA FLUXO DE PRECALL",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Clint Tiago": {
-        "main": [
-          [
-            {
-              "node": "campos pre call",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "campos pre call": {
-        "main": [
-          [
-            {
-              "node": "Call 'PRÉ-CALL CLOSERS'",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "campos pre call2": {
-        "main": [
-          [
-            {
-              "node": "Call 'PRÉ-CALL CLOSERS'2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Clint Karllos": {
-        "main": [
-          [
-            {
-              "node": "campos pre call2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "formata data reunião": {
-        "main": [
-          [
-            {
-              "node": "formata data reunião1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "formata data reunião9": {
-        "main": [
-          [
-            {
-              "node": "formata data reunião7",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "campos pre call4": {
-        "main": [
-          [
-            {
-              "node": "Call 'PRÉ-CALL CLOSERS'4",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "fluxo 15k-": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo | José1",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Clint Tiago",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Notifica grupo | José",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica grupo | José1": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo | José4",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Detecta Agendamento": {
-        "main": [
-          [
-            {
-              "node": "Agendou?",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Agendou?": {
-        "main": [
-          [
-            {
-              "node": "GET Evento",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "preencheu whatsapp1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "GET Evento": {
-        "main": [
-          [
-            {
-              "node": "Busca Invite",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Busca Invite": {
-        "main": [
-          [
-            {
-              "node": "INFOPRODUTOR",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Config Closer",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Config Closer": {
-        "main": [
-          [
-            {
-              "node": "é Tiago?",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "é Tiago?": {
-        "main": [
-          [
-            {
-              "node": "Call Agendada2",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Call Agendada7",
+              "node": "Respondeu o form?",
               "type": "main",
               "index": 0
             }
@@ -2502,46 +2513,548 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "204091e8-ad59-4bb4-979d-9a674a4d1711",
+  "activeVersionId": "7e028fc5-1c10-446d-964b-7c8655e14d63",
   "connections": {
-    "Call Agendada2": {
+    "Data call · Tiago": {
       "main": [
         [
           {
-            "node": "Date & Time3",
+            "node": "Data aplicação · Tiago",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Date & Time3": {
+    "Data aplicação · Tiago": {
       "main": [
         [
           {
-            "node": "formata data reunião",
+            "node": "Data reunião A · Tiago",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Trata Webhook": {
+    "Notifica grupo · não agendou": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Notifica Maria · não agendou",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Notifica grupo | José2": {
+    "Data reunião · Tiago": {
       "main": [
         [
           {
-            "node": "Notifica Maria",
+            "node": "Tiago · é 15k-?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo 2 · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo 2 · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Vídeo pré-call · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respondeu o form?": {
+      "main": [
+        [
+          {
+            "node": "1 · Detecta link Calendly",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preencheu WhatsApp?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo · reserva": {
+      "main": [
+        []
+      ]
+    },
+    "Clint · Reserva": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · reserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pré-call msg 1 · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Wait 1 · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 1 · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Pré-call msg 2 · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pré-call msg 2 · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Pré-call msg 3 · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preencheu WhatsApp?": {
+      "main": [
+        [
+          {
+            "node": "Clint · Reserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preencheu WhatsApp? (2)": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · não agendou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vídeo pré-call · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Pré-call msg 1 · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data call · genérico": {
+      "main": [
+        [
+          {
+            "node": "Data aplicação · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data aplicação · genérico": {
+      "main": [
+        [
+          {
+            "node": "Data fim reunião · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data reunião · genérico": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · genérico",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Clint · closer (dinâmico)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo · genérico": {
+      "main": [
+        [
+          {
+            "node": "Notifica PV closer (dinâmico)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pré-call msg 1 · genérico": {
+      "main": [
+        [
+          {
+            "node": "Wait 1 · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 1 · genérico": {
+      "main": [
+        [
+          {
+            "node": "Pré-call msg 2 · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pré-call msg 2 · genérico": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 · genérico": {
+      "main": [
+        [
+          {
+            "node": "Pré-call msg 3 · genérico (dinâmico)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vídeo pré-call · genérico": {
+      "main": [
+        [
+          {
+            "node": "Pré-call msg 1 · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica PV closer (dinâmico)": {
+      "main": [
+        [
+          {
+            "node": "Vídeo pré-call · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos PRECALL · infoprod": {
+      "main": [
+        [
+          {
+            "node": "Sub: PRECALL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É infoprodutor?": {
+      "main": [
+        [
+          {
+            "node": "Campos PRECALL · infoprod",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "É mentor?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É mentor?": {
+      "main": [
+        [
+          {
+            "node": "Campos PRECALL · mentor A",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Campos PRECALL · mentor B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos PRECALL · mentor A": {
+      "main": [
+        [
+          {
+            "node": "Sub: PRECALL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos PRECALL · mentor B": {
+      "main": [
+        [
+          {
+            "node": "Sub: PRECALL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clint · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Campos pré-call · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos pré-call · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Sub: PRÉ-CALL CLOSERS · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos pré-call · genérico": {
+      "main": [
+        [
+          {
+            "node": "Sub: PRÉ-CALL CLOSERS · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clint · closer (dinâmico)": {
+      "main": [
+        [
+          {
+            "node": "Campos pré-call · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data reunião A · Tiago": {
+      "main": [
+        [
+          {
+            "node": "Data reunião · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data fim reunião · genérico": {
+      "main": [
+        [
+          {
+            "node": "Data reunião · genérico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tiago · é 15k-?": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · 15k- (1)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Clint · Tiago",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notifica grupo · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica grupo · 15k- (1)": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · 15k- (2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 · Detecta link Calendly": {
+      "main": [
+        [
+          {
+            "node": "2 · Agendou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2 · Agendou?": {
+      "main": [
+        [
+          {
+            "node": "3 · Busca evento (por link)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preencheu WhatsApp? (2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 · Busca evento (por link)": {
+      "main": [
+        [
+          {
+            "node": "4 · Dados do evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4 · Dados do evento": {
+      "main": [
+        [
+          {
+            "node": "É infoprodutor?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "5 · Roteia closer (tabela)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5 · Roteia closer (tabela)": {
+      "main": [
+        [
+          {
+            "node": "6 · É Tiago?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6 · É Tiago?": {
+      "main": [
+        [
+          {
+            "node": "Data call · Tiago",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Data call · genérico",
             "type": "main",
             "index": 0
           }
@@ -2559,524 +3072,11 @@
         ]
       ]
     },
-    "formata data reunião1": {
+    "Trata Webhook": {
       "main": [
         [
           {
-            "node": "fluxo 15k-",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica grupo | José": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | José3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica grupo | José3": {
-      "main": [
-        [
-          {
-            "node": "VIDEO JP PRE-CALL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Detecta Agendamento",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "preencheu whatsapp",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica grupo | José9": {
-      "main": [
-        []
-      ]
-    },
-    "Clint Reserva2": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | José9",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 22": {
-      "main": [
-        [
-          {
-            "node": "Wait16",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait16": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 23",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 23": {
-      "main": [
-        [
-          {
-            "node": "Wait17",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait17": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 24",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "preencheu whatsapp": {
-      "main": [
-        [
-          {
-            "node": "Clint Reserva2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "preencheu whatsapp1": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | José2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "VIDEO JP PRE-CALL": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 22",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call Agendada7": {
-      "main": [
-        [
-          {
-            "node": "Date & Time12",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Date & Time12": {
-      "main": [
-        [
-          {
-            "node": "formata data reunião9",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "formata data reunião7": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | Karllos",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Clint Karllos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica grupo | Karllos": {
-      "main": [
-        [
-          {
-            "node": "Notifica pv karllos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 33": {
-      "main": [
-        [
-          {
-            "node": "Wait21",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait21": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 34",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MSG PRE-CALL 34": {
-      "main": [
-        [
-          {
-            "node": "Wait24",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait24": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 35",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "VIDEO JP PRE-CALL6": {
-      "main": [
-        [
-          {
-            "node": "MSG PRE-CALL 33",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica pv karllos": {
-      "main": [
-        [
-          {
-            "node": "VIDEO JP PRE-CALL6",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Trata campos": {
-      "main": [
-        [
-          {
-            "node": "ACIONA FLUXO DE PRECALL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "INFOPRODUTOR": {
-      "main": [
-        [
-          {
-            "node": "Trata campos",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "MENTOR",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MENTOR": {
-      "main": [
-        [
-          {
-            "node": "Trata campos1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Trata campos2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Trata campos1": {
-      "main": [
-        [
-          {
-            "node": "ACIONA FLUXO DE PRECALL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Trata campos2": {
-      "main": [
-        [
-          {
-            "node": "ACIONA FLUXO DE PRECALL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Clint Tiago": {
-      "main": [
-        [
-          {
-            "node": "campos pre call",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "campos pre call": {
-      "main": [
-        [
-          {
-            "node": "Call 'PRÉ-CALL CLOSERS'",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "campos pre call2": {
-      "main": [
-        [
-          {
-            "node": "Call 'PRÉ-CALL CLOSERS'2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Clint Karllos": {
-      "main": [
-        [
-          {
-            "node": "campos pre call2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "formata data reunião": {
-      "main": [
-        [
-          {
-            "node": "formata data reunião1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "formata data reunião9": {
-      "main": [
-        [
-          {
-            "node": "formata data reunião7",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "campos pre call4": {
-      "main": [
-        [
-          {
-            "node": "Call 'PRÉ-CALL CLOSERS'4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "fluxo 15k-": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | José1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Clint Tiago",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Notifica grupo | José",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica grupo | José1": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo | José4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Detecta Agendamento": {
-      "main": [
-        [
-          {
-            "node": "Agendou?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Agendou?": {
-      "main": [
-        [
-          {
-            "node": "GET Evento",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "preencheu whatsapp1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "GET Evento": {
-      "main": [
-        [
-          {
-            "node": "Busca Invite",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Busca Invite": {
-      "main": [
-        [
-          {
-            "node": "INFOPRODUTOR",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Config Closer",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Config Closer": {
-      "main": [
-        [
-          {
-            "node": "é Tiago?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "é Tiago?": {
-      "main": [
-        [
-          {
-            "node": "Call Agendada2",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Call Agendada7",
+            "node": "Respondeu o form?",
             "type": "main",
             "index": 0
           }
@@ -3094,21 +3094,8 @@
   "nodes": [
     {
       "parameters": {
-        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
-      },
-      "id": "3feb14d8-677f-47d5-924b-5a95b9bb4f18",
-      "name": "Trata Webhook",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 1,
-      "position": [
-        -1776,
-        -2240
-      ]
-    },
-    {
-      "parameters": {
         "operation": "formatDate",
-        "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+        "date": "={{ $('4 · Dados do evento').item.json.collection[0].start_time }}",
         "format": "custom",
         "customFormat": "yyyy-MM-dd HH:mm:ss",
         "outputFieldName": "callAgendada",
@@ -3117,7 +3104,7 @@
         }
       },
       "id": "c1a2f1da-f337-42c0-be17-b62788ef238b",
-      "name": "Call Agendada2",
+      "name": "Data call · Tiago",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -3136,7 +3123,7 @@
         }
       },
       "id": "19fb19f3-9609-46bd-b663-adb0a97ad4d7",
-      "name": "Date & Time3",
+      "name": "Data aplicação · Tiago",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -3147,7 +3134,7 @@
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+        "date": "={{ $node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
         "format": "custom",
         "customFormat": "dd/MM/yyyy HH:mm",
         "options": {
@@ -3155,7 +3142,7 @@
         }
       },
       "id": "c4304d10-8a82-4812-a986-4a3eafdc9c1c",
-      "name": "formata data reunião1",
+      "name": "Data reunião · Tiago",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -3192,7 +3179,7 @@
         "options": {}
       },
       "id": "9cf01119-333b-4940-8ef4-665ba25cd532",
-      "name": "Notifica grupo | José",
+      "name": "Notifica grupo · Tiago",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3229,29 +3216,13 @@
         "options": {}
       },
       "id": "b74f7755-c3c6-4993-9dfc-19d01890158b",
-      "name": "Notifica grupo | José2",
+      "name": "Notifica grupo · não agendou",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         -656,
         -1760
       ]
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a",
-        "options": {}
-      },
-      "id": "976754af-f486-40c9-af3e-44ef982cfed2",
-      "name": "Webhook",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        -2000,
-        -2240
-      ],
-      "webhookId": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a"
     },
     {
       "parameters": {
@@ -3275,14 +3246,14 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"formata data reunião1\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+              "value": "=*Novo lead agendado*\n\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Data reunião · Tiago\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
             }
           ]
         },
         "options": {}
       },
       "id": "a5a9068f-8ab1-495d-8234-9961c694ace5",
-      "name": "Notifica grupo | José3",
+      "name": "Notifica grupo 2 · Tiago",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3323,7 +3294,7 @@
         -2240
       ],
       "id": "a3e1ce55-743d-4ce2-b805-fbc898863ea7",
-      "name": "If"
+      "name": "Respondeu o form?"
     },
     {
       "parameters": {
@@ -3354,7 +3325,7 @@
         "options": {}
       },
       "id": "79b3ebf0-8982-4ba6-9fb2-f4c465b6025e",
-      "name": "Notifica grupo | José9",
+      "name": "Notifica grupo · reserva",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3427,7 +3398,7 @@
             },
             {
               "name": "Data Aplicação",
-              "value": "={{ $('Date & Time3').item.json.formattedDate }}"
+              "value": "={{ $('Data aplicação · Tiago').item.json.formattedDate }}"
             },
             {
               "name": "Data Call Agendada",
@@ -3464,7 +3435,7 @@
         -2240
       ],
       "id": "6fc1b507-ad36-4759-ba33-92f84f4cb9b6",
-      "name": "Clint Tiago"
+      "name": "Clint · Tiago"
     },
     {
       "parameters": {
@@ -3556,7 +3527,7 @@
         -2432
       ],
       "id": "07616200-d8fe-4b5d-b245-30870b4657ec",
-      "name": "Clint Reserva2"
+      "name": "Clint · Reserva"
     },
     {
       "parameters": {
@@ -3587,7 +3558,7 @@
         "options": {}
       },
       "id": "758d1a06-3c19-47e6-a8ac-b46d94555e47",
-      "name": "MSG PRE-CALL 22",
+      "name": "Pré-call msg 1 · Tiago",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3604,7 +3575,7 @@
         -2048
       ],
       "id": "d1b3abdb-1d27-4b9c-9023-b641a78d15bc",
-      "name": "Wait16",
+      "name": "Wait 1 · Tiago",
       "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
     },
     {
@@ -3636,7 +3607,7 @@
         "options": {}
       },
       "id": "ec4f997c-c2b1-4d57-8089-8e8b935f6bdb",
-      "name": "MSG PRE-CALL 23",
+      "name": "Pré-call msg 2 · Tiago",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3653,7 +3624,7 @@
         -2048
       ],
       "id": "5433becc-5b06-4b70-8ae7-d5fc823df521",
-      "name": "Wait17",
+      "name": "Wait 2 · Tiago",
       "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
     },
     {
@@ -3685,7 +3656,7 @@
         "options": {}
       },
       "id": "e9bcb717-e921-499b-ad77-32db6d11f3b5",
-      "name": "MSG PRE-CALL 24",
+      "name": "Pré-call msg 3 · Tiago",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3722,7 +3693,7 @@
         "options": {}
       },
       "id": "8cf6e93a-a149-465b-b826-10974dd955dc",
-      "name": "VIDEO JP PRE-CALL",
+      "name": "Vídeo pré-call · Tiago",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -3762,7 +3733,7 @@
         -2432
       ],
       "id": "b0807d1e-a127-4e93-ba69-98c5fb938584",
-      "name": "preencheu whatsapp"
+      "name": "Preencheu WhatsApp?"
     },
     {
       "parameters": {
@@ -3796,12 +3767,12 @@
         -1760
       ],
       "id": "03f9b2db-514f-42d6-b297-2e49f80e2f93",
-      "name": "preencheu whatsapp1"
+      "name": "Preencheu WhatsApp? (2)"
     },
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $('Busca Invite').item.json.collection[0].start_time }}",
+        "date": "={{ $('4 · Dados do evento').item.json.collection[0].start_time }}",
         "format": "custom",
         "customFormat": "yyyy-MM-dd HH:mm:ss",
         "outputFieldName": "callAgendada",
@@ -3810,7 +3781,7 @@
         }
       },
       "id": "79f2b6a1-d7d0-419e-9228-a15e21a72beb",
-      "name": "Call Agendada7",
+      "name": "Data call · genérico",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -3829,7 +3800,7 @@
         }
       },
       "id": "26a8c46d-0ca4-430d-a7c2-7b9f8b21e7eb",
-      "name": "Date & Time12",
+      "name": "Data aplicação · genérico",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -3840,7 +3811,7 @@
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
+        "date": "={{ $node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"start_time\"] }}",
         "format": "custom",
         "customFormat": "dd/MM/yyyy HH:mm",
         "options": {
@@ -3848,7 +3819,7 @@
         }
       },
       "id": "55e5a75c-1a03-4ea6-9258-df6a70354ed6",
-      "name": "formata data reunião7",
+      "name": "Data reunião · genérico",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -3859,7 +3830,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config Closer').item.json.clintUrl }}",
+        "url": "={{ $('5 · Roteia closer (tabela)').item.json.clintUrl }}",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -3921,7 +3892,7 @@
             },
             {
               "name": "Data Aplicação",
-              "value": "={{ $('Date & Time12').item.json.formattedDate }}"
+              "value": "={{ $('Data aplicação · genérico').item.json.formattedDate }}"
             },
             {
               "name": "Data Call Agendada",
@@ -3945,7 +3916,7 @@
             },
             {
               "name": "dono",
-              "value": "={{ $('Config Closer').item.json.dono }}"
+              "value": "={{ $('5 · Roteia closer (tabela)').item.json.dono }}"
             }
           ]
         },
@@ -3958,7 +3929,7 @@
         -1856
       ],
       "id": "6626f2ed-6bcb-4500-922b-e5d6cb27b4df",
-      "name": "Clint Karllos"
+      "name": "Clint · closer (dinâmico)"
     },
     {
       "parameters": {
@@ -3982,14 +3953,14 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado JP ✅*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável:* {{ $('Config Closer').item.json.closerNome }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+              "value": "=*Novo lead agendado JP ✅*\n\n*Data e hora da Reunião*: {{ $json[\"formattedDate\"] }}\n\n*Closer Responsável:* {{ $('5 · Roteia closer (tabela)').item.json.closerNome }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
             }
           ]
         },
         "options": {}
       },
       "id": "8f32aba1-58b4-4d96-8425-4c10de3ff20a",
-      "name": "Notifica grupo | Karllos",
+      "name": "Notifica grupo · genérico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4015,18 +3986,18 @@
           "parameters": [
             {
               "name": "phone",
-              "value": "={{ $('Config Closer').item.json.pvPhone }}"
+              "value": "={{ $('5 · Roteia closer (tabela)').item.json.pvPhone }}"
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"formata data reunião7\"].json[\"formattedDate\"] }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+              "value": "=*Novo lead agendado*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Data reunião · genérico\"].json[\"formattedDate\"] }}\n\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
             }
           ]
         },
         "options": {}
       },
       "id": "2c6d3ba7-4c5b-42cf-80e1-21ca6542d70b",
-      "name": "Notifica pv karllos",
+      "name": "Notifica PV closer (dinâmico)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4063,7 +4034,7 @@
         "options": {}
       },
       "id": "c435cd28-9977-4e8f-aa79-b215b8e41db9",
-      "name": "MSG PRE-CALL 33",
+      "name": "Pré-call msg 1 · genérico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4080,7 +4051,7 @@
         -1664
       ],
       "id": "151e3f25-dc6e-4b5a-a2c8-9059efa4a35c",
-      "name": "Wait21",
+      "name": "Wait 1 · genérico",
       "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
     },
     {
@@ -4112,7 +4083,7 @@
         "options": {}
       },
       "id": "4ba29781-4c12-4171-a7a7-e2b3038f3698",
-      "name": "MSG PRE-CALL 34",
+      "name": "Pré-call msg 2 · genérico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4129,7 +4100,7 @@
         -1664
       ],
       "id": "72e07a3e-a52a-4d7a-bf5f-4478fd898b75",
-      "name": "Wait24",
+      "name": "Wait 2 · genérico",
       "webhookId": "84036bad-3761-4492-b648-4da6aac54d83"
     },
     {
@@ -4154,14 +4125,14 @@
             },
             {
               "name": "message",
-              "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá?\n\nEm caso de dúvidas, entre em contato com o especialista {{ $('Config Closer').item.json.closerNome }}, que fará a reunião com você: {{ $('Config Closer').item.json.pvDisplay }}"
+              "value": "=É importante que você saiba que não existe remarcação, caso você não confirme sua reunião nas próximas horas, sua vaga será transferida para outro empresário. Posso contar com você lá?\n\nEm caso de dúvidas, entre em contato com o especialista {{ $('5 · Roteia closer (tabela)').item.json.closerNome }}, que fará a reunião com você: {{ $('5 · Roteia closer (tabela)').item.json.pvDisplay }}"
             }
           ]
         },
         "options": {}
       },
       "id": "bcc000c1-bf35-43c5-8bd9-82f7e3e14983",
-      "name": "MSG PRE-CALL 35",
+      "name": "Pré-call msg 3 · genérico (dinâmico)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4198,7 +4169,7 @@
         "options": {}
       },
       "id": "860dc09e-012d-47a8-84e0-36151c58648d",
-      "name": "VIDEO JP PRE-CALL6",
+      "name": "Vídeo pré-call · genérico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4235,7 +4206,7 @@
         "options": {}
       },
       "id": "0e45f077-0b53-4642-96de-822f6aaa197e",
-      "name": "Notifica Maria",
+      "name": "Notifica Maria · não agendou",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4271,7 +4242,7 @@
         -2624
       ],
       "id": "212d23c8-1de9-4c7a-b6bf-3c01828e099b",
-      "name": "ACIONA FLUXO DE PRECALL"
+      "name": "Sub: PRECALL"
     },
     {
       "parameters": {
@@ -4324,7 +4295,7 @@
         -2720
       ],
       "id": "d63b076f-9bac-436a-97da-99d9eff704ad",
-      "name": "Trata campos"
+      "name": "Campos PRECALL · infoprod"
     },
     {
       "parameters": {
@@ -4368,7 +4339,7 @@
         -2624
       ],
       "id": "4a079968-87cf-41f8-acaf-d195aaeb7f4f",
-      "name": "INFOPRODUTOR"
+      "name": "É infoprodutor?"
     },
     {
       "parameters": {
@@ -4402,7 +4373,7 @@
         -2432
       ],
       "id": "74b032fd-cff8-4a19-b124-2cece2370a4e",
-      "name": "MENTOR"
+      "name": "É mentor?"
     },
     {
       "parameters": {
@@ -4455,7 +4426,7 @@
         -2528
       ],
       "id": "ed5397fa-bb3e-42a7-8175-1238d62aa66e",
-      "name": "Trata campos1"
+      "name": "Campos PRECALL · mentor A"
     },
     {
       "parameters": {
@@ -4508,7 +4479,7 @@
         -2336
       ],
       "id": "34891f3c-2fdb-4a93-a7e1-e72b925f7ac1",
-      "name": "Trata campos2"
+      "name": "Campos PRECALL · mentor B"
     },
     {
       "parameters": {
@@ -4534,7 +4505,7 @@
         -2240
       ],
       "id": "c12d38d8-433d-45bf-a54d-a2e7edde353b",
-      "name": "Call 'PRÉ-CALL CLOSERS'"
+      "name": "Sub: PRÉ-CALL CLOSERS · Tiago"
     },
     {
       "parameters": {
@@ -4549,7 +4520,7 @@
             {
               "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
               "name": "data",
-              "value": "={{ $item(\"0\").$node[\"formata data reunião1\"].json[\"formattedDate\"] }}",
+              "value": "={{ $item(\"0\").$node[\"Data reunião · Tiago\"].json[\"formattedDate\"] }}",
               "type": "string"
             },
             {
@@ -4567,7 +4538,7 @@
             {
               "id": "9ffaac47-4850-4238-890d-f9d6bb2f979b",
               "name": "data_fim",
-              "value": "={{ $item(\"0\").$node[\"formata data reunião\"].json[\"formattedDate\"] }}",
+              "value": "={{ $item(\"0\").$node[\"Data reunião A · Tiago\"].json[\"formattedDate\"] }}",
               "type": "string"
             }
           ]
@@ -4581,7 +4552,7 @@
         -2240
       ],
       "id": "eaffd2d4-21ef-408e-8311-6f671b193e42",
-      "name": "campos pre call"
+      "name": "Campos pré-call · Tiago"
     },
     {
       "parameters": {
@@ -4607,7 +4578,7 @@
         -1856
       ],
       "id": "cee5e3de-3dec-4b8d-8971-dc214bb2e484",
-      "name": "Call 'PRÉ-CALL CLOSERS'2"
+      "name": "Sub: PRÉ-CALL CLOSERS · genérico"
     },
     {
       "parameters": {
@@ -4616,13 +4587,13 @@
             {
               "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
               "name": "closer",
-              "value": "={{ $('Config Closer').item.json.closerNome }}",
+              "value": "={{ $('5 · Roteia closer (tabela)').item.json.closerNome }}",
               "type": "string"
             },
             {
               "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
               "name": "data",
-              "value": "={{ $item(\"0\").$node[\"formata data reunião7\"].json[\"formattedDate\"] }}",
+              "value": "={{ $item(\"0\").$node[\"Data reunião · genérico\"].json[\"formattedDate\"] }}",
               "type": "string"
             },
             {
@@ -4640,7 +4611,7 @@
             {
               "id": "d183f99e-8fd6-4bf4-8f12-244eafb33468",
               "name": "data_fim",
-              "value": "={{ $item(\"0\").$node[\"formata data reunião9\"].json[\"formattedDate\"] }}",
+              "value": "={{ $item(\"0\").$node[\"Data fim reunião · genérico\"].json[\"formattedDate\"] }}",
               "type": "string"
             }
           ]
@@ -4654,12 +4625,12 @@
         -1856
       ],
       "id": "6cac1cba-1aec-4067-a194-0ae78554acc3",
-      "name": "campos pre call2"
+      "name": "Campos pré-call · genérico"
     },
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $item(\"0\").$node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
+        "date": "={{ $item(\"0\").$node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
         "format": "custom",
         "customFormat": "dd/MM/yyyy HH:mm",
         "options": {
@@ -4667,7 +4638,7 @@
         }
       },
       "id": "af1c7501-f582-465e-be7f-ec78e5d445b7",
-      "name": "formata data reunião",
+      "name": "Data reunião A · Tiago",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
@@ -4678,7 +4649,7 @@
     {
       "parameters": {
         "operation": "formatDate",
-        "date": "={{ $item(\"0\").$node[\"Busca Invite\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
+        "date": "={{ $item(\"0\").$node[\"4 · Dados do evento\"].json[\"collection\"][\"0\"][\"end_time\"] }}",
         "format": "custom",
         "customFormat": "dd/MM/yyyy HH:mm",
         "options": {
@@ -4686,86 +4657,13 @@
         }
       },
       "id": "68ad6a48-85b6-40a3-950a-088a75467e07",
-      "name": "formata data reunião9",
+      "name": "Data fim reunião · genérico",
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
         464,
         -1760
       ]
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "9Zc4XBrTKcEUb9y5",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/9Zc4XBrTKcEUb9y5",
-          "cachedResultName": "PRÉ-CALL CLOSERS"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {}
-        },
-        "options": {
-          "waitForSubWorkflow": false
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        -1776,
-        -1440
-      ],
-      "id": "b2f5dd91-5553-457d-ad24-b2ab33c7a3aa",
-      "name": "Call 'PRÉ-CALL CLOSERS'4"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "5b3a95a6-5311-45ac-83be-fb6df64a7b99",
-              "name": "closer",
-              "value": "Guilherme Luiz",
-              "type": "string"
-            },
-            {
-              "id": "1e81f073-679e-4d2f-83ab-e77a047b3f32",
-              "name": "data",
-              "value": "={{ $item(\"0\").$node[\"formata data reunião11\"].json[\"formattedDate\"] }}",
-              "type": "string"
-            },
-            {
-              "id": "e27b5789-7c5c-4a6f-bf94-3c8769c676ca",
-              "name": "nome",
-              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}",
-              "type": "string"
-            },
-            {
-              "id": "8399a4f4-6b2e-4467-ad68-0cf38e5dfdee",
-              "name": "telefone",
-              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}",
-              "type": "string"
-            },
-            {
-              "id": "1e3f9160-256b-4d99-8eb3-a57211665a05",
-              "name": "data_fim",
-              "value": "={{ $item(\"0\").$node[\"formata data reunião12\"].json[\"formattedDate\"] }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -2000,
-        -1440
-      ],
-      "id": "fad41d53-b92d-46b0-ba27-23e1b13c7e3d",
-      "name": "campos pre call4"
     },
     {
       "parameters": {
@@ -4799,7 +4697,7 @@
         -2144
       ],
       "id": "799210c3-8941-4a89-80ac-0c180eb67f23",
-      "name": "fluxo 15k-"
+      "name": "Tiago · é 15k-?"
     },
     {
       "parameters": {
@@ -4830,7 +4728,7 @@
         "options": {}
       },
       "id": "5f718188-e3cc-4874-acab-23549a4942b4",
-      "name": "Notifica grupo | José1",
+      "name": "Notifica grupo · 15k- (1)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4860,14 +4758,14 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead 15k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"formata data reunião1\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Instagram:* {{ $('Trata Webhook').item.json.response.answers['685d40fd0c7815d8080d5085'].content }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
+              "value": "=*Novo lead 15k JP ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Data reunião · Tiago\"].json[\"formattedDate\"] }}\n*Nome do lead*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40e60c7815d8080d5084\"][\"content\"] }}\n\n*E-mail*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d43c035bd886b580246b4\"][\"content\"] }}\n\n*Instagram:* {{ $('Trata Webhook').item.json.response.answers['685d40fd0c7815d8080d5085'].content }}\n\n*Whatsapp*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40f2f8f9e3904c0b0eb4\"][\"content\"] }}\n\n*Faturamento*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"685d40a0b13a7bb2320f94dd\"][\"content\"][\"0\"] }}\n\n*Origens:*\nFormulário: mentor (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
             }
           ]
         },
         "options": {}
       },
       "id": "ac3ba07d-27ed-42bf-8e0d-3b0fb0a587ad",
-      "name": "Notifica grupo | José4",
+      "name": "Notifica grupo · 15k- (2)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4879,7 +4777,7 @@
       "parameters": {
         "jsCode": "// Coalesce dos 4 campos do form onde o link do Calendly pode chegar\nconst ans = $('Trata Webhook').item.json.response.answers;\nconst fields = ['685d43796f718f411f0407b8','697405f9a45bc7b4d505e18e','685d438435bd886b580246b2','69d685c0cdb5083665088085'];\nlet link = null;\nfor (const f of fields) {\n  const c = ans[f] && ans[f].content;\n  if (c && typeof c === 'string' && c.includes('calendly.com')) { link = c.trim(); break; }\n}\nlet eventUuid = null;\nif (link) {\n  const m = link.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (m) eventUuid = m[1];\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, calendlyLink: link, eventUuid } }];"
       },
-      "name": "Detecta Agendamento",
+      "name": "1 · Detecta link Calendly",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -4890,7 +4788,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api.calendly.com/scheduled_events/{{ $('Detecta Agendamento').item.json.eventUuid }}",
+        "url": "=https://api.calendly.com/scheduled_events/{{ $('1 · Detecta link Calendly').item.json.eventUuid }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -4902,7 +4800,7 @@
         },
         "options": {}
       },
-      "name": "GET Evento",
+      "name": "3 · Busca evento (por link)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -4935,7 +4833,7 @@
         },
         "options": {}
       },
-      "name": "Agendou?",
+      "name": "2 · Agendou?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
@@ -4946,9 +4844,9 @@
     },
     {
       "parameters": {
-        "jsCode": "// Reembala a resposta do GET singular no mesmo formato do endpoint antigo\n// (mantém todas as referências a collection[0] intactas)\nreturn [{ json: { collection: [ $('GET Evento').item.json.resource ] } }];"
+        "jsCode": "// Reembala a resposta do GET singular no mesmo formato do endpoint antigo\n// (mantém todas as referências a collection[0] intactas)\nreturn [{ json: { collection: [ $('3 · Busca evento (por link)').item.json.resource ] } }];"
       },
-      "name": "Busca Invite",
+      "name": "4 · Dados do evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -4959,9 +4857,9 @@
     },
     {
       "parameters": {
-        "jsCode": "const map = {\n  'Tiago Gregório':      { closerNome: 'Tiago Gregório', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe', dono: 'tiagogregorio@mentoriahighticket.com.br', pvPhone: '5534984133437', pvDisplay: '+55 34 8413-3437' },\n  'Karllos':             { closerNome: 'Karllos',        clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a', dono: 'karllos.bma@gmail.com', pvPhone: '5561998546456', pvDisplay: '5561998546456' },\n  'Matheus Schefer BMA': { closerNome: 'Matheus Schefer', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113', dono: 'matheusschefer.bma@gmail.com', pvPhone: '5545991195467', pvDisplay: '+55 45 9955-3235' },\n  'Guilherme Luiz':      { closerNome: 'Guilherme Luiz', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821', dono: 'guilhermeluiz.bma@gmail.com', pvPhone: '553192265968', pvDisplay: '+55 31 9226-5968' },\n  'Júnior Bonfá BMA':    { closerNome: 'Júnior Bonfá',   clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/ed2c585d-b8de-4fd8-8ff8-38a9327ef7ba', dono: 'juniorbonfabma@gmail.com', pvPhone: '558382296382', pvDisplay: '+55 83 8229-6382' },\n};\nconst user = $('Busca Invite').item.json.collection[0].event_memberships[0].user_name;\nconst cfg = map[user] || { closerNome: user, clintUrl: '', dono: '', pvPhone: '', pvDisplay: '' };\nreturn [{ json: { ...$json, ...cfg, _closerUserName: user } }];"
+        "jsCode": "const map = {\n  'Tiago Gregório':      { closerNome: 'Tiago Gregório', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe', dono: 'tiagogregorio@mentoriahighticket.com.br', pvPhone: '5534984133437', pvDisplay: '+55 34 8413-3437' },\n  'Karllos':             { closerNome: 'Karllos',        clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a', dono: 'karllos.bma@gmail.com', pvPhone: '5561998546456', pvDisplay: '5561998546456' },\n  'Matheus Schefer BMA': { closerNome: 'Matheus Schefer', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113', dono: 'matheusschefer.bma@gmail.com', pvPhone: '5545991195467', pvDisplay: '+55 45 9955-3235' },\n  'Guilherme Luiz':      { closerNome: 'Guilherme Luiz', clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821', dono: 'guilhermeluiz.bma@gmail.com', pvPhone: '553192265968', pvDisplay: '+55 31 9226-5968' },\n  'Júnior Bonfá BMA':    { closerNome: 'Júnior Bonfá',   clintUrl: 'https://functions-api.clint.digital/endpoints/integration/webhook/ed2c585d-b8de-4fd8-8ff8-38a9327ef7ba', dono: 'juniorbonfabma@gmail.com', pvPhone: '558382296382', pvDisplay: '+55 83 8229-6382' },\n};\nconst user = $('4 · Dados do evento').item.json.collection[0].event_memberships[0].user_name;\nconst cfg = map[user] || { closerNome: user, clintUrl: '', dono: '', pvPhone: '', pvDisplay: '' };\nreturn [{ json: { ...$json, ...cfg, _closerUserName: user } }];"
       },
-      "name": "Config Closer",
+      "name": "5 · Roteia closer (tabela)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -4975,13 +4873,14 @@
         "conditions": {
           "options": {
             "caseSensitive": true,
-            "typeValidation": "loose",
-            "version": 2
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
           },
           "conditions": [
             {
               "id": "t1",
-              "leftValue": "={{ $('Config Closer').item.json.closerNome }}",
+              "leftValue": "={{ $('5 · Roteia closer (tabela)').item.json.closerNome }}",
               "rightValue": "Tiago Gregório",
               "operator": {
                 "type": "string",
@@ -4993,7 +4892,7 @@
         },
         "options": {}
       },
-      "name": "é Tiago?",
+      "name": "6 · É Tiago?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
@@ -5001,6 +4900,129 @@
         -1952
       ],
       "id": "827e0b3d-8c98-4ff8-a3f7-31129488030c"
+    },
+    {
+      "parameters": {
+        "content": "## 🔗 Busca do evento por LINK\nO link do Calendly já chega no payload do Yay (em 1 de 4 campos).\n**1** faz coalesce + extrai o UUID → **3** busca o evento exato → **4** entrega os dados.\nAntes: busca por e-mail (frágil).",
+        "height": 240,
+        "width": 900,
+        "color": 4
+      },
+      "name": "nota-busca",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1408,
+        -2624
+      ],
+      "id": "1dc49f4b-d253-453c-8b02-a31f4d3961d3"
+    },
+    {
+      "parameters": {
+        "content": "## 🧭 Roteamento por closer — AQUI\nQuem escolhe o closer é o **Calendly** (round-robin). O n8n só lê `event_memberships[0].user_name`.\n**5 · Roteia closer** tem a TABELA com os 5 closers (Clint, dono, PV, telefone) e injeta os dados do closer certo.\n**6 · É Tiago?** é o único IF: Tiago tem fluxo próprio; **os outros 4 (Karllos, Matheus, Guilherme, Júnior) compartilham 1 ramo genérico** — os dados vêm da tabela.",
+        "height": 320,
+        "width": 640,
+        "color": 3
+      },
+      "name": "nota-roteamento",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -2320
+      ],
+      "id": "0664f33d-48f6-4e93-bb75-d8c1dea68f60"
+    },
+    {
+      "parameters": {
+        "content": "## ⭐ Ramo do TIAGO (especial)\nÚnico com `é 15k-?` e notificações próprias.",
+        "height": 170,
+        "width": 900,
+        "color": 5
+      },
+      "name": "nota-tiago",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -2448
+      ],
+      "id": "051496c6-fea9-4de5-b8fe-7a6abbf3a464"
+    },
+    {
+      "parameters": {
+        "content": "## 👥 Ramo GENÉRICO — Karllos · Matheus · Guilherme · Júnior\nUM único ramo p/ os 4. Clint, PV, nome e telefone vêm de **5 · Roteia closer**.\nMSG 3 usa o nome/telefone do closer (corrige o bug antigo do Júnior).",
+        "height": 200,
+        "width": 2620,
+        "color": 6
+      },
+      "name": "nota-generico",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -1984
+      ],
+      "id": "92840536-5f65-4d19-8665-b33d433c913d"
+    },
+    {
+      "parameters": {
+        "content": "## 🚫 Não agendou\nSem link Calendly → reserva no Clint + avisa o time.",
+        "width": 500,
+        "color": 7
+      },
+      "name": "nota-naoagendou",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1408,
+        -2256
+      ],
+      "id": "daf282ee-c84e-4a8b-83a3-e09ef68d107d"
+    },
+    {
+      "parameters": {
+        "content": "## 📞 INFOPRODUTOR / MENTOR → Sub: PRECALL\nRoda em paralelo, independe do closer. Intacto.",
+        "width": 800,
+        "color": 2
+      },
+      "name": "nota-precall",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -2816
+      ],
+      "id": "15dbcc2b-a928-44b6-8dfe-aab13c2f7c9b"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a",
+        "options": {}
+      },
+      "id": "976754af-f486-40c9-af3e-44ef982cfed2",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2000,
+        -2240
+      ],
+      "webhookId": "8e8c13e0-cbb7-45b4-8da2-edb3408ec85a"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "id": "3feb14d8-677f-47d5-924b-5a95b9bb4f18",
+      "name": "Trata Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        -2240
+      ]
     }
   ],
   "pinData": {
@@ -5010,126 +5032,117 @@
           "headers": {
             "host": "webhook.josepbijari.com",
             "user-agent": "GuzzleHttp/7",
-            "content-length": "6732",
+            "content-length": "6204",
             "content-type": "application/json",
-            "x-forwarded-for": "134.122.26.238",
+            "x-forwarded-for": "142.93.62.188",
             "x-forwarded-host": "webhook.josepbijari.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "9143be050a6b",
-            "x-real-ip": "134.122.26.238",
+            "x-real-ip": "142.93.62.188",
             "accept-encoding": "gzip"
           },
           "params": {},
           "query": {},
           "body": {
             "response": {
-              "id": "69d6a3176d38baa5ccceff7c",
+              "id": "6a4f80fd59af4d62afa6a07a",
               "formId": "685d4019b13a7bb2320f94d6",
-              "ipAddress": "2804:29b8:50ba:bda4:892d:2ed4:be57:2ba3",
-              "operatingSystem": "OS X",
-              "operatingSystemVersion": "10_15_7",
-              "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+              "ipAddress": "2804:14c:7985:931d:9720:5b6f:3a58:5a24",
+              "operatingSystem": "AndroidOS",
+              "operatingSystemVersion": "16",
+              "userAgent": "Mozilla/5.0 (Linux; Android 16; SM-A165M Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.91 Mobile Safari/537.36 Instagram 437.0.0.33.78 Android (36/16; 450dpi; 1080x2340; samsung; SM-A165M; a16; mt6789; pt_BR; 1011909233; IABMV/1)",
               "browser": "Chrome",
-              "browserVersion": "146.0.0.0",
-              "referrerUrl": null,
-              "deviceType": "desktop",
+              "browserVersion": "150.0.7871.91",
+              "referrerUrl": "https://www.josepbijari.com/",
+              "deviceType": "mobile",
               "geolocation": {
                 "continent": "South America",
                 "country_code": "BR",
                 "country_code2": "BR",
                 "country_name": "Brazil",
-                "region": "PE",
-                "state": "Pernambuco",
-                "city": "Caruaru",
-                "zipcode": "55000",
-                "latitude": -8.1792,
-                "longitude": -36.0279,
-                "timezone": "America/Recife",
+                "region": "RS",
+                "state": "Rio Grande do Sul",
+                "city": "Canoas",
+                "zipcode": "92000",
+                "latitude": -29.9228,
+                "longitude": -51.1744,
+                "timezone": "America/Sao_Paulo",
                 "currency": "BRL"
               },
               "aiFeedback": null,
-              "hiddenFields": [],
+              "hiddenFields": {
+                "pagina": "mentor1"
+              },
               "variables": {
                 "score": 0,
                 "quali": true
               },
               "tracking": {
-                "_fbp": "fb.1.1742270412627.451017520152784457",
-                "_tt_enable_cookie": "1",
-                "_ttp": "01JS115FG8EW6DGV8X57CE88JF_.tt.1",
-                "_hjSessionUser_2246065": "eyJpZCI6ImM4YzEzZDA4LTNjZDMtNTU5Yy04ZDgyLTEzNmViYjVhMjc5YSIsImNyZWF0ZWQiOjE3NDQ4NjUyNDY3OTUsImV4aXN0aW5nIjp0cnVlfQ==",
-                "hotid": "eyJjaWQiOiIxNzUxMzEzNDg4MzkxNzk3MjQwMTgyOTY3OTQzODAwIiwiYmlkIjoiMTc1MTMxMzQ4ODM5MTc5NzI0MDE4Mjk2Nzk0MzgwMCIsInNpZCI6ImNmOTFiZTg2YTRjNzQ1OGNhYmEwNWI5MDhhOTQyM2NmIn0=",
-                "_ltusession": "1759376967413__1",
-                "_ltuid": "19DU0z",
-                "ttcsid_CEDLAVJC77UDF9713HP0": "1759376967555::pp0K8Hdh_e4bBJKUV_tv.1.1759376967760.0",
-                "_ga_324806166": "GS2.1.s1759376966$o1$g0$t1759376969$j57$l0$h0",
-                "_ga_5GVPZDVNW9": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h1138898967",
-                "_ga_BJR0JVV5FR": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
-                "_ga_PEGMJDK06R": "GS2.1.s1759376967$o1$g0$t1759376969$j58$l0$h0",
-                "_fbc": "fb.1.1761053239943.fbclid",
-                "ttcsid": "1763009515558::CbKUMNdaP4fcZ2enf5P2.14.1763009622690.0",
-                "ttcsid_C5URFDOVMNUPJ15SHS00": "1763009515557::bSh386I6gpZJiC8VwDPV.13.1763009622690.0",
-                "_ga_QMHGX1WZCF": "GS2.1.s1763009515$o12$g1$t1763010170$j60$l0$h1746857264",
-                "_ga": "GA1.2.1550280858.1744865246",
-                "_gid": "GA1.2.1858674958.1775674068",
-                "_gcl_au": "1.1.807349489.1775674068",
-                "_hjSessionUser_3167995": "eyJpZCI6ImQxMDlkMWQyLTc5MzYtNTAwNi05NjNkLWNmYTJkNTZmNjI1OSIsImNyZWF0ZWQiOjE3NzU2NzQwNjgwNDIsImV4aXN0aW5nIjp0cnVlfQ==",
-                "_hjSession_3167995": "eyJpZCI6IjhjYjg1YzBmLWRmODgtNDYyMi1iMDhiLTY4MzdhNjk5MTI4OSIsImMiOjE3NzU2NzQwNjgwNDMsInMiOjEsInIiOjEsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=",
-                "_clck": "cymcv9^2^g51^0^1933",
-                "_clsk": "169ybkq^1775674135940^2^1^y.clarity.ms/collect",
+                "utm_source": "metaads",
+                "utm_medium": "00-QUENTE",
+                "utm_campaign": "CG-QUENTE-LP+—+TESTE+DE+ADS",
+                "utm_content": "AD09-LEADS",
+                "utm_term": "Instagram_Feed",
+                "_ga": "GA1.2.696259498.1783595261",
+                "_gid": "GA1.2.1718029407.1783595261",
                 "_gat_UA-190971050-3": "1",
-                "_hjSessionUser_3111463": "eyJpZCI6IjI4NmFlNTA4LTQ4ODQtNWM4ZS1iNzIzLTJmZTlmM2U5NDg2NCIsImNyZWF0ZWQiOjE3NzU2NzQxMzUzNDMsImV4aXN0aW5nIjp0cnVlfQ==",
-                "_hjSession_3111463": "eyJpZCI6ImZiMmZkMWY3LWU3MjktNGY0OC04OGVjLThkOGRiMWM2NWEwNSIsImMiOjE3NzU2NzQxMzUzNDMsInMiOjEsInIiOjEsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MX0="
+                "_gcl_au": "1.1.1907927862.1783595261",
+                "_hjSessionUser_3111463": "eyJpZCI6IjRmYjgyMTMyLTYyOWMtNWZkNi1hNzlhLTM4Y2U3NzhjZTA0NiIsImNyZWF0ZWQiOjE3ODM1OTUyNjA5OTEsImV4aXN0aW5nIjp0cnVlfQ==",
+                "_hjSession_3111463": "eyJpZCI6IjAzYmI5NDBjLWIwZjMtNGQzNC04YzYzLTNmNjBiZjdiMThiMyIsImMiOjE3ODM1OTUyNjA5OTQsInMiOjEsInIiOjEsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=",
+                "_clck": "1baf4ae^2^g7l^0^2381",
+                "_fbc": "fb.1.1783595261120.PAZXh0bgNhZW0BMABhZGlkAas0hpzLSB5zcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAadN2hfF3mXEmjugIiR7rd9Lkij2F7NdDjiHuX9ZDKXF4Dudtyo8G5qsdECCxg_aem_JqQHHetPgMRP3UIVUAep_w",
+                "_fbp": "fb.1.1783595261476.248327332473451883",
+                "_clsk": "7dw80u^1783595261808^1^1^r.clarity.ms/collect"
               },
-              "timeToComplete": 76.327,
-              "startedAt": "2026-04-08T18:48:59.142000Z",
-              "submittedAt": "2026-04-08T18:50:15.469000Z",
-              "createdAt": "2026-04-08T18:48:55.220000Z",
-              "updatedAt": "2026-04-08T18:51:59.554000Z",
+              "timeToComplete": 392.904,
+              "startedAt": "2026-07-09T11:07:54.963000Z",
+              "submittedAt": "2026-07-09T11:14:27.867000Z",
+              "createdAt": "2026-07-09T11:07:41.236000Z",
+              "updatedAt": "2026-07-09T11:14:37.311000Z",
               "answers": {
                 "685d40e60c7815d8080d5084": {
-                  "answerId": "69d6a31738b0e375b823c485",
+                  "answerId": "6a4f80fdd7f655b2c8a8fbf5",
                   "fieldTitle": "Qual o seu nome e sobrenome?",
                   "fieldDescription": null,
-                  "content": "Matheus cris"
+                  "content": "Antonio ayres "
                 },
                 "685d40f2f8f9e3904c0b0eb4": {
-                  "answerId": "69d6a31a38b0e375b823c490",
+                  "answerId": "6a4f810ad7f655b2c8a8fc30",
                   "fieldTitle": "Qual o seu WhatsApp?",
                   "fieldDescription": null,
-                  "content": "+558191013614"
+                  "content": "+5551999753438"
                 },
                 "685d40fd0c7815d8080d5085": {
-                  "answerId": "69d6a31c38b0e375b823c4a2",
+                  "answerId": "6a4f8114d7f655b2c8a8fc66",
                   "fieldTitle": "Qual o seu Instagram?",
                   "fieldDescription": null,
-                  "content": "teste2"
+                  "content": "Sem instagram "
                 },
                 "685d43c035bd886b580246b4": {
-                  "answerId": "69d6a31e38b0e375b823c4a9",
+                  "answerId": "6a4f8134d7f655b2c8a8fcf8",
                   "fieldTitle": "Qual o seu e-mail?",
                   "fieldDescription": null,
-                  "content": "testadadadae@gmail.com"
+                  "content": "300antoniocarlos@gmail.com"
                 },
                 "685d40a0b13a7bb2320f94dd": {
-                  "answerId": "69d6a32338b0e375b823c4c1",
+                  "answerId": "6a4f813cd7f655b2c8a8fd1d",
                   "fieldTitle": "Qual seu faturamento médio mensal? (Somando a venda de mentoria e outras fontes de renda)",
                   "fieldDescription": null,
                   "content": [
-                    "R$ 5.000,00 a R$ 15.000,00"
+                    "R$ 15.000,00 a R$ 20.000,00"
                   ]
                 },
                 "685d402c58ad4238f4082362": {
-                  "answerId": "69d6a32538b0e375b823c4cb",
+                  "answerId": "6a4f8146d7f655b2c8a8fd5c",
                   "fieldTitle": "Qual das opções abaixo melhor te representa:",
                   "fieldDescription": null,
                   "content": [
-                    "Ainda não sou mentor, mas quero me tornar."
+                    "Já sou mentor!"
                   ]
                 },
                 "685d404b97e30a0017089364": {
-                  "answerId": "69d6a32638b0e375b823c4d4",
+                  "answerId": "6a4f8156d7f655b2c8a8fda8",
                   "fieldTitle": "Qual o ticket da sua mentoria?",
                   "fieldDescription": null,
                   "content": [
@@ -5137,56 +5150,62 @@
                   ]
                 },
                 "685d407a97e30a0017089369": {
-                  "answerId": "69d6a32738b0e375b823c4dc",
+                  "answerId": "6a4f8164d7f655b2c8a8fde9",
                   "fieldTitle": "Além da mentoria, você tem algum curso ou infoproduto?",
                   "fieldDescription": null,
                   "content": [
-                    "Sim, com até 1.000 alunos"
+                    "Não tenho."
                   ]
                 },
                 "685d40b0b13a7bb2320f94df": {
-                  "answerId": "69d6a32838b0e375b823c4df",
+                  "answerId": "6a4f8173d7f655b2c8a8fe1d",
                   "fieldTitle": "&nbsp;Em qual nicho você mentora (ou quer mentorar)?",
                   "fieldDescription": null,
-                  "content": "teste"
+                  "content": "Futebol , vendas , negociações "
                 },
                 "685d40cb0c7815d8080d5082": {
-                  "answerId": "69d6a32938b0e375b823c4e6",
+                  "answerId": "6a4f81a4d7f655b2c8a8fee0",
                   "fieldTitle": "Qual seu objetivo de faturamento para os próximos 12 meses com vendas de mentoria?",
                   "fieldDescription": null,
-                  "content": "teste"
+                  "content": "1 milhao "
                 },
                 "685d40d66128d7c13205cfa8": {
-                  "answerId": "69d6a32a38b0e375b823c4e9",
+                  "answerId": "6a4f81b6d7f655b2c8a8ff2e",
                   "fieldTitle": "Qual a principal dificuldade que você enfrenta HOJE, para alcançar esse objetivo?",
                   "fieldDescription": null,
-                  "content": "teste"
+                  "content": "Focar mais no assunto "
                 },
                 "68712c954b2c93e188055a47": {
-                  "answerId": "69d6a32b38b0e375b823c4ef",
+                  "answerId": "6a4f81d3d7f655b2c8a8ffab",
                   "fieldTitle": "Porque você acredita que essa Consultoria é a oportunidade ideal para você e para o seu negócio?*",
                   "fieldDescription": null,
-                  "content": "teste"
+                  "content": "Após agente conversar farei conclusões "
                 },
                 "68712c9e11c21c36a3063c64": {
-                  "answerId": "69d6a32b38b0e375b823c4f2",
+                  "answerId": "6a4f81f2d7f655b2c8a90015",
                   "fieldTitle": "Caso recebamos mais aplicações do que vagas disponíveis para a Consultoria, por que deveríamos aceitar sua aplicação dentre os demais interessados?*",
                   "fieldDescription": null,
-                  "content": "te"
+                  "content": "A boa negociação atende as expectativas de ambas as partes na media"
                 },
                 "685d411a574c9086b60d27f9": {
-                  "answerId": "69d6a32c38b0e375b823c4f6",
+                  "answerId": "6a4f8253d7f655b2c8a90183",
                   "fieldTitle": "Você foi pré-aprovado para uma das vagas da nossa Consultoria.Importante: 1. Não é uma reunião rápida e superficial, é uma verdadeira consultoria, com diagnóstico profundo e plano de ação e leva em média 1:30h. 2. Se você não confirmar com o nosso time via WhatsApp dentro do prazo, sua vaga será automaticamente transferida para outro interessado.Você confirma que está ciente e comprometido?",
                   "fieldDescription": null,
                   "content": [
                     "SIM"
                   ]
                 },
-                "69d685c0cdb5083665088085": {
-                  "answerId": "69d6a32f38b0e375b823c4fc",
+                "685d43796f718f411f0407b8": {
+                  "answerId": "6a4f8262d7f655b2c8a901b6",
                   "fieldTitle": "Sua consultoria está quase agendada...",
                   "fieldDescription": "<p>Escolha um horário abaixo e clique<strong> \"CONTINUE\" </strong>para confirmar seu agendamento e receber um plano de ação personalizado, seguindo a metodologia que gerou <strong>+R$ 900 MILHÕES</strong> em vendas de <strong>ofertas High Tickets</strong>!</p>",
-                  "content": "https://calendly.com/scheduled_events/25fa7c40-a5c1-48a3-8181-9913a6efccec/invitees/b177f9af-6b4a-4c17-81ce-b671b9b7ef6f"
+                  "content": "https://calendly.com/scheduled_events/904d981f-637a-4cc3-a1d1-ac1162836fc7/invitees/5961c43e-c16f-465e-b411-bf76c68c3fba"
+                },
+                "685d43fa6f718f411f0407bd": {
+                  "answerId": "6a4f8293d7f655b2c8a9028f",
+                  "fieldTitle": "",
+                  "fieldDescription": null,
+                  "content": null
                 }
               }
             }
@@ -5223,6 +5242,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-07-09T03:20:03.122Z",
-  "versionId": "204091e8-ad59-4bb4-979d-9a674a4d1711"
+  "updatedAt": "2026-07-09T12:48:47.615Z",
+  "versionId": "7e028fc5-1c10-446d-964b-7c8655e14d63"
 }
