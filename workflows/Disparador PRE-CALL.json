@@ -1,0 +1,784 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-07-15T14:42:17.798Z",
+    "createdAt": "2026-07-15T14:42:17.798Z",
+    "versionId": "7d792710-e0db-4b0b-bba2-e3535b7a9f79",
+    "workflowId": "muXACEpTWoJdODK4",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 3
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          300
+        ],
+        "name": "Schedule",
+        "id": "node-0"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status='expired', updated_at=now() where status='pending' and send_at <= now() and (now() - send_at > interval '10 minutes' or start_time <= now());",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          220,
+          300
+        ],
+        "name": "PG: expira",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        },
+        "alwaysOutputData": true,
+        "id": "node-1"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status='pending', claimed_by=null, updated_at=now() where status='sending' and claimed_at < now() - interval '10 minutes';",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          440,
+          300
+        ],
+        "name": "PG: reaper",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        },
+        "alwaysOutputData": true,
+        "id": "node-2"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall f set status='sending', claimed_by='{{$execution.id}}', claimed_at=now(), attempts=attempts+1, updated_at=now() where id in (select id from fila_precall where status='pending' and send_at <= now() and start_time > now() and (next_retry_at is null or next_retry_at <= now()) order by send_at limit 50 for update skip locked) returning f.*;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          660,
+          300
+        ],
+        "name": "PG: claim",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        },
+        "id": "node-3"
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all().map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          300
+        ],
+        "name": "Code: monta envio",
+        "id": "node-4"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json._hasInstance }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1100,
+          300
+        ],
+        "name": "IF tem instancia",
+        "id": "node-5"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $json._url }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "={{ $json._clientToken }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $json.telefone }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.message }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1320,
+          200
+        ],
+        "name": "HTTP: Z-API",
+        "onError": "continueRegularOutput",
+        "id": "node-6"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.error }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1540,
+          200
+        ],
+        "name": "IF erro?",
+        "id": "node-7"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status = case when attempts >= 4 then 'error' else 'pending' end, next_retry_at = now() + (interval '2 minutes' * attempts), last_error = left(coalesce('{{ $json.error }}','erro Z-API'),300), updated_at=now() where id='{{ $('Code: monta envio').item.json.id }}' and claimed_by='{{$execution.id}}';",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1760,
+          120
+        ],
+        "name": "PG: marca retry",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        },
+        "alwaysOutputData": true,
+        "id": "node-8"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status='sent', sent_at=now(), updated_at=now() where id='{{ $('Code: monta envio').item.json.id }}' and status='sending' and claimed_by='{{$execution.id}}';",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1760,
+          300
+        ],
+        "name": "PG: marca sent",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        },
+        "alwaysOutputData": true,
+        "id": "node-9"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status='skipped', last_error='closer sem instancia', updated_at=now() where id='{{ $json.id }}' and status='sending';",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1320,
+          460
+        ],
+        "name": "PG: marca skipped",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        },
+        "alwaysOutputData": true,
+        "id": "node-10"
+      }
+    ],
+    "connections": {
+      "Schedule": {
+        "main": [
+          [
+            {
+              "node": "PG: expira",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PG: expira": {
+        "main": [
+          [
+            {
+              "node": "PG: reaper",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PG: reaper": {
+        "main": [
+          [
+            {
+              "node": "PG: claim",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PG: claim": {
+        "main": [
+          [
+            {
+              "node": "Code: monta envio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code: monta envio": {
+        "main": [
+          [
+            {
+              "node": "IF tem instancia",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF tem instancia": {
+        "main": [
+          [
+            {
+              "node": "HTTP: Z-API",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "PG: marca skipped",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP: Z-API": {
+        "main": [
+          [
+            {
+              "node": "IF erro?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF erro?": {
+        "main": [
+          [
+            {
+              "node": "PG: marca retry",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "PG: marca sent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "7d792710-e0db-4b0b-bba2-e3535b7a9f79",
+  "connections": {
+    "Schedule": {
+      "main": [
+        [
+          {
+            "node": "PG: expira",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: expira": {
+      "main": [
+        [
+          {
+            "node": "PG: reaper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: reaper": {
+      "main": [
+        [
+          {
+            "node": "PG: claim",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: claim": {
+      "main": [
+        [
+          {
+            "node": "Code: monta envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: monta envio": {
+      "main": [
+        [
+          {
+            "node": "IF tem instancia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF tem instancia": {
+      "main": [
+        [
+          {
+            "node": "HTTP: Z-API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PG: marca skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: Z-API": {
+      "main": [
+        [
+          {
+            "node": "IF erro?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF erro?": {
+      "main": [
+        [
+          {
+            "node": "PG: marca retry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PG: marca sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-07-15T14:25:51.793Z",
+  "id": "muXACEpTWoJdODK4",
+  "isArchived": false,
+  "meta": null,
+  "name": "Disparador PRE-CALL",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 3
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        300
+      ],
+      "name": "Schedule",
+      "id": "node-0"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status='expired', updated_at=now() where status='pending' and send_at <= now() and (now() - send_at > interval '10 minutes' or start_time <= now());",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        220,
+        300
+      ],
+      "name": "PG: expira",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "alwaysOutputData": true,
+      "id": "node-1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status='pending', claimed_by=null, updated_at=now() where status='sending' and claimed_at < now() - interval '10 minutes';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        440,
+        300
+      ],
+      "name": "PG: reaper",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "alwaysOutputData": true,
+      "id": "node-2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall f set status='sending', claimed_by='{{$execution.id}}', claimed_at=now(), attempts=attempts+1, updated_at=now() where id in (select id from fila_precall where status='pending' and send_at <= now() and start_time > now() and (next_retry_at is null or next_retry_at <= now()) order by send_at limit 50 for update skip locked) returning f.*;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        660,
+        300
+      ],
+      "name": "PG: claim",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "id": "node-3"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all().map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ],
+      "name": "Code: monta envio",
+      "id": "node-4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json._hasInstance }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1100,
+        300
+      ],
+      "name": "IF tem instancia",
+      "id": "node-5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json._url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "={{ $json._clientToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $json.telefone }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        200
+      ],
+      "name": "HTTP: Z-API",
+      "onError": "continueRegularOutput",
+      "id": "node-6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1540,
+        200
+      ],
+      "name": "IF erro?",
+      "id": "node-7"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status = case when attempts >= 4 then 'error' else 'pending' end, next_retry_at = now() + (interval '2 minutes' * attempts), last_error = left(coalesce('{{ $json.error }}','erro Z-API'),300), updated_at=now() where id='{{ $('Code: monta envio').item.json.id }}' and claimed_by='{{$execution.id}}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1760,
+        120
+      ],
+      "name": "PG: marca retry",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "alwaysOutputData": true,
+      "id": "node-8"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status='sent', sent_at=now(), updated_at=now() where id='{{ $('Code: monta envio').item.json.id }}' and status='sending' and claimed_by='{{$execution.id}}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1760,
+        300
+      ],
+      "name": "PG: marca sent",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "alwaysOutputData": true,
+      "id": "node-9"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status='skipped', last_error='closer sem instancia', updated_at=now() where id='{{ $json.id }}' and status='sending';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1320,
+        460
+      ],
+      "name": "PG: marca skipped",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "alwaysOutputData": true,
+      "id": "node-10"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-07-15T14:25:51.793Z",
+      "createdAt": "2026-07-15T14:25:51.793Z",
+      "role": "workflow:owner",
+      "workflowId": "muXACEpTWoJdODK4",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": {
+    "node:Schedule": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-07-15T14:42:17.792Z",
+  "versionId": "7d792710-e0db-4b0b-bba2-e3535b7a9f79"
+}
