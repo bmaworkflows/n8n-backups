@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-07-15T14:42:17.798Z",
-    "createdAt": "2026-07-15T14:42:17.798Z",
-    "versionId": "7d792710-e0db-4b0b-bba2-e3535b7a9f79",
+    "updatedAt": "2026-07-23T03:08:12.649Z",
+    "createdAt": "2026-07-23T03:08:12.649Z",
+    "versionId": "773623d2-3202-44d6-b6e5-7ce9a813de07",
     "workflowId": "muXACEpTWoJdODK4",
     "nodes": [
       {
@@ -21,7 +21,7 @@
         "typeVersion": 1.2,
         "position": [
           0,
-          300
+          416
         ],
         "name": "Schedule",
         "id": "node-0"
@@ -35,18 +35,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          220,
-          300
+          224,
+          416
         ],
         "name": "PG: expira",
+        "alwaysOutputData": true,
+        "id": "node-1",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        },
-        "alwaysOutputData": true,
-        "id": "node-1"
+        }
       },
       {
         "parameters": {
@@ -57,18 +57,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          440,
-          300
+          448,
+          416
         ],
         "name": "PG: reaper",
+        "alwaysOutputData": true,
+        "id": "node-2",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        },
-        "alwaysOutputData": true,
-        "id": "node-2"
+        }
       },
       {
         "parameters": {
@@ -79,28 +79,27 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          660,
-          300
+          672,
+          416
         ],
         "name": "PG: claim",
+        "id": "node-3",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        },
-        "id": "node-3"
+        }
       },
       {
         "parameters": {
-          "mode": "runOnceForAllItems",
           "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all().map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          880,
-          300
+          1120,
+          320
         ],
         "name": "Code: monta envio",
         "id": "node-4"
@@ -125,13 +124,14 @@
               }
             ],
             "combinator": "and"
-          }
+          },
+          "options": {}
         },
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1100,
-          300
+          1344,
+          320
         ],
         "name": "IF tem instancia",
         "id": "node-5"
@@ -167,12 +167,12 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          1320,
-          200
+          1568,
+          224
         ],
         "name": "HTTP: Z-API",
-        "onError": "continueRegularOutput",
-        "id": "node-6"
+        "id": "node-6",
+        "onError": "continueRegularOutput"
       },
       {
         "parameters": {
@@ -194,13 +194,14 @@
               }
             ],
             "combinator": "and"
-          }
+          },
+          "options": {}
         },
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1540,
-          200
+          1792,
+          224
         ],
         "name": "IF erro?",
         "id": "node-7"
@@ -214,18 +215,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1760,
-          120
+          2016,
+          128
         ],
         "name": "PG: marca retry",
+        "alwaysOutputData": true,
+        "id": "node-8",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        },
-        "alwaysOutputData": true,
-        "id": "node-8"
+        }
       },
       {
         "parameters": {
@@ -236,18 +237,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1760,
-          300
+          2016,
+          320
         ],
         "name": "PG: marca sent",
+        "alwaysOutputData": true,
+        "id": "node-9",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        },
-        "alwaysOutputData": true,
-        "id": "node-9"
+        }
       },
       {
         "parameters": {
@@ -258,18 +259,163 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1320,
-          460
+          1568,
+          416
         ],
         "name": "PG: marca skipped",
+        "alwaysOutputData": true,
+        "id": "node-10",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.channel }}",
+                "rightValue": "email",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
         },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          896,
+          416
+        ],
+        "name": "IF canal email",
+        "id": "node-11"
+      },
+      {
+        "parameters": {
+          "jsCode": "return $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          608
+        ],
+        "name": "Code: monta email",
+        "id": "node-12"
+      },
+      {
+        "parameters": {
+          "fromEmail": "jp@mentoriahighticket.com.br",
+          "toEmail": "={{ $json.email }}",
+          "subject": "={{ $json.subject }}",
+          "html": "={{ $json.message }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          1344,
+          608
+        ],
+        "name": "SMTP: envia",
+        "id": "node-13",
+        "webhookId": "69606a6f-891c-42d6-9cc8-611a08e5e68b",
+        "credentials": {
+          "smtp": {
+            "id": "M8KRLJXKOYcviemr",
+            "name": "SMTP JP Bijari (Workspace)"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.error }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1568,
+          608
+        ],
+        "name": "IF erro email?",
+        "id": "node-14"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status = case when attempts >= 4 then 'error' else 'pending' end, next_retry_at = now() + (interval '2 minutes' * attempts), last_error = left(coalesce('{{ $json.error }}','erro SMTP'),300), updated_at=now() where id='{{ $('Code: monta email').item.json.id }}' and claimed_by='{{$execution.id}}';",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1792,
+          512
+        ],
+        "name": "PG: marca retry email",
         "alwaysOutputData": true,
-        "id": "node-10"
+        "id": "node-15",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update fila_precall set status='sent', sent_at=now(), updated_at=now() where id='{{ $('Code: monta email').item.json.id }}' and status='sending' and claimed_by='{{$execution.id}}';",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1792,
+          704
+        ],
+        "name": "PG: marca sent email",
+        "alwaysOutputData": true,
+        "id": "node-16",
+        "credentials": {
+          "postgres": {
+            "id": "GxgbRWKv7Xal5lZi",
+            "name": "Supabase BMA (pooler)"
+          }
+        }
       }
     ],
     "connections": {
@@ -308,6 +454,24 @@
       },
       "PG: claim": {
         "main": [
+          [
+            {
+              "node": "IF canal email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF canal email": {
+        "main": [
+          [
+            {
+              "node": "Code: monta email",
+              "type": "main",
+              "index": 0
+            }
+          ],
           [
             {
               "node": "Code: monta envio",
@@ -374,13 +538,53 @@
             }
           ]
         ]
+      },
+      "Code: monta email": {
+        "main": [
+          [
+            {
+              "node": "SMTP: envia",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SMTP: envia": {
+        "main": [
+          [
+            {
+              "node": "IF erro email?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF erro email?": {
+        "main": [
+          [
+            {
+              "node": "PG: marca retry email",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "PG: marca sent email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Matheus Cristhyan",
     "name": null,
     "description": null
   },
-  "activeVersionId": "7d792710-e0db-4b0b-bba2-e3535b7a9f79",
+  "activeVersionId": "773623d2-3202-44d6-b6e5-7ce9a813de07",
   "connections": {
     "Schedule": {
       "main": [
@@ -417,6 +621,24 @@
     },
     "PG: claim": {
       "main": [
+        [
+          {
+            "node": "IF canal email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF canal email": {
+      "main": [
+        [
+          {
+            "node": "Code: monta email",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Code: monta envio",
@@ -483,6 +705,46 @@
           }
         ]
       ]
+    },
+    "Code: monta email": {
+      "main": [
+        [
+          {
+            "node": "SMTP: envia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SMTP: envia": {
+      "main": [
+        [
+          {
+            "node": "IF erro email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF erro email?": {
+      "main": [
+        [
+          {
+            "node": "PG: marca retry email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PG: marca sent email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-07-15T14:25:51.793Z",
@@ -506,7 +768,7 @@
       "typeVersion": 1.2,
       "position": [
         0,
-        300
+        416
       ],
       "name": "Schedule",
       "id": "node-0"
@@ -520,18 +782,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        220,
-        300
+        224,
+        416
       ],
       "name": "PG: expira",
+      "alwaysOutputData": true,
+      "id": "node-1",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      },
-      "alwaysOutputData": true,
-      "id": "node-1"
+      }
     },
     {
       "parameters": {
@@ -542,18 +804,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        440,
-        300
+        448,
+        416
       ],
       "name": "PG: reaper",
+      "alwaysOutputData": true,
+      "id": "node-2",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      },
-      "alwaysOutputData": true,
-      "id": "node-2"
+      }
     },
     {
       "parameters": {
@@ -564,28 +826,27 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        660,
-        300
+        672,
+        416
       ],
       "name": "PG: claim",
+      "id": "node-3",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      },
-      "id": "node-3"
+      }
     },
     {
       "parameters": {
-        "mode": "runOnceForAllItems",
         "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all().map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        880,
-        300
+        1120,
+        320
       ],
       "name": "Code: monta envio",
       "id": "node-4"
@@ -610,13 +871,14 @@
             }
           ],
           "combinator": "and"
-        }
+        },
+        "options": {}
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1100,
-        300
+        1344,
+        320
       ],
       "name": "IF tem instancia",
       "id": "node-5"
@@ -652,12 +914,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1320,
-        200
+        1568,
+        224
       ],
       "name": "HTTP: Z-API",
-      "onError": "continueRegularOutput",
-      "id": "node-6"
+      "id": "node-6",
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -679,13 +941,14 @@
             }
           ],
           "combinator": "and"
-        }
+        },
+        "options": {}
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1540,
-        200
+        1792,
+        224
       ],
       "name": "IF erro?",
       "id": "node-7"
@@ -699,18 +962,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1760,
-        120
+        2016,
+        128
       ],
       "name": "PG: marca retry",
+      "alwaysOutputData": true,
+      "id": "node-8",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      },
-      "alwaysOutputData": true,
-      "id": "node-8"
+      }
     },
     {
       "parameters": {
@@ -721,18 +984,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1760,
-        300
+        2016,
+        320
       ],
       "name": "PG: marca sent",
+      "alwaysOutputData": true,
+      "id": "node-9",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      },
-      "alwaysOutputData": true,
-      "id": "node-9"
+      }
     },
     {
       "parameters": {
@@ -743,21 +1006,166 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1320,
-        460
+        1568,
+        416
       ],
       "name": "PG: marca skipped",
+      "alwaysOutputData": true,
+      "id": "node-10",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.channel }}",
+              "rightValue": "email",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
       },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        416
+      ],
+      "name": "IF canal email",
+      "id": "node-11"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        608
+      ],
+      "name": "Code: monta email",
+      "id": "node-12"
+    },
+    {
+      "parameters": {
+        "fromEmail": "jp@mentoriahighticket.com.br",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.subject }}",
+        "html": "={{ $json.message }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1344,
+        608
+      ],
+      "name": "SMTP: envia",
+      "id": "node-13",
+      "webhookId": "69606a6f-891c-42d6-9cc8-611a08e5e68b",
+      "credentials": {
+        "smtp": {
+          "id": "M8KRLJXKOYcviemr",
+          "name": "SMTP JP Bijari (Workspace)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        608
+      ],
+      "name": "IF erro email?",
+      "id": "node-14"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status = case when attempts >= 4 then 'error' else 'pending' end, next_retry_at = now() + (interval '2 minutes' * attempts), last_error = left(coalesce('{{ $json.error }}','erro SMTP'),300), updated_at=now() where id='{{ $('Code: monta email').item.json.id }}' and claimed_by='{{$execution.id}}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1792,
+        512
+      ],
+      "name": "PG: marca retry email",
       "alwaysOutputData": true,
-      "id": "node-10"
+      "id": "node-15",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update fila_precall set status='sent', sent_at=now(), updated_at=now() where id='{{ $('Code: monta email').item.json.id }}' and status='sending' and claimed_by='{{$execution.id}}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1792,
+        704
+      ],
+      "name": "PG: marca sent email",
+      "alwaysOutputData": true,
+      "id": "node-16",
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      }
     }
   ],
-  "pinData": null,
+  "pinData": {},
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
@@ -779,6 +1187,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-07-15T14:42:17.792Z",
-  "versionId": "7d792710-e0db-4b0b-bba2-e3535b7a9f79"
+  "updatedAt": "2026-07-23T03:08:12.646Z",
+  "versionId": "773623d2-3202-44d6-b6e5-7ce9a813de07"
 }
