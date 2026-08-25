@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-20T15:33:12.220Z",
-    "createdAt": "2026-08-20T15:33:12.220Z",
-    "versionId": "73917b7c-f9b3-4afa-b41b-76de403ecdab",
+    "updatedAt": "2026-08-25T15:18:44.312Z",
+    "createdAt": "2026-08-25T15:18:44.312Z",
+    "versionId": "8d07f11f-c67a-421f-b086-286eb2d58ed0",
     "workflowId": "muXACEpTWoJdODK4",
     "nodes": [
       {
@@ -21,7 +21,7 @@
         "typeVersion": 1.2,
         "position": [
           0,
-          416
+          300
         ],
         "name": "Schedule",
         "id": "node-0"
@@ -35,18 +35,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          224,
-          416
+          220,
+          300
         ],
         "name": "PG: expira",
-        "alwaysOutputData": true,
-        "id": "node-1",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-1"
       },
       {
         "parameters": {
@@ -57,49 +57,50 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          448,
-          416
+          440,
+          300
         ],
         "name": "PG: reaper",
-        "alwaysOutputData": true,
-        "id": "node-2",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-2"
       },
       {
         "parameters": {
           "operation": "executeQuery",
-          "query": "update fila_precall f set status='sending', claimed_by='{{$execution.id}}', claimed_at=now(), attempts=attempts+1, updated_at=now() where id in (select id from fila_precall where status='pending' and send_at <= now() and start_time > now() and (next_retry_at is null or next_retry_at <= now()) order by send_at limit 50 for update skip locked) returning f.*;",
+          "query": "with claimed as (update fila_precall f set status='sending', claimed_by='{{$execution.id}}', claimed_at=now(), attempts=attempts+1, updated_at=now() where id in (select id from fila_precall where status='pending' and send_at <= now() and start_time > now() and (next_retry_at is null or next_retry_at <= now()) order by send_at limit 50 for update skip locked) returning f.*) select * from claimed order by send_at, id;",
           "options": {}
         },
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          672,
-          416
+          660,
+          300
         ],
         "name": "PG: claim",
-        "id": "node-3",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "id": "node-3"
       },
       {
         "parameters": {
-          "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'},\n  'diogo campos':{instance:'3F7E1B867124B1A3631BC26A258BBF97',token:'E3446F8C378B7B74AA3F66AC'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all().map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
+          "mode": "runOnceForAllItems",
+          "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all()\n  .sort((a, b) => String(a.json.send_at).localeCompare(String(b.json.send_at))\n               || String(a.json.id).localeCompare(String(b.json.id)))\n  .map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1120,
-          320
+          880,
+          300
         ],
         "name": "Code: monta envio",
         "id": "node-4"
@@ -124,14 +125,13 @@
               }
             ],
             "combinator": "and"
-          },
-          "options": {}
+          }
         },
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1344,
-          320
+          1100,
+          300
         ],
         "name": "IF tem instancia",
         "id": "node-5"
@@ -162,17 +162,24 @@
               }
             ]
           },
-          "options": {}
+          "options": {
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 1500
+              }
+            }
+          }
         },
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          1568,
-          224
+          1320,
+          200
         ],
         "name": "HTTP: Z-API",
-        "id": "node-6",
-        "onError": "continueRegularOutput"
+        "onError": "continueRegularOutput",
+        "id": "node-6"
       },
       {
         "parameters": {
@@ -194,14 +201,13 @@
               }
             ],
             "combinator": "and"
-          },
-          "options": {}
+          }
         },
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1792,
-          224
+          1540,
+          200
         ],
         "name": "IF erro?",
         "id": "node-7"
@@ -215,18 +221,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          2016,
-          128
+          1760,
+          120
         ],
         "name": "PG: marca retry",
-        "alwaysOutputData": true,
-        "id": "node-8",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-8"
       },
       {
         "parameters": {
@@ -237,18 +243,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          2016,
-          320
+          1760,
+          300
         ],
         "name": "PG: marca sent",
-        "alwaysOutputData": true,
-        "id": "node-9",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-9"
       },
       {
         "parameters": {
@@ -259,18 +265,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1568,
-          416
+          1320,
+          460
         ],
         "name": "PG: marca skipped",
-        "alwaysOutputData": true,
-        "id": "node-10",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-10"
       },
       {
         "parameters": {
@@ -291,27 +297,27 @@
               }
             ],
             "combinator": "and"
-          },
-          "options": {}
+          }
         },
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          896,
-          416
+          880,
+          620
         ],
         "name": "IF canal email",
         "id": "node-11"
       },
       {
         "parameters": {
+          "mode": "runOnceForAllItems",
           "jsCode": "return $input.all();"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1120,
-          608
+          1100,
+          620
         ],
         "name": "Code: monta email",
         "id": "node-12"
@@ -327,19 +333,18 @@
         "type": "n8n-nodes-base.emailSend",
         "typeVersion": 2.1,
         "position": [
-          1344,
-          608
+          1320,
+          620
         ],
         "name": "SMTP: envia",
-        "id": "node-13",
-        "webhookId": "69606a6f-891c-42d6-9cc8-611a08e5e68b",
         "credentials": {
           "smtp": {
             "id": "M8KRLJXKOYcviemr",
             "name": "SMTP JP Bijari (Workspace)"
           }
         },
-        "onError": "continueRegularOutput"
+        "onError": "continueRegularOutput",
+        "id": "node-13"
       },
       {
         "parameters": {
@@ -361,14 +366,13 @@
               }
             ],
             "combinator": "and"
-          },
-          "options": {}
+          }
         },
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1568,
-          608
+          1540,
+          620
         ],
         "name": "IF erro email?",
         "id": "node-14"
@@ -382,18 +386,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1792,
-          512
+          1760,
+          560
         ],
         "name": "PG: marca retry email",
-        "alwaysOutputData": true,
-        "id": "node-15",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-15"
       },
       {
         "parameters": {
@@ -404,18 +408,18 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1792,
-          704
+          1760,
+          700
         ],
         "name": "PG: marca sent email",
-        "alwaysOutputData": true,
-        "id": "node-16",
         "credentials": {
           "postgres": {
             "id": "GxgbRWKv7Xal5lZi",
             "name": "Supabase BMA (pooler)"
           }
-        }
+        },
+        "alwaysOutputData": true,
+        "id": "node-16"
       }
     ],
     "connections": {
@@ -584,7 +588,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "73917b7c-f9b3-4afa-b41b-76de403ecdab",
+  "activeVersionId": "8d07f11f-c67a-421f-b086-286eb2d58ed0",
   "connections": {
     "Schedule": {
       "main": [
@@ -768,7 +772,7 @@
       "typeVersion": 1.2,
       "position": [
         0,
-        416
+        300
       ],
       "name": "Schedule",
       "id": "node-0"
@@ -782,18 +786,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        224,
-        416
+        220,
+        300
       ],
       "name": "PG: expira",
-      "alwaysOutputData": true,
-      "id": "node-1",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-1"
     },
     {
       "parameters": {
@@ -804,49 +808,50 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        448,
-        416
+        440,
+        300
       ],
       "name": "PG: reaper",
-      "alwaysOutputData": true,
-      "id": "node-2",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-2"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "update fila_precall f set status='sending', claimed_by='{{$execution.id}}', claimed_at=now(), attempts=attempts+1, updated_at=now() where id in (select id from fila_precall where status='pending' and send_at <= now() and start_time > now() and (next_retry_at is null or next_retry_at <= now()) order by send_at limit 50 for update skip locked) returning f.*;",
+        "query": "with claimed as (update fila_precall f set status='sending', claimed_by='{{$execution.id}}', claimed_at=now(), attempts=attempts+1, updated_at=now() where id in (select id from fila_precall where status='pending' and send_at <= now() and start_time > now() and (next_retry_at is null or next_retry_at <= now()) order by send_at limit 50 for update skip locked) returning f.*) select * from claimed order by send_at, id;",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        672,
-        416
+        660,
+        300
       ],
       "name": "PG: claim",
-      "id": "node-3",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "id": "node-3"
     },
     {
       "parameters": {
-        "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'},\n  'diogo campos':{instance:'3F7E1B867124B1A3631BC26A258BBF97',token:'E3446F8C378B7B74AA3F66AC'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all().map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
+        "mode": "runOnceForAllItems",
+        "jsCode": "// remove diacriticos sem literais combinantes\nconst norm = s => (s||'').normalize('NFD').split('').filter(c=>{const n=c.charCodeAt(0);return n<0x300||n>0x36f;}).join('').trim().toLowerCase();\nconst MAP = {\n  'tiago gregorio':{instance:'3D988782948B509EAB57D68D1B7EED95',token:'8CA26C6FE554568DD46A30A6'},\n  'matheus schefer':{instance:'3F013E0C2FCA31C04B4FE629027F956B',token:'650C95ED624C676CD5BED4E3'},\n  'karllos':{instance:'3F013E045EE7A0CFC4C76A09AA93C36C',token:'B73CA8CEA2291C7EC3F5E7CA'},\n  'guilherme luiz':{instance:'3F013DFC59D5B153F35DF250B7D94EBE',token:'6AF34634257C029F15126163'}\n};\nconst CLIENT_TOKEN = 'Fdeb892ca62d941adbb85b2ec7c8e3a4aS';\nreturn $input.all()\n  .sort((a, b) => String(a.json.send_at).localeCompare(String(b.json.send_at))\n               || String(a.json.id).localeCompare(String(b.json.id)))\n  .map(i => {\n  const r = i.json;\n  const cfg = MAP[norm(r.closer)];\n  return { json: { ...r,\n    _hasInstance: !!cfg,\n    _url: cfg ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text` : null,\n    _clientToken: CLIENT_TOKEN,\n  } };\n});"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1120,
-        320
+        880,
+        300
       ],
       "name": "Code: monta envio",
       "id": "node-4"
@@ -871,14 +876,13 @@
             }
           ],
           "combinator": "and"
-        },
-        "options": {}
+        }
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1344,
-        320
+        1100,
+        300
       ],
       "name": "IF tem instancia",
       "id": "node-5"
@@ -909,17 +913,24 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1500
+            }
+          }
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1568,
-        224
+        1320,
+        200
       ],
       "name": "HTTP: Z-API",
-      "id": "node-6",
-      "onError": "continueRegularOutput"
+      "onError": "continueRegularOutput",
+      "id": "node-6"
     },
     {
       "parameters": {
@@ -941,14 +952,13 @@
             }
           ],
           "combinator": "and"
-        },
-        "options": {}
+        }
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1792,
-        224
+        1540,
+        200
       ],
       "name": "IF erro?",
       "id": "node-7"
@@ -962,18 +972,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2016,
-        128
+        1760,
+        120
       ],
       "name": "PG: marca retry",
-      "alwaysOutputData": true,
-      "id": "node-8",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-8"
     },
     {
       "parameters": {
@@ -984,18 +994,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2016,
-        320
+        1760,
+        300
       ],
       "name": "PG: marca sent",
-      "alwaysOutputData": true,
-      "id": "node-9",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-9"
     },
     {
       "parameters": {
@@ -1006,18 +1016,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1568,
-        416
+        1320,
+        460
       ],
       "name": "PG: marca skipped",
-      "alwaysOutputData": true,
-      "id": "node-10",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-10"
     },
     {
       "parameters": {
@@ -1038,27 +1048,27 @@
             }
           ],
           "combinator": "and"
-        },
-        "options": {}
+        }
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        896,
-        416
+        880,
+        620
       ],
       "name": "IF canal email",
       "id": "node-11"
     },
     {
       "parameters": {
+        "mode": "runOnceForAllItems",
         "jsCode": "return $input.all();"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1120,
-        608
+        1100,
+        620
       ],
       "name": "Code: monta email",
       "id": "node-12"
@@ -1074,19 +1084,18 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        1344,
-        608
+        1320,
+        620
       ],
       "name": "SMTP: envia",
-      "id": "node-13",
-      "webhookId": "69606a6f-891c-42d6-9cc8-611a08e5e68b",
       "credentials": {
         "smtp": {
           "id": "M8KRLJXKOYcviemr",
           "name": "SMTP JP Bijari (Workspace)"
         }
       },
-      "onError": "continueRegularOutput"
+      "onError": "continueRegularOutput",
+      "id": "node-13"
     },
     {
       "parameters": {
@@ -1108,14 +1117,13 @@
             }
           ],
           "combinator": "and"
-        },
-        "options": {}
+        }
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1568,
-        608
+        1540,
+        620
       ],
       "name": "IF erro email?",
       "id": "node-14"
@@ -1129,18 +1137,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1792,
-        512
+        1760,
+        560
       ],
       "name": "PG: marca retry email",
-      "alwaysOutputData": true,
-      "id": "node-15",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-15"
     },
     {
       "parameters": {
@@ -1151,18 +1159,18 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1792,
-        704
+        1760,
+        700
       ],
       "name": "PG: marca sent email",
-      "alwaysOutputData": true,
-      "id": "node-16",
       "credentials": {
         "postgres": {
           "id": "GxgbRWKv7Xal5lZi",
           "name": "Supabase BMA (pooler)"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "id": "node-16"
     }
   ],
   "pinData": {},
@@ -1187,6 +1195,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-08-20T15:33:12.215Z",
-  "versionId": "73917b7c-f9b3-4afa-b41b-76de403ecdab"
+  "updatedAt": "2026-08-25T15:18:44.309Z",
+  "versionId": "8d07f11f-c67a-421f-b086-286eb2d58ed0"
 }
