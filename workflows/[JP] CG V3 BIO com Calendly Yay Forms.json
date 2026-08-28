@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-24T12:17:27.225Z",
-    "createdAt": "2026-08-24T12:17:27.225Z",
-    "versionId": "9ad3c1d7-b093-4f7a-837c-60a84e8b367a",
+    "updatedAt": "2026-08-28T14:06:46.419Z",
+    "createdAt": "2026-08-28T14:06:46.419Z",
+    "versionId": "8ae030eb-f14e-4449-899b-8199866f062a",
     "workflowId": "VxKlrhwUgrmO577V",
     "nodes": [
       {
@@ -1735,6 +1735,132 @@
           -1776,
           -2240
         ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "197c3b1b-99d2-49b8-9747-dfc2a93a0cbf",
+                "leftValue": "={{ [\"R$ 15.000,00 a R$ 20.000,00\", \"R$ 20.000,00 a R$ 50.000,00\", \"R$ 50.000,00 a R$ 100.000,00\", \"R$ 100.000,00 a R$ 250.000,00\", \"R$ 250.000,00 a R$ 500.000,00\", \"Acima de R$ 500.000,00\"].includes(String($('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d99']?.content?.[0] || '').trim()) }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -656,
+          -2432
+        ],
+        "id": "36467e9c-b7f9-4b01-bbc4-7adc38a03142",
+        "name": "Faturamento 15k+?"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=Aqui é o Alan Assis do time do JP Bijari.\nhttps://www.instagram.com/jp.bijari/\n\n\nEstava dando uma olhada nos formulários preenchidos para uma Consultoria Grátis com um dos nossos estrategistas e vi que você tentou uma vaga, porém, não conseguiu agendar."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -432,
+          -2432
+        ],
+        "id": "6a64096e-5a5e-46ea-a2c0-ab4585e0cc68",
+        "name": "SDR Alan · msg 1",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "amount": 5,
+          "unit": "seconds"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -208,
+          -2432
+        ],
+        "id": "24147c9b-24db-4d8b-b60c-f6f8b973d43a",
+        "name": "Wait · SDR Alan",
+        "webhookId": "30d82b52-f4b6-4620-9c60-b4a6c44e58c0"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+              },
+              {
+                "name": "message",
+                "value": "=Para entender melhor se essa consultoria faz sentido para você e para a gente, me conta um pouco mais, hoje você já tem um programa de mentorias ou tem interesse em iniciar?"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          16,
+          -2432
+        ],
+        "id": "ab7946a4-d23f-45d5-a675-133b0abdb5ec",
+        "name": "SDR Alan · msg 2",
+        "onError": "continueRegularOutput"
       }
     ],
     "connections": {
@@ -1824,7 +1950,13 @@
       },
       "Notifica grupo · reserva": {
         "main": [
-          []
+          [
+            {
+              "node": "Faturamento 15k+?",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       },
       "Clint · Reserva": {
@@ -2247,13 +2379,46 @@
             }
           ]
         ]
+      },
+      "Faturamento 15k+?": {
+        "main": [
+          [
+            {
+              "node": "SDR Alan · msg 1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SDR Alan · msg 1": {
+        "main": [
+          [
+            {
+              "node": "Wait · SDR Alan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait · SDR Alan": {
+        "main": [
+          [
+            {
+              "node": "SDR Alan · msg 2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Matheus Cristhyan",
     "name": null,
     "description": null
   },
-  "activeVersionId": "9ad3c1d7-b093-4f7a-837c-60a84e8b367a",
+  "activeVersionId": "8ae030eb-f14e-4449-899b-8199866f062a",
   "connections": {
     "Data call · Tiago": {
       "main": [
@@ -2341,7 +2506,13 @@
     },
     "Notifica grupo · reserva": {
       "main": [
-        []
+        [
+          {
+            "node": "Faturamento 15k+?",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Clint · Reserva": {
@@ -2759,6 +2930,39 @@
         [
           {
             "node": "Respondeu o form?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Faturamento 15k+?": {
+      "main": [
+        [
+          {
+            "node": "SDR Alan · msg 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SDR Alan · msg 1": {
+      "main": [
+        [
+          {
+            "node": "Wait · SDR Alan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait · SDR Alan": {
+      "main": [
+        [
+          {
+            "node": "SDR Alan · msg 2",
             "type": "main",
             "index": 0
           }
@@ -4503,6 +4707,132 @@
         -1776,
         -2240
       ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "197c3b1b-99d2-49b8-9747-dfc2a93a0cbf",
+              "leftValue": "={{ [\"R$ 15.000,00 a R$ 20.000,00\", \"R$ 20.000,00 a R$ 50.000,00\", \"R$ 50.000,00 a R$ 100.000,00\", \"R$ 100.000,00 a R$ 250.000,00\", \"R$ 250.000,00 a R$ 500.000,00\", \"Acima de R$ 500.000,00\"].includes(String($('Trata Webhook').item.json.response.answers['67f0b04758c5b6e203042d99']?.content?.[0] || '').trim()) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -656,
+        -2432
+      ],
+      "id": "36467e9c-b7f9-4b01-bbc4-7adc38a03142",
+      "name": "Faturamento 15k+?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Aqui é o Alan Assis do time do JP Bijari.\nhttps://www.instagram.com/jp.bijari/\n\n\nEstava dando uma olhada nos formulários preenchidos para uma Consultoria Grátis com um dos nossos estrategistas e vi que você tentou uma vaga, porém, não conseguiu agendar."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -432,
+        -2432
+      ],
+      "id": "6a64096e-5a5e-46ea-a2c0-ab4585e0cc68",
+      "name": "SDR Alan · msg 1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        -2432
+      ],
+      "id": "24147c9b-24db-4d8b-b60c-f6f8b973d43a",
+      "name": "Wait · SDR Alan",
+      "webhookId": "30d82b52-f4b6-4620-9c60-b4a6c44e58c0"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"answers\"][\"67f0b04658c5b6e203042d95\"][\"content\"] }}"
+            },
+            {
+              "name": "message",
+              "value": "=Para entender melhor se essa consultoria faz sentido para você e para a gente, me conta um pouco mais, hoje você já tem um programa de mentorias ou tem interesse em iniciar?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        16,
+        -2432
+      ],
+      "id": "ab7946a4-d23f-45d5-a675-133b0abdb5ec",
+      "name": "SDR Alan · msg 2",
+      "onError": "continueRegularOutput"
     }
   ],
   "pinData": {
@@ -4677,6 +5007,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-08-24T12:17:27.222Z",
-  "versionId": "9ad3c1d7-b093-4f7a-837c-60a84e8b367a"
+  "updatedAt": "2026-08-28T14:06:46.416Z",
+  "versionId": "8ae030eb-f14e-4449-899b-8199866f062a"
 }
