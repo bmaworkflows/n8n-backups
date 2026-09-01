@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-31T14:32:07.607Z",
-    "createdAt": "2026-08-31T14:32:07.607Z",
-    "versionId": "05de9081-a323-4622-8bd9-06b3a9bb86b4",
+    "updatedAt": "2026-08-31T19:43:35.902Z",
+    "createdAt": "2026-08-31T19:43:35.902Z",
+    "versionId": "3667cb8f-34c9-4f1e-9108-09e1ee0b9c3d",
     "workflowId": "8CaGB3jvVY3vrliD",
     "nodes": [
       {
@@ -456,6 +456,82 @@
         "id": "0ac64c0b-5806-4dd0-8d1d-2aeb05bbcee3",
         "name": "Alan → lead · abordagem 2",
         "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5545991443343"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1664,
+          -400
+        ],
+        "id": "c3ea6785-1a38-4562-9b32-c126642c6921",
+        "name": "Notifica JP PV · agendado",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5545991443343"
+              },
+              {
+                "name": "message",
+                "value": "=*Lead PARCIAL / não agendou 🚨 — Agenda lotada ou não paga*\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1248,
+          -48
+        ],
+        "id": "e723da5a-9455-4a34-869d-8cdb45b7f354",
+        "name": "Notifica JP PV · não agendou",
+        "onError": "continueRegularOutput"
       }
     ],
     "connections": {
@@ -565,7 +641,7 @@
         "main": [
           [
             {
-              "node": "Alan → lead · confirmação 1",
+              "node": "Notifica JP PV · agendado",
               "type": "main",
               "index": 0
             }
@@ -609,7 +685,7 @@
         "main": [
           [
             {
-              "node": "Alan → lead · abordagem 1",
+              "node": "Notifica JP PV · não agendou",
               "type": "main",
               "index": 0
             }
@@ -637,13 +713,35 @@
             }
           ]
         ]
+      },
+      "Notifica JP PV · agendado": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · confirmação 1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica JP PV · não agendou": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · abordagem 1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Matheus Cristhyan",
     "name": null,
     "description": null
   },
-  "activeVersionId": "05de9081-a323-4622-8bd9-06b3a9bb86b4",
+  "activeVersionId": "3667cb8f-34c9-4f1e-9108-09e1ee0b9c3d",
   "connections": {
     "Webhook": {
       "main": [
@@ -751,7 +849,7 @@
       "main": [
         [
           {
-            "node": "Alan → lead · confirmação 1",
+            "node": "Notifica JP PV · agendado",
             "type": "main",
             "index": 0
           }
@@ -795,7 +893,7 @@
       "main": [
         [
           {
-            "node": "Alan → lead · abordagem 1",
+            "node": "Notifica JP PV · não agendou",
             "type": "main",
             "index": 0
           }
@@ -818,6 +916,28 @@
         [
           {
             "node": "Alan → lead · abordagem 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica JP PV · agendado": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · confirmação 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica JP PV · não agendou": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · abordagem 1",
             "type": "main",
             "index": 0
           }
@@ -1281,6 +1401,82 @@
       "id": "0ac64c0b-5806-4dd0-8d1d-2aeb05bbcee3",
       "name": "Alan → lead · abordagem 2",
       "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "5545991443343"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1664,
+        -400
+      ],
+      "id": "c3ea6785-1a38-4562-9b32-c126642c6921",
+      "name": "Notifica JP PV · agendado",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "5545991443343"
+            },
+            {
+              "name": "message",
+              "value": "=*Lead PARCIAL / não agendou 🚨 — Agenda lotada ou não paga*\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1248,
+        -48
+      ],
+      "id": "e723da5a-9455-4a34-869d-8cdb45b7f354",
+      "name": "Notifica JP PV · não agendou",
+      "onError": "continueRegularOutput"
     }
   ],
   "pinData": null,
@@ -1303,6 +1499,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-08-31T14:32:07.574Z",
-  "versionId": "05de9081-a323-4622-8bd9-06b3a9bb86b4"
+  "updatedAt": "2026-08-31T19:43:35.898Z",
+  "versionId": "3667cb8f-34c9-4f1e-9108-09e1ee0b9c3d"
 }
