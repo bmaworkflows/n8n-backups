@@ -1,0 +1,2558 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-09-02T15:05:31.792Z",
+    "createdAt": "2026-09-02T15:05:31.792Z",
+    "versionId": "62e2a966-27bd-48d2-95c6-7f93cb86e8fc",
+    "workflowId": "RF8wq1ggALbXAn4Z",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2400,
+          608
+        ],
+        "id": "f12b0e19-6bad-4db1-8db2-0bfa575bcdff",
+        "name": "Trata Webhook"
+      },
+      {
+        "parameters": {
+          "jsCode": "const CAMPOS = [[\"6a92da4b8490fde669082a69\",\"Nome\"],[\"6a92da4b8490fde669082a6a\",\"WhatsApp\"],[\"6a92da4b8490fde669082a6b\",\"Instagram\"],[\"6a92da4b8490fde669082a6c\",\"E-mail\"],[\"6a92da4b8490fde669082a6e\",\"Faturamento mensal\"],[\"6a92da4b8490fde669082a6d\",\"Ticket da mentoria\"],[\"6a92da4b8490fde669082a76\",\"Agendamentos/mês hoje\"],[\"6a92dcda8490fde669082a96\",\"Agendamentos desejados/mês\"],[\"6a92dc8ec7270f5d1f0c51d6\",\"Como gera agendamentos\"],[\"6a92dc7b8490fde669082a94\",\"O que mais frustra\"],[\"6a92dc16c7270f5d1f0c51d5\",\"Calls/mês (qualificadas)\"],[\"6a92dc0f7c86920578073b58\",\"Já rodou tráfego / investe quanto\"],[\"6a92dbfc7c86920578073b57\",\"Tem gestor de tráfego\"],[\"6a92da4b8490fde669082a77\",\"Disponível pra investir\"],[\"6a92da4b8490fde669082a70\",\"Por que agora\"],[\"6a92da4b8490fde669082a71\",\"Por que deveríamos aceitar\"]];\nconst resp = $('Trata Webhook').item.json.response || {};\nconst ans = resp.answers || {};\nconst val = (id) => { const c = ans[id]?.content; if (c === null || c === undefined) return ''; if (c === true) return 'Sim'; if (c === false) return 'Não'; return Array.isArray(c) ? c.filter(Boolean).join(', ') : String(c); };\nconst linhas = CAMPOS.map(([id, rot]) => { const v = val(id); return v ? `*${rot}:* ${v}` : null; }).filter(Boolean);\nconst t = resp.tracking || {};\nconst utmLines = ['utm_source','utm_campaign','utm_medium','utm_content','utm_term']\n  .filter(k => t[k])\n  .map(k => `_${k}:_ ${t[k]}`);\nconst hora = Number(new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hourCycle: 'h23' }).format(new Date()));\nconst saudacao = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';\nconst ticketValue = val('6a92da4b8490fde669082a6d');\nlet origens = '\\n\\n*📍 Origem:* Formulário: Agenda lotada ou não paga (yay forms)';\nif (utmLines.length) origens += '\\n' + utmLines.join('\\n');\nconst resumo = linhas.join('\\n\\n') + origens;\nreturn [{ json: { ...$json, resumo, saudacao, leadPhone: val('6a92da4b8490fde669082a6a'), ticketValue } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2208,
+          608
+        ],
+        "id": "46d3e94c-a5e9-45c1-b473-6bf4e3b3c8d3",
+        "name": "Resumo do form"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "3a48cfe9-0f00-47a8-bbf4-7dfa03a4aee5",
+                "leftValue": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"submittedAt\"] }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -2000,
+          608
+        ],
+        "id": "a789b434-f1b4-48f7-bedc-57a68055fe2a",
+        "name": "Respondeu o form?"
+      },
+      {
+        "parameters": {
+          "jsCode": "const ans = $('Trata Webhook').item.json.response.answers || {};\n// ✅ ID correto do campo Calendly\nconst c = ans['6a98254c18ff935d3e018546']?.content;\nconst link = (typeof c === 'string' && c.includes('calendly.com')) ? c.trim() : null;\nlet eventUuid = null;\nif (link) {\n  const m = link.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (m) eventUuid = m[1];\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, calendlyLink: link, eventUuid } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1808,
+          400
+        ],
+        "id": "6d479eae-cfb8-4d2d-92db-cf529e742531",
+        "name": "1 · Detecta link Calendly"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "98fb24c3-07b4-4d3f-8157-eed295cbdc5e",
+                "leftValue": "={{ $json.eventUuid }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -1600,
+          400
+        ],
+        "id": "f9217a2c-8274-4b6b-89ee-827f67bb25f5",
+        "name": "2 · Agendou?"
+      },
+      {
+        "parameters": {
+          "url": "=https://api.calendly.com/scheduled_events/{{ $('1 · Detecta link Calendly').item.json.eventUuid }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI4NDQ0ODg1LCJqdGkiOiJjZTVlOGZjYS1mYmYzLTRmZjgtOTQ2NS0zMTI2NGVkYTgzOGIiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.7HosiyEvDh8vRpnSoELYpvNgSLN9Nvn0dNsSYJBn38Boabo4FFLxCdONVuOxRHz3f8Kt_3QCCq3u2uxMPu7kJw"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1408,
+          208
+        ],
+        "id": "e4fc39f5-65be-46b5-917f-83785333e50a",
+        "name": "3 · Busca evento (por link)"
+      },
+      {
+        "parameters": {
+          "jsCode": "const ev = $('3 · Busca evento (por link)').item.json.resource;\nconst p = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(ev.start_time));\nconst g = (t) => p.find((x) => x.type === t).value;\nconst dataHora = `${g('day')}/${g('month')} às ${g('hour')}:${g('minute')}`;\nreturn [{ json: { ...$json, evento: ev, dataHora } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1200,
+          208
+        ],
+        "id": "54485d68-89de-4e17-a547-12d68236df0a",
+        "name": "4 · Dados do evento"
+      },
+      {
+        "parameters": {
+          "jsCode": "// ⚠️ Preencha nome, e-mail (Calendly) e telefone de cada closer\nconst CLOSERS = {\n  'carol.livolis@gmail.com':        { nome: 'Carol',     phone: 'TELEFONE_DA_CAROL' },\n  'email_do_diogo@exemplo.com':     { nome: 'Diogo',     phone: '5527996120736' },\n  'email_do_tiago@exemplo.com':     { nome: 'Tiago',     phone: '5534984133437' },\n  'email_do_matheus@exemplo.com':   { nome: 'Matheus',   phone: '5545999553235' },\n  'email_do_guilherme@exemplo.com': { nome: 'Guilherme', phone: '5531992265968' }\n};\n\nconst ev = $('4 · Dados do evento').item.json.evento;\nconst eventName = (ev.name || '').toLowerCase();\nconst memberships = ev.event_memberships || [];\nconst userEmail = (memberships[0]?.user_email || '').toLowerCase().trim();\n\nconst closerData = CLOSERS[userEmail] || null;\nconst closerPhone = closerData?.phone || null;\n\n// Se não é CG10 nem CG20 → agenda do Alan (≤20k)\nconst isLowTicket = !eventName.includes('cg10') && !eventName.includes('cg20');\nconst closerNome = isLowTicket ? 'Alan (agenda ≤20k)' : (closerData?.nome || userEmail || '⚠️ não mapeado');\n\nreturn [{ json: { ...$json, closerEmail: userEmail, closerPhone, closerNome, isLowTicket, eventName } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1008,
+          208
+        ],
+        "id": "2cb370e9-1f8d-4bcc-8b06-d964c79b039d",
+        "name": "5 · Identifica closer"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -800,
+          208
+        ],
+        "id": "7420dc45-9630-41a2-8f71-cd9aaac3348e",
+        "name": "Wait 10s · A",
+        "webhookId": "b0000001-0000-0000-0000-000000000001"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5522981840417"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -608,
+          208
+        ],
+        "id": "f0051141-9baa-41b9-a7be-3bdbcadd72b9",
+        "name": "Notifica Gestor · agendado"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -400,
+          208
+        ],
+        "id": "0b4cc156-e42e-4d01-a7ee-eac53faf628a",
+        "name": "Wait 10s · B",
+        "webhookId": "b0000001-0000-0000-0000-000000000002"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": false,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "tick-0001-0000-0000-000000000001",
+                "leftValue": "={{ $json.isLowTicket }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equal"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -208,
+          208
+        ],
+        "id": "3f4dafb5-4c81-443c-bf7f-1b652420b048",
+        "name": "6 · Ticket ≤ 20k?"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "1183fcce-b4a3-4472-84f8-8ae84d2cfe81",
+        "name": "Wait 10s · C",
+        "webhookId": "b0000001-0000-0000-0000-000000000003"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5521965485215"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "c1899af8-da91-4e59-a7ff-b29b766ec440",
+        "name": "Notifica Alan PV · agendado"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          400,
+          0
+        ],
+        "id": "1ff70233-ab74-44da-afd5-c602327ab440",
+        "name": "Wait 10s · D",
+        "webhookId": "b0000001-0000-0000-0000-000000000004"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "=Opa, tudo bem? Aqui é o Alan Assis, do time do JP Bijari.\n\nhttps://www.instagram.com/jp.bijari/\n\nVi sua aplicação e nossa entrevista está confirmada para {{ $('4 · Dados do evento').item.json.dataHora }}, fechado?"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          608,
+          0
+        ],
+        "id": "3daa6bf7-d562-4987-a40a-d7a7b47ad4d2",
+        "name": "Alan → lead · confirmação 1a",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          800,
+          0
+        ],
+        "id": "bf48886e-dae8-4612-9b33-b751e821139b",
+        "name": "Wait · confirmação a",
+        "webhookId": "447147ea-9330-4766-a986-e46a0e1ecf2c"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "=Caso você não responda em algumas horas, infelizmente vamos ceder sua vaga para alguém que confirme. Esse é um processo seletivo bem criterioso e o volume de interessados por semana é muito maior que o de vagas disponíveis."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1008,
+          0
+        ],
+        "id": "5a3286c3-22f4-418c-8572-dd4610371a0f",
+        "name": "Alan → lead · confirmação 2a",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          400
+        ],
+        "id": "c471f89c-7dc4-4b00-be25-09c8065bceec",
+        "name": "Wait 10s · E",
+        "webhookId": "b0000001-0000-0000-0000-000000000005"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('5 · Identifica closer').item.json.closerPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          208,
+          400
+        ],
+        "id": "bc623fa3-7303-4dca-b046-e932ee901774",
+        "name": "Notifica Closer · agendado",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          400,
+          400
+        ],
+        "id": "1bed1aa7-8e9e-4d58-b827-d0e0ae95c99c",
+        "name": "Wait 10s · F",
+        "webhookId": "b0000001-0000-0000-0000-000000000006"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "=Opa, tudo bem? Aqui é o Alan Assis, do time do JP Bijari.\n\nhttps://www.instagram.com/jp.bijari/\n\nVi sua aplicação e nossa entrevista está confirmada para {{ $('4 · Dados do evento').item.json.dataHora }}, fechado?"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          608,
+          400
+        ],
+        "id": "edf356af-ee69-4623-9a97-2d22d3aaa172",
+        "name": "Alan → lead · confirmação 1b",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          800,
+          400
+        ],
+        "id": "a863bb80-e210-4df6-a521-2f6283a2ef21",
+        "name": "Wait · confirmação b",
+        "webhookId": "447147ea-9330-4766-a986-e46a0e1ecf3c"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "=Caso você não responda em algumas horas, infelizmente vamos ceder sua vaga para alguém que confirme. Esse é um processo seletivo bem criterioso e o volume de interessados por semana é muito maior que o de vagas disponíveis."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1008,
+          400
+        ],
+        "id": "2b79ebfe-58b7-4d66-9893-aa8a6dec0e9c",
+        "name": "Alan → lead · confirmação 2b",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "96bea722-95fa-42f0-97d8-77b7a2c0bb5b",
+                "leftValue": "={{ $('Resumo do form').item.json.leadPhone }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -1808,
+          800
+        ],
+        "id": "c887e2fc-0893-463c-8de8-4d0bc488c09f",
+        "name": "Preencheu WhatsApp?"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1600,
+          800
+        ],
+        "id": "2bec2c09-d42e-43a5-bf9c-f55531458b5f",
+        "name": "Wait 10s · G",
+        "webhookId": "b0000001-0000-0000-0000-000000000007"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5522981840417"
+              },
+              {
+                "name": "message",
+                "value": "=*Lead PARCIAL / não agendou 🚨 — Agenda lotada ou não paga*\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1408,
+          800
+        ],
+        "id": "59d344e0-82e4-4756-bacb-73e5f6437b28",
+        "name": "Notifica Gestor · não agendou"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1200,
+          800
+        ],
+        "id": "130f1e4f-f168-4db5-8b83-47e89bbd328a",
+        "name": "Wait 10s · H",
+        "webhookId": "b0000001-0000-0000-0000-000000000008"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "5521965485215"
+              },
+              {
+                "name": "message",
+                "value": "=*Lead PARCIAL / não agendou 🚨 — Agenda lotada ou não paga*\n\n{{ $('Resumo do form').item.json.resumo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1008,
+          800
+        ],
+        "id": "a4e5419b-9995-4259-85d6-3ddf1879338a",
+        "name": "Notifica Alan PV · não agendou"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "={{ $('Resumo do form').item.json.saudacao }}, tudo bem? Aqui é o Alan Assis do time do JP Bijari.\nhttps://www.instagram.com/jp.bijari/\n\nEstava dando uma olhada nos formulários preenchidos para a entrevista de mentores para o nosso programa de tráfego pago e vi que você tentou uma vaga, porém, não conseguiu agendar."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -800,
+          800
+        ],
+        "id": "614c69e9-1a9f-41e0-aa1c-05dd7dc8a2bb",
+        "name": "Alan → lead · abordagem 1",
+        "disabled": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -608,
+          800
+        ],
+        "id": "1ff25033-325b-4d32-8973-3e65ef8014b5",
+        "name": "Wait · abordagem",
+        "webhookId": "405e4f45-ec16-47b9-8959-394b6edb31aa",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+              },
+              {
+                "name": "message",
+                "value": "=Consegue me mandar um áudio de até 2 minutos com mais detalhes do seu cenário (objetivo e desafios) e o que te despertou interesse de falar conosco? Assim consigo te direcionar melhor."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -400,
+          800
+        ],
+        "id": "2214a240-be53-4ec3-82f3-f49ff8070970",
+        "name": "Alan → lead · abordagem 2",
+        "disabled": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "15c23585-a70e-4787-a97d-e28ac7021512",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -2576,
+          592
+        ],
+        "id": "9a589d85-8b6b-4f94-a9fc-967df251ec6b",
+        "name": "Webhook",
+        "webhookId": "15c23585-a70e-4787-a97d-e28ac7021512"
+      }
+    ],
+    "connections": {
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Resumo do form",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resumo do form": {
+        "main": [
+          [
+            {
+              "node": "Respondeu o form?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Respondeu o form?": {
+        "main": [
+          [
+            {
+              "node": "1 · Detecta link Calendly",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Preencheu WhatsApp?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1 · Detecta link Calendly": {
+        "main": [
+          [
+            {
+              "node": "2 · Agendou?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "2 · Agendou?": {
+        "main": [
+          [
+            {
+              "node": "3 · Busca evento (por link)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait 10s · G",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "3 · Busca evento (por link)": {
+        "main": [
+          [
+            {
+              "node": "4 · Dados do evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "4 · Dados do evento": {
+        "main": [
+          [
+            {
+              "node": "5 · Identifica closer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "5 · Identifica closer": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · A",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · A": {
+        "main": [
+          [
+            {
+              "node": "Notifica Gestor · agendado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica Gestor · agendado": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · B",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · B": {
+        "main": [
+          [
+            {
+              "node": "6 · Ticket ≤ 20k?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "6 · Ticket ≤ 20k?": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · C",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait 10s · E",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · C": {
+        "main": [
+          [
+            {
+              "node": "Notifica Alan PV · agendado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica Alan PV · agendado": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · D",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · D": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · confirmação 1a",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alan → lead · confirmação 1a": {
+        "main": [
+          [
+            {
+              "node": "Wait · confirmação a",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait · confirmação a": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · confirmação 2a",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · E": {
+        "main": [
+          [
+            {
+              "node": "Notifica Closer · agendado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica Closer · agendado": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · F",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · F": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · confirmação 1b",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alan → lead · confirmação 1b": {
+        "main": [
+          [
+            {
+              "node": "Wait · confirmação b",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait · confirmação b": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · confirmação 2b",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preencheu WhatsApp?": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · G",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · G": {
+        "main": [
+          [
+            {
+              "node": "Notifica Gestor · não agendou",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica Gestor · não agendou": {
+        "main": [
+          [
+            {
+              "node": "Wait 10s · H",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 10s · H": {
+        "main": [
+          [
+            {
+              "node": "Notifica Alan PV · não agendou",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notifica Alan PV · não agendou": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · abordagem 1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alan → lead · abordagem 1": {
+        "main": [
+          [
+            {
+              "node": "Wait · abordagem",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait · abordagem": {
+        "main": [
+          [
+            {
+              "node": "Alan → lead · abordagem 2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "62e2a966-27bd-48d2-95c6-7f93cb86e8fc",
+  "connections": {
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Resumo do form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumo do form": {
+      "main": [
+        [
+          {
+            "node": "Respondeu o form?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respondeu o form?": {
+      "main": [
+        [
+          {
+            "node": "1 · Detecta link Calendly",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preencheu WhatsApp?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 · Detecta link Calendly": {
+      "main": [
+        [
+          {
+            "node": "2 · Agendou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2 · Agendou?": {
+      "main": [
+        [
+          {
+            "node": "3 · Busca evento (por link)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 10s · G",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 · Busca evento (por link)": {
+      "main": [
+        [
+          {
+            "node": "4 · Dados do evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4 · Dados do evento": {
+      "main": [
+        [
+          {
+            "node": "5 · Identifica closer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5 · Identifica closer": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · A": {
+      "main": [
+        [
+          {
+            "node": "Notifica Gestor · agendado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica Gestor · agendado": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · B": {
+      "main": [
+        [
+          {
+            "node": "6 · Ticket ≤ 20k?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6 · Ticket ≤ 20k?": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · C",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 10s · E",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · C": {
+      "main": [
+        [
+          {
+            "node": "Notifica Alan PV · agendado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica Alan PV · agendado": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · D",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · D": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · confirmação 1a",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alan → lead · confirmação 1a": {
+      "main": [
+        [
+          {
+            "node": "Wait · confirmação a",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait · confirmação a": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · confirmação 2a",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · E": {
+      "main": [
+        [
+          {
+            "node": "Notifica Closer · agendado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica Closer · agendado": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · F",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · F": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · confirmação 1b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alan → lead · confirmação 1b": {
+      "main": [
+        [
+          {
+            "node": "Wait · confirmação b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait · confirmação b": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · confirmação 2b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preencheu WhatsApp?": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · G",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · G": {
+      "main": [
+        [
+          {
+            "node": "Notifica Gestor · não agendou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica Gestor · não agendou": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s · H",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s · H": {
+      "main": [
+        [
+          {
+            "node": "Notifica Alan PV · não agendou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notifica Alan PV · não agendou": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · abordagem 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alan → lead · abordagem 1": {
+      "main": [
+        [
+          {
+            "node": "Wait · abordagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait · abordagem": {
+      "main": [
+        [
+          {
+            "node": "Alan → lead · abordagem 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-09-02T14:38:49.869Z",
+  "id": "RF8wq1ggALbXAn4Z",
+  "isArchived": false,
+  "meta": null,
+  "name": "[ALAN] Agenda lotada ou não paga v2",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2400,
+        608
+      ],
+      "id": "f12b0e19-6bad-4db1-8db2-0bfa575bcdff",
+      "name": "Trata Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const CAMPOS = [[\"6a92da4b8490fde669082a69\",\"Nome\"],[\"6a92da4b8490fde669082a6a\",\"WhatsApp\"],[\"6a92da4b8490fde669082a6b\",\"Instagram\"],[\"6a92da4b8490fde669082a6c\",\"E-mail\"],[\"6a92da4b8490fde669082a6e\",\"Faturamento mensal\"],[\"6a92da4b8490fde669082a6d\",\"Ticket da mentoria\"],[\"6a92da4b8490fde669082a76\",\"Agendamentos/mês hoje\"],[\"6a92dcda8490fde669082a96\",\"Agendamentos desejados/mês\"],[\"6a92dc8ec7270f5d1f0c51d6\",\"Como gera agendamentos\"],[\"6a92dc7b8490fde669082a94\",\"O que mais frustra\"],[\"6a92dc16c7270f5d1f0c51d5\",\"Calls/mês (qualificadas)\"],[\"6a92dc0f7c86920578073b58\",\"Já rodou tráfego / investe quanto\"],[\"6a92dbfc7c86920578073b57\",\"Tem gestor de tráfego\"],[\"6a92da4b8490fde669082a77\",\"Disponível pra investir\"],[\"6a92da4b8490fde669082a70\",\"Por que agora\"],[\"6a92da4b8490fde669082a71\",\"Por que deveríamos aceitar\"]];\nconst resp = $('Trata Webhook').item.json.response || {};\nconst ans = resp.answers || {};\nconst val = (id) => { const c = ans[id]?.content; if (c === null || c === undefined) return ''; if (c === true) return 'Sim'; if (c === false) return 'Não'; return Array.isArray(c) ? c.filter(Boolean).join(', ') : String(c); };\nconst linhas = CAMPOS.map(([id, rot]) => { const v = val(id); return v ? `*${rot}:* ${v}` : null; }).filter(Boolean);\nconst t = resp.tracking || {};\nconst utmLines = ['utm_source','utm_campaign','utm_medium','utm_content','utm_term']\n  .filter(k => t[k])\n  .map(k => `_${k}:_ ${t[k]}`);\nconst hora = Number(new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hourCycle: 'h23' }).format(new Date()));\nconst saudacao = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';\nconst ticketValue = val('6a92da4b8490fde669082a6d');\nlet origens = '\\n\\n*📍 Origem:* Formulário: Agenda lotada ou não paga (yay forms)';\nif (utmLines.length) origens += '\\n' + utmLines.join('\\n');\nconst resumo = linhas.join('\\n\\n') + origens;\nreturn [{ json: { ...$json, resumo, saudacao, leadPhone: val('6a92da4b8490fde669082a6a'), ticketValue } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2208,
+        608
+      ],
+      "id": "46d3e94c-a5e9-45c1-b473-6bf4e3b3c8d3",
+      "name": "Resumo do form"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3a48cfe9-0f00-47a8-bbf4-7dfa03a4aee5",
+              "leftValue": "={{ $item(\"0\").$node[\"Trata Webhook\"].json[\"response\"][\"submittedAt\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2000,
+        608
+      ],
+      "id": "a789b434-f1b4-48f7-bedc-57a68055fe2a",
+      "name": "Respondeu o form?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ans = $('Trata Webhook').item.json.response.answers || {};\n// ✅ ID correto do campo Calendly\nconst c = ans['6a98254c18ff935d3e018546']?.content;\nconst link = (typeof c === 'string' && c.includes('calendly.com')) ? c.trim() : null;\nlet eventUuid = null;\nif (link) {\n  const m = link.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (m) eventUuid = m[1];\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, calendlyLink: link, eventUuid } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1808,
+        400
+      ],
+      "id": "6d479eae-cfb8-4d2d-92db-cf529e742531",
+      "name": "1 · Detecta link Calendly"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "98fb24c3-07b4-4d3f-8157-eed295cbdc5e",
+              "leftValue": "={{ $json.eventUuid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1600,
+        400
+      ],
+      "id": "f9217a2c-8274-4b6b-89ee-827f67bb25f5",
+      "name": "2 · Agendou?"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.calendly.com/scheduled_events/{{ $('1 · Detecta link Calendly').item.json.eventUuid }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzI4NDQ0ODg1LCJqdGkiOiJjZTVlOGZjYS1mYmYzLTRmZjgtOTQ2NS0zMTI2NGVkYTgzOGIiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.7HosiyEvDh8vRpnSoELYpvNgSLN9Nvn0dNsSYJBn38Boabo4FFLxCdONVuOxRHz3f8Kt_3QCCq3u2uxMPu7kJw"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1408,
+        208
+      ],
+      "id": "e4fc39f5-65be-46b5-917f-83785333e50a",
+      "name": "3 · Busca evento (por link)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ev = $('3 · Busca evento (por link)').item.json.resource;\nconst p = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(ev.start_time));\nconst g = (t) => p.find((x) => x.type === t).value;\nconst dataHora = `${g('day')}/${g('month')} às ${g('hour')}:${g('minute')}`;\nreturn [{ json: { ...$json, evento: ev, dataHora } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        208
+      ],
+      "id": "54485d68-89de-4e17-a547-12d68236df0a",
+      "name": "4 · Dados do evento"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ⚠️ Preencha nome, e-mail (Calendly) e telefone de cada closer\nconst CLOSERS = {\n  'carol.livolis@gmail.com':        { nome: 'Carol',     phone: 'TELEFONE_DA_CAROL' },\n  'email_do_diogo@exemplo.com':     { nome: 'Diogo',     phone: '5527996120736' },\n  'email_do_tiago@exemplo.com':     { nome: 'Tiago',     phone: '5534984133437' },\n  'email_do_matheus@exemplo.com':   { nome: 'Matheus',   phone: '5545999553235' },\n  'email_do_guilherme@exemplo.com': { nome: 'Guilherme', phone: '5531992265968' }\n};\n\nconst ev = $('4 · Dados do evento').item.json.evento;\nconst eventName = (ev.name || '').toLowerCase();\nconst memberships = ev.event_memberships || [];\nconst userEmail = (memberships[0]?.user_email || '').toLowerCase().trim();\n\nconst closerData = CLOSERS[userEmail] || null;\nconst closerPhone = closerData?.phone || null;\n\n// Se não é CG10 nem CG20 → agenda do Alan (≤20k)\nconst isLowTicket = !eventName.includes('cg10') && !eventName.includes('cg20');\nconst closerNome = isLowTicket ? 'Alan (agenda ≤20k)' : (closerData?.nome || userEmail || '⚠️ não mapeado');\n\nreturn [{ json: { ...$json, closerEmail: userEmail, closerPhone, closerNome, isLowTicket, eventName } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        208
+      ],
+      "id": "2cb370e9-1f8d-4bcc-8b06-d964c79b039d",
+      "name": "5 · Identifica closer"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        208
+      ],
+      "id": "7420dc45-9630-41a2-8f71-cd9aaac3348e",
+      "name": "Wait 10s · A",
+      "webhookId": "b0000001-0000-0000-0000-000000000001"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "5522981840417"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -608,
+        208
+      ],
+      "id": "f0051141-9baa-41b9-a7be-3bdbcadd72b9",
+      "name": "Notifica Gestor · agendado"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        208
+      ],
+      "id": "0b4cc156-e42e-4d01-a7ee-eac53faf628a",
+      "name": "Wait 10s · B",
+      "webhookId": "b0000001-0000-0000-0000-000000000002"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "tick-0001-0000-0000-000000000001",
+              "leftValue": "={{ $json.isLowTicket }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        208
+      ],
+      "id": "3f4dafb5-4c81-443c-bf7f-1b652420b048",
+      "name": "6 · Ticket ≤ 20k?"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1183fcce-b4a3-4472-84f8-8ae84d2cfe81",
+      "name": "Wait 10s · C",
+      "webhookId": "b0000001-0000-0000-0000-000000000003"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "5521965485215"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c1899af8-da91-4e59-a7ff-b29b766ec440",
+      "name": "Notifica Alan PV · agendado"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "1ff70233-ab74-44da-afd5-c602327ab440",
+      "name": "Wait 10s · D",
+      "webhookId": "b0000001-0000-0000-0000-000000000004"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "=Opa, tudo bem? Aqui é o Alan Assis, do time do JP Bijari.\n\nhttps://www.instagram.com/jp.bijari/\n\nVi sua aplicação e nossa entrevista está confirmada para {{ $('4 · Dados do evento').item.json.dataHora }}, fechado?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "3daa6bf7-d562-4987-a40a-d7a7b47ad4d2",
+      "name": "Alan → lead · confirmação 1a",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        0
+      ],
+      "id": "bf48886e-dae8-4612-9b33-b751e821139b",
+      "name": "Wait · confirmação a",
+      "webhookId": "447147ea-9330-4766-a986-e46a0e1ecf2c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "=Caso você não responda em algumas horas, infelizmente vamos ceder sua vaga para alguém que confirme. Esse é um processo seletivo bem criterioso e o volume de interessados por semana é muito maior que o de vagas disponíveis."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "5a3286c3-22f4-418c-8572-dd4610371a0f",
+      "name": "Alan → lead · confirmação 2a",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        400
+      ],
+      "id": "c471f89c-7dc4-4b00-be25-09c8065bceec",
+      "name": "Wait 10s · E",
+      "webhookId": "b0000001-0000-0000-0000-000000000005"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('5 · Identifica closer').item.json.closerPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead AGENDADO ✅ — Agenda lotada ou não paga*\n\n*Data e hora da ligação:* {{ $('4 · Dados do evento').item.json.dataHora }}\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        400
+      ],
+      "id": "bc623fa3-7303-4dca-b046-e932ee901774",
+      "name": "Notifica Closer · agendado",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        400
+      ],
+      "id": "1bed1aa7-8e9e-4d58-b827-d0e0ae95c99c",
+      "name": "Wait 10s · F",
+      "webhookId": "b0000001-0000-0000-0000-000000000006"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "=Opa, tudo bem? Aqui é o Alan Assis, do time do JP Bijari.\n\nhttps://www.instagram.com/jp.bijari/\n\nVi sua aplicação e nossa entrevista está confirmada para {{ $('4 · Dados do evento').item.json.dataHora }}, fechado?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        400
+      ],
+      "id": "edf356af-ee69-4623-9a97-2d22d3aaa172",
+      "name": "Alan → lead · confirmação 1b",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        400
+      ],
+      "id": "a863bb80-e210-4df6-a521-2f6283a2ef21",
+      "name": "Wait · confirmação b",
+      "webhookId": "447147ea-9330-4766-a986-e46a0e1ecf3c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "=Caso você não responda em algumas horas, infelizmente vamos ceder sua vaga para alguém que confirme. Esse é um processo seletivo bem criterioso e o volume de interessados por semana é muito maior que o de vagas disponíveis."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1008,
+        400
+      ],
+      "id": "2b79ebfe-58b7-4d66-9893-aa8a6dec0e9c",
+      "name": "Alan → lead · confirmação 2b",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "96bea722-95fa-42f0-97d8-77b7a2c0bb5b",
+              "leftValue": "={{ $('Resumo do form').item.json.leadPhone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1808,
+        800
+      ],
+      "id": "c887e2fc-0893-463c-8de8-4d0bc488c09f",
+      "name": "Preencheu WhatsApp?"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1600,
+        800
+      ],
+      "id": "2bec2c09-d42e-43a5-bf9c-f55531458b5f",
+      "name": "Wait 10s · G",
+      "webhookId": "b0000001-0000-0000-0000-000000000007"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "5522981840417"
+            },
+            {
+              "name": "message",
+              "value": "=*Lead PARCIAL / não agendou 🚨 — Agenda lotada ou não paga*\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1408,
+        800
+      ],
+      "id": "59d344e0-82e4-4756-bacb-73e5f6437b28",
+      "name": "Notifica Gestor · não agendou"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1200,
+        800
+      ],
+      "id": "130f1e4f-f168-4db5-8b83-47e89bbd328a",
+      "name": "Wait 10s · H",
+      "webhookId": "b0000001-0000-0000-0000-000000000008"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "5521965485215"
+            },
+            {
+              "name": "message",
+              "value": "=*Lead PARCIAL / não agendou 🚨 — Agenda lotada ou não paga*\n\n{{ $('Resumo do form').item.json.resumo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1008,
+        800
+      ],
+      "id": "a4e5419b-9995-4259-85d6-3ddf1879338a",
+      "name": "Notifica Alan PV · não agendou"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Resumo do form').item.json.saudacao }}, tudo bem? Aqui é o Alan Assis do time do JP Bijari.\nhttps://www.instagram.com/jp.bijari/\n\nEstava dando uma olhada nos formulários preenchidos para a entrevista de mentores para o nosso programa de tráfego pago e vi que você tentou uma vaga, porém, não conseguiu agendar."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -800,
+        800
+      ],
+      "id": "614c69e9-1a9f-41e0-aa1c-05dd7dc8a2bb",
+      "name": "Alan → lead · abordagem 1",
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -608,
+        800
+      ],
+      "id": "1ff25033-325b-4d32-8973-3e65ef8014b5",
+      "name": "Wait · abordagem",
+      "webhookId": "405e4f45-ec16-47b9-8959-394b6edb31aa",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
+            },
+            {
+              "name": "message",
+              "value": "=Consegue me mandar um áudio de até 2 minutos com mais detalhes do seu cenário (objetivo e desafios) e o que te despertou interesse de falar conosco? Assim consigo te direcionar melhor."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        800
+      ],
+      "id": "2214a240-be53-4ec3-82f3-f49ff8070970",
+      "name": "Alan → lead · abordagem 2",
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "15c23585-a70e-4787-a97d-e28ac7021512",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2576,
+        592
+      ],
+      "id": "9a589d85-8b6b-4f94-a9fc-967df251ec6b",
+      "name": "Webhook",
+      "webhookId": "15c23585-a70e-4787-a97d-e28ac7021512"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.josepbijari.com",
+            "user-agent": "GuzzleHttp/7",
+            "content-length": "6875",
+            "content-type": "application/json",
+            "x-forwarded-for": "157.230.83.6",
+            "x-forwarded-host": "webhook.josepbijari.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "9143be050a6b",
+            "x-real-ip": "157.230.83.6",
+            "yayforms-signature": "fe6b331485d051c952d8224ae948ac185527d64da0fae07a54c40540f746de59",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "response": {
+              "id": "6a98353df23ce7c0051b5a7a",
+              "formId": "6a92da4a8490fde669082a67",
+              "ipAddress": "2804:14c:c9:256b:702f:a20f:8510:ff5f",
+              "operatingSystem": "Windows",
+              "operatingSystemVersion": "10.0",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+              "browser": "Chrome",
+              "browserVersion": "151.0.0.0",
+              "referrerUrl": null,
+              "deviceType": "desktop",
+              "geolocation": {
+                "continent": "South America",
+                "country_code": "BR",
+                "country_code2": "BR",
+                "country_name": "Brazil",
+                "region": "SP",
+                "state": "São Paulo",
+                "city": "São Paulo",
+                "zipcode": "01000",
+                "latitude": -23.6293,
+                "longitude": -46.6351,
+                "timezone": "America/Sao_Paulo",
+                "currency": "BRL"
+              },
+              "aiFeedback": null,
+              "hiddenFields": [],
+              "variables": {
+                "score": 0,
+                "quali": true
+              },
+              "tracking": {
+                "_fbp": "fb.1.1786455322776.573443795631450359",
+                "_clck": "1lar4f3^2^g8q^0^2422"
+              },
+              "timeToComplete": 43.287,
+              "startedAt": "2026-09-02T14:40:09.234000Z",
+              "submittedAt": "2026-09-02T14:40:52.521000Z",
+              "createdAt": "2026-09-02T14:39:57.147000Z",
+              "updatedAt": "2026-09-02T14:41:00.507000Z",
+              "answers": {
+                "6a92da4b8490fde669082a75": {
+                  "answerId": "6a98353d908eb3a6b2a1a74d",
+                  "fieldTitle": "ATENÇÃO: Exclusivo para mentores que possuem uma mentoria acima de R$ 50k ou que já faturam acima de R$ 100k/mês e querem um fluxo previsível de leads qualificados entrando na agenda — sem depender de prospecção/indicação/conteúdo.",
+                  "fieldDescription": "<p style=\"text-align: center;\">Não é um teste ou algo novo, é a metodologia que <strong>já gerou R$ 900MM em vendas e 200.000 agendamentos qualificados, com o lead caindo automático na sua agenda ou do time dos seus closers via tráfego pago (achou que tráfego não funcionava, né? O problema é o método).</strong></p><p style=\"text-align: center;\"></p><p style=\"text-align: center;\"><strong>Não é uma MENTORIA, o seu único papel, se seu projeto for aprovado, será gravar os criativos escritos por nós e focar no que importa: conduzir suas calls de venda com leads qualificados.</strong></p><p style=\"text-align: center;\"></p><p style=\"text-align: center;\"><em>IMPORTANTE: O preenchimento desse formulário NÃO garante que você será aceito para uma das vagas. Temos vagas limitadas e por isso avaliamos cautelosamente cada interessado.</em></p>",
+                  "content": null
+                },
+                "6a92da4b8490fde669082a69": {
+                  "answerId": "6a98353e908eb3a6b2a1a750",
+                  "fieldTitle": "Qual seu nome completo?",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92da4b8490fde669082a6a": {
+                  "answerId": "6a983548908eb3a6b2a1a774",
+                  "fieldTitle": "Número de WhatsApp com DDD",
+                  "fieldDescription": null,
+                  "content": "+5511963657301"
+                },
+                "6a92da4b8490fde669082a6b": {
+                  "answerId": "6a98354a908eb3a6b2a1a77d",
+                  "fieldTitle": "Seu @ no Instagram",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92da4b8490fde669082a6c": {
+                  "answerId": "6a98354c908eb3a6b2a1a784",
+                  "fieldTitle": "Qual o seu e-mail principal?",
+                  "fieldDescription": null,
+                  "content": "carol.livolis@gmail.com"
+                },
+                "6a92da4b8490fde669082a6e": {
+                  "answerId": "6a983550908eb3a6b2a1a795",
+                  "fieldTitle": "Qual seu faturamento médio mensal hoje? (Total, não estou falando apenas da mentoria).",
+                  "fieldDescription": null,
+                  "content": [
+                    "R$ 50.000,00 a R$ 100.000,00"
+                  ]
+                },
+                "6a92da4b8490fde669082a6d": {
+                  "answerId": "6a983552908eb3a6b2a1a799",
+                  "fieldTitle": "Qual o ticket da sua mentoria?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Entre R$ 10k e R$ 20k"
+                  ]
+                },
+                "6a92da4b8490fde669082a76": {
+                  "answerId": "6a983553908eb3a6b2a1a79d",
+                  "fieldTitle": "Quantos agendamentos você gera por mês hoje?",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92dcda8490fde669082a96": {
+                  "answerId": "6a983554908eb3a6b2a1a7a3",
+                  "fieldTitle": "Quantos agendamentos você GOSTARIA de ter por mês?",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92dc8ec7270f5d1f0c51d6": {
+                  "answerId": "6a983555908eb3a6b2a1a7a8",
+                  "fieldTitle": "De que forma gera esses agendamentos? (prospecção, indicação, direct, conteúdo, tráfego, outro)",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92dc7b8490fde669082a94": {
+                  "answerId": "6a983556908eb3a6b2a1a7aa",
+                  "fieldTitle": "O que mais te frustra no processo atual? (Imprevisibilidade, horas gastas, qualidade do lead, baixo volume?)",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92dc16c7270f5d1f0c51d5": {
+                  "answerId": "6a983557908eb3a6b2a1a7ac",
+                  "fieldTitle": "Quantas calls você faz por mês e quantas dessas são realmente qualificadas?",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92dc0f7c86920578073b58": {
+                  "answerId": "6a983558908eb3a6b2a1a7af",
+                  "fieldTitle": "Já rodou tráfego pago antes? Se sim, investe quanto por mês hoje?",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92dbfc7c86920578073b57": {
+                  "answerId": "6a983559908eb3a6b2a1a7b3",
+                  "fieldTitle": "Você tem gestor de tráfego atualmente?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Yes"
+                  ]
+                },
+                "6a92da4b8490fde669082a77": {
+                  "answerId": "6a98355b908eb3a6b2a1a7bd",
+                  "fieldTitle": "Quanto você tem disponível pra investir hoje se for algo com ROI comprovado?",
+                  "fieldDescription": null,
+                  "content": [
+                    "Até R$ 50k/mês"
+                  ]
+                },
+                "6a92da4b8490fde669082a70": {
+                  "answerId": "6a98355c908eb3a6b2a1a7c3",
+                  "fieldTitle": "Por que você está buscando isso agora?",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a92da4b8490fde669082a71": {
+                  "answerId": "6a98355e908eb3a6b2a1a7c8",
+                  "fieldTitle": "A gente aceita só 3 mentores por mês porque é um trabalho personalizado e com garantia — por que deveríamos te aceitar? PS: Deixa o ego de lado, não é uma pergunta de arrogância.",
+                  "fieldDescription": null,
+                  "content": "Teste Robgol"
+                },
+                "6a957f2c27260184f308fef5": {
+                  "answerId": "6a98355f908eb3a6b2a1a7c9",
+                  "fieldTitle": "Na próxima pergunta, vai aparecer um calendário. Você vai agendar uma reunião onde terá um diagnóstico para validar se sua operação está dentro dos nossos critérios.É primordial que você faça o agendamento, essa etapa é um pré-requisito para avaliarmos os 3 mentores que aceitaremos no mês.",
+                  "fieldDescription": null,
+                  "content": [
+                    "Combinado!"
+                  ]
+                },
+                "6a98254c18ff935d3e018546": {
+                  "answerId": "6a983560908eb3a6b2a1a7cc",
+                  "fieldTitle": "Agende a sua ligação abaixo: ",
+                  "fieldDescription": null,
+                  "content": "https://calendly.com/scheduled_events/b2ca5772-47c8-4681-82c0-a1fbe27bfa69/invitees/90e00cc8-9db3-42b3-95a5-89c40ada9d5f"
+                },
+                "6a92da4b8490fde669082a68": {
+                  "answerId": "6a983574908eb3a6b2a1a7fc",
+                  "fieldTitle": "Informações recebidas. Em breve entraremos em contato para: 1. Uma entrevista prévia; 2. Uma segunda reunião de diagnóstico, plano de ação e proposta.",
+                  "fieldDescription": "<p style=\"text-align: center;\"></p>",
+                  "content": null
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://webhook.josepbijari.com/webhook/15c23585-a70e-4787-a97d-e28ac7021512",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-09-02T14:38:49.869Z",
+      "createdAt": "2026-09-02T14:38:49.869Z",
+      "role": "workflow:owner",
+      "workflowId": "RF8wq1ggALbXAn4Z",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-02T15:05:31.722Z",
+  "versionId": "62e2a966-27bd-48d2-95c6-7f93cb86e8fc"
+}
