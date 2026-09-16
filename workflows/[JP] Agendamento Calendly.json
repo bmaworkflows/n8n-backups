@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-25T13:45:26.395Z",
-    "createdAt": "2026-08-25T13:45:26.395Z",
-    "versionId": "6e371e90-b5c6-4d1b-a4fd-47b19a7af4d0",
+    "updatedAt": "2026-09-16T15:19:31.633Z",
+    "createdAt": "2026-09-16T15:19:31.633Z",
+    "versionId": "e1008b32-a37e-4852-8054-8ab13f397413",
     "workflowId": "SlZo8jyHETfwI6gs",
     "nodes": [
       {
@@ -221,6 +221,56 @@
                 },
                 "renameOutput": true,
                 "outputKey": "ISCA"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bd8ec32f-c519-44fa-b2d9-f5ef070682f7",
+                      "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                      "rightValue": "CG MTG - API",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "CG MTG - API"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "b822d3d6-b4e9-45a0-87e3-184a813040d2",
+                      "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                      "rightValue": "CG TMD - API",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "CG TMD - API"
               }
             ]
           },
@@ -656,7 +706,7 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus Schefer\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus Schefer\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
               }
             ]
           },
@@ -947,7 +997,7 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Tiago Gregório\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Tiago Gregório\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
               }
             ]
           },
@@ -1129,7 +1179,7 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Karllos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Karllos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
               }
             ]
           },
@@ -1311,7 +1361,7 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
               }
             ]
           },
@@ -1953,7 +2003,7 @@
               },
               {
                 "name": "message",
-                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Diogo Campos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+                "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Diogo Campos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
               }
             ]
           },
@@ -2042,6 +2092,20 @@
           [
             {
               "node": "Closer1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Closer",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Closer",
               "type": "main",
               "index": 0
             }
@@ -2337,7 +2401,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "6e371e90-b5c6-4d1b-a4fd-47b19a7af4d0",
+  "activeVersionId": "e1008b32-a37e-4852-8054-8ab13f397413",
   "connections": {
     "Trata Webhook": {
       "main": [
@@ -2411,6 +2475,20 @@
         [
           {
             "node": "Closer1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Closer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Closer",
             "type": "main",
             "index": 0
           }
@@ -2925,6 +3003,56 @@
               },
               "renameOutput": true,
               "outputKey": "ISCA"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bd8ec32f-c519-44fa-b2d9-f5ef070682f7",
+                    "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                    "rightValue": "CG MTG - API",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CG MTG - API"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b822d3d6-b4e9-45a0-87e3-184a813040d2",
+                    "leftValue": "={{ $json.payload.scheduled_event.name }}",
+                    "rightValue": "CG TMD - API",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CG TMD - API"
             }
           ]
         },
@@ -3360,7 +3488,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus Schefer\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Matheus Schefer\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
             }
           ]
         },
@@ -3651,7 +3779,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Tiago Gregório\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Tiago Gregório\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
             }
           ]
         },
@@ -3833,7 +3961,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Karllos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Karllos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
             }
           ]
         },
@@ -4015,7 +4143,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Guilherme Luiz\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
             }
           ]
         },
@@ -4657,7 +4785,7 @@
             },
             {
               "name": "message",
-              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Diogo Campos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"][\"answer\"] }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"][\"answer\"] }}"
+              "value": "=*Novo lead agendado Disparo API ✅*\n\n*Data e hora da Reunião*: {{ $item(\"0\").$node[\"Trata Webhook\"].json[\"payload\"][\"scheduled_event\"][\"start_time\"].toDateTime().toUTC().minus(3, 'hour').format(\"dd/MM/yyyy HH:mm\") }}\n\n*Closer Responsável:* Diogo Campos\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.payload.name }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.payload.email }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.payload.questions_and_answers[0].answer }}\n\n*Fatruamento:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"2\"]?.answer || '-' }}\n\n*Instagram:* {{ $item(\"0\").$node[\"Closer\"].json[\"payload\"][\"questions_and_answers\"][\"1\"]?.answer || '-' }}"
             }
           ]
         },
@@ -4815,6 +4943,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-08-25T13:45:26.392Z",
-  "versionId": "6e371e90-b5c6-4d1b-a4fd-47b19a7af4d0"
+  "updatedAt": "2026-09-16T15:19:31.629Z",
+  "versionId": "e1008b32-a37e-4852-8054-8ab13f397413"
 }
