@@ -1,0 +1,396 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-09-17T20:58:16.121Z",
+    "createdAt": "2026-09-17T20:58:16.121Z",
+    "versionId": "d805b8ba-eaef-488b-8a58-271add76d034",
+    "workflowId": "xFOHCcrybmAWE16x",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 9
+              },
+              {
+                "triggerAtHour": 15
+              },
+              {
+                "triggerAtHour": 21
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "aa38d00d-2a79-4ad2-b776-b020b524730c",
+        "name": "Schedule 9h · 15h · 21h (BRT)"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          176
+        ],
+        "id": "d3b036d1-13d6-46cc-85c3-5c60b354d1be",
+        "name": "Trigger manual"
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/f8a809f2-bacf-4d72-9737-ee41ab629b8e"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $now.plus({ minutes: 5 }).toUTC().toFormat(\"yyyy-MM-dd'T'HH:mm:ss'Z'\") }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ $now.plus({ days: 5 }).endOf('day').toUTC().toFormat(\"yyyy-MM-dd'T'HH:mm:ss'Z'\") }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzg5Njc1OTc0LCJqdGkiOiIwZDYzYTkzZi0yMGE1LTRiM2QtODUyNi05NDIxZWEwOGY0YjUiLCJ1c2VyX3V1aWQiOiI5NDhlZjZlNS00N2ZkLTQ0OGQtYTYyNS1mZGJiOGNlOTFlZGUiLCJzY29wZSI6ImF2YWlsYWJpbGl0eTpyZWFkIGF2YWlsYWJpbGl0eTp3cml0ZSBldmVudF90eXBlczpyZWFkIGV2ZW50X3R5cGVzOndyaXRlIGxvY2F0aW9uczpyZWFkIHJvdXRpbmdfZm9ybXM6cmVhZCBzaGFyZXM6d3JpdGUgc2NoZWR1bGVkX2V2ZW50czpyZWFkIHNjaGVkdWxlZF9ldmVudHM6d3JpdGUgc2NoZWR1bGluZ19saW5rczp3cml0ZSBncm91cHM6cmVhZCBvcmdhbml6YXRpb25zOnJlYWQgb3JnYW5pemF0aW9uczp3cml0ZSB1c2VyczpyZWFkIGNvbnRhY3RzOnJlYWQgY29udGFjdHM6d3JpdGUgbWVldGluZ19yZWNhcHM6cmVhZCBtZWV0aW5nX3JlY2Fwczp3cml0ZSBhY3Rpdml0eV9sb2c6cmVhZCBkYXRhX2NvbXBsaWFuY2U6d3JpdGUgb3V0Z29pbmdfY29tbXVuaWNhdGlvbnM6cmVhZCB3ZWJob29rczpyZWFkIHdlYmhvb2tzOndyaXRlIn0.4VqBV_AHn4owTw8MUCbt3cUsuX3LWu2OrXXp8gD4mc_0kunrUhNsltasDRJJwc1t-UL0T6RGKA9gDgIaRLV3YA"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          240,
+          80
+        ],
+        "id": "6dd1b9fd-a3fe-4ce4-807f-450792620f23",
+        "name": "Busca horários (Calendly)"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Monta o report de disponibilidade agrupado por dia (fuso BR).\n// Entrada: corpo do GET /event_type_available_times -> { collection: [{start_time, status, ...}] }\nconst DIAS = 5;\nconst AGENDA = \"Agenda Money Club\";\nconst col = ($json.collection || []).filter((c) => c.status === 'available');\n\nconst fmt = (iso, opts) => new Intl.DateTimeFormat('pt-BR',\n  { timeZone: 'America/Sao_Paulo', ...opts }).format(new Date(iso));\nconst cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);\n\n// Agrupa por dia preservando a ordem que o Calendly já devolve (crescente).\nconst porDia = new Map();\nfor (const c of col) {\n  const chave = fmt(c.start_time, { day: '2-digit', month: '2-digit' });\n  const rotulo = cap(fmt(c.start_time, { weekday: 'long' })) + ', ' + chave;\n  if (!porDia.has(rotulo)) porDia.set(rotulo, []);\n  porDia.get(rotulo).push(fmt(c.start_time, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }));\n}\n\nlet message = `*Report Diário — ${AGENDA}*\\n`;\nif (!porDia.size) {\n  message += `\\n⚠️ *Sem horários disponíveis* nos próximos ${DIAS} dias.`;\n} else {\n  for (const [rotulo, horas] of porDia) {\n    message += `\\n*${rotulo}* (${horas.length} ${horas.length === 1 ? 'horário' : 'horários'})\\n`;\n    message += horas.join(' · ') + '\\n';\n  }\n  message += `\\n_Total: ${col.length} ${col.length === 1 ? 'horário' : 'horários'} nos próximos ${DIAS} dias._`;\n}\nreturn [{ json: { message, total: col.length, dias: porDia.size } }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          80
+        ],
+        "id": "ce1d523f-4bec-4334-a45d-0adcfd6c5d36",
+        "name": "Monta report"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3F92B28EB34A822DF9325AED791B32A3/token/084C37CC8334B05ABD139B25/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "F2aceb3aa4f374314a5bf4f341aa4f75cS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "120363413914439069-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.message }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          720,
+          80
+        ],
+        "id": "bc59c63c-0ffa-415b-bd33-02003fd0b36d",
+        "name": "Notifica grupo"
+      }
+    ],
+    "connections": {
+      "Schedule 9h · 15h · 21h (BRT)": {
+        "main": [
+          [
+            {
+              "node": "Busca horários (Calendly)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trigger manual": {
+        "main": [
+          [
+            {
+              "node": "Busca horários (Calendly)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Busca horários (Calendly)": {
+        "main": [
+          [
+            {
+              "node": "Monta report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monta report": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "d805b8ba-eaef-488b-8a58-271add76d034",
+  "connections": {
+    "Schedule 9h · 15h · 21h (BRT)": {
+      "main": [
+        [
+          {
+            "node": "Busca horários (Calendly)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger manual": {
+      "main": [
+        [
+          {
+            "node": "Busca horários (Calendly)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca horários (Calendly)": {
+      "main": [
+        [
+          {
+            "node": "Monta report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monta report": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-09-17T20:57:37.400Z",
+  "id": "xFOHCcrybmAWE16x",
+  "isArchived": false,
+  "meta": null,
+  "name": "[IGOR] Report Diário - Disponibilidade do Calendly",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            },
+            {
+              "triggerAtHour": 15
+            },
+            {
+              "triggerAtHour": 21
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "aa38d00d-2a79-4ad2-b776-b020b524730c",
+      "name": "Schedule 9h · 15h · 21h (BRT)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        176
+      ],
+      "id": "d3b036d1-13d6-46cc-85c3-5c60b354d1be",
+      "name": "Trigger manual"
+    },
+    {
+      "parameters": {
+        "url": "https://api.calendly.com/event_type_available_times",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "event_type",
+              "value": "https://api.calendly.com/event_types/f8a809f2-bacf-4d72-9737-ee41ab629b8e"
+            },
+            {
+              "name": "start_time",
+              "value": "={{ $now.plus({ minutes: 5 }).toUTC().toFormat(\"yyyy-MM-dd'T'HH:mm:ss'Z'\") }}"
+            },
+            {
+              "name": "end_time",
+              "value": "={{ $now.plus({ days: 5 }).endOf('day').toUTC().toFormat(\"yyyy-MM-dd'T'HH:mm:ss'Z'\") }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzg5Njc1OTc0LCJqdGkiOiIwZDYzYTkzZi0yMGE1LTRiM2QtODUyNi05NDIxZWEwOGY0YjUiLCJ1c2VyX3V1aWQiOiI5NDhlZjZlNS00N2ZkLTQ0OGQtYTYyNS1mZGJiOGNlOTFlZGUiLCJzY29wZSI6ImF2YWlsYWJpbGl0eTpyZWFkIGF2YWlsYWJpbGl0eTp3cml0ZSBldmVudF90eXBlczpyZWFkIGV2ZW50X3R5cGVzOndyaXRlIGxvY2F0aW9uczpyZWFkIHJvdXRpbmdfZm9ybXM6cmVhZCBzaGFyZXM6d3JpdGUgc2NoZWR1bGVkX2V2ZW50czpyZWFkIHNjaGVkdWxlZF9ldmVudHM6d3JpdGUgc2NoZWR1bGluZ19saW5rczp3cml0ZSBncm91cHM6cmVhZCBvcmdhbml6YXRpb25zOnJlYWQgb3JnYW5pemF0aW9uczp3cml0ZSB1c2VyczpyZWFkIGNvbnRhY3RzOnJlYWQgY29udGFjdHM6d3JpdGUgbWVldGluZ19yZWNhcHM6cmVhZCBtZWV0aW5nX3JlY2Fwczp3cml0ZSBhY3Rpdml0eV9sb2c6cmVhZCBkYXRhX2NvbXBsaWFuY2U6d3JpdGUgb3V0Z29pbmdfY29tbXVuaWNhdGlvbnM6cmVhZCB3ZWJob29rczpyZWFkIHdlYmhvb2tzOndyaXRlIn0.4VqBV_AHn4owTw8MUCbt3cUsuX3LWu2OrXXp8gD4mc_0kunrUhNsltasDRJJwc1t-UL0T6RGKA9gDgIaRLV3YA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        80
+      ],
+      "id": "6dd1b9fd-a3fe-4ce4-807f-450792620f23",
+      "name": "Busca horários (Calendly)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta o report de disponibilidade agrupado por dia (fuso BR).\n// Entrada: corpo do GET /event_type_available_times -> { collection: [{start_time, status, ...}] }\nconst DIAS = 5;\nconst AGENDA = \"Agenda Money Club\";\nconst col = ($json.collection || []).filter((c) => c.status === 'available');\n\nconst fmt = (iso, opts) => new Intl.DateTimeFormat('pt-BR',\n  { timeZone: 'America/Sao_Paulo', ...opts }).format(new Date(iso));\nconst cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);\n\n// Agrupa por dia preservando a ordem que o Calendly já devolve (crescente).\nconst porDia = new Map();\nfor (const c of col) {\n  const chave = fmt(c.start_time, { day: '2-digit', month: '2-digit' });\n  const rotulo = cap(fmt(c.start_time, { weekday: 'long' })) + ', ' + chave;\n  if (!porDia.has(rotulo)) porDia.set(rotulo, []);\n  porDia.get(rotulo).push(fmt(c.start_time, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }));\n}\n\nlet message = `*Report Diário — ${AGENDA}*\\n`;\nif (!porDia.size) {\n  message += `\\n⚠️ *Sem horários disponíveis* nos próximos ${DIAS} dias.`;\n} else {\n  for (const [rotulo, horas] of porDia) {\n    message += `\\n*${rotulo}* (${horas.length} ${horas.length === 1 ? 'horário' : 'horários'})\\n`;\n    message += horas.join(' · ') + '\\n';\n  }\n  message += `\\n_Total: ${col.length} ${col.length === 1 ? 'horário' : 'horários'} nos próximos ${DIAS} dias._`;\n}\nreturn [{ json: { message, total: col.length, dias: porDia.size } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        80
+      ],
+      "id": "ce1d523f-4bec-4334-a45d-0adcfd6c5d36",
+      "name": "Monta report"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3F92B28EB34A822DF9325AED791B32A3/token/084C37CC8334B05ABD139B25/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "F2aceb3aa4f374314a5bf4f341aa4f75cS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "120363413914439069-group"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        80
+      ],
+      "id": "bc59c63c-0ffa-415b-bd33-02003fd0b36d",
+      "name": "Notifica grupo"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-09-17T20:57:37.400Z",
+      "createdAt": "2026-09-17T20:57:37.400Z",
+      "role": "workflow:owner",
+      "workflowId": "xFOHCcrybmAWE16x",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": {
+    "node:Schedule 9h · 15h · 21 (BRT)h": {
+      "recurrenceRules": []
+    },
+    "node:Schedule 9h · 15h · 21h (BRT)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-17T20:58:16.118Z",
+  "versionId": "d805b8ba-eaef-488b-8a58-271add76d034"
+}
