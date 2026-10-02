@@ -1,0 +1,596 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-10-02T03:13:49.518Z",
+    "createdAt": "2026-10-02T03:13:49.518Z",
+    "versionId": "54a9bce0-16de-4e21-919d-e182fb5f7247",
+    "workflowId": "GvugRnXgiCaGcGpg",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "d9204f90-b7cc-4b61-bcb0-a90595c90c15",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "03a11893-a2ba-433b-97f2-82e914d76580",
+        "name": "Webhook",
+        "webhookId": "d9204f90-b7cc-4b61-bcb0-a90595c90c15"
+      },
+      {
+        "parameters": {
+          "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "b3e298db-3b5c-412b-ae63-f7b60601d546",
+        "name": "Trata Webhook"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Monta o corpo do report (usado nos 2 ramos) + telefone do lead normalizado.\n// Acesso SEGURO em tudo: num parcial as chaves de answers podem nem existir.\nconst CAMPOS = [[\"6a8ca7f6793ec7bd4d052629\", \"Nome do lead\"], [\"6a8ca82b4db9a913420cef94\", \"E-mail\"], [\"6a8ca8134db9a913420cef92\", \"Instagram\"], [\"6a8ca8016258782b72093c1c\", \"Whatsapp\"], [\"6a8ca8236258782b72093c1e\", \"Profissão\"], [\"6a8ca863c1860eea85038603\", \"Faturamento\"], [\"6a8ca894f6cfd3dcda07f681\", \"Objetivo (12 meses)\"], [\"6a8ca89cc1860eea85038607\", \"Principal dificuldade hoje\"], [\"6a8ca8a24db9a913420cef97\", \"Por que é a oportunidade ideal\"], [\"6a8ca8a76258782b72093c21\", \"Por que deveríamos aceitar\"], [\"6a8dac9562baf5676e073b80\", \"Pré-aprovação\"]];\nconst resp = $('Trata Webhook').item.json.response || {};\nconst ans = resp.answers || {};\nconst val = (id) => {\n  const c = ans[id]?.content;\n  if (c === null || c === undefined) return '';\n  if (c === true) return 'Sim';\n  if (c === false) return 'Não';\n  return Array.isArray(c) ? c.filter(Boolean).join(', ') : String(c);\n};\n// Campo vazio não vira linha: no parcial metade das perguntas não existe.\nconst linhas = CAMPOS.map(([id, rot]) => {\n  const v = val(id);\n  return v ? `*${rot}*: ${v}` : null;\n}).filter(Boolean);\nconst t = resp.tracking || {};\nconst utm = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term']\n  .map((k) => `${k}: ${t[k] || ''}`).join('\\n');\nconst report = linhas.join('\\n\\n')\n  + '\\n\\n*Origens:*\\nFormulário: Forms Rodrigo Guimarães (yay forms)\\n\\n' + utm;\n// Z-API quer só dígitos com DDI; o Yay entrega '+5519971501794'.\nlet leadPhone = val('6a8ca8016258782b72093c1c').replace(/\\D/g, '');\nif (leadPhone && !leadPhone.startsWith('55')) leadPhone = '55' + leadPhone;\nreturn [{ json: { ...$json, report, leadPhone } }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "37a3ee37-d72a-4f6d-b5b3-32df49055a33",
+        "name": "Resumo do form"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Link do Calendly do campo 6a8ca8b06258782b72093c23. O Yay grava em 2 formatos:\n//   https://calendly.com/scheduled_events/<uuid>/invitees/<uuid>\n//   https://calendly.com/app/scheduled_events/user/me?period=all_time&uuid=<uuid>\n// Os dois têm que casar — o detector dos funis do JP só pega o primeiro.\nconst F_CAL = '6a8ca8b06258782b72093c23';\nconst DESQ = [[\"6a8ca863c1860eea85038603\", [\"Até R$ 5.000,00\", \"R$ 5.000,00 a R$ 10.000,00\"], \"faturamento\"], [\"6a8dac9562baf5676e073b80\", [\"Pode passar minha vaga para outra pessoa, não estou comprometido com meu negócio.\"], \"recusou a vaga (não está comprometido)\"]];  // [campo, valores, motivo] — ordem = prioridade do rótulo\nconst resp = $('Trata Webhook').item.json.response || {};\nconst ans = resp.answers || {};\nconst c = ans[F_CAL]?.content;\nlet eventUuid = null, link = null;\nif (typeof c === 'string' && c.includes('calendly.com')) {\n  const m = c.match(/scheduled_events\\/([0-9a-fA-F-]{36})/) || c.match(/[?&]uuid=([0-9a-fA-F-]{36})/);\n  if (m) { eventUuid = m[1]; link = c.trim(); }\n}\n// Rótulo do report do parcial. Só vale no ramo false (com link, vai pro ramo agendado).\nconst completa = !!resp.submittedAt;\nconst regra = DESQ.find(([id, vals]) => vals.includes(ans[id]?.content?.[0] || ''));\nconst situacao = !completa\n  ? 'parcial — abandonou o formulário (não finalizou)'\n  : regra\n    ? `desqualificado: ${regra[2]} (o form encerra antes do calendário)`\n    : 'chegou no calendário e não agendou';\nreturn [{ json: { ...$json, agendou: !!eventUuid, calendlyLink: link, eventUuid, completa, situacao } }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          624,
+          0
+        ],
+        "id": "05e41b8a-f0d0-4c08-8d06-d894a0ddb78e",
+        "name": "1 · Detecta link Calendly"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "d6c2ca3f-a940-4e60-bd1b-b92f5bccbe50",
+                "leftValue": "={{ $json.eventUuid }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {},
+          "looseTypeValidation": true
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          832,
+          0
+        ],
+        "id": "b12071ca-fdca-4d48-9f56-3bd94d17a881",
+        "name": "2 · Agendou?"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "746092d5-543d-4995-b19f-aa13f3d3a5f0",
+                "leftValue": "={{ $('Resumo do form').item.json.leadPhone }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1040,
+          144
+        ],
+        "id": "1da8b4c9-b7f2-4856-a9be-df7f2364f9de",
+        "name": "Preencheu WhatsApp?"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3F985A68548721B4FD0AAE5EE0905950/token/A38EA2F38C185A851B8A3EB2/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "F64f30c76293f478991991feb8847c640S"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "120363428093911940-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Novo lead PARCIAL — Rodrigo Guimarães 🚨*\n\n\n*Situação*: {{ $('1 · Detecta link Calendly').item.json.situacao }}\n\n{{ $('Resumo do form').item.json.report }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1248,
+          144
+        ],
+        "id": "251d66c2-b202-4e8b-9e63-15a7f5dbb5ee",
+        "name": "Notifica grupo · parcial",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3F985A68548721B4FD0AAE5EE0905950/token/A38EA2F38C185A851B8A3EB2/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "F64f30c76293f478991991feb8847c640S"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "120363428093911940-group"
+              },
+              {
+                "name": "message",
+                "value": "=*⚠️ Sem pré-call automático* (Calendly do Rodrigo Guimarães ainda não conectado — confirmar com o lead na mão)\n\n*Novo lead agendado — Rodrigo Guimarães ✅*\n\n\n*Agendamento (Calendly)*: {{ $('1 · Detecta link Calendly').item.json.calendlyLink }}\n\n{{ $('Resumo do form').item.json.report }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1040,
+          -144
+        ],
+        "id": "095c7c30-0b8c-4d56-83fb-a84506e709da",
+        "name": "Notifica grupo · agendado",
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Trata Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trata Webhook": {
+        "main": [
+          [
+            {
+              "node": "Resumo do form",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resumo do form": {
+        "main": [
+          [
+            {
+              "node": "1 · Detecta link Calendly",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1 · Detecta link Calendly": {
+        "main": [
+          [
+            {
+              "node": "2 · Agendou?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "2 · Agendou?": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · agendado",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Preencheu WhatsApp?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preencheu WhatsApp?": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo · parcial",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "54a9bce0-16de-4e21-919d-e182fb5f7247",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Trata Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Webhook": {
+      "main": [
+        [
+          {
+            "node": "Resumo do form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumo do form": {
+      "main": [
+        [
+          {
+            "node": "1 · Detecta link Calendly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 · Detecta link Calendly": {
+      "main": [
+        [
+          {
+            "node": "2 · Agendou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2 · Agendou?": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · agendado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preencheu WhatsApp?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preencheu WhatsApp?": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo · parcial",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "createdAt": "2026-10-02T03:13:49.434Z",
+  "id": "GvugRnXgiCaGcGpg",
+  "isArchived": false,
+  "meta": null,
+  "name": "YAY FORMS RODRIGO MENTORADO",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d9204f90-b7cc-4b61-bcb0-a90595c90c15",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "03a11893-a2ba-433b-97f2-82e914d76580",
+      "name": "Webhook",
+      "webhookId": "d9204f90-b7cc-4b61-bcb0-a90595c90c15"
+    },
+    {
+      "parameters": {
+        "jsCode": "return typeof $node[\"Webhook\"].json[\"body\"] == 'string' ? JSON.parse($node[\"Webhook\"].json[\"body\"]) : $node[\"Webhook\"].json[\"body\"]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b3e298db-3b5c-412b-ae63-f7b60601d546",
+      "name": "Trata Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta o corpo do report (usado nos 2 ramos) + telefone do lead normalizado.\n// Acesso SEGURO em tudo: num parcial as chaves de answers podem nem existir.\nconst CAMPOS = [[\"6a8ca7f6793ec7bd4d052629\", \"Nome do lead\"], [\"6a8ca82b4db9a913420cef94\", \"E-mail\"], [\"6a8ca8134db9a913420cef92\", \"Instagram\"], [\"6a8ca8016258782b72093c1c\", \"Whatsapp\"], [\"6a8ca8236258782b72093c1e\", \"Profissão\"], [\"6a8ca863c1860eea85038603\", \"Faturamento\"], [\"6a8ca894f6cfd3dcda07f681\", \"Objetivo (12 meses)\"], [\"6a8ca89cc1860eea85038607\", \"Principal dificuldade hoje\"], [\"6a8ca8a24db9a913420cef97\", \"Por que é a oportunidade ideal\"], [\"6a8ca8a76258782b72093c21\", \"Por que deveríamos aceitar\"], [\"6a8dac9562baf5676e073b80\", \"Pré-aprovação\"]];\nconst resp = $('Trata Webhook').item.json.response || {};\nconst ans = resp.answers || {};\nconst val = (id) => {\n  const c = ans[id]?.content;\n  if (c === null || c === undefined) return '';\n  if (c === true) return 'Sim';\n  if (c === false) return 'Não';\n  return Array.isArray(c) ? c.filter(Boolean).join(', ') : String(c);\n};\n// Campo vazio não vira linha: no parcial metade das perguntas não existe.\nconst linhas = CAMPOS.map(([id, rot]) => {\n  const v = val(id);\n  return v ? `*${rot}*: ${v}` : null;\n}).filter(Boolean);\nconst t = resp.tracking || {};\nconst utm = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term']\n  .map((k) => `${k}: ${t[k] || ''}`).join('\\n');\nconst report = linhas.join('\\n\\n')\n  + '\\n\\n*Origens:*\\nFormulário: Forms Rodrigo Guimarães (yay forms)\\n\\n' + utm;\n// Z-API quer só dígitos com DDI; o Yay entrega '+5519971501794'.\nlet leadPhone = val('6a8ca8016258782b72093c1c').replace(/\\D/g, '');\nif (leadPhone && !leadPhone.startsWith('55')) leadPhone = '55' + leadPhone;\nreturn [{ json: { ...$json, report, leadPhone } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "37a3ee37-d72a-4f6d-b5b3-32df49055a33",
+      "name": "Resumo do form"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Link do Calendly do campo 6a8ca8b06258782b72093c23. O Yay grava em 2 formatos:\n//   https://calendly.com/scheduled_events/<uuid>/invitees/<uuid>\n//   https://calendly.com/app/scheduled_events/user/me?period=all_time&uuid=<uuid>\n// Os dois têm que casar — o detector dos funis do JP só pega o primeiro.\nconst F_CAL = '6a8ca8b06258782b72093c23';\nconst DESQ = [[\"6a8ca863c1860eea85038603\", [\"Até R$ 5.000,00\", \"R$ 5.000,00 a R$ 10.000,00\"], \"faturamento\"], [\"6a8dac9562baf5676e073b80\", [\"Pode passar minha vaga para outra pessoa, não estou comprometido com meu negócio.\"], \"recusou a vaga (não está comprometido)\"]];  // [campo, valores, motivo] — ordem = prioridade do rótulo\nconst resp = $('Trata Webhook').item.json.response || {};\nconst ans = resp.answers || {};\nconst c = ans[F_CAL]?.content;\nlet eventUuid = null, link = null;\nif (typeof c === 'string' && c.includes('calendly.com')) {\n  const m = c.match(/scheduled_events\\/([0-9a-fA-F-]{36})/) || c.match(/[?&]uuid=([0-9a-fA-F-]{36})/);\n  if (m) { eventUuid = m[1]; link = c.trim(); }\n}\n// Rótulo do report do parcial. Só vale no ramo false (com link, vai pro ramo agendado).\nconst completa = !!resp.submittedAt;\nconst regra = DESQ.find(([id, vals]) => vals.includes(ans[id]?.content?.[0] || ''));\nconst situacao = !completa\n  ? 'parcial — abandonou o formulário (não finalizou)'\n  : regra\n    ? `desqualificado: ${regra[2]} (o form encerra antes do calendário)`\n    : 'chegou no calendário e não agendou';\nreturn [{ json: { ...$json, agendou: !!eventUuid, calendlyLink: link, eventUuid, completa, situacao } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "05e41b8a-f0d0-4c08-8d06-d894a0ddb78e",
+      "name": "1 · Detecta link Calendly"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d6c2ca3f-a940-4e60-bd1b-b92f5bccbe50",
+              "leftValue": "={{ $json.eventUuid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {},
+        "looseTypeValidation": true
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        0
+      ],
+      "id": "b12071ca-fdca-4d48-9f56-3bd94d17a881",
+      "name": "2 · Agendou?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "746092d5-543d-4995-b19f-aa13f3d3a5f0",
+              "leftValue": "={{ $('Resumo do form').item.json.leadPhone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        144
+      ],
+      "id": "1da8b4c9-b7f2-4856-a9be-df7f2364f9de",
+      "name": "Preencheu WhatsApp?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3F985A68548721B4FD0AAE5EE0905950/token/A38EA2F38C185A851B8A3EB2/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "F64f30c76293f478991991feb8847c640S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "120363428093911940-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Novo lead PARCIAL — Rodrigo Guimarães 🚨*\n\n\n*Situação*: {{ $('1 · Detecta link Calendly').item.json.situacao }}\n\n{{ $('Resumo do form').item.json.report }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1248,
+        144
+      ],
+      "id": "251d66c2-b202-4e8b-9e63-15a7f5dbb5ee",
+      "name": "Notifica grupo · parcial",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3F985A68548721B4FD0AAE5EE0905950/token/A38EA2F38C185A851B8A3EB2/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "F64f30c76293f478991991feb8847c640S"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "120363428093911940-group"
+            },
+            {
+              "name": "message",
+              "value": "=*⚠️ Sem pré-call automático* (Calendly do Rodrigo Guimarães ainda não conectado — confirmar com o lead na mão)\n\n*Novo lead agendado — Rodrigo Guimarães ✅*\n\n\n*Agendamento (Calendly)*: {{ $('1 · Detecta link Calendly').item.json.calendlyLink }}\n\n{{ $('Resumo do form').item.json.report }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        -144
+      ],
+      "id": "095c7c30-0b8c-4d56-83fb-a84506e709da",
+      "name": "Notifica grupo · agendado",
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-10-02T03:13:49.434Z",
+      "createdAt": "2026-10-02T03:13:49.434Z",
+      "role": "workflow:owner",
+      "workflowId": "GvugRnXgiCaGcGpg",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-10-02T03:13:49.434Z",
+  "versionId": "54a9bce0-16de-4e21-919d-e182fb5f7247"
+}
