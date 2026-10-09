@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-17T20:09:46.948Z",
-    "createdAt": "2026-06-17T20:09:46.948Z",
-    "versionId": "444be6ae-87cd-42ad-aae6-9ddfb1d78380",
+    "updatedAt": "2026-10-08T18:09:43.218Z",
+    "createdAt": "2026-10-08T18:09:43.218Z",
+    "versionId": "46c6f6da-dab7-4213-bb2d-254944e20481",
     "workflowId": "O79Em3p6J2cnPbJP",
     "nodes": [
       {
@@ -286,7 +286,8 @@
         ],
         "retryOnFail": true,
         "maxTries": 5,
-        "waitBetweenTries": 5000
+        "waitBetweenTries": 5000,
+        "onError": "continueErrorOutput"
       },
       {
         "parameters": {
@@ -330,7 +331,8 @@
         "position": [
           992,
           0
-        ]
+        ],
+        "onError": "continueErrorOutput"
       },
       {
         "parameters": {
@@ -485,7 +487,8 @@
         ],
         "retryOnFail": true,
         "maxTries": 5,
-        "waitBetweenTries": 5000
+        "waitBetweenTries": 5000,
+        "onError": "continueErrorOutput"
       },
       {
         "parameters": {
@@ -3446,6 +3449,236 @@
         ],
         "retryOnFail": true,
         "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "url": "https://api.calendly.com/event_type_available_times",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "event_type",
+                "value": "https://api.calendly.com/event_types/3a9e8a7c-2b10-48c3-85c8-17bcdcdfee84"
+              },
+              {
+                "name": "start_time",
+                "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+              },
+              {
+                "name": "end_time",
+                "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6e393994-537d-47b3-9a6f-b6c36bd31e39",
+        "name": "CG30",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          992,
+          4128
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "collection",
+          "options": {}
+        },
+        "id": "34ba2b50-a7bb-4003-8191-7baca7215eb9",
+        "name": "Split Out CG30",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1200,
+          4128
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "d1f4a369-bbaa-487f-90e7-d4292cda55d7",
+        "name": "If CG30",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1424,
+          4128
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "formatDate",
+          "date": "={{ $json.start_time }}",
+          "format": "custom",
+          "customFormat": "dd/MM/yyyy HH:mm",
+          "options": {
+            "timezone": true
+          }
+        },
+        "id": "d1dd63f5-aac5-4512-a5e6-ac78d10c2a21",
+        "name": "Date & Time CG30",
+        "type": "n8n-nodes-base.dateTime",
+        "typeVersion": 2,
+        "position": [
+          1728,
+          4160
+        ]
+      },
+      {
+        "parameters": {
+          "fieldsToSummarize": {
+            "values": [
+              {
+                "aggregation": "append",
+                "field": "formattedDate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "33a0cf1c-4f57-40f9-91e9-031a76e2251e",
+        "name": "Summarize CG30",
+        "type": "n8n-nodes-base.summarize",
+        "typeVersion": 1,
+        "position": [
+          1952,
+          4160
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 30*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+        },
+        "id": "a7713731-1fc9-4b24-994c-4a20b288b972",
+        "name": "Code CG30",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2160,
+          4160
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "={{ $json.whatsappMessage }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e06094f4-6f8b-490f-9631-59414781229a",
+        "name": "Notifica grupo | CG30",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2384,
+          4160
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Client-Token",
+                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "phone",
+                "value": "=120363403070002479-group"
+              },
+              {
+                "name": "message",
+                "value": "=*Report Diário*\n\nCG 30 sem *horários disponíveis*"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d090773b-99df-4674-9923-f55bb132a6ef",
+        "name": "CG 30 | Sem horários",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          3968
+        ],
+        "retryOnFail": true,
+        "maxTries": 5,
         "waitBetweenTries": 5000
       }
     ],
@@ -3491,6 +3724,13 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "CG 5 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       },
@@ -3499,6 +3739,13 @@
           [
             {
               "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CG 10 | Sem horários",
               "type": "main",
               "index": 0
             }
@@ -3521,6 +3768,13 @@
           [
             {
               "node": "Split Out2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CG 20 | Sem horários",
               "type": "main",
               "index": 0
             }
@@ -4334,6 +4588,11 @@
               "node": "CG 15K",
               "type": "main",
               "index": 0
+            },
+            {
+              "node": "CG30",
+              "type": "main",
+              "index": 0
             }
           ]
         ]
@@ -4456,15 +4715,102 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "CG 5 | Sem horários2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CG30": {
+        "main": [
+          [
+            {
+              "node": "Split Out CG30",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CG 30 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out CG30": {
+        "main": [
+          [
+            {
+              "node": "If CG30",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If CG30": {
+        "main": [
+          [
+            {
+              "node": "CG 30 | Sem horários",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Date & Time CG30",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time CG30": {
+        "main": [
+          [
+            {
+              "node": "Summarize CG30",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarize CG30": {
+        "main": [
+          [
+            {
+              "node": "Code CG30",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code CG30": {
+        "main": [
+          [
+            {
+              "node": "Notifica grupo | CG30",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       }
     },
-    "authors": "system migration",
+    "authors": "Matheus Cristhyan",
     "name": null,
     "description": null
   },
-  "activeVersionId": "444be6ae-87cd-42ad-aae6-9ddfb1d78380",
+  "activeVersionId": "46c6f6da-dab7-4213-bb2d-254944e20481",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -4507,6 +4853,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "CG 5 | Sem horários",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -4515,6 +4868,13 @@
         [
           {
             "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CG 10 | Sem horários",
             "type": "main",
             "index": 0
           }
@@ -4537,6 +4897,13 @@
         [
           {
             "node": "Split Out2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CG 20 | Sem horários",
             "type": "main",
             "index": 0
           }
@@ -5350,6 +5717,11 @@
             "node": "CG 15K",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "CG30",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -5469,6 +5841,93 @@
         [
           {
             "node": "Split Out10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CG 5 | Sem horários2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CG30": {
+      "main": [
+        [
+          {
+            "node": "Split Out CG30",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CG 30 | Sem horários",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out CG30": {
+      "main": [
+        [
+          {
+            "node": "If CG30",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If CG30": {
+      "main": [
+        [
+          {
+            "node": "CG 30 | Sem horários",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Date & Time CG30",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time CG30": {
+      "main": [
+        [
+          {
+            "node": "Summarize CG30",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize CG30": {
+      "main": [
+        [
+          {
+            "node": "Code CG30",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code CG30": {
+      "main": [
+        [
+          {
+            "node": "Notifica grupo | CG30",
             "type": "main",
             "index": 0
           }
@@ -5764,7 +6223,8 @@
       ],
       "retryOnFail": true,
       "maxTries": 5,
-      "waitBetweenTries": 5000
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -5808,7 +6268,8 @@
       "position": [
         992,
         0
-      ]
+      ],
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -5963,7 +6424,8 @@
       ],
       "retryOnFail": true,
       "maxTries": 5,
-      "waitBetweenTries": 5000
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -8924,6 +9386,236 @@
       ],
       "retryOnFail": true,
       "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.calendly.com/event_type_available_times",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "event_type",
+              "value": "https://api.calendly.com/event_types/3a9e8a7c-2b10-48c3-85c8-17bcdcdfee84"
+            },
+            {
+              "name": "start_time",
+              "value": "={{ $('adiciona 1 dia').item.json.currentDate.toDateTime().toUTC() }}"
+            },
+            {
+              "name": "end_time",
+              "value": "={{ new Date(new Date($('adiciona 10 dias').item.json.currentDate).setUTCHours(23, 59, 59, 0)).toISOString() }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzE1NzM4NjI0LCJqdGkiOiJmZjE5NzMyNi02NmYzLTRlNTYtYWI1Ny1iM2FiY2NkZTY1ZTQiLCJ1c2VyX3V1aWQiOiJmOTBjZDk3OS1hMWIyLTRjNzUtOTQxZS1mZmQxOGM2YWUxOTIifQ.X5AhIaB_hbfwtt73LI4nDTWJT7LO_iDDJJlDgcb1pUG3CQHKruSeqC4OuzxiKtQWrmAB3UGhIlGa6uirIukURQ"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6e393994-537d-47b3-9a6f-b6c36bd31e39",
+      "name": "CG30",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        992,
+        4128
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "collection",
+        "options": {}
+      },
+      "id": "34ba2b50-a7bb-4003-8191-7baca7215eb9",
+      "name": "Split Out CG30",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        4128
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "7a121759-5e0e-4be1-809d-0bd7b4b4ee3a",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d1f4a369-bbaa-487f-90e7-d4292cda55d7",
+      "name": "If CG30",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        4128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.start_time }}",
+        "format": "custom",
+        "customFormat": "dd/MM/yyyy HH:mm",
+        "options": {
+          "timezone": true
+        }
+      },
+      "id": "d1dd63f5-aac5-4512-a5e6-ac78d10c2a21",
+      "name": "Date & Time CG30",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1728,
+        4160
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "append",
+              "field": "formattedDate"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "33a0cf1c-4f57-40f9-91e9-031a76e2251e",
+      "name": "Summarize CG30",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        1952,
+        4160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const datesArray = $input.all()[0].json[\"appended_formattedDate\"]\n\nfunction generateWhatsAppMessage(datesArray) {\n  let message = \"*Report Diário*\\n\\nSegue o resumo de horários disponíveis para o *CG 30*:\\n\\n\";\n\n  datesArray.forEach(dateObj => {\n    message += `${dateObj}\\n`;\n  });\n\n  return message;\n}\n\nconst whatsappMessage = generateWhatsAppMessage(datesArray);\n\nreturn {whatsappMessage}\n"
+      },
+      "id": "a7713731-1fc9-4b24-994c-4a20b288b972",
+      "name": "Code CG30",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        4160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363403070002479-group"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.whatsappMessage }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e06094f4-6f8b-490f-9631-59414781229a",
+      "name": "Notifica grupo | CG30",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2384,
+        4160
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Client-Token",
+              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "=120363403070002479-group"
+            },
+            {
+              "name": "message",
+              "value": "=*Report Diário*\n\nCG 30 sem *horários disponíveis*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d090773b-99df-4674-9923-f55bb132a6ef",
+      "name": "CG 30 | Sem horários",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1728,
+        3968
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
       "waitBetweenTries": 5000
     }
   ],
@@ -9492,7 +10184,9 @@
     ]
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
   "shared": [
     {
@@ -9524,6 +10218,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2026-04-23T15:37:26.135Z",
-  "versionId": "444be6ae-87cd-42ad-aae6-9ddfb1d78380"
+  "updatedAt": "2026-10-08T18:09:43.207Z",
+  "versionId": "46c6f6da-dab7-4213-bb2d-254944e20481"
 }
