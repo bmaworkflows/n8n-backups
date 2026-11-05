@@ -1,0 +1,537 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-05T01:33:23.693Z",
+    "createdAt": "2026-11-05T01:33:23.693Z",
+    "versionId": "d7d10632-722d-4e02-b966-45ebada6b0ee",
+    "workflowId": "MqRRLxxeouCVZRsj",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "8e26db57-7b0a-480f-b297-9ba2fae2a4ee",
+        "name": "Schedule 8h (BRT)"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          176
+        ],
+        "id": "38ef3907-5682-419a-85c2-9c145ee9c4a8",
+        "name": "Trigger manual"
+      },
+      {
+        "parameters": {
+          "jsCode": "return [{\"id\": 866, \"lista\": \"Lista 01 – CG 20k+\"}].map((c) => ({ json: c }));"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          240,
+          80
+        ],
+        "id": "d51e3ed3-a276-4927-ab34-bc784a819e14",
+        "name": "Campanhas"
+      },
+      {
+        "parameters": {
+          "url": "=https://bmacoprodutora.api-us1.com/api/3/campaigns/{{ $json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "activeCampaignApi",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          480,
+          80
+        ],
+        "id": "fe52a6f4-623b-46b0-a5c2-acd23d5d7b31",
+        "name": "Busca campanha (AC)",
+        "credentials": {
+          "activeCampaignApi": {
+            "id": "UB9gpytDjdRyLmed",
+            "name": "Active JP"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Uma linha por campanha. Entrada: GET /campaigns/<id> do ActiveCampaign.\nconst LISTA = Object.fromEntries($('Campanhas').all().map((i) => [String(i.json.id), i.json.lista]));\nconst STATUS = { 0: 'rascunho', 1: 'agendada', 2: 'enviando', 3: 'pausada', 4: 'parada', 5: 'enviada', 6: 'desativada', 7: 'em revisão' };\nconst n = (v) => Number(v || 0);\nconst taxa = (a, b) => (b > 0 ? Math.round((a / b) * 10000) / 10000 : 0);\nconst agora = DateTime.now().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm');\n\nreturn $input.all().map(({ json }) => {\n  const c = json.campaign;\n  const enviados = n(c.send_amt), hard = n(c.hardbounces), soft = n(c.softbounces);\n  const entregues = Math.max(enviados - hard - soft, 0);\n  const abU = n(c.uniqueopens), clU = n(c.uniquelinkclicks), desc = n(c.unsubscribes);\n  return { json: {\n    'ID': n(c.id),\n    'E-mail': c.name,\n    'Lista': LISTA[String(c.id)] || '',\n    'Status': STATUS[c.status] || c.status,\n    'Enviado em': c.ldate ? DateTime.fromISO(c.ldate).setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm') : '',\n    'Enviados': enviados,\n    'Bounce permanente': hard,\n    'Bounce temporário': soft,\n    'Entregues': entregues,\n    'Taxa de bounce': taxa(hard + soft, enviados),\n    'Aberturas únicas': abU,\n    'Taxa de abertura': taxa(abU, entregues),\n    'Aberturas totais': n(c.opens),\n    'Cliques únicos': clU,\n    'Taxa de cliques': taxa(clU, entregues),\n    'Cliques/aberturas': taxa(clU, abU),\n    'Descadastros': desc,\n    'Taxa de descadastro': taxa(desc, entregues),\n    'Atualizado em': agora,\n  } };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          720,
+          80
+        ],
+        "id": "56efd225-2a51-4df7-b28f-a8af3ab5bd6e",
+        "name": "Calcula métricas"
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1Jr5cR8tThPj7izIqpPtL-hCvGdjAlchqxF-KsSlGus0",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 101,
+            "mode": "list",
+            "cachedResultName": "Atual"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": {},
+            "matchingColumns": [
+              "ID"
+            ],
+            "schema": []
+          },
+          "options": {
+            "cellFormat": "USER_ENTERED"
+          }
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          960,
+          0
+        ],
+        "id": "f8718bf1-b24a-4761-8458-96f08ec44398",
+        "name": "Atual (upsert)",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Foto do dia só de quem já saiu (rascunho/agendada não entra no histórico).\nconst hoje = DateTime.now().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy');\nreturn $input.all()\n  .filter((i) => i.json['Enviados'] > 0)\n  .map((i) => {\n    const { ['Atualizado em']: _, ...resto } = i.json;\n    return { json: { 'Data': hoje, ...resto } };\n  });\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          960,
+          176
+        ],
+        "id": "2f4b59ee-fd90-4584-8779-aea0c716ac02",
+        "name": "Monta histórico"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1Jr5cR8tThPj7izIqpPtL-hCvGdjAlchqxF-KsSlGus0",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 102,
+            "mode": "list",
+            "cachedResultName": "Histórico"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": {},
+            "matchingColumns": [],
+            "schema": []
+          },
+          "options": {
+            "cellFormat": "USER_ENTERED"
+          }
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.3,
+        "position": [
+          1200,
+          176
+        ],
+        "id": "30124976-e5a6-431e-bec5-31855edf2263",
+        "name": "Histórico",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "PLr9msB1lyoRblyJ",
+            "name": "Matheus BMA"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule 8h (BRT)": {
+        "main": [
+          [
+            {
+              "node": "Campanhas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trigger manual": {
+        "main": [
+          [
+            {
+              "node": "Campanhas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campanhas": {
+        "main": [
+          [
+            {
+              "node": "Busca campanha (AC)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Busca campanha (AC)": {
+        "main": [
+          [
+            {
+              "node": "Calcula métricas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Calcula métricas": {
+        "main": [
+          [
+            {
+              "node": "Atual (upsert)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Monta histórico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Monta histórico": {
+        "main": [
+          [
+            {
+              "node": "Histórico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "d7d10632-722d-4e02-b966-45ebada6b0ee",
+  "connections": {
+    "Schedule 8h (BRT)": {
+      "main": [
+        [
+          {
+            "node": "Campanhas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger manual": {
+      "main": [
+        [
+          {
+            "node": "Campanhas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campanhas": {
+      "main": [
+        [
+          {
+            "node": "Busca campanha (AC)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca campanha (AC)": {
+      "main": [
+        [
+          {
+            "node": "Calcula métricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcula métricas": {
+      "main": [
+        [
+          {
+            "node": "Atual (upsert)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Monta histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monta histórico": {
+      "main": [
+        [
+          {
+            "node": "Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-05T01:17:39.422Z",
+  "id": "MqRRLxxeouCVZRsj",
+  "isArchived": false,
+  "meta": null,
+  "name": "[JP] Métricas e-mail · Listas 1/2/3 (ActiveCampaign)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8e26db57-7b0a-480f-b297-9ba2fae2a4ee",
+      "name": "Schedule 8h (BRT)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        176
+      ],
+      "id": "38ef3907-5682-419a-85c2-9c145ee9c4a8",
+      "name": "Trigger manual"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\"id\": 866, \"lista\": \"Lista 01 – CG 20k+\"}].map((c) => ({ json: c }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        80
+      ],
+      "id": "d51e3ed3-a276-4927-ab34-bc784a819e14",
+      "name": "Campanhas"
+    },
+    {
+      "parameters": {
+        "url": "=https://bmacoprodutora.api-us1.com/api/3/campaigns/{{ $json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "activeCampaignApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        80
+      ],
+      "id": "fe52a6f4-623b-46b0-a5c2-acd23d5d7b31",
+      "name": "Busca campanha (AC)",
+      "credentials": {
+        "activeCampaignApi": {
+          "id": "UB9gpytDjdRyLmed",
+          "name": "Active JP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Uma linha por campanha. Entrada: GET /campaigns/<id> do ActiveCampaign.\nconst LISTA = Object.fromEntries($('Campanhas').all().map((i) => [String(i.json.id), i.json.lista]));\nconst STATUS = { 0: 'rascunho', 1: 'agendada', 2: 'enviando', 3: 'pausada', 4: 'parada', 5: 'enviada', 6: 'desativada', 7: 'em revisão' };\nconst n = (v) => Number(v || 0);\nconst taxa = (a, b) => (b > 0 ? Math.round((a / b) * 10000) / 10000 : 0);\nconst agora = DateTime.now().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm');\n\nreturn $input.all().map(({ json }) => {\n  const c = json.campaign;\n  const enviados = n(c.send_amt), hard = n(c.hardbounces), soft = n(c.softbounces);\n  const entregues = Math.max(enviados - hard - soft, 0);\n  const abU = n(c.uniqueopens), clU = n(c.uniquelinkclicks), desc = n(c.unsubscribes);\n  return { json: {\n    'ID': n(c.id),\n    'E-mail': c.name,\n    'Lista': LISTA[String(c.id)] || '',\n    'Status': STATUS[c.status] || c.status,\n    'Enviado em': c.ldate ? DateTime.fromISO(c.ldate).setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm') : '',\n    'Enviados': enviados,\n    'Bounce permanente': hard,\n    'Bounce temporário': soft,\n    'Entregues': entregues,\n    'Taxa de bounce': taxa(hard + soft, enviados),\n    'Aberturas únicas': abU,\n    'Taxa de abertura': taxa(abU, entregues),\n    'Aberturas totais': n(c.opens),\n    'Cliques únicos': clU,\n    'Taxa de cliques': taxa(clU, entregues),\n    'Cliques/aberturas': taxa(clU, abU),\n    'Descadastros': desc,\n    'Taxa de descadastro': taxa(desc, entregues),\n    'Atualizado em': agora,\n  } };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        80
+      ],
+      "id": "56efd225-2a51-4df7-b28f-a8af3ab5bd6e",
+      "name": "Calcula métricas"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Jr5cR8tThPj7izIqpPtL-hCvGdjAlchqxF-KsSlGus0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 101,
+          "mode": "list",
+          "cachedResultName": "Atual"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": []
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        960,
+        0
+      ],
+      "id": "f8718bf1-b24a-4761-8458-96f08ec44398",
+      "name": "Atual (upsert)",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Foto do dia só de quem já saiu (rascunho/agendada não entra no histórico).\nconst hoje = DateTime.now().setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy');\nreturn $input.all()\n  .filter((i) => i.json['Enviados'] > 0)\n  .map((i) => {\n    const { ['Atualizado em']: _, ...resto } = i.json;\n    return { json: { 'Data': hoje, ...resto } };\n  });\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        176
+      ],
+      "id": "2f4b59ee-fd90-4584-8779-aea0c716ac02",
+      "name": "Monta histórico"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Jr5cR8tThPj7izIqpPtL-hCvGdjAlchqxF-KsSlGus0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 102,
+          "mode": "list",
+          "cachedResultName": "Histórico"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1200,
+        176
+      ],
+      "id": "30124976-e5a6-431e-bec5-31855edf2263",
+      "name": "Histórico",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PLr9msB1lyoRblyJ",
+          "name": "Matheus BMA"
+        }
+      }
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-05T01:17:39.422Z",
+      "createdAt": "2026-11-05T01:17:39.422Z",
+      "role": "workflow:owner",
+      "workflowId": "MqRRLxxeouCVZRsj",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": {
+    "node:Schedule 8h (BRT)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-05T01:33:23.496Z",
+  "versionId": "d7d10632-722d-4e02-b966-45ebada6b0ee"
+}
