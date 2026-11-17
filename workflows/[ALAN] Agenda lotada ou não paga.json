@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-10-16T15:38:52.702Z",
-    "createdAt": "2026-10-16T15:38:52.702Z",
-    "versionId": "44a29b95-7c9c-44f7-bfac-d8540d8d2174",
+    "updatedAt": "2026-11-17T14:41:04.214Z",
+    "createdAt": "2026-11-17T14:41:04.214Z",
+    "versionId": "a2daa3cb-c9af-44c4-9fee-d9e2214577f7",
     "workflowId": "8CaGB3jvVY3vrliD",
     "nodes": [
       {
@@ -18,7 +18,7 @@
           0,
           0
         ],
-        "id": "282ee263-3b7b-41a1-94bf-0855a5a693f8",
+        "id": "29cb77dc-ccbf-4917-88d1-cc53b67e3c5d",
         "name": "Webhook",
         "webhookId": "b6ba96b8-d7c9-4042-99db-101a69cdddf3"
       },
@@ -32,7 +32,7 @@
           208,
           0
         ],
-        "id": "6b242985-a71a-4b8f-9697-f711c23273c6",
+        "id": "2b91b403-4f38-4ea9-8da5-dcd3cc276dca",
         "name": "Trata Webhook"
       },
       {
@@ -45,12 +45,12 @@
           416,
           0
         ],
-        "id": "5f931386-d8fd-4964-a4fe-6b114e806972",
+        "id": "0001f77b-094b-40b1-8855-92fffa934f02",
         "name": "Resumo do form"
       },
       {
         "parameters": {
-          "jsCode": "// O form tem 4 campos Calendly (roteados por faturamento). Cada campo, quando\n// agendou, devolve o link com scheduled_events/<uuid>. Detecta qual foi preenchido.\nconst CALENDLY = {\"6a958dd13928d17403056931\": \"alan\", \"6a9825aa415d89744a050587\": \"cg10\", \"6a98254c18ff935d3e018546\": \"cg20\", \"6ac7b9e9bca305747103f996\": \"cg30\"};\nconst ans = $('Trata Webhook').item.json.response.answers || {};\nlet agenda = null, link = null, eventUuid = null;\nfor (const [fid, nome] of Object.entries(CALENDLY)) {\n  const c = ans[fid]?.content;\n  if (typeof c !== 'string' || !c.includes('calendly.com')) continue;\n  const m = c.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (!m) continue;\n  agenda = nome; link = c.trim(); eventUuid = m[1];\n  break;\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, agenda, calendlyLink: link, eventUuid } }];\n"
+          "jsCode": "// O form tem 3 campos Calendly (roteados por faturamento). Cada campo, quando\n// agendou, devolve o link com scheduled_events/<uuid>. Detecta qual foi preenchido.\nconst CALENDLY = {\"6a9825aa415d89744a050587\": \"cg10\", \"6a98254c18ff935d3e018546\": \"cg20\", \"6ac7b9e9bca305747103f996\": \"cg30\"};\nconst ans = $('Trata Webhook').item.json.response.answers || {};\nlet agenda = null, link = null, eventUuid = null;\nfor (const [fid, nome] of Object.entries(CALENDLY)) {\n  const c = ans[fid]?.content;\n  if (typeof c !== 'string' || !c.includes('calendly.com')) continue;\n  const m = c.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (!m) continue;\n  agenda = nome; link = c.trim(); eventUuid = m[1];\n  break;\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, agenda, calendlyLink: link, eventUuid } }];\n"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -58,7 +58,7 @@
           624,
           0
         ],
-        "id": "8a94ce89-b444-46cc-b774-78940c9a24e2",
+        "id": "27f1f681-b404-45a4-9eea-d36443976b91",
         "name": "1 · Detecta link Calendly"
       },
       {
@@ -72,7 +72,7 @@
             },
             "conditions": [
               {
-                "id": "4a821ba5-46e7-4d32-89de-041c76888880",
+                "id": "2df433e3-f1eb-424e-a0e4-b85fd14223e8",
                 "leftValue": "={{ $json.eventUuid }}",
                 "rightValue": "",
                 "operator": {
@@ -93,7 +93,7 @@
           1040,
           -128
         ],
-        "id": "29050af8-a64b-4021-bd26-efa66335a59a",
+        "id": "f166d80f-8848-49dd-bb82-ede26497434c",
         "name": "2 · Agendou?"
       },
       {
@@ -116,12 +116,12 @@
           1248,
           -224
         ],
-        "id": "b3ffc174-bfe6-4de4-a5df-627e9751452f",
+        "id": "337a608f-da8c-4939-9c0d-5ca01b158fe2",
         "name": "3 · Busca evento (por link)"
       },
       {
         "parameters": {
-          "jsCode": "// Formata a data/hora do evento no fuso BR (\"02/09 às 14:30\") e resolve o closer.\n// Chave da tabela = user_name do Calendly (event_memberships[0].user_name), letra por letra.\nconst TABELA = {\n  \"Tiago Gregório\": {\n    \"closerNome\": \"Tiago Gregório\",\n    \"pvPhone\": \"5534984133437\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe\",\n    \"dono\": \"tiagogregorio@mentoriahighticket.com.br\",\n    \"instance\": \"3D988782948B509EAB57D68D1B7EED95\",\n    \"token\": \"8CA26C6FE554568DD46A30A6\"\n  },\n  \"Karllos\": {\n    \"closerNome\": \"Karllos\",\n    \"pvPhone\": \"5561998546456\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a\",\n    \"dono\": \"karllos.bma@gmail.com\",\n    \"instance\": \"3F013E045EE7A0CFC4C76A09AA93C36C\",\n    \"token\": \"B73CA8CEA2291C7EC3F5E7CA\"\n  },\n  \"Matheus Schefer BMA\": {\n    \"closerNome\": \"Matheus Schefer\",\n    \"pvPhone\": \"5545991195467\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113\",\n    \"dono\": \"matheusschefer.bma@gmail.com\",\n    \"instance\": \"3F013E0C2FCA31C04B4FE629027F956B\",\n    \"token\": \"650C95ED624C676CD5BED4E3\"\n  },\n  \"Guilherme Luiz\": {\n    \"closerNome\": \"Guilherme Luiz\",\n    \"pvPhone\": \"553192265968\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821\",\n    \"dono\": \"guilhermeluiz.bma@gmail.com\",\n    \"instance\": \"3F013DFC59D5B153F35DF250B7D94EBE\",\n    \"token\": \"6AF34634257C029F15126163\"\n  },\n  \"Diogo Campos\": {\n    \"closerNome\": \"Diogo Campos\",\n    \"pvPhone\": \"5527996120736\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb4aed3e-683a-4fcc-98d8-f440a31cf905\",\n    \"dono\": \"diogojaquesc@gmail.com\",\n    \"instance\": \"3F7E1B867124B1A3631BC26A258BBF97\",\n    \"token\": \"E3446F8C378B7B74AA3F66AC\"\n  }\n};\nconst ZAPI_BMA = \"https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text\";  // fallback p/ closer sem instância própria\nconst LABEL = { alan: 'Alan · entrevista 15min (≤20k)', cg10: 'CG10 · closers (20–50k)', cg20: 'CG20 · closers (50–250k)', cg30: 'CG30 · closers (250k+)' };\nconst ev = $('3 · Busca evento (por link)').item.json.resource;\nconst p = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric',\n  hour: '2-digit', minute: '2-digit', hourCycle: 'h23',\n}).formatToParts(new Date(ev.start_time));\nconst g = (t) => p.find((x) => x.type === t).value;\nconst dataHora = `${g('day')}/${g('month')} às ${g('hour')}:${g('minute')}`;\nconst dataHoraGrupo = `${g('day')}/${g('month')}/${g('year')} ${g('hour')}:${g('minute')}`;  // padrão dos grupos CG\n// Data Aplicação p/ o Clint (padrão CG: submittedAt em yyyy-MM-dd HH:mm:ss BR); parcial com link não tem submittedAt\nconst resp = $('Trata Webhook').item.json.response || {};\nconst pa = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit',\n  hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(resp.submittedAt || resp.createdAt || Date.now()));\nconst ga = (t) => pa.find((x) => x.type === t).value;\nconst dataAplicacao = `${ga('year')}-${ga('month')}-${ga('day')} ${ga('hour')}:${ga('minute')}:${ga('second')}`;\nconst agenda = $('1 · Detecta link Calendly').item.json.agenda;\nconst userName = ev.event_memberships?.[0]?.user_name || '';\nconst cfg = TABELA[userName] || {};\nconst closerNome = agenda === 'alan' ? 'Alan Assis' : (cfg.closerNome || userName || 'closer não mapeado');\nconst closerFallback = agenda !== 'alan' && !cfg.instance;\nconst closerZapiUrl = cfg.instance\n  ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text`\n  : ZAPI_BMA;\nconst agendaLabel = (LABEL[agenda] || agenda || '?') + (agenda === 'alan' ? '' : ` · ${closerNome}`)\n  + (closerFallback ? ' ⚠️ closer sem instância Z-API (msgs pela instância BMA)' : '');\nreturn [{ json: { ...$json, evento: ev, dataHora, dataHoraGrupo, dataAplicacao, agenda,\n  clintUrl: cfg.clintUrl || '', dono: cfg.dono || '', agendaLabel, closerNome,\n  closerPv: cfg.pvPhone || '', closerZapiUrl, closerFallback, _closerUserName: userName } }];\n"
+          "jsCode": "// Formata a data/hora do evento no fuso BR (\"02/09 às 14:30\") e resolve o closer.\n// Chave da tabela = user_name do Calendly (event_memberships[0].user_name), letra por letra.\nconst TABELA = {\n  \"Tiago Gregório\": {\n    \"closerNome\": \"Tiago Gregório\",\n    \"pvPhone\": \"5534984133437\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe\",\n    \"dono\": \"tiagogregorio@mentoriahighticket.com.br\",\n    \"instance\": \"3D988782948B509EAB57D68D1B7EED95\",\n    \"token\": \"8CA26C6FE554568DD46A30A6\"\n  },\n  \"Karllos\": {\n    \"closerNome\": \"Karllos\",\n    \"pvPhone\": \"5561998546456\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a\",\n    \"dono\": \"karllos.bma@gmail.com\",\n    \"instance\": \"3F013E045EE7A0CFC4C76A09AA93C36C\",\n    \"token\": \"B73CA8CEA2291C7EC3F5E7CA\"\n  },\n  \"Matheus Schefer BMA\": {\n    \"closerNome\": \"Matheus Schefer\",\n    \"pvPhone\": \"5545991195467\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113\",\n    \"dono\": \"matheusschefer.bma@gmail.com\",\n    \"instance\": \"3F013E0C2FCA31C04B4FE629027F956B\",\n    \"token\": \"650C95ED624C676CD5BED4E3\"\n  },\n  \"Guilherme Luiz\": {\n    \"closerNome\": \"Guilherme Luiz\",\n    \"pvPhone\": \"553192265968\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821\",\n    \"dono\": \"guilhermeluiz.bma@gmail.com\",\n    \"instance\": \"3F013DFC59D5B153F35DF250B7D94EBE\",\n    \"token\": \"6AF34634257C029F15126163\"\n  },\n  \"Diogo Campos\": {\n    \"closerNome\": \"Diogo Campos\",\n    \"pvPhone\": \"5527996120736\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb4aed3e-683a-4fcc-98d8-f440a31cf905\",\n    \"dono\": \"diogojaquesc@gmail.com\",\n    \"instance\": \"3F7E1B867124B1A3631BC26A258BBF97\",\n    \"token\": \"E3446F8C378B7B74AA3F66AC\"\n  }\n};\nconst ZAPI_BMA = \"https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text\";  // fallback p/ closer sem instância própria\nconst LABEL = { cg10: 'CG10 · closers (30–50k)', cg20: 'CG20 · closers (50–250k)', cg30: 'CG30 · closers (250k+)' };\nconst ev = $('3 · Busca evento (por link)').item.json.resource;\nconst p = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric',\n  hour: '2-digit', minute: '2-digit', hourCycle: 'h23',\n}).formatToParts(new Date(ev.start_time));\nconst g = (t) => p.find((x) => x.type === t).value;\nconst dataHora = `${g('day')}/${g('month')} às ${g('hour')}:${g('minute')}`;\nconst dataHoraGrupo = `${g('day')}/${g('month')}/${g('year')} ${g('hour')}:${g('minute')}`;  // padrão dos grupos CG\n// Data Aplicação p/ o Clint (padrão CG: submittedAt em yyyy-MM-dd HH:mm:ss BR); parcial com link não tem submittedAt\nconst resp = $('Trata Webhook').item.json.response || {};\nconst pa = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit',\n  hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(resp.submittedAt || resp.createdAt || Date.now()));\nconst ga = (t) => pa.find((x) => x.type === t).value;\nconst dataAplicacao = `${ga('year')}-${ga('month')}-${ga('day')} ${ga('hour')}:${ga('minute')}:${ga('second')}`;\nconst agenda = $('1 · Detecta link Calendly').item.json.agenda;\nconst userName = ev.event_memberships?.[0]?.user_name || '';\nconst cfg = TABELA[userName] || {};\nconst closerNome = cfg.closerNome || userName || 'closer não mapeado';\nconst closerFallback = !cfg.instance;\nconst closerZapiUrl = cfg.instance\n  ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text`\n  : ZAPI_BMA;\nconst agendaLabel = (LABEL[agenda] || agenda || '?') + ` · ${closerNome}`\n  + (closerFallback ? ' ⚠️ closer sem instância Z-API (msgs pela instância BMA)' : '');\nreturn [{ json: { ...$json, evento: ev, dataHora, dataHoraGrupo, dataAplicacao, agenda,\n  clintUrl: cfg.clintUrl || '', dono: cfg.dono || '', agendaLabel, closerNome,\n  closerPv: cfg.pvPhone || '', closerZapiUrl, closerFallback, _closerUserName: userName } }];\n"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -129,7 +129,7 @@
           1456,
           -224
         ],
-        "id": "f6784344-2498-40e0-9a75-7950b0b5ea30",
+        "id": "68090f10-9919-4315-bec1-b0432ca0f518",
         "name": "4 · Dados do evento"
       },
       {
@@ -166,7 +166,7 @@
           1664,
           -224
         ],
-        "id": "eaf48a86-f360-4785-aa90-e50e2e1fe9c9",
+        "id": "4d7b02c7-8447-48e3-bc80-e695546d63f4",
         "name": "Notifica Alan PV · agendado"
       },
       {
@@ -203,210 +203,8 @@
           1872,
           -224
         ],
-        "id": "750ecde1-f58e-4bf3-ba8f-e682245b093e",
+        "id": "0215bd4a-abb8-4070-a3ee-a3dd8d4ada9b",
         "name": "Notifica JP PV · agendado",
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "c6defaea-e644-435a-8067-e085662859f9",
-                "leftValue": "={{ $('4 · Dados do evento').item.json.agenda }}",
-                "rightValue": "alan",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
-        "position": [
-          2080,
-          -224
-        ],
-        "id": "6183ed0c-9998-40ff-8b89-6d6c24c48638",
-        "name": "5 · Agenda do Alan?"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://functions-api.clint.digital/endpoints/integration/webhook/bfb4ff93-79ae-4654-92f7-9d0db4bebfb7",
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "nome",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a69']?.content }}"
-              },
-              {
-                "name": "email",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6c']?.content }}"
-              },
-              {
-                "name": "telefone",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6a']?.content }}"
-              },
-              {
-                "name": "instagram",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6b']?.content }}"
-              },
-              {
-                "name": "faturamento",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6e']?.content?.[0] }}"
-              },
-              {
-                "name": "ticket",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6d']?.content?.[0] }}"
-              },
-              {
-                "name": "objetivo",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a70']?.content }}"
-              },
-              {
-                "name": "dificuldade",
-                "value": "={{ $('Trata Webhook').item.json.response.answers['6a92dc7b8490fde669082a94']?.content }}"
-              },
-              {
-                "name": "e_mentor",
-                "value": "Sim"
-              },
-              {
-                "name": "calendly",
-                "value": "={{ $('1 · Detecta link Calendly').item.json.calendlyLink }}"
-              },
-              {
-                "name": "utm_source",
-                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}"
-              },
-              {
-                "name": "utm_campaign",
-                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}"
-              },
-              {
-                "name": "utm_medium",
-                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}"
-              },
-              {
-                "name": "utm_content",
-                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}"
-              },
-              {
-                "name": "utm_term",
-                "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
-              },
-              {
-                "name": "Data Aplicação",
-                "value": "={{ $('4 · Dados do evento').item.json.dataAplicacao }}"
-              },
-              {
-                "name": "Data Call Agendada",
-                "value": "={{ $('4 · Dados do evento').item.json.dataHoraGrupo }}"
-              },
-              {
-                "name": "formulario",
-                "value": "Agenda lotada ou não paga"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          2288,
-          -576
-        ],
-        "id": "d64ba01b-bd9e-4893-907f-212698cefe42",
-        "name": "Clint · Alan",
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Client-Token",
-                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "phone",
-                "value": "120363285621576178-group"
-              },
-              {
-                "name": "message",
-                "value": "=*Novo agendamento entrevista BMA ✅*\n\n\n*Data e hora da Reunião*: {{ $('4 · Dados do evento').item.json.dataHoraGrupo }}\n\n*SDR Responsável:* Alan\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a69']?.content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6c']?.content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6b']?.content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6a']?.content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6e']?.content?.[0] }}\n\n*Ticket da mentoria*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6d']?.content?.[0] }}\n\n*Agendamentos/mês hoje*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a76']?.content }}\n\n*Agendamentos desejados/mês*: {{ $('Trata Webhook').item.json.response.answers['6a92dcda8490fde669082a96']?.content }}\n\n*Como gera agendamentos*: {{ $('Trata Webhook').item.json.response.answers['6a92dc8ec7270f5d1f0c51d6']?.content }}\n\n*O que mais frustra*: {{ $('Trata Webhook').item.json.response.answers['6a92dc7b8490fde669082a94']?.content }}\n\n*Calls/mês (qualificadas)*: {{ $('Trata Webhook').item.json.response.answers['6a92dc16c7270f5d1f0c51d5']?.content }}\n\n*Já rodou tráfego / investe quanto*: {{ $('Trata Webhook').item.json.response.answers['6a92dc0f7c86920578073b58']?.content }}\n\n*Tem gestor de tráfego*: {{ $('Trata Webhook').item.json.response.answers['6a92dbfc7c86920578073b57']?.content === true ? 'Sim' : ($('Trata Webhook').item.json.response.answers['6a92dbfc7c86920578073b57']?.content === false ? 'Não' : ($('Trata Webhook').item.json.response.answers['6a92dbfc7c86920578073b57']?.content || '')) }}\n\n*Disponível pra investir*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a77']?.content?.[0] }}\n\n*Por que agora*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a70']?.content }}\n\n*Por que deveríamos aceitar*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a71']?.content }}\n\n*Origens:*\nFormulário: Agenda lotada ou não paga (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          2288,
-          -400
-        ],
-        "id": "0058b599-3554-44ef-857f-879dfec5b5a1",
-        "name": "Notifica grupo · entrevista BMA",
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Client-Token",
-                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "phone",
-                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
-              },
-              {
-                "name": "message",
-                "value": "=Opa, tudo bem? Aqui é o Alan Assis, do time do JP Bijari.\n\nhttps://www.instagram.com/jp.bijari/\n\nVi sua aplicação e nossa entrevista está confirmada para {{ $('4 · Dados do evento').item.json.dataHora }}, fechado?"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          2496,
-          -400
-        ],
-        "id": "a2fbb3df-5106-4b60-b9f2-b71fd68cfa5c",
-        "name": "Alan → lead · confirmação 1",
         "onError": "continueRegularOutput"
       },
       {
@@ -499,10 +297,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          2288,
-          48
+          2080,
+          -224
         ],
-        "id": "5f343608-ea8c-4790-b945-a7b185cde7a6",
+        "id": "8e0d105c-8416-49a9-83f3-c9142f3f0a23",
         "name": "Clint · closer",
         "onError": "continueRegularOutput"
       },
@@ -538,9 +336,9 @@
         "typeVersion": 4.2,
         "position": [
           2288,
-          -128
+          -224
         ],
-        "id": "32814ce9-3713-4992-b993-a0994367ec3e",
+        "id": "3a19b7c4-6366-41ce-8bbe-5d1934347199",
         "name": "Notifica grupo · agendado closer",
         "onError": "continueRegularOutput"
       },
@@ -576,9 +374,9 @@
         "typeVersion": 4.2,
         "position": [
           2496,
-          -128
+          -224
         ],
-        "id": "188d68b6-3c19-426e-a32f-fdc2babe4e31",
+        "id": "020fa6f3-f15b-4850-bac5-d861bb2071a5",
         "name": "Notifica closer PV · agendado",
         "onError": "continueRegularOutput"
       },
@@ -614,9 +412,9 @@
         "typeVersion": 4.2,
         "position": [
           2704,
-          -128
+          -224
         ],
-        "id": "c2983fe9-ceeb-4d73-9a58-f4a3a3b51890",
+        "id": "e0bf575c-a91d-4a5b-a5a8-7542cdc604a4",
         "name": "Closer → lead · msg 1",
         "onError": "continueRegularOutput"
       },
@@ -629,11 +427,11 @@
         "typeVersion": 1.1,
         "position": [
           2912,
-          -128
+          -224
         ],
-        "id": "4b2c43b5-32ec-4c07-93ea-53080ad16477",
+        "id": "11fe6fb3-bd7d-466d-8884-033770795ae1",
         "name": "Wait · closer 1",
-        "webhookId": "c8f8e48a-79d5-48bc-ab5c-b13f1b27a4a4"
+        "webhookId": "8540665d-dc53-4052-a8d2-e5c6ee6c395a"
       },
       {
         "parameters": {
@@ -667,9 +465,9 @@
         "typeVersion": 4.2,
         "position": [
           3120,
-          -128
+          -224
         ],
-        "id": "458ce455-c844-4c5e-ae5e-32fa399f166e",
+        "id": "bb655e06-ed0f-42aa-a3c9-4d0e9b4cdf80",
         "name": "Closer → lead · msg 2",
         "onError": "continueRegularOutput"
       },
@@ -684,7 +482,7 @@
             },
             "conditions": [
               {
-                "id": "ce893868-62f1-4255-b488-656c18c00059",
+                "id": "cf9b74a6-19b6-4150-99df-435ff2e66064",
                 "leftValue": "={{ $('Resumo do form').item.json.leadPhone }}",
                 "rightValue": "",
                 "operator": {
@@ -694,7 +492,7 @@
                 }
               },
               {
-                "id": "57d24126-ba32-4886-ad3c-8f79258c7d0f",
+                "id": "ce083174-8610-4c7c-8292-7f41c29cc0c3",
                 "leftValue": "={{ $('Trata Webhook').item.json.response.answers?.['6a92da4b8490fde669082a6e']?.content?.[0] || '' }}",
                 "rightValue": "Até R$20.000,00",
                 "operator": {
@@ -713,7 +511,7 @@
           832,
           128
         ],
-        "id": "cbd2f2d7-cad0-4e76-8f50-0207702ff266",
+        "id": "13b824c4-3460-4ea8-88d6-395da2cd9168",
         "name": "WhatsApp e acima de 20k?"
       },
       {
@@ -793,7 +591,7 @@
           1040,
           128
         ],
-        "id": "9ea5949a-2438-4be0-aa6b-39472a194eb7",
+        "id": "93b35974-6d7d-49af-b0c6-c98a0865f6c4",
         "name": "Clint · parcial",
         "onError": "continueRegularOutput"
       },
@@ -831,7 +629,7 @@
           1248,
           128
         ],
-        "id": "a9bfc509-98b6-489d-bd20-a3b4fec5ee98",
+        "id": "97f08b57-50bd-4e6e-a67f-5522a2f7a356",
         "name": "Notifica Alan PV · não agendou"
       },
       {
@@ -868,7 +666,7 @@
           1456,
           128
         ],
-        "id": "0c5ffc63-3e80-4a0d-9ed0-eee62d578e77",
+        "id": "da2223c6-f49f-435d-88cb-f1918720e1fa",
         "name": "Notifica JP PV · não agendou",
         "onError": "continueRegularOutput"
       },
@@ -906,99 +704,8 @@
           1664,
           128
         ],
-        "id": "d33884a2-399e-463d-a5b5-17ea56b8b2f2",
+        "id": "bb2f0a6e-d104-40f1-bcbe-c29d9c339453",
         "name": "Notifica grupo · parcial",
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Client-Token",
-                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "phone",
-                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
-              },
-              {
-                "name": "message",
-                "value": "={{ $('Resumo do form').item.json.saudacao }}, tudo bem? Aqui é o Alan Assis do time do JP Bijari.\nhttps://www.instagram.com/jp.bijari/\n\nEstava dando uma olhada nos formulários preenchidos para a entrevista de mentores para o nosso programa de tráfego pago e vi que você tentou uma vaga, porém, não conseguiu agendar."
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          1872,
-          128
-        ],
-        "id": "a661d4d7-4e9d-4235-b8f0-b8c50f29ae81",
-        "name": "Alan → lead · abordagem 1",
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "amount": 5,
-          "unit": "seconds"
-        },
-        "type": "n8n-nodes-base.wait",
-        "typeVersion": 1.1,
-        "position": [
-          2080,
-          128
-        ],
-        "id": "0c16a88c-02cb-49e5-a22e-6169faa4bdfb",
-        "name": "Wait · abordagem",
-        "webhookId": "41f5b588-5ff2-4856-b174-970f4f1ccaef"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Client-Token",
-                "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "phone",
-                "value": "={{ $('Resumo do form').item.json.leadPhone }}"
-              },
-              {
-                "name": "message",
-                "value": "=Consegue me mandar um áudio de até 2 minutos com mais detalhes do seu cenário (objetivo e desafios) e o que te despertou interesse de falar conosco? Assim consigo te direcionar melhor."
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          2288,
-          128
-        ],
-        "id": "9fb3affc-8dc3-448e-b5ff-04d58b0fd769",
-        "name": "Alan → lead · abordagem 2",
         "onError": "continueRegularOutput"
       }
     ],
@@ -1102,36 +809,7 @@
         "main": [
           [
             {
-              "node": "5 · Agenda do Alan?",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "5 · Agenda do Alan?": {
-        "main": [
-          [
-            {
-              "node": "Clint · Alan",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
               "node": "Clint · closer",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Clint · Alan": {
-        "main": [
-          [
-            {
-              "node": "Notifica grupo · entrevista BMA",
               "type": "main",
               "index": 0
             }
@@ -1143,17 +821,6 @@
           [
             {
               "node": "Notifica grupo · agendado closer",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Notifica grupo · entrevista BMA": {
-        "main": [
-          [
-            {
-              "node": "Alan → lead · confirmação 1",
               "type": "main",
               "index": 0
             }
@@ -1247,46 +914,13 @@
             }
           ]
         ]
-      },
-      "Notifica grupo · parcial": {
-        "main": [
-          [
-            {
-              "node": "Alan → lead · abordagem 1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Alan → lead · abordagem 1": {
-        "main": [
-          [
-            {
-              "node": "Wait · abordagem",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wait · abordagem": {
-        "main": [
-          [
-            {
-              "node": "Alan → lead · abordagem 2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
       }
     },
     "authors": "Matheus Cristhyan",
     "name": null,
     "description": null
   },
-  "activeVersionId": "44a29b95-7c9c-44f7-bfac-d8540d8d2174",
+  "activeVersionId": "a2daa3cb-c9af-44c4-9fee-d9e2214577f7",
   "connections": {
     "Webhook": {
       "main": [
@@ -1387,36 +1021,7 @@
       "main": [
         [
           {
-            "node": "5 · Agenda do Alan?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "5 · Agenda do Alan?": {
-      "main": [
-        [
-          {
-            "node": "Clint · Alan",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
             "node": "Clint · closer",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Clint · Alan": {
-      "main": [
-        [
-          {
-            "node": "Notifica grupo · entrevista BMA",
             "type": "main",
             "index": 0
           }
@@ -1428,17 +1033,6 @@
         [
           {
             "node": "Notifica grupo · agendado closer",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notifica grupo · entrevista BMA": {
-      "main": [
-        [
-          {
-            "node": "Alan → lead · confirmação 1",
             "type": "main",
             "index": 0
           }
@@ -1532,39 +1126,6 @@
           }
         ]
       ]
-    },
-    "Notifica grupo · parcial": {
-      "main": [
-        [
-          {
-            "node": "Alan → lead · abordagem 1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Alan → lead · abordagem 1": {
-      "main": [
-        [
-          {
-            "node": "Wait · abordagem",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait · abordagem": {
-      "main": [
-        [
-          {
-            "node": "Alan → lead · abordagem 2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "createdAt": "2026-08-31T14:32:07.574Z",
@@ -1585,7 +1146,7 @@
         0,
         0
       ],
-      "id": "282ee263-3b7b-41a1-94bf-0855a5a693f8",
+      "id": "29cb77dc-ccbf-4917-88d1-cc53b67e3c5d",
       "name": "Webhook",
       "webhookId": "b6ba96b8-d7c9-4042-99db-101a69cdddf3"
     },
@@ -1599,7 +1160,7 @@
         208,
         0
       ],
-      "id": "6b242985-a71a-4b8f-9697-f711c23273c6",
+      "id": "2b91b403-4f38-4ea9-8da5-dcd3cc276dca",
       "name": "Trata Webhook"
     },
     {
@@ -1612,12 +1173,12 @@
         416,
         0
       ],
-      "id": "5f931386-d8fd-4964-a4fe-6b114e806972",
+      "id": "0001f77b-094b-40b1-8855-92fffa934f02",
       "name": "Resumo do form"
     },
     {
       "parameters": {
-        "jsCode": "// O form tem 4 campos Calendly (roteados por faturamento). Cada campo, quando\n// agendou, devolve o link com scheduled_events/<uuid>. Detecta qual foi preenchido.\nconst CALENDLY = {\"6a958dd13928d17403056931\": \"alan\", \"6a9825aa415d89744a050587\": \"cg10\", \"6a98254c18ff935d3e018546\": \"cg20\", \"6ac7b9e9bca305747103f996\": \"cg30\"};\nconst ans = $('Trata Webhook').item.json.response.answers || {};\nlet agenda = null, link = null, eventUuid = null;\nfor (const [fid, nome] of Object.entries(CALENDLY)) {\n  const c = ans[fid]?.content;\n  if (typeof c !== 'string' || !c.includes('calendly.com')) continue;\n  const m = c.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (!m) continue;\n  agenda = nome; link = c.trim(); eventUuid = m[1];\n  break;\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, agenda, calendlyLink: link, eventUuid } }];\n"
+        "jsCode": "// O form tem 3 campos Calendly (roteados por faturamento). Cada campo, quando\n// agendou, devolve o link com scheduled_events/<uuid>. Detecta qual foi preenchido.\nconst CALENDLY = {\"6a9825aa415d89744a050587\": \"cg10\", \"6a98254c18ff935d3e018546\": \"cg20\", \"6ac7b9e9bca305747103f996\": \"cg30\"};\nconst ans = $('Trata Webhook').item.json.response.answers || {};\nlet agenda = null, link = null, eventUuid = null;\nfor (const [fid, nome] of Object.entries(CALENDLY)) {\n  const c = ans[fid]?.content;\n  if (typeof c !== 'string' || !c.includes('calendly.com')) continue;\n  const m = c.match(/scheduled_events\\/([0-9a-fA-F-]{36})/);\n  if (!m) continue;\n  agenda = nome; link = c.trim(); eventUuid = m[1];\n  break;\n}\nreturn [{ json: { ...$json, agendou: !!eventUuid, agenda, calendlyLink: link, eventUuid } }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1625,7 +1186,7 @@
         624,
         0
       ],
-      "id": "8a94ce89-b444-46cc-b774-78940c9a24e2",
+      "id": "27f1f681-b404-45a4-9eea-d36443976b91",
       "name": "1 · Detecta link Calendly"
     },
     {
@@ -1639,7 +1200,7 @@
           },
           "conditions": [
             {
-              "id": "4a821ba5-46e7-4d32-89de-041c76888880",
+              "id": "2df433e3-f1eb-424e-a0e4-b85fd14223e8",
               "leftValue": "={{ $json.eventUuid }}",
               "rightValue": "",
               "operator": {
@@ -1660,7 +1221,7 @@
         1040,
         -128
       ],
-      "id": "29050af8-a64b-4021-bd26-efa66335a59a",
+      "id": "f166d80f-8848-49dd-bb82-ede26497434c",
       "name": "2 · Agendou?"
     },
     {
@@ -1683,12 +1244,12 @@
         1248,
         -224
       ],
-      "id": "b3ffc174-bfe6-4de4-a5df-627e9751452f",
+      "id": "337a608f-da8c-4939-9c0d-5ca01b158fe2",
       "name": "3 · Busca evento (por link)"
     },
     {
       "parameters": {
-        "jsCode": "// Formata a data/hora do evento no fuso BR (\"02/09 às 14:30\") e resolve o closer.\n// Chave da tabela = user_name do Calendly (event_memberships[0].user_name), letra por letra.\nconst TABELA = {\n  \"Tiago Gregório\": {\n    \"closerNome\": \"Tiago Gregório\",\n    \"pvPhone\": \"5534984133437\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe\",\n    \"dono\": \"tiagogregorio@mentoriahighticket.com.br\",\n    \"instance\": \"3D988782948B509EAB57D68D1B7EED95\",\n    \"token\": \"8CA26C6FE554568DD46A30A6\"\n  },\n  \"Karllos\": {\n    \"closerNome\": \"Karllos\",\n    \"pvPhone\": \"5561998546456\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a\",\n    \"dono\": \"karllos.bma@gmail.com\",\n    \"instance\": \"3F013E045EE7A0CFC4C76A09AA93C36C\",\n    \"token\": \"B73CA8CEA2291C7EC3F5E7CA\"\n  },\n  \"Matheus Schefer BMA\": {\n    \"closerNome\": \"Matheus Schefer\",\n    \"pvPhone\": \"5545991195467\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113\",\n    \"dono\": \"matheusschefer.bma@gmail.com\",\n    \"instance\": \"3F013E0C2FCA31C04B4FE629027F956B\",\n    \"token\": \"650C95ED624C676CD5BED4E3\"\n  },\n  \"Guilherme Luiz\": {\n    \"closerNome\": \"Guilherme Luiz\",\n    \"pvPhone\": \"553192265968\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821\",\n    \"dono\": \"guilhermeluiz.bma@gmail.com\",\n    \"instance\": \"3F013DFC59D5B153F35DF250B7D94EBE\",\n    \"token\": \"6AF34634257C029F15126163\"\n  },\n  \"Diogo Campos\": {\n    \"closerNome\": \"Diogo Campos\",\n    \"pvPhone\": \"5527996120736\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb4aed3e-683a-4fcc-98d8-f440a31cf905\",\n    \"dono\": \"diogojaquesc@gmail.com\",\n    \"instance\": \"3F7E1B867124B1A3631BC26A258BBF97\",\n    \"token\": \"E3446F8C378B7B74AA3F66AC\"\n  }\n};\nconst ZAPI_BMA = \"https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text\";  // fallback p/ closer sem instância própria\nconst LABEL = { alan: 'Alan · entrevista 15min (≤20k)', cg10: 'CG10 · closers (20–50k)', cg20: 'CG20 · closers (50–250k)', cg30: 'CG30 · closers (250k+)' };\nconst ev = $('3 · Busca evento (por link)').item.json.resource;\nconst p = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric',\n  hour: '2-digit', minute: '2-digit', hourCycle: 'h23',\n}).formatToParts(new Date(ev.start_time));\nconst g = (t) => p.find((x) => x.type === t).value;\nconst dataHora = `${g('day')}/${g('month')} às ${g('hour')}:${g('minute')}`;\nconst dataHoraGrupo = `${g('day')}/${g('month')}/${g('year')} ${g('hour')}:${g('minute')}`;  // padrão dos grupos CG\n// Data Aplicação p/ o Clint (padrão CG: submittedAt em yyyy-MM-dd HH:mm:ss BR); parcial com link não tem submittedAt\nconst resp = $('Trata Webhook').item.json.response || {};\nconst pa = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit',\n  hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(resp.submittedAt || resp.createdAt || Date.now()));\nconst ga = (t) => pa.find((x) => x.type === t).value;\nconst dataAplicacao = `${ga('year')}-${ga('month')}-${ga('day')} ${ga('hour')}:${ga('minute')}:${ga('second')}`;\nconst agenda = $('1 · Detecta link Calendly').item.json.agenda;\nconst userName = ev.event_memberships?.[0]?.user_name || '';\nconst cfg = TABELA[userName] || {};\nconst closerNome = agenda === 'alan' ? 'Alan Assis' : (cfg.closerNome || userName || 'closer não mapeado');\nconst closerFallback = agenda !== 'alan' && !cfg.instance;\nconst closerZapiUrl = cfg.instance\n  ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text`\n  : ZAPI_BMA;\nconst agendaLabel = (LABEL[agenda] || agenda || '?') + (agenda === 'alan' ? '' : ` · ${closerNome}`)\n  + (closerFallback ? ' ⚠️ closer sem instância Z-API (msgs pela instância BMA)' : '');\nreturn [{ json: { ...$json, evento: ev, dataHora, dataHoraGrupo, dataAplicacao, agenda,\n  clintUrl: cfg.clintUrl || '', dono: cfg.dono || '', agendaLabel, closerNome,\n  closerPv: cfg.pvPhone || '', closerZapiUrl, closerFallback, _closerUserName: userName } }];\n"
+        "jsCode": "// Formata a data/hora do evento no fuso BR (\"02/09 às 14:30\") e resolve o closer.\n// Chave da tabela = user_name do Calendly (event_memberships[0].user_name), letra por letra.\nconst TABELA = {\n  \"Tiago Gregório\": {\n    \"closerNome\": \"Tiago Gregório\",\n    \"pvPhone\": \"5534984133437\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/834a2a3a-8c87-49fd-a614-d2f85f6f08fe\",\n    \"dono\": \"tiagogregorio@mentoriahighticket.com.br\",\n    \"instance\": \"3D988782948B509EAB57D68D1B7EED95\",\n    \"token\": \"8CA26C6FE554568DD46A30A6\"\n  },\n  \"Karllos\": {\n    \"closerNome\": \"Karllos\",\n    \"pvPhone\": \"5561998546456\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/d0137c59-2ebd-4f97-ab54-4e04839e211a\",\n    \"dono\": \"karllos.bma@gmail.com\",\n    \"instance\": \"3F013E045EE7A0CFC4C76A09AA93C36C\",\n    \"token\": \"B73CA8CEA2291C7EC3F5E7CA\"\n  },\n  \"Matheus Schefer BMA\": {\n    \"closerNome\": \"Matheus Schefer\",\n    \"pvPhone\": \"5545991195467\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb9b7b9a-96c1-4aac-bac9-b12796ee7113\",\n    \"dono\": \"matheusschefer.bma@gmail.com\",\n    \"instance\": \"3F013E0C2FCA31C04B4FE629027F956B\",\n    \"token\": \"650C95ED624C676CD5BED4E3\"\n  },\n  \"Guilherme Luiz\": {\n    \"closerNome\": \"Guilherme Luiz\",\n    \"pvPhone\": \"553192265968\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/725088d1-0bea-42ed-b27c-f4adbf8eb821\",\n    \"dono\": \"guilhermeluiz.bma@gmail.com\",\n    \"instance\": \"3F013DFC59D5B153F35DF250B7D94EBE\",\n    \"token\": \"6AF34634257C029F15126163\"\n  },\n  \"Diogo Campos\": {\n    \"closerNome\": \"Diogo Campos\",\n    \"pvPhone\": \"5527996120736\",\n    \"clintUrl\": \"https://functions-api.clint.digital/endpoints/integration/webhook/eb4aed3e-683a-4fcc-98d8-f440a31cf905\",\n    \"dono\": \"diogojaquesc@gmail.com\",\n    \"instance\": \"3F7E1B867124B1A3631BC26A258BBF97\",\n    \"token\": \"E3446F8C378B7B74AA3F66AC\"\n  }\n};\nconst ZAPI_BMA = \"https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text\";  // fallback p/ closer sem instância própria\nconst LABEL = { cg10: 'CG10 · closers (30–50k)', cg20: 'CG20 · closers (50–250k)', cg30: 'CG30 · closers (250k+)' };\nconst ev = $('3 · Busca evento (por link)').item.json.resource;\nconst p = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric',\n  hour: '2-digit', minute: '2-digit', hourCycle: 'h23',\n}).formatToParts(new Date(ev.start_time));\nconst g = (t) => p.find((x) => x.type === t).value;\nconst dataHora = `${g('day')}/${g('month')} às ${g('hour')}:${g('minute')}`;\nconst dataHoraGrupo = `${g('day')}/${g('month')}/${g('year')} ${g('hour')}:${g('minute')}`;  // padrão dos grupos CG\n// Data Aplicação p/ o Clint (padrão CG: submittedAt em yyyy-MM-dd HH:mm:ss BR); parcial com link não tem submittedAt\nconst resp = $('Trata Webhook').item.json.response || {};\nconst pa = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit',\n  hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(resp.submittedAt || resp.createdAt || Date.now()));\nconst ga = (t) => pa.find((x) => x.type === t).value;\nconst dataAplicacao = `${ga('year')}-${ga('month')}-${ga('day')} ${ga('hour')}:${ga('minute')}:${ga('second')}`;\nconst agenda = $('1 · Detecta link Calendly').item.json.agenda;\nconst userName = ev.event_memberships?.[0]?.user_name || '';\nconst cfg = TABELA[userName] || {};\nconst closerNome = cfg.closerNome || userName || 'closer não mapeado';\nconst closerFallback = !cfg.instance;\nconst closerZapiUrl = cfg.instance\n  ? `https://api.z-api.io/instances/${cfg.instance}/token/${cfg.token}/send-text`\n  : ZAPI_BMA;\nconst agendaLabel = (LABEL[agenda] || agenda || '?') + ` · ${closerNome}`\n  + (closerFallback ? ' ⚠️ closer sem instância Z-API (msgs pela instância BMA)' : '');\nreturn [{ json: { ...$json, evento: ev, dataHora, dataHoraGrupo, dataAplicacao, agenda,\n  clintUrl: cfg.clintUrl || '', dono: cfg.dono || '', agendaLabel, closerNome,\n  closerPv: cfg.pvPhone || '', closerZapiUrl, closerFallback, _closerUserName: userName } }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1696,7 +1257,7 @@
         1456,
         -224
       ],
-      "id": "f6784344-2498-40e0-9a75-7950b0b5ea30",
+      "id": "68090f10-9919-4315-bec1-b0432ca0f518",
       "name": "4 · Dados do evento"
     },
     {
@@ -1733,7 +1294,7 @@
         1664,
         -224
       ],
-      "id": "eaf48a86-f360-4785-aa90-e50e2e1fe9c9",
+      "id": "4d7b02c7-8447-48e3-bc80-e695546d63f4",
       "name": "Notifica Alan PV · agendado"
     },
     {
@@ -1770,210 +1331,8 @@
         1872,
         -224
       ],
-      "id": "750ecde1-f58e-4bf3-ba8f-e682245b093e",
+      "id": "0215bd4a-abb8-4070-a3ee-a3dd8d4ada9b",
       "name": "Notifica JP PV · agendado",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "c6defaea-e644-435a-8067-e085662859f9",
-              "leftValue": "={{ $('4 · Dados do evento').item.json.agenda }}",
-              "rightValue": "alan",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        2080,
-        -224
-      ],
-      "id": "6183ed0c-9998-40ff-8b89-6d6c24c48638",
-      "name": "5 · Agenda do Alan?"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://functions-api.clint.digital/endpoints/integration/webhook/bfb4ff93-79ae-4654-92f7-9d0db4bebfb7",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "nome",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a69']?.content }}"
-            },
-            {
-              "name": "email",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6c']?.content }}"
-            },
-            {
-              "name": "telefone",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6a']?.content }}"
-            },
-            {
-              "name": "instagram",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6b']?.content }}"
-            },
-            {
-              "name": "faturamento",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6e']?.content?.[0] }}"
-            },
-            {
-              "name": "ticket",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6d']?.content?.[0] }}"
-            },
-            {
-              "name": "objetivo",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a70']?.content }}"
-            },
-            {
-              "name": "dificuldade",
-              "value": "={{ $('Trata Webhook').item.json.response.answers['6a92dc7b8490fde669082a94']?.content }}"
-            },
-            {
-              "name": "e_mentor",
-              "value": "Sim"
-            },
-            {
-              "name": "calendly",
-              "value": "={{ $('1 · Detecta link Calendly').item.json.calendlyLink }}"
-            },
-            {
-              "name": "utm_source",
-              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_source }}"
-            },
-            {
-              "name": "utm_campaign",
-              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}"
-            },
-            {
-              "name": "utm_medium",
-              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_medium }}"
-            },
-            {
-              "name": "utm_content",
-              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_content }}"
-            },
-            {
-              "name": "utm_term",
-              "value": "={{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
-            },
-            {
-              "name": "Data Aplicação",
-              "value": "={{ $('4 · Dados do evento').item.json.dataAplicacao }}"
-            },
-            {
-              "name": "Data Call Agendada",
-              "value": "={{ $('4 · Dados do evento').item.json.dataHoraGrupo }}"
-            },
-            {
-              "name": "formulario",
-              "value": "Agenda lotada ou não paga"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2288,
-        -576
-      ],
-      "id": "d64ba01b-bd9e-4893-907f-212698cefe42",
-      "name": "Clint · Alan",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3CFE88963A26408D365B72B70F2FFCF9/token/DA84CEA8EC9897345A31EA92/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "120363285621576178-group"
-            },
-            {
-              "name": "message",
-              "value": "=*Novo agendamento entrevista BMA ✅*\n\n\n*Data e hora da Reunião*: {{ $('4 · Dados do evento').item.json.dataHoraGrupo }}\n\n*SDR Responsável:* Alan\n\n*Nome do lead*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a69']?.content }}\n\n*E-mail*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6c']?.content }}\n\n*Instagram*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6b']?.content }}\n\n*Whatsapp*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6a']?.content }}\n\n*Faturamento*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6e']?.content?.[0] }}\n\n*Ticket da mentoria*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a6d']?.content?.[0] }}\n\n*Agendamentos/mês hoje*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a76']?.content }}\n\n*Agendamentos desejados/mês*: {{ $('Trata Webhook').item.json.response.answers['6a92dcda8490fde669082a96']?.content }}\n\n*Como gera agendamentos*: {{ $('Trata Webhook').item.json.response.answers['6a92dc8ec7270f5d1f0c51d6']?.content }}\n\n*O que mais frustra*: {{ $('Trata Webhook').item.json.response.answers['6a92dc7b8490fde669082a94']?.content }}\n\n*Calls/mês (qualificadas)*: {{ $('Trata Webhook').item.json.response.answers['6a92dc16c7270f5d1f0c51d5']?.content }}\n\n*Já rodou tráfego / investe quanto*: {{ $('Trata Webhook').item.json.response.answers['6a92dc0f7c86920578073b58']?.content }}\n\n*Tem gestor de tráfego*: {{ $('Trata Webhook').item.json.response.answers['6a92dbfc7c86920578073b57']?.content === true ? 'Sim' : ($('Trata Webhook').item.json.response.answers['6a92dbfc7c86920578073b57']?.content === false ? 'Não' : ($('Trata Webhook').item.json.response.answers['6a92dbfc7c86920578073b57']?.content || '')) }}\n\n*Disponível pra investir*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a77']?.content?.[0] }}\n\n*Por que agora*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a70']?.content }}\n\n*Por que deveríamos aceitar*: {{ $('Trata Webhook').item.json.response.answers['6a92da4b8490fde669082a71']?.content }}\n\n*Origens:*\nFormulário: Agenda lotada ou não paga (yay forms)\n\nutm_source: {{ $('Trata Webhook').item.json.response.tracking.utm_source }}\nutm_campaign: {{ $('Trata Webhook').item.json.response.tracking.utm_campaign }}\nutm_medium: {{ $('Trata Webhook').item.json.response.tracking.utm_medium }}\nutm_content: {{ $('Trata Webhook').item.json.response.tracking.utm_content }}\nutm_term: {{ $('Trata Webhook').item.json.response.tracking.utm_term }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2288,
-        -400
-      ],
-      "id": "0058b599-3554-44ef-857f-879dfec5b5a1",
-      "name": "Notifica grupo · entrevista BMA",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
-            },
-            {
-              "name": "message",
-              "value": "=Opa, tudo bem? Aqui é o Alan Assis, do time do JP Bijari.\n\nhttps://www.instagram.com/jp.bijari/\n\nVi sua aplicação e nossa entrevista está confirmada para {{ $('4 · Dados do evento').item.json.dataHora }}, fechado?"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2496,
-        -400
-      ],
-      "id": "a2fbb3df-5106-4b60-b9f2-b71fd68cfa5c",
-      "name": "Alan → lead · confirmação 1",
       "onError": "continueRegularOutput"
     },
     {
@@ -2066,10 +1425,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2288,
-        48
+        2080,
+        -224
       ],
-      "id": "5f343608-ea8c-4790-b945-a7b185cde7a6",
+      "id": "8e0d105c-8416-49a9-83f3-c9142f3f0a23",
       "name": "Clint · closer",
       "onError": "continueRegularOutput"
     },
@@ -2105,9 +1464,9 @@
       "typeVersion": 4.2,
       "position": [
         2288,
-        -128
+        -224
       ],
-      "id": "32814ce9-3713-4992-b993-a0994367ec3e",
+      "id": "3a19b7c4-6366-41ce-8bbe-5d1934347199",
       "name": "Notifica grupo · agendado closer",
       "onError": "continueRegularOutput"
     },
@@ -2143,9 +1502,9 @@
       "typeVersion": 4.2,
       "position": [
         2496,
-        -128
+        -224
       ],
-      "id": "188d68b6-3c19-426e-a32f-fdc2babe4e31",
+      "id": "020fa6f3-f15b-4850-bac5-d861bb2071a5",
       "name": "Notifica closer PV · agendado",
       "onError": "continueRegularOutput"
     },
@@ -2181,9 +1540,9 @@
       "typeVersion": 4.2,
       "position": [
         2704,
-        -128
+        -224
       ],
-      "id": "c2983fe9-ceeb-4d73-9a58-f4a3a3b51890",
+      "id": "e0bf575c-a91d-4a5b-a5a8-7542cdc604a4",
       "name": "Closer → lead · msg 1",
       "onError": "continueRegularOutput"
     },
@@ -2196,11 +1555,11 @@
       "typeVersion": 1.1,
       "position": [
         2912,
-        -128
+        -224
       ],
-      "id": "4b2c43b5-32ec-4c07-93ea-53080ad16477",
+      "id": "11fe6fb3-bd7d-466d-8884-033770795ae1",
       "name": "Wait · closer 1",
-      "webhookId": "c8f8e48a-79d5-48bc-ab5c-b13f1b27a4a4"
+      "webhookId": "8540665d-dc53-4052-a8d2-e5c6ee6c395a"
     },
     {
       "parameters": {
@@ -2234,9 +1593,9 @@
       "typeVersion": 4.2,
       "position": [
         3120,
-        -128
+        -224
       ],
-      "id": "458ce455-c844-4c5e-ae5e-32fa399f166e",
+      "id": "bb655e06-ed0f-42aa-a3c9-4d0e9b4cdf80",
       "name": "Closer → lead · msg 2",
       "onError": "continueRegularOutput"
     },
@@ -2251,7 +1610,7 @@
           },
           "conditions": [
             {
-              "id": "ce893868-62f1-4255-b488-656c18c00059",
+              "id": "cf9b74a6-19b6-4150-99df-435ff2e66064",
               "leftValue": "={{ $('Resumo do form').item.json.leadPhone }}",
               "rightValue": "",
               "operator": {
@@ -2261,7 +1620,7 @@
               }
             },
             {
-              "id": "57d24126-ba32-4886-ad3c-8f79258c7d0f",
+              "id": "ce083174-8610-4c7c-8292-7f41c29cc0c3",
               "leftValue": "={{ $('Trata Webhook').item.json.response.answers?.['6a92da4b8490fde669082a6e']?.content?.[0] || '' }}",
               "rightValue": "Até R$20.000,00",
               "operator": {
@@ -2280,7 +1639,7 @@
         832,
         128
       ],
-      "id": "cbd2f2d7-cad0-4e76-8f50-0207702ff266",
+      "id": "13b824c4-3460-4ea8-88d6-395da2cd9168",
       "name": "WhatsApp e acima de 20k?"
     },
     {
@@ -2360,7 +1719,7 @@
         1040,
         128
       ],
-      "id": "9ea5949a-2438-4be0-aa6b-39472a194eb7",
+      "id": "93b35974-6d7d-49af-b0c6-c98a0865f6c4",
       "name": "Clint · parcial",
       "onError": "continueRegularOutput"
     },
@@ -2398,7 +1757,7 @@
         1248,
         128
       ],
-      "id": "a9bfc509-98b6-489d-bd20-a3b4fec5ee98",
+      "id": "97f08b57-50bd-4e6e-a67f-5522a2f7a356",
       "name": "Notifica Alan PV · não agendou"
     },
     {
@@ -2435,7 +1794,7 @@
         1456,
         128
       ],
-      "id": "0c5ffc63-3e80-4a0d-9ed0-eee62d578e77",
+      "id": "da2223c6-f49f-435d-88cb-f1918720e1fa",
       "name": "Notifica JP PV · não agendou",
       "onError": "continueRegularOutput"
     },
@@ -2473,99 +1832,8 @@
         1664,
         128
       ],
-      "id": "d33884a2-399e-463d-a5b5-17ea56b8b2f2",
+      "id": "bb2f0a6e-d104-40f1-bcbe-c29d9c339453",
       "name": "Notifica grupo · parcial",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
-            },
-            {
-              "name": "message",
-              "value": "={{ $('Resumo do form').item.json.saudacao }}, tudo bem? Aqui é o Alan Assis do time do JP Bijari.\nhttps://www.instagram.com/jp.bijari/\n\nEstava dando uma olhada nos formulários preenchidos para a entrevista de mentores para o nosso programa de tráfego pago e vi que você tentou uma vaga, porém, não conseguiu agendar."
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1872,
-        128
-      ],
-      "id": "a661d4d7-4e9d-4235-b8f0-b8c50f29ae81",
-      "name": "Alan → lead · abordagem 1",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "amount": 5,
-        "unit": "seconds"
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        2080,
-        128
-      ],
-      "id": "0c16a88c-02cb-49e5-a22e-6169faa4bdfb",
-      "name": "Wait · abordagem",
-      "webhookId": "41f5b588-5ff2-4856-b174-970f4f1ccaef"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.z-api.io/instances/3E8D08576BFB91764CD90660F5E8011A/token/F8C470564E61CA0B947A738F/send-text",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Client-Token",
-              "value": "Fdeb892ca62d941adbb85b2ec7c8e3a4aS"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "phone",
-              "value": "={{ $('Resumo do form').item.json.leadPhone }}"
-            },
-            {
-              "name": "message",
-              "value": "=Consegue me mandar um áudio de até 2 minutos com mais detalhes do seu cenário (objetivo e desafios) e o que te despertou interesse de falar conosco? Assim consigo te direcionar melhor."
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2288,
-        128
-      ],
-      "id": "9fb3affc-8dc3-448e-b5ff-04d58b0fd769",
-      "name": "Alan → lead · abordagem 2",
       "onError": "continueRegularOutput"
     }
   ],
@@ -2589,6 +1857,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-16T15:38:52.698Z",
-  "versionId": "44a29b95-7c9c-44f7-bfac-d8540d8d2174"
+  "updatedAt": "2026-11-17T14:41:04.207Z",
+  "versionId": "a2daa3cb-c9af-44c4-9fee-d9e2214577f7"
 }
