@@ -1,0 +1,85 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "PG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T22:48:45.471Z",
+  "id": "gOtKyrS2VwNyiGjh",
+  "isArchived": false,
+  "meta": null,
+  "name": "tmp-cp-xfd3235ac79",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "xfd3235ac79",
+        "responseMode": "lastNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "webhookId": "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa",
+      "id": "00000000-1111-4111-8111-000000000000",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": ""
+        },
+        "query": "select json_build_object('buckets',(select count(*) from storage.buckets),'objects',(select count(*) from storage.objects),'auth_users',(select count(*) from auth.users),'precall_cols',(select string_agg(column_name,',') from information_schema.columns where table_schema='public' and table_name='fila_precall'))::text as j"
+      },
+      "credentials": {
+        "postgres": {
+          "id": "GxgbRWKv7Xal5lZi",
+          "name": "Supabase BMA (pooler)"
+        }
+      },
+      "name": "PG",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "position": [
+        300,
+        0
+      ],
+      "id": "00000001-1111-4111-8111-000000000001"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T22:48:45.471Z",
+      "createdAt": "2026-11-26T22:48:45.471Z",
+      "role": "workflow:owner",
+      "workflowId": "gOtKyrS2VwNyiGjh",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T22:48:45.471Z",
+  "versionId": "62fcb6c5-7311-4e66-887f-ba9c6e5ca4c7"
+}
