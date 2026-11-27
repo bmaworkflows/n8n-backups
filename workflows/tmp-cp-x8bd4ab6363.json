@@ -1,0 +1,122 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "PG1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG1": {
+      "main": [
+        [
+          {
+            "node": "PG2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T22:47:53.995Z",
+  "id": "TwFUrtGpeYAYFCTF",
+  "isArchived": false,
+  "meta": null,
+  "name": "tmp-cp-x8bd4ab6363",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "x8bd4ab6363",
+        "responseMode": "lastNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "webhookId": "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa",
+      "id": "00000000-1111-4111-8111-000000000000",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": ""
+        },
+        "query": "select current_database() as db, (select count(*) from information_schema.tables where table_schema='public')::text as ntbl",
+        "database": "n8n"
+      },
+      "credentials": {
+        "postgres": {
+          "id": "9sRgYGpemvHKejz2",
+          "name": "Postgres account"
+        }
+      },
+      "name": "PG1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "position": [
+        300,
+        0
+      ],
+      "id": "00000001-1111-4111-8111-000000000001"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": ""
+        },
+        "query": "select json_agg(t)::text as j from (select datname from pg_database) t"
+      },
+      "credentials": {
+        "postgres": {
+          "id": "9sRgYGpemvHKejz2",
+          "name": "Postgres account"
+        }
+      },
+      "name": "PG2",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "position": [
+        560,
+        0
+      ],
+      "id": "00000002-1111-4111-8111-000000000002"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T22:47:53.995Z",
+      "createdAt": "2026-11-26T22:47:53.995Z",
+      "role": "workflow:owner",
+      "workflowId": "TwFUrtGpeYAYFCTF",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T22:47:53.995Z",
+  "versionId": "84fae630-ca2e-4d25-9edf-5c49831b93c5"
+}
