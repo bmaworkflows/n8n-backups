@@ -1,0 +1,85 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "PG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T22:52:37.316Z",
+  "id": "s9k6UhoPCN0fTdiH",
+  "isArchived": false,
+  "meta": null,
+  "name": "tmp-cp-xf39d2dcd74",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "xf39d2dcd74",
+        "responseMode": "lastNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "webhookId": "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa",
+      "id": "00000000-1111-4111-8111-000000000000",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": ""
+        },
+        "query": "select json_agg(t)::text as j from (select table_schema||'.'||table_name tn, (select string_agg(column_name,',') from information_schema.columns c where c.table_schema=t.table_schema and c.table_name=t.table_name) cols from information_schema.tables t where table_schema not in ('pg_catalog','information_schema')) t"
+      },
+      "credentials": {
+        "postgres": {
+          "id": "9sRgYGpemvHKejz2",
+          "name": "Postgres account"
+        }
+      },
+      "name": "PG",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "position": [
+        300,
+        0
+      ],
+      "id": "00000001-1111-4111-8111-000000000001"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T22:52:37.316Z",
+      "createdAt": "2026-11-26T22:52:37.316Z",
+      "role": "workflow:owner",
+      "workflowId": "s9k6UhoPCN0fTdiH",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T22:52:37.316Z",
+  "versionId": "ee6e7093-3327-4fe6-a4f4-de6604889e7d"
+}
