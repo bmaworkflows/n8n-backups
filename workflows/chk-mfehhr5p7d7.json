@@ -1,0 +1,262 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-26T22:16:37.078Z",
+    "createdAt": "2026-11-26T22:16:37.078Z",
+    "versionId": "fddc1206-2be2-49d7-9481-84be719f6021",
+    "workflowId": "ivoFrZt82pXNUizo",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "mfehhr5p7d7",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "w1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -200,
+          0
+        ],
+        "webhookId": "mfehhr5p7d7"
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.query.u }}",
+          "method": "={{ ($json.query.m || 'GET').toUpperCase() }}",
+          "sendHeaders": true,
+          "specifyHeaders": "json",
+          "jsonHeaders": "={{ $json.query.h ? $json.query.h : '{}' }}",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "text"
+              }
+            },
+            "timeout": 8000,
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "id": "h1",
+        "name": "Fetch",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          20,
+          0
+        ],
+        "onError": "continueRegularOutput",
+        "retryOnFail": false
+      },
+      {
+        "parameters": {
+          "jsCode": "const j = $input.first().json;\nlet out;\nif (j.error) { out = {ok:false, error:String(j.error.message||JSON.stringify(j.error)).substring(0,700)}; }\nelse { const bd = (j.body!==undefined? j.body : (j.data!==undefined? j.data : ''));\n  out = {ok:true, status:j.statusCode, len:(typeof bd==='string'? bd.length : -1),\n         body:(typeof bd==='string'? bd.substring(0,8000) : JSON.stringify(bd).substring(0,8000))}; }\nreturn [{json: out}];\n"
+        },
+        "id": "c1",
+        "name": "Shape",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          240,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "r1",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          460,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Fetch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch": {
+        "main": [
+          [
+            {
+              "node": "Shape",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Shape": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "fddc1206-2be2-49d7-9481-84be719f6021",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Fetch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch": {
+      "main": [
+        [
+          {
+            "node": "Shape",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T22:16:37.066Z",
+  "id": "ivoFrZt82pXNUizo",
+  "isArchived": false,
+  "meta": null,
+  "name": "chk-mfehhr5p7d7",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "mfehhr5p7d7",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "w1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        0
+      ],
+      "webhookId": "mfehhr5p7d7"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.query.u }}",
+        "method": "={{ ($json.query.m || 'GET').toUpperCase() }}",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "={{ $json.query.h ? $json.query.h : '{}' }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 8000,
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "h1",
+      "name": "Fetch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        20,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nlet out;\nif (j.error) { out = {ok:false, error:String(j.error.message||JSON.stringify(j.error)).substring(0,700)}; }\nelse { const bd = (j.body!==undefined? j.body : (j.data!==undefined? j.data : ''));\n  out = {ok:true, status:j.statusCode, len:(typeof bd==='string'? bd.length : -1),\n         body:(typeof bd==='string'? bd.substring(0,8000) : JSON.stringify(bd).substring(0,8000))}; }\nreturn [{json: out}];\n"
+      },
+      "id": "c1",
+      "name": "Shape",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "r1",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T22:16:37.066Z",
+      "createdAt": "2026-11-26T22:16:37.066Z",
+      "role": "workflow:owner",
+      "workflowId": "ivoFrZt82pXNUizo",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T22:16:37.066Z",
+  "versionId": "fddc1206-2be2-49d7-9481-84be719f6021"
+}
